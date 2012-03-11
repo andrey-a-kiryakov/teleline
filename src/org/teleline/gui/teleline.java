@@ -280,11 +280,12 @@ public class teleline {
 				comboBox5.addItem((Integer)10);
 				comboBox5.addItem((Integer)20);
 				comboBox5.addItem((Integer)25);
+				comboBox5.addItem((Integer)30);
 				comboBox5.addItem((Integer)50);
 				comboBox5.addItem((Integer)75);
 				comboBox5.addItem((Integer)100);
 				comboBox5.addItem((Integer)150);
-				comboBox5.setSelectedIndex(5);
+				comboBox5.setSelectedIndex(6);
 				comboBox5.setBounds(20, 290, 360, 25);
 				iFrame.getContentPane().add(comboBox5);
 				
@@ -422,11 +423,12 @@ public class teleline {
 				comboBox5.addItem((Integer)10);
 				comboBox5.addItem((Integer)20);
 				comboBox5.addItem((Integer)25);
+				comboBox5.addItem((Integer)30);
 				comboBox5.addItem((Integer)50);
 				comboBox5.addItem((Integer)75);
 				comboBox5.addItem((Integer)100);
 				comboBox5.addItem((Integer)150);
-				comboBox5.setSelectedIndex(5);
+				comboBox5.setSelectedIndex(6);
 				comboBox5.setBounds(20, 290, 360, 25);
 				iFrame.getContentPane().add(comboBox5);
 					
