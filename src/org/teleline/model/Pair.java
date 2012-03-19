@@ -170,8 +170,7 @@ public class Pair extends AbstractElement {
 			break;
 		}
 			
-		return t + " (к№="+this.getNumberInCable().toString()+")";
+		return t; /*+ " (к№="+this.getNumberInCable().toString()+")";*/
 	}
-	
-	
+
 }

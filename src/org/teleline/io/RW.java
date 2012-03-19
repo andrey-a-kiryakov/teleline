@@ -729,7 +729,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Cable cable = new Cable(dfc,cbc,dbc);
+				Cable cable = new Cable(dfc,cbc,dbc,fc,bc,pc);
 				
 				cable.setId(n.getAttribute("i").getIntValue()); 
 				cable.attachToNet(n.getAttribute("ni").getIntValue());
@@ -1367,7 +1367,7 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
 					newTr.addContent(new Element("td").addContent(cb.toString()));
 					newTr.addContent(new Element("td").addContent(b.toString()));
-					newTr.addContent(new Element("td").addContent(c.toString()+"-"+p.getNumberInCable().toString()));
+					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 					
 			}
 			else {
@@ -1390,7 +1390,7 @@ public class RW {
 				Cabinet cbto = (Cabinet)cbc.getElement(bto.getOwnerId());
 				
 				newTr.addContent(new Element("td").addContent(bfrom.toString()));
-				newTr.addContent(new Element("td").addContent(c.toString()+"-"+p.getNumberInCable().toString()));
+				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 				newTr.addContent(new Element("td").addContent(" "));
 				newTr.addContent(new Element("td").addContent(" "));
 				table.addContent(newTr);
@@ -1401,7 +1401,7 @@ public class RW {
 				
 				newTr.addContent(new Element("td").addContent(cbto.toString()));
 				newTr.addContent(new Element("td").addContent(bto.toString()));
-				newTr.addContent(new Element("td").addContent(c.toString()+"-"+p.getNumberInCable().toString()));
+				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 			}
 			
 			if (!path.isicPair() || !path.isdbPair()) {
@@ -1420,7 +1420,7 @@ public class RW {
 						
 					Cable c = (Cable)cc.getElement(p.getCable());
 					newTr.addContent(new Element("td").addContent(b.toString()));
-					newTr.addContent(new Element("td").addContent(c.toString()+"-"+p.getNumberInCable().toString()));
+					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 						
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(" "));
@@ -1443,7 +1443,7 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(b.toString()));
-					newTr.addContent(new Element("td").addContent(c.toString()+"-"+p.getNumberInCable().toString()));
+					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(" "));
 					table.addContent(newTr);

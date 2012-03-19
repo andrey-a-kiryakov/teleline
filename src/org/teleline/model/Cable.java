@@ -17,15 +17,21 @@ public class Cable extends LinkedElement {
 	private DFrameCollection dfc;
 	private CabinetCollection cbc;
 	private DBoxCollection dbc;
+	private FrameCollection fc;
+	private BoxCollection bc;
+	private PairCollection pc;
+	
 	/**
 	 * Конструктор
 	 */
-	public Cable(DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc) {
+	public Cable(DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, FrameCollection fc, BoxCollection bc, PairCollection pc) {
 		this.capacity = 100;
 		this.dfc = dfc;
 		this.cbc = cbc;
 		this.dbc = dbc;
-	
+		this.fc = fc;
+		this.bc = bc;
+		this.pc = pc;
 	}
 	
 	/**
@@ -151,21 +157,26 @@ public class Cable extends LinkedElement {
 	public String toString() {
 		
 		String s = "";
-		String s1 = "";
+		String s1 = "", s2 = "";
+		
+		Pair p = this.pc.getInPlace(this, 0);
+		
+		if (p != null) {
+			s2 = ", " + p.toString();
+		}
 		
 		switch (this.type.intValue()) {
-		case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
-		case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
-		case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString(); break;
-		case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString(); break;
-		
+		case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString()+s2; break;
+		case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString()+s2; break;
+		case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString()+s2; break;
+		case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString()+s2; break;
 		
 		}
-		return s + "-" + this.getNumber() + " ("+s1+")";
+		return s + "-" + this.getNumber() + " ("+s1+", "+this.capacity+"x2)";
 	}
 	
 	/**
-	 * Сокрашенное строковое представление элемента
+	 * Сокращенное строковое представление элемента
 	 */
 	public String toShortString() {
 		String s = "";

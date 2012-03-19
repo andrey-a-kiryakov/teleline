@@ -1179,7 +1179,7 @@ public class gui {
 			toComboBox.setEnabled(false);
 		}
 		/*
-		 * Дополнительные параметры абонента
+		 * Дополнительные параметры кабеля
 		 */
 		newLabel("Диаметр жилы, мм (0,1-5,0):", iFrame, 420, 15, 360, 25);
 		final JTextField cableWireDiametr = newTextField(iFrame, 420, 40, 360, 25);
@@ -1231,11 +1231,21 @@ public class gui {
 					Cable b = cc.getInOwner(from.getId(), number, type);
 					//Если кабель не магистральный, то проверять оба конца, магистральные не проверять на начало - кросс. 
 					//В кроссе может быть кабели одинакового номера и типа
-					if (type > 0)						
-						if (b != null && !cable.getId().equals(b.getId())) {newError(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"!"); return;}
-					if (type > 0 && type < 2) {
+				//	if (type > 0)						
+						if (b != null && !cable.getId().equals(b.getId())) {
+							if (newDialog(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"! Создать еще один?") == JOptionPane.NO_OPTION)
+							//newError(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"!"); 
+							return;
+						}
+					//if (type >= 0 && type < 2) {
+					if (type < 2) {
 						b = cc.getInOwner(to.getId(), number, type);
-						if (b != null && !cable.getId().equals(b.getId())) {newError(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"!"); return;}
+						if (b != null && !cable.getId().equals(b.getId())) {
+						//	newError(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"!"); 
+							if (newDialog(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"! Создать еще один?") == JOptionPane.NO_OPTION)
+								
+							return;
+						}
 					}
 					cable.setNumber(number);
 					cable
@@ -1251,16 +1261,25 @@ public class gui {
 				}
 				else {
 					//аналогично
-					if (type > 0)
-						if (cc.getInOwner(from.getId(), number, type) != null) {newError(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"!"); return;}
+					//if (type > 0)
+						if (cc.getInOwner(from.getId(), number, type) != null) {
+						//	newError(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"!"); 
+							if (newDialog(iFrame, "Кабель такого типа и номера уже существует в "+from.toString()+"! Создать еще один?") == JOptionPane.NO_OPTION)
+							return;
+						}
 					
 					if (type.equals(1))
 						if (from.getId().equals(to.getId())) {newError(iFrame, "Выберите разные шкафы!"); return; }
 					
-					if (type > 0 && type < 2)
-						if (cc.getInOwner(to.getId(), number, type) != null) {newError(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"!"); return;}
+					if (type < 2)
+						if (cc.getInOwner(to.getId(), number, type) != null) {
+							//newError(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"!"); 
+							if (newDialog(iFrame, "Кабель такого типа и номера уже существует в "+to.toString()+"! Создать еще один?") == JOptionPane.NO_OPTION)
+							return;
+						}
+					//}
 					
-					Cable newCable = new Cable(dfc,cbc,dbc); 
+					Cable newCable = new Cable(dfc,cbc,dbc,fc,bc,pc); 
 					newCable.attachToNet(selectedNet);
 					newCable
 						.setType(type)
@@ -2997,7 +3016,7 @@ public class gui {
 		iFrame.getContentPane().add(panel);
 		
 		final JTextArea infoArea = newTextArea(iFrame, 20, 40 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = newLabel(element.toString(), iFrame, 20, 10, panelWidth, 30);
+		JLabel head = newLabel(element.toShortString(), iFrame, 20, 10, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -3285,7 +3304,7 @@ public class gui {
 			Frame f = (Frame)fc.getElement(p.getElementFrom());
 			infoArea.append("Тип: прямого питания\r\nУчасток: "+ dfc.getElement(f.getOwnerId()).toString()+" - "+dbc.getElement(p.getElementTo()).toString()+"\r\n");
 		}
-		infoArea.append("Кабель: "+c.toString()+"\r\n");
+		infoArea.append("Кабель: "+c.toShortString()+"\r\n");
 		infoArea.append("Пара: "+p.toString()+"\r\n");
 		if (p.getStatus().equals(0)) infoArea.append("Состояние: свободна\r\n");
 		if (p.getStatus().equals(1)){

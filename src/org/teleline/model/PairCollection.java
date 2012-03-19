@@ -84,7 +84,7 @@ public class PairCollection extends AbstractCollection {
 	}
 	
 	/**
-	 * Возвращает пару под определенном номеров в кабеле
+	 * Возвращает пару под определенном номеров в кабеле. Если пары с таким номером нет, возвращает null.
 	 * @param cable - кабель
 	 * @param placeNumber - номер в кабеле
 	 * @return
