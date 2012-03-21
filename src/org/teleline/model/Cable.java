@@ -108,6 +108,13 @@ public class Cable extends LinkedElement {
 		return this.status;
 	}
 	/**
+	 * Возвращает текстовое представление статуса кабеля
+	 */
+	public String getStatusMnemonic () {
+		if (this.status.equals(0)) return "Новый";
+		return "Бывший в эксплуатации";
+	}
+	/**
 	 * Проверяет, можно ли добавить в кабель данное количество "Пар"
 	 * * @param количество добавляемых "Пар"
 	 */

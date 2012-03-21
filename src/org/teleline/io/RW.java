@@ -1565,7 +1565,7 @@ public class RW {
 			cablesTableTr3.addContent(new Element("td").addContent(cable.getLabel()));
 			cablesTableTr3.addContent(new Element("td").addContent(cable.getCapacity().toString()));
 			cablesTableTr3.addContent(new Element("td").addContent(cable.getWireDiametr().toString()));
-			cablesTableTr3.addContent(new Element("td").addContent(cable.getStatus().toString()));
+			cablesTableTr3.addContent(new Element("td").addContent(cable.getStatusMnemonic()));
 			cablesTableTr3.addContent(new Element("td").addContent(cable.getYear()));
 			cablesTableTr3.addContent(new Element("td").addContent("-"));
 			cablesTableTr3.addContent(new Element("td").addContent("-"));
