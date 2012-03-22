@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -26,9 +27,13 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.io.File;
 import javax.swing.JList;
@@ -1521,29 +1526,61 @@ public class teleline {
 		menuItem_16.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				final JDialog iFrame = GUI.newDialog("Редактировать кабель", 585, 600);
+				final JDialog iFrame = GUI.newDialog("Редактировать кабель", 685, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+				GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
+				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
 				
-				GUI.newLabel("Список кабелей:", iFrame, 10, 65, 420, 14);
-				final JList cableList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список кабелей:", iFrame, 10, 65, 520, 14);
+				//final JList cableList = GUI.newList(iFrame, 10, 85, 520, 470);
+				final JList cableList = new JList();
 				
-				GUI.netsComboBoxLinked(netsComboBox, cableList, cc);
+				final JTable cableTable = GUI.newTable(iFrame, 10, 85, 520, 470);
 				
-				JButton editCableButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton viewCableButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
-				JButton passportCableButton = GUI.newButton("Паспорт", iFrame, 440, 165, 125, 26);
-				JButton createCableButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteCableButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
+				
+				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
+				
+				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Длина"});
+				
+				Iterator<StructuredElement> i = cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
+				while (i.hasNext()) {
+					Vector<Object> v = new Vector<Object>();
+					
+					Cable element = (Cable)i.next();
+					v.add(element);
+					v.add(element.getFromElement());
+					v.add(element.getToElement());
+					v.add(element.getCapacity());
+					v.add(element.getLenght());
+					
+					tableModel.addRow(v);
+				}
+				
+				
+				
+				//GUI.netsComboBoxLinked(netsComboBox, cableList, cc);
+				
+				JButton editCableButton = GUI.newButton("Редактировать", iFrame, 540, 85, 125, 26);
+				JButton viewCableButton = GUI.newButton("Смотреть", iFrame, 540, 125, 125, 26);
+				JButton passportCableButton = GUI.newButton("Паспорт", iFrame, 540, 165, 125, 26);
+				JButton createCableButton = GUI.newButton("Добавить", iFrame, 540, 235, 125, 26);
+				JButton deleteCableButton = GUI.newButton("Удалить", iFrame, 540, 275, 125, 26);
+				
 				/*
 				 * Событие кнопки редактирования кабеля
 				 */
 				ActionListener editCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						GUI.formCable((Cable)cableList.getSelectedValue());
-						GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));	
+						//if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						//GUI.formCable((Cable)cableList.getSelectedValue());
+						//GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));
+
+						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
+						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
+						GUI.formCable(cable);
+						tableModel.setValueAt(cable, selectedIndex, 0);
+						tableModel.setValueAt(cable.getLenght(), selectedIndex, 4);
 					}
 				};
 				editCableButton.addActionListener(editCable);
@@ -1555,8 +1592,11 @@ public class teleline {
 				 */
 				ActionListener viewCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						GUI.viewCable((Cable)cableList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
+						//if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						//GUI.viewCable((Cable)cableList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
+						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
+						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId());
 					}
 				};
 				viewCableButton.addActionListener(viewCable);
@@ -1569,8 +1609,18 @@ public class teleline {
 				ActionListener createCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						GUI.formCable(null);
-						GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));
+						Cable cable = GUI.formCable(null);
+						//GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));
+						if (cable != null) {
+							Vector<Object> v = new Vector<Object>();
+							
+							v.add(cable);
+							v.add(cable.getFromElement());
+							v.add(cable.getToElement());
+							v.add(cable.getCapacity());
+							v.add(cable.getLenght());
+							tableModel.addRow(v);
+						}
 					}
 				};
 				createCableButton.addActionListener(createCable);

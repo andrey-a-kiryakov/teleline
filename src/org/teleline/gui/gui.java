@@ -29,11 +29,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.teleline.io.*;
 import org.teleline.model.*;
@@ -424,6 +428,7 @@ public class gui {
         
         NetsComboBox.addActionListener(actionListener);
 	}
+	
 	/**
 	 * Связывает выпадающий список кроссов с выпадающим списком громполос
 	 * @param dframeComboBox - список кроссов
@@ -1098,7 +1103,8 @@ public class gui {
 	 * Создает и выводит на экран форму создания/редактирования кабеля
 	 * @param cable - элемент "Кабель", если null - выводится форма создания нового элемента
 	 */
-	public void formCable(final Cable cable) {
+	public Cable formCable(final Cable cable) {
+		final Vector<Cable> v = new Vector<Cable>(); v.add(null);
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 520, iFrameMaxHeight = 520;
 		final JDialog iFrame = newDialog("Создать кабель", iFrameMinWidth, iFrameMinHeight);
 		
@@ -1228,6 +1234,7 @@ public class gui {
 				
 				
 				if (cable != null) {
+					v.set(0, cable);
 					Cable b = cc.getInOwner(from.getId(), number, type);
 					//Если кабель не магистральный, то проверять оба конца, магистральные не проверять на начало - кросс. 
 					//В кроссе может быть кабели одинакового номера и типа
@@ -1294,7 +1301,7 @@ public class gui {
 					if (type < 2) newCable.setTo(to.getId());
 					if (type >= 2) newCable.setTo(0);
 					
-					cc.addElement(newCable);
+					cc.addElement(newCable); v.set(0, newCable);
 					String mes = "Создан "+(String)typeComboBox.getSelectedItem()+" кабель: "+ newCable.toString()+ ", присоединён к сети: "+ selectedNet.toString();
 					newInfo(iFrame, mes);
 					rw.addLogMessage(mes);
@@ -1305,6 +1312,8 @@ public class gui {
 		
 		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 440, 60, 25);
 		iFrame.setVisible(true);
+		
+		return v.get(0);
 	}
 	/**
 	 * Создает и выводит на экран форму создания/редактирования колодца
@@ -2283,6 +2292,12 @@ public class gui {
 		}
 	}
 	
+	/**
+	 * Добавляет пару во включение
+	 * @param path - включение
+	 * @param p - пара
+	 * @return пару, если пара была добавлена во включение, иначе null
+	 */
 	public Pair addPairToPath(Path path, Pair p, JDialog frame) {
 		
 		Pair returnedPair = null;
@@ -2445,7 +2460,13 @@ public class gui {
 		return scrollPane;
 	
 	}*/
-	
+	/**
+	 * Создает и добавляет в окно надпись
+	 * @param Text - текст надписи
+	 * @param iFrame - окно
+	 * @param x, y, w, h - координаты и размеры надписи
+	 * @return надпись
+	 */
 	public JLabel newLabel(String Text, JDialog iFrame, int x, int y, int w, int h) {
 		
 		JLabel newLabel = new JLabel(Text);
@@ -2469,6 +2490,28 @@ public class gui {
 				
 		return list;
 	}
+	
+	@SuppressWarnings("serial")
+	public JTable newTable(JDialog iFrame, int x, int y, int w, int h) {
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(x, y, w, h);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JTable table = new JTable(new DefaultTableModel()){
+			public boolean isCellEditable(int arg0, int arg1) {
+				return false; }
+		};
+		
+		table.getSelectionModel().setSelectionMode(0);
+		scrollPane.setViewportView(table);
+		//TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tableModel);
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+		iFrame.getContentPane().add(scrollPane);
+		return table;
+	
+	}
+	
 	
 	public JTextArea newTextArea(JDialog iFrame, int x, int y, int w, int h) {
 		

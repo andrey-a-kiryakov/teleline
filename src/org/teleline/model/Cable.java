@@ -157,29 +157,53 @@ public class Cable extends LinkedElement {
 	public Integer getType () {
 		return this.type;
 	}
+	/**
+	 * Возвращает элемент из которого выходит кабель
+	 */
+	public AbstractElement getFromElement() {
+		
+		switch (this.type.intValue()) {
+			case 0: return this.dfc.getElement(this.getFrom()); 
+			case 1: return this.cbc.getElement(this.getFrom()); 
+			case 2: return this.cbc.getElement(this.getFrom()); 
+			case 3: return this.dfc.getElement(this.getFrom());
+		}
+		return null;
+	}
 	
+	public AbstractElement getToElement() {
+		
+		switch (this.type.intValue()) {
+			case 0: return this.cbc.getElement(this.getTo());
+			case 1: return this.cbc.getElement(this.getTo());
+			case 2: return null;
+			case 3: return null;
+		}
+		
+		return null;
+	}
 	/**
 	 * Полное строковое представление элемента
 	 */
 	public String toString() {
 		
 		String s = "";
-		String s1 = "", s2 = "";
+	/*	String s1 = "", s2 = "";
 		
 		Pair p = this.pc.getInPlace(this, 0);
 		
 		if (p != null) {
 			s2 = ", " + p.toString();
 		}
-		
+	*/	
 		switch (this.type.intValue()) {
-		case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString()+s2; break;
-		case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString()+s2; break;
-		case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString()+s2; break;
-		case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString()+s2; break;
+		case 0: s = "M";/* s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString();*/ break;
+		case 1: s = "Рпер";/* s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString();*/ break;
+		case 2: s = "Р";/* s1  = this.cbc.getElement(this.getFrom()).toString();*/ break;
+		case 3: s = "ПП";/* s1  = this.dfc.getElement(this.getFrom()).toString();*/ break;
 		
 		}
-		return s + "-" + this.getNumber() + " ("+s1+", "+this.capacity+"x2)";
+		return s + "-" + this.getNumber();// + " ("+s1+")";
 	}
 	
 	/**

@@ -24,7 +24,7 @@ public abstract class LinkedElement extends StructuredElement{
 		return this;
 	}
 	/**
-	 * Возвращает элемент, в который приходит связующий элемент
+	 * Возвращает id элемента, в который приходит связующий элемент
 	 */
 	public Integer getTo () {
 		return this.to;
@@ -37,7 +37,7 @@ public abstract class LinkedElement extends StructuredElement{
 		return this;
 	}
 	/**
-	 * Возвращает элемент, из которого выходит связующий элемент
+	 * Возвращает id элемента, из которого выходит связующий элемент
 	 */
 	public Integer getFrom () {
 		return this.from;
