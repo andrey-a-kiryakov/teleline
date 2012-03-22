@@ -1533,28 +1533,12 @@ public class teleline {
 				
 				GUI.newLabel("Список кабелей:", iFrame, 10, 65, 520, 14);
 				//final JList cableList = GUI.newList(iFrame, 10, 85, 520, 470);
-				final JList cableList = new JList();
 				
 				final JTable cableTable = GUI.newTable(iFrame, 10, 85, 520, 470);
-				
-				
 				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
-				
 				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Длина"});
 				
-				Iterator<StructuredElement> i = cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
-				while (i.hasNext()) {
-					Vector<Object> v = new Vector<Object>();
-					
-					Cable element = (Cable)i.next();
-					v.add(element);
-					v.add(element.getFromElement());
-					v.add(element.getToElement());
-					v.add(element.getCapacity());
-					v.add(element.getLenght());
-					
-					tableModel.addRow(v);
-				}
+				GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
 				
 				
 				
@@ -1577,7 +1561,7 @@ public class teleline {
 
 						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
+						Cable cable = (Cable)tableModel.getValueAt(selectedIndex, 0);
 						GUI.formCable(cable);
 						tableModel.setValueAt(cable, selectedIndex, 0);
 						tableModel.setValueAt(cable.getLenght(), selectedIndex, 4);
@@ -1611,16 +1595,7 @@ public class teleline {
 						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						Cable cable = GUI.formCable(null);
 						//GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));
-						if (cable != null) {
-							Vector<Object> v = new Vector<Object>();
-							
-							v.add(cable);
-							v.add(cable.getFromElement());
-							v.add(cable.getToElement());
-							v.add(cable.getCapacity());
-							v.add(cable.getLenght());
-							tableModel.addRow(v);
-						}
+						if (cable != null) GUI.addCableToTable(cableTable, cable);
 					}
 				};
 				createCableButton.addActionListener(createCable);
@@ -1632,13 +1607,21 @@ public class teleline {
 				 */
 				ActionListener deleteCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить кабель: " + cableList.getSelectedValue().toString()+" и все содержащиеся в нем пары?");
+						
+						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
+						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
+						
+						//if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						int n = GUI.newDialog(iFrame, "Удалить кабель: " + cable.toString()+" и все содержащиеся в нем пары?");
 						if (n == JOptionPane.YES_OPTION) {
-							GUI.removeCable((Cable)cableList.getSelectedValue());
-							GUI.newInfo(iFrame, "Кабель и все содержащиеся в нем пары удалены");
-							GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));	
-						}		
+							GUI.removeCable(cable);
+							GUI.newInfo(iFrame, "Кабель "+cable.toString()+" и все содержащиеся в нем пары удалены");
+							((DefaultTableModel) cableTable.getModel()).removeRow(selectedIndex);
+							//GUI.setListItems(cableList, cc.sortByIdUp(cc.getInNet((Net)netsComboBox.getSelectedItem())));	
+						}
+						
+						
 					}
 				};
 				deleteCableButton.addActionListener(deleteCable);
@@ -1650,8 +1633,11 @@ public class teleline {
 				 */
 				ActionListener passportCabinet = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						Cable cable = (Cable)cableList.getSelectedValue();
+						//if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
+						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
+						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
+						//Cable cable = (Cable)cableList.getSelectedValue();
 						if (cable.getType() == 2) {GUI.newError(iFrame, "Паспорт для распределительного кабеля создается в составе паспорта шкафа."); return;}
 						if (cable.getType() == 0) {GUI.formViewPassport(rw.createМCablePassport(cable)); return;}
 						if (cable.getType() == 1) {GUI.formViewPassport(rw.createIcCablePassport(cable)); return;}

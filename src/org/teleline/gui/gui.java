@@ -81,6 +81,24 @@ public class gui {
 		this.frame = frame;
 	}
 	
+	public void addCableToTable(JTable table, Cable cable){
+		
+		Vector<Object> v = new Vector<Object>();
+		v.add(cable);
+		v.add(cable.getFromElement());
+		v.add(cable.getToElement());
+		v.add(cable.getCapacity());
+		v.add(cable.getLenght());
+		((DefaultTableModel) table.getModel()).addRow(v);
+	}
+	
+	public void clearTable (JTable table) {
+		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0;  i--) {
+			((DefaultTableModel) table.getModel()).removeRow(i);
+		}
+		
+	}
+	
 	public JDialog newDialog (String Title, int width, int height) {
 		
 		JDialog frame = new JDialog();
@@ -427,6 +445,37 @@ public class gui {
         if (NetsComboBox.getSelectedIndex() > -1) setListItems(List, lc.sortByIdUp(lc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
         
         NetsComboBox.addActionListener(actionListener);
+	}
+	/**
+	 * СВязывает выпадающий список сетей и таблицу кабелей
+	 * @param netsComboBox - выпадающий список сетей
+	 * @param cableTable - таблица кабелей
+	 */
+	public void linkNetsComboBoxCableTable (final JComboBox netsComboBox, final JTable cableTable) {
+		
+		ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	
+            	if (netsComboBox.getSelectedIndex() > -1) {
+            		clearTable(cableTable);
+            		Iterator<StructuredElement> i = cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
+            		while (i.hasNext()) {
+            			addCableToTable(cableTable, (Cable)i.next());
+            		}
+            	}
+            }
+		};
+        
+		if (netsComboBox.getSelectedIndex() > -1) {
+			clearTable(cableTable);
+			Iterator<StructuredElement> i = cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
+    		while (i.hasNext()) {
+    			addCableToTable(cableTable, (Cable)i.next());
+    		}
+		}
+		
+    	netsComboBox.addActionListener(actionListener);
+        
 	}
 	
 	/**
@@ -2499,13 +2548,11 @@ public class gui {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		JTable table = new JTable(new DefaultTableModel()){
-			public boolean isCellEditable(int arg0, int arg1) {
-				return false; }
+			public boolean isCellEditable(int arg0, int arg1) {return false; }
 		};
 		
 		table.getSelectionModel().setSelectionMode(0);
 		scrollPane.setViewportView(table);
-		//TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tableModel);
 		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
 		iFrame.getContentPane().add(scrollPane);
 		return table;
