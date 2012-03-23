@@ -17,7 +17,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -32,8 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import java.io.File;
 import javax.swing.JList;
@@ -257,7 +254,7 @@ public class teleline {
 		menuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				final JDialog iFrame = GUI.newDialog("Создать магистральные пары", 410,  540);
+				final JDialog iFrame = GUI.newDialog("Создать магистральные пары", 410,  570);
 				
 				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
 				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
@@ -272,7 +269,7 @@ public class teleline {
 				final JComboBox comboBox4 = GUI.boxComboBox(comboBox3, 0, iFrame, 20, 230, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox3, comboBox4, 0);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 0, iFrame, 20, 410, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 0, iFrame, 20, 440, 360, 25);
 				
 				GUI.netsDFrameComboLinked(comboBox, comboBox1);
 				GUI.netsCabinetComboLinked(comboBox, comboBox3, 1);
@@ -326,11 +323,27 @@ public class teleline {
 
 					}
 				});
+				
+				GUI.newLabel("Кабель заполнять с:", iFrame, 20, 385, 260, 25);
+			    final JTextField cableFrom = GUI.newTextField(iFrame, 140, 385, 140, 25);
+				cableFrom.setText("0");
+				cableFrom.setEditable(false);
+				JButton selectCable = GUI.newButton("Выбрать", iFrame, 290, 385, 90, 25);
+				
+				selectCable.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
+						if (p != null) cableFrom.setText(p.getFromNumber().toString());
+
+					}
+				});
 			   
 			    
-			    GUI.newLabel("Добавить в магистральный кабель:", iFrame, 20, 385, 360, 25);
+			    GUI.newLabel("Добавить в магистральный кабель:", iFrame, 20, 415, 360, 25);
 				
-				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 460, 110, 25);
+				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 490, 110, 25);
 				saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
@@ -349,10 +362,13 @@ public class teleline {
 						Integer pairCount = (Integer)comboBox5.getSelectedItem();
 						Integer fromFrame = rw.valueOf(dframeFrom.getText());
 						Integer fromBox = rw.valueOf(boxFrom.getText());
+						Integer fromCable = rw.valueOf(cableFrom.getText());
 						
-						if (pairCount + fromFrame > selectedFrame.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в громполосе!"); return; }
-						if (pairCount + fromBox > selectedBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе!"); return; }						
-						if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
+					//	if (pairCount + fromFrame > selectedFrame.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в громполосе!"); return; }
+					//	if (pairCount + fromBox > selectedBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе!"); return; }						
+					//	if (pairCount + fromCable > selectedCable.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в кабеле!"); return; }						
+						
+						//if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
 						
 						for (Integer i = fromFrame; i < fromFrame + pairCount; i++)
 							if (pc.getInPlace(selectedFrame, i) != null)  { GUI.newError(iFrame, "В громполосе в заданном диапазоне уже существуют кабельные пары!"); return; }
@@ -360,7 +376,10 @@ public class teleline {
 						for (Integer i = fromBox; i < fromBox + pairCount; i++)
 							if (pc.getInPlace(selectedBox, i) != null)  { GUI.newError(iFrame, "В боксе в заданном диапазоне уже существуют кабельные пары!"); return; }	
 						
-						Integer inCableFirst = selectedCable.connect(pairCount);
+						for (Integer i = fromCable; i < fromCable + pairCount; i++)
+							if (pc.getInPlace(selectedCable, i) != null)  { GUI.newError(iFrame, "В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
+						
+						//Integer inCableFirst = selectedCable.connect(pairCount);
 												
 						for (int i = 0; i < pairCount; i++) {
 							
@@ -370,7 +389,7 @@ public class teleline {
 								.attachToElementFrom(selectedFrame)
 								.attachToElementTo(selectedBox)
 								.attachToCable(selectedCable)
-								.setNumberInCable(inCableFirst + i - 1)
+								.setNumberInCable(fromCable + i - 1)
 								.setFromNumber(fromFrame + i)
 								.setToNumber(fromBox + i);
 								//.setType(0);
@@ -400,7 +419,7 @@ public class teleline {
 		JMenuItem menuItem_7 = new JMenuItem("Межшкафные");
 		menuItem_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog iFrame = GUI.newDialog("Создать межшкафные пары", 410, 540);
+				final JDialog iFrame = GUI.newDialog("Создать межшкафные пары", 410, 570);
 				
 				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
 				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
@@ -415,7 +434,7 @@ public class teleline {
 				final JComboBox comboBox4 = GUI.boxComboBox(comboBox3, 1, iFrame, 20, 230, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox3, comboBox4, 1);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 1, iFrame, 20, 410, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 1, iFrame, 20, 440, 360, 25);
 				
 				GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
 				GUI.netsCabinetComboLinked(comboBox, comboBox3, 0);
@@ -470,10 +489,26 @@ public class teleline {
 
 					}
 				});
-				    
-				GUI.newLabel("Добавить в передаточный кабель:", iFrame, 20, 385, 360, 25);
 				
-				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 460, 110, 25);
+				GUI.newLabel("Кабель заполнять с:", iFrame, 20, 385, 260, 25);
+			    final JTextField cableFrom = GUI.newTextField(iFrame, 140, 385, 140, 25);
+				cableFrom.setText("0");
+				cableFrom.setEditable(false);
+				JButton selectCable = GUI.newButton("Выбрать", iFrame, 290, 385, 90, 25);
+				
+				selectCable.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
+						if (p != null) cableFrom.setText(p.getFromNumber().toString());
+
+					}
+				});
+				    
+				GUI.newLabel("Добавить в передаточный кабель:", iFrame, 20, 415, 360, 25);
+				
+				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 490, 110, 25);
 				saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
@@ -490,19 +525,22 @@ public class teleline {
 						Integer pairCount = (Integer)comboBox5.getSelectedItem();
 						Integer fromBox1 = rw.valueOf(box1From.getText());
 						Integer fromBox2 = rw.valueOf(box2From.getText());
+						Integer fromCable = rw.valueOf(cableFrom.getText());
 						
+						//if (pairCount + fromBox1 > selectedBox1.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе №1!"); return; }
+						//if (pairCount + fromBox2 > selectedBox2.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе №2!"); return; }					
+						//if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
 						
-						if (pairCount + fromBox1 > selectedBox1.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе №1!"); return; }
-						if (pairCount + fromBox2 > selectedBox2.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе №2!"); return; }					
-						if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
-						
-						Integer inCableFirst = selectedCable.connect(pairCount);
+						//Integer inCableFirst = selectedCable.connect(pairCount);
 						
 						for (Integer i = fromBox1; i < fromBox1 + pairCount; i++)
 							if (pc.getInPlace(selectedBox1, i) != null)  { GUI.newError(iFrame, "В боксе №1 в заданном диапазоне уже существуют кабельные пары!"); return; }
 						
 						for (Integer i = fromBox2; i < fromBox2 + pairCount; i++)
 							if (pc.getInPlace(selectedBox2, i) != null)  { GUI.newError(iFrame, "В боксе №2 в заданном диапазоне уже существуют кабельные пары!"); return; }
+						
+						for (Integer i = fromCable; i < fromCable + pairCount; i++)
+							if (pc.getInPlace(selectedCable, i) != null)  { GUI.newError(iFrame, "В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
 												
 						for (int i = 0; i < pairCount; i++) {
 							
@@ -512,7 +550,7 @@ public class teleline {
 								.attachToElementFrom(selectedBox1)
 								.attachToElementTo(selectedBox2)
 								.attachToCable(selectedCable)
-								.setNumberInCable(inCableFirst + i - 1)
+								.setNumberInCable(fromCable + i - 1)
 								.setFromNumber(fromBox1 + i)
 								.setToNumber(fromBox2 + i);
 								//.setType(1);
@@ -539,7 +577,7 @@ public class teleline {
 		JMenuItem menuItem_8 = new JMenuItem("Распределительные");
 		menuItem_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog iFrame = GUI.newDialog("Создать распределительные пары", 410, 470);
+				final JDialog iFrame = GUI.newDialog("Создать распределительные пары", 410, 500);
 				
 				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
 				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
@@ -552,7 +590,7 @@ public class teleline {
 				GUI.newLabel("До коробки:", iFrame, 20, 170, 360, 25);
 				final JComboBox comboBox3 = GUI.dboxComboBox(comboBox, iFrame, 20, 195, 360, 25);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 2, iFrame, 20, 350, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 2, iFrame, 20, 380, 360, 25);
 				
 				GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
 				GUI.netsDBoxComboLinked(comboBox, comboBox3);
@@ -582,9 +620,26 @@ public class teleline {
 						}
 					});
 				
-			    GUI.newLabel("Добавить в распределительный кабель:", iFrame, 20, 325, 360, 25);
+					GUI.newLabel("Кабель заполнять с:", iFrame, 20, 320, 260, 25);
+				    final JTextField cableFrom = GUI.newTextField(iFrame, 140, 320, 140, 25);
+					cableFrom.setText("0");
+					cableFrom.setEditable(false);
+					JButton selectCable = GUI.newButton("Выбрать", iFrame, 290, 320, 90, 25);
+					
+					selectCable.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+							if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+							Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
+							if (p != null) cableFrom.setText(p.getFromNumber().toString());
+
+						}
+					});
 				
-				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 390, 110, 25);
+				
+			    GUI.newLabel("Добавить в распределительный кабель:", iFrame, 20, 355, 360, 25);
+				
+				JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 420, 110, 25);
 				saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
@@ -598,19 +653,23 @@ public class teleline {
 						DBox selectedDBox = (DBox)comboBox3.getSelectedItem();
 						Cable selectedCable = (Cable)comboBox6.getSelectedItem();
 						Integer pairCount = (Integer)comboBox5.getSelectedItem();
-						Integer fromBox = rw.valueOf(boxFrom.getText());						
+						Integer fromBox = rw.valueOf(boxFrom.getText());
+						Integer fromCable = rw.valueOf(cableFrom.getText());
 
-						if (pairCount + fromBox > selectedBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе!"); return; }
-						if (pairCount + 0 > selectedDBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в КРТ"); return; }					
-						if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
+					//	if (pairCount + fromBox > selectedBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в боксе!"); return; }
+					//	if (pairCount + 0 > selectedDBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в КРТ"); return; }					
+					//	if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
 						
-						Integer inCableFirst = selectedCable.connect(pairCount);
+					//	Integer inCableFirst = selectedCable.connect(pairCount);
 						
 						for (Integer i = fromBox; i < fromBox + pairCount; i++)
 							if (pc.getInPlace(selectedBox, i) != null)  { GUI.newError(iFrame, "В боксе в заданном диапазоне уже существуют кабельные пары!"); return; }
 						
 						for (Integer i = 0; i < 0 + pairCount; i++)
 							if (pc.getInPlace(selectedDBox, i) != null)  { GUI.newError(iFrame, "В КРТ в заданном диапазоне уже существуют кабельные пары!"); return; }				
+						
+						for (Integer i = fromCable; i < fromCable + pairCount; i++)
+							if (pc.getInPlace(selectedCable, i) != null)  { GUI.newError(iFrame, "В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
 						
 						for (int i = 0; i < pairCount; i++) {
 							
@@ -620,7 +679,7 @@ public class teleline {
 								.attachToElementFrom(selectedBox)
 								.attachToElementTo(selectedDBox.getId())
 								.attachToCable(selectedCable)
-								.setNumberInCable(inCableFirst + i - 1)
+								.setNumberInCable(fromCable + i - 1)
 								.setFromNumber(fromBox + i)
 								.setToNumber(0 + i);
 								//.setType(2);
@@ -645,7 +704,7 @@ public class teleline {
 		JMenuItem menuItem_5 = new JMenuItem("Прямого питания");
 		menuItem_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog iFrame = GUI.newDialog("Создать пары прямого питания", 410, 470);
+				final JDialog iFrame = GUI.newDialog("Создать пары прямого питания", 410, 500);
 				
 				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
 				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
@@ -685,6 +744,22 @@ public class teleline {
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
 						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
 						if (p != null) dframeFrom.setText(p.getFromNumber().toString());
+
+					}
+				});
+				
+				GUI.newLabel("Кабель заполнять с:", iFrame, 20, 320, 260, 25);
+			    final JTextField cableFrom = GUI.newTextField(iFrame, 140, 320, 140, 25);
+				cableFrom.setText("0");
+				cableFrom.setEditable(false);
+				JButton selectCable = GUI.newButton("Выбрать", iFrame, 290, 320, 90, 25);
+				
+				selectCable.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
+						if (p != null) cableFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -1536,7 +1611,7 @@ public class teleline {
 				
 				final JTable cableTable = GUI.newTable(iFrame, 10, 85, 520, 470);
 				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
-				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Длина"});
+				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
 				
 				GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
 				
@@ -1579,7 +1654,7 @@ public class teleline {
 						//GUI.viewCable((Cable)cableList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
 						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId());
+						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId(), false);
 					}
 				};
 				viewCableButton.addActionListener(viewCable);

@@ -354,7 +354,7 @@ public class RW {
 				cableXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 			
 				cableXML.addContent(new Element ("capacity").addContent(f.getCapacity().toString()));
-				cableXML.addContent(new Element ("usedCapacity").addContent(f.getUsedCapacity().toString()));
+			//	cableXML.addContent(new Element ("usedCapacity").addContent(f.getUsedCapacity().toString()));
 				cableXML.addContent(new Element("type").addContent(f.getType().toString()));
 				cableXML.addContent(new Element("label").addContent(f.getLabel()));
 				cableXML.addContent(new Element("number").addContent(f.getNumber().toString()));
@@ -406,36 +406,10 @@ public class RW {
 				pathXML.addContent(new Element ("n").addContent(f.getName()));
 				pathXML.addContent(new Element ("t").addContent(f.getTransit()));
 				pathXML.addContent(new Element ("mp").addContent(f.getmPair().toString()));
-			/*	
-				if (f.ismPair()) {
-					
-					Element elementXML = new Element ("mp");
-					for (int k = 0; k < f.getmPair().size(); k++)
-						elementXML.addContent(new Element ("i").addContent(f.getmPair().get(k).toString()));
-					
-					pathXML.addContent(elementXML);
-				}
-			*/	
-				pathXML.addContent(new Element ("drp").addContent(f.getdrPair().toString()));
-			/*	if (f.isdrPair()) {
-					
-					Element elementXML = new Element ("drp");
-					for (int k = 0; k < f.getdrPair().size(); k++)
-						elementXML.addContent(new Element ("i").addContent(f.getdrPair().get(k).toString()));
-					
-					pathXML.addContent(elementXML);
-				}
-			*/	
+				
+				pathXML.addContent(new Element ("drp").addContent(f.getdrPair().toString()));	
 				pathXML.addContent(new Element ("dbp").addContent(f.getdbPair().toString()));
-		/*		if (f.isdbPair()) {
-					
-					Element elementXML = new Element ("dbp");
-					for (int k = 0; k < f.getdbPair().size(); k++)
-						elementXML.addContent(new Element ("i").addContent(f.getdbPair().get(k).toString()));
-					
-					pathXML.addContent(elementXML);
-				}
-		*/		
+		
 				if (f.isicPair()) {
 					
 					Element elementXML = new Element ("icp");
@@ -735,7 +709,7 @@ public class RW {
 				cable.attachToNet(n.getAttribute("ni").getIntValue());
 								
 				cable.setCapacity(this.valueOf(n.getChildText("capacity")));
-				cable.setUsedCapacity(this.valueOf(n.getChildText("usedCapacity")));
+			//	cable.setUsedCapacity(this.valueOf(n.getChildText("usedCapacity")));
 				cable.setType(this.valueOf(n.getChildText("type")));
 				cable.setLabel(n.getChildText("label"));
 				cable.setNumber(this.valueOf(n.getChildText("number")));

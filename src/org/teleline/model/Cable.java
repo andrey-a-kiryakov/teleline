@@ -6,7 +6,7 @@ package org.teleline.model;
 *@author Кирьяков Андрей
 */
 public class Cable extends LinkedElement {
-	private Integer usedCapacity = 0;
+	//private Integer usedCapacity = 0;
 	private Integer lenght = 1; //длина кабеля в (м)
 	private String wireDiametr = "0,5"; // диаметр жилы (мм)
 	private String year = "2011"; //год протяжки
@@ -38,16 +38,16 @@ public class Cable extends LinkedElement {
 	 * Устанавливает используемую емкость елемента в "Парах"
 	 * Функция используется только при чтении из файла
 	 */
-	public Cable setUsedCapacity (Integer capacity) {
+/*	public Cable setUsedCapacity (Integer capacity) {
 		this.usedCapacity = capacity;
 		return this;
 	}
-	
+*/	
 	/**
 	 * Возвращает используемую емкость елемента в "Парах"
 	 */
 	public Integer getUsedCapacity () {
-		return this.usedCapacity;
+		return this.pc.getInCable(this).size();
 	}
 	/**
 	 * Устанавливает длину кабеля
@@ -119,7 +119,7 @@ public class Cable extends LinkedElement {
 	 * * @param количество добавляемых "Пар"
 	 */
 	public boolean isConnect (Integer pairCount) {
-		if ((this.capacity - this.usedCapacity) >= pairCount) return true;
+		if ((this.capacity - this.pc.getInCable(this).size()) >= pairCount) return true;
 		return false;
 	}
 	/**
@@ -128,8 +128,9 @@ public class Cable extends LinkedElement {
 	 * @return номер первой присоединеной пары
 	 */
 	public Integer connect(Integer pairCount) { 
-		this.usedCapacity += pairCount; 
-		return this.usedCapacity - pairCount + 1;
+		//this.usedCapacity += pairCount; 
+		//return this.usedCapacity - pairCount + 1;
+		return 0;
 	}
 	/**
 	 * Устанавливает марку кабеля

@@ -88,6 +88,8 @@ public class gui {
 		v.add(cable.getFromElement());
 		v.add(cable.getToElement());
 		v.add(cable.getCapacity());
+		v.add(cable.getUsedCapacity());
+		
 		v.add(cable.getLenght());
 		((DefaultTableModel) table.getModel()).addRow(v);
 	}
@@ -99,7 +101,8 @@ public class gui {
 		tableModel.setValueAt(cable.getFromElement(), index, 1);
 		tableModel.setValueAt(cable.getToElement(), index, 2);
 		tableModel.setValueAt(cable.getCapacity(), index, 3);
-		tableModel.setValueAt(cable.getLenght(), index, 4);
+		tableModel.setValueAt(cable.getUsedCapacity(), index, 4);
+		tableModel.setValueAt(cable.getLenght(), index, 5);
 	}
 	
 	public void clearTable (JTable table) {
@@ -1198,10 +1201,11 @@ public class gui {
 		final JComboBox comboBox2 = new JComboBox();
 		comboBox2.addItem((Integer)10);
 		comboBox2.addItem((Integer)20);
+		comboBox2.addItem((Integer)30);
 		comboBox2.addItem((Integer)50);
 		comboBox2.addItem((Integer)100);
 		comboBox2.addItem((Integer)150);
-		comboBox2.setSelectedIndex(3);
+		comboBox2.setSelectedIndex(4);
 		iFrame.getContentPane().add(comboBox2);
 		comboBox2.setBounds(20, 340, 360, 25);
 		
@@ -2917,17 +2921,19 @@ public class gui {
 		//хеш всех созданых кнопок для пар
 		HashMap<Pair, ElementView> elementViewHash = new HashMap<Pair, ElementView>();
 		
+		/*
+		 *Событие нажатия на существующую пару 
+		 */
 		ActionListener pairClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Pair p = (Pair)((ElementView)e.getSource()).getElement();
-				if (selectMode) {
-					returnedPair.set(0, p);
-					iFrame.dispose();
-				}
-				
 				viewPairInfo(p,infoArea);	
 			}
 		};
+		/*
+		 * ----------------------------------
+		 */
+		
 		/*
 		 * Событие нажатия на пустое место. 
 		 * Используятся для выбора места для расположения создаваемых пар
@@ -2980,10 +2986,17 @@ public class gui {
 					button.setBounds(labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
 				}
 				panel.add(button);
+				/*
+				 * Создание виртуальных пар для пустого места.
+				 * В параметр fromNumber записывается номер места.
+				 */
 				Pair pairForEmptyPlace = new Pair(fc,bc,dbc,cc);
 				pairForEmptyPlace.setFromNumber(place);
 				button.setElement(pairForEmptyPlace);
-			
+				/*
+				 * ----------------------------------
+				 */
+				
 				Pair pair = pc.getInPlace((ConnectedPointElement)element, (Integer)place);
 				
 				if (pair != null) {
@@ -3100,7 +3113,9 @@ public class gui {
 		iFrame.setVisible(true);
 	}
 	
-	public void viewCable(final Cable element, final Integer netId) {
+	public Pair viewCable(final Cable element, final Integer netId, final boolean selectMode) {
+		
+		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
 		int W = 15, H = 15, marginX = 7, marginY = 7, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
@@ -3123,14 +3138,25 @@ public class gui {
 		/*
 		 * Событие нажатие на кнопку пары
 		 */
-		ActionListener pairClick = new ActionListener() { public void actionPerformed(ActionEvent e) {Pair p = (Pair)((ElementView)e.getSource()).getElement(); viewPairInfo(p, infoArea);}};
+		ActionListener pairClick = new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				Pair p = (Pair)((ElementView)e.getSource()).getElement();
+				viewPairInfo(p, infoArea);
+		}};
 		/*
 		 * --------------------------------
 		 */
 		/*
 		 * Событие нажатия на кнопку пустого места
 		 */
-		ActionListener placeClick = new ActionListener() {public void actionPerformed(ActionEvent e) {}};
+		ActionListener placeClick = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (selectMode) {
+					Pair p = (Pair)((ElementView)e.getSource()).getElement();
+					returnedPair.set(0, p);
+					iFrame.dispose();
+				}
+			}};
 		/*
 		 * ---------------------------------
 		 */
@@ -3198,6 +3224,7 @@ public class gui {
 		}
 	
 		iFrame.setVisible(true);
+		return returnedPair.get(0);
 	}
 	
 	public void viewDuct(final Duct duct, final Integer netId) {
