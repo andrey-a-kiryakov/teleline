@@ -717,7 +717,7 @@ public class teleline {
 				GUI.newLabel("До коробки:", iFrame, 20, 170, 360, 25);
 				final JComboBox comboBox3 = GUI.dboxComboBox(comboBox, iFrame, 20, 195, 360, 25);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 3, iFrame, 20, 350, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 3, iFrame, 20, 380, 360, 25);
 				
 				GUI.netsDFrameComboLinked(comboBox, comboBox1);
 				GUI.netsDBoxComboLinked(comboBox, comboBox3);
@@ -764,8 +764,8 @@ public class teleline {
 					}
 				});
 			    
-			    GUI.newLabel("Добавить в кабель:", iFrame, 20, 325, 360, 25);
-			    JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 390, 110, 25);
+			    GUI.newLabel("Добавить в кабель:", iFrame, 20, 355, 360, 25);
+			    JButton saveButton = GUI.newButton("Сoхранить", iFrame, 20, 420, 110, 25);
 			    saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						

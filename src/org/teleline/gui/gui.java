@@ -1,6 +1,5 @@
 package org.teleline.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -81,6 +80,11 @@ public class gui {
 		this.frame = frame;
 	}
 	
+	/**
+	 * Добавояет кабель в таблицу
+	 * @param table - таблица
+	 * @param cable - кабель
+	 */
 	public void addCableToTable(JTable table, Cable cable){
 		
 		Vector<Object> v = new Vector<Object>();
@@ -94,6 +98,12 @@ public class gui {
 		((DefaultTableModel) table.getModel()).addRow(v);
 	}
 	
+	/**
+	 * Обновляет строчку с кабелем в таблицк
+	 * @param table - таблица
+	 * @param cable - кабель
+	 * @param index - позиция обновляемой строки в таблице
+	 */
 	public void updateCableInTable(JTable table, Cable cable, Integer index) {
 		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
@@ -105,6 +115,10 @@ public class gui {
 		tableModel.setValueAt(cable.getLenght(), index, 5);
 	}
 	
+	/**
+	 * Очищает таблицу
+	 * @param table - таблица
+	 */
 	public void clearTable (JTable table) {
 		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0;  i--) {
 			((DefaultTableModel) table.getModel()).removeRow(i);
@@ -3499,7 +3513,7 @@ public class gui {
 	}
 	/**
 	 * Удаляет шкаф и все боксы в нем, подходяшие участки канализаци и кабели
-	 * @param element - шкаы
+	 * @param element - шкаф
 	 */
 	public void removeCabinet (Cabinet element) {
 		
