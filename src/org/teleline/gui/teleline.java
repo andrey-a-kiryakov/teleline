@@ -1563,8 +1563,7 @@ public class teleline {
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
 						Cable cable = (Cable)tableModel.getValueAt(selectedIndex, 0);
 						GUI.formCable(cable);
-						tableModel.setValueAt(cable, selectedIndex, 0);
-						tableModel.setValueAt(cable.getLenght(), selectedIndex, 4);
+						GUI.updateCableInTable(cableTable, cable, selectedIndex);
 					}
 				};
 				editCableButton.addActionListener(editCable);

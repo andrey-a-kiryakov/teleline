@@ -92,6 +92,16 @@ public class gui {
 		((DefaultTableModel) table.getModel()).addRow(v);
 	}
 	
+	public void updateCableInTable(JTable table, Cable cable, Integer index) {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setValueAt(cable, index, 0);
+		tableModel.setValueAt(cable.getFromElement(), index, 1);
+		tableModel.setValueAt(cable.getToElement(), index, 2);
+		tableModel.setValueAt(cable.getCapacity(), index, 3);
+		tableModel.setValueAt(cable.getLenght(), index, 4);
+	}
+	
 	public void clearTable (JTable table) {
 		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0;  i--) {
 			((DefaultTableModel) table.getModel()).removeRow(i);
