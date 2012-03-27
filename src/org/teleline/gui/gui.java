@@ -114,7 +114,32 @@ public class gui {
 		tableModel.setValueAt(cable.getUsedCapacity(), index, 4);
 		tableModel.setValueAt(cable.getLenght(), index, 5);
 	}
-	
+	/**
+	 * Добавляет абонента в таблицу
+	 * @param table - таблица
+	 * @param subscriber - абонент
+	 */
+	public void addSubscriberToTable(JTable table, Subscriber subscriber){
+		
+		Vector<Object> v = new Vector<Object>();
+		v.add(subscriber);
+		v.add(subscriber.getPhoneNumber());
+		v.add(subscriber.getAdress());
+		((DefaultTableModel) table.getModel()).addRow(v);
+	}
+	/**
+	 * Обновляет строчку с абонентом в таблице
+	 * @param table - таблица
+	 * @param subscriber - абонент
+	 * @param index - позиция обновляемой строки в таблице
+	 */
+	public void updateSubscriberInTable(JTable table, Subscriber subscriber, Integer index) {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setValueAt(subscriber, index, 0);
+		tableModel.setValueAt(subscriber.getPhoneNumber(), index, 1);
+		tableModel.setValueAt(subscriber.getAdress(), index, 2);
+	}
 	/**
 	 * Очищает таблицу
 	 * @param table - таблица
@@ -474,7 +499,7 @@ public class gui {
         NetsComboBox.addActionListener(actionListener);
 	}
 	/**
-	 * СВязывает выпадающий список сетей и таблицу кабелей
+	 * Связывает выпадающий список сетей и таблицу кабелей
 	 * @param netsComboBox - выпадающий список сетей
 	 * @param cableTable - таблица кабелей
 	 */
@@ -498,6 +523,37 @@ public class gui {
 			Iterator<StructuredElement> i = cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
     		while (i.hasNext()) {
     			addCableToTable(cableTable, (Cable)i.next());
+    		}
+		}
+		
+    	netsComboBox.addActionListener(actionListener);
+        
+	}
+	/**
+	 * Связывает выпадающий список сетей и таблицу абонентов
+	 * @param netsComboBox - выпадающий список сетей
+	 * @param subscriberTable - таблица абонентов
+	 */
+	public void linkNetsComboBoxSubscriberTable (final JComboBox netsComboBox, final JTable subscriberTable) {
+		
+		ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	
+            	if (netsComboBox.getSelectedIndex() > -1) {
+            		clearTable(subscriberTable);
+            		Iterator<StructuredElement> i = sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
+            		while (i.hasNext()) {
+            			addSubscriberToTable(subscriberTable, (Subscriber)i.next());
+            		}
+            	}
+            }
+		};
+        
+		if (netsComboBox.getSelectedIndex() > -1) {
+			clearTable(subscriberTable);
+			Iterator<StructuredElement> i = sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
+    		while (i.hasNext()) {
+    			addSubscriberToTable(subscriberTable, (Subscriber)i.next());
     		}
 		}
 		
@@ -855,8 +911,9 @@ public class gui {
 	 * Создает и выводит на экран форму создания/редактирования элемента "Абонент"
 	 * @param sub - абонент для редактирования, если null - отображается форма создания нового абонента
 	 */
-	public void formSubscriber (final Subscriber sub) {
+	public Subscriber formSubscriber (final Subscriber sub) {
 		
+		final Vector<Subscriber> v = new Vector<Subscriber>(); v.add(null);
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 280, iFrameMaxHeight = 280;
 		
 		final JDialog iFrame = newDialog("Создать абонента", iFrameMinWidth, iFrameMinHeight);
@@ -917,7 +974,7 @@ public class gui {
 				Subscriber s = (Subscriber)sc.findByPhoneNumber(phoneNumber.getText(), selectedNet.getId());
 										
 				if (sub != null) {
-					
+					v.set(0, sub);
 					if (s != null && sub.getId().equals(s.getId()) == false) 
 						if (newDialog(iFrame, "Абонент с таким телефонным номером уже сущесвует в этой сети! \r\n Создать еще одного абонента с данным номером?") == JOptionPane.NO_OPTION) { return; }
 					
@@ -947,7 +1004,7 @@ public class gui {
 					newSubscriber.setPhoneNumber(phoneNumber.getText());
 								
 					sc.addElement(newSubscriber);
-					
+					v.set(0, newSubscriber);
 					newPath.setSubscriber(newSubscriber);
 					phc.addElement(newPath);
 					
@@ -961,6 +1018,7 @@ public class gui {
         
 		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 200, 60, 25);
 		iFrame.setVisible(true);
+		return v.get(0);
 	}
 	
 	/**

@@ -235,7 +235,7 @@ public class Subscriber extends StructuredElement{
 	 * Строкое представление элемента
 	 */
 	public String toString() {
-		return this.getName() +" (№="+this.getPhoneNumber().toString()+")";
+		return this.getName();/* +" (№="+this.getPhoneNumber().toString()+")";*/
 	}
 	
 	

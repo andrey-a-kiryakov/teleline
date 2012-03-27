@@ -780,12 +780,12 @@ public class teleline {
 						Cable selectedCable = (Cable)comboBox6.getSelectedItem();
 						Integer pairCount = (Integer)comboBox5.getSelectedItem();
 						Integer fromFrame = rw.valueOf(dframeFrom.getText());
+						Integer fromCable = rw.valueOf(cableFrom.getText());
 						
 						
-						if (pairCount + fromFrame > selectedFrame.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в громполосе!"); return; }
-						if (pairCount + 0 > selectedDBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в КРТ"); return; }					
-						
-						if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
+					//	if (pairCount + fromFrame > selectedFrame.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в громполосе!"); return; }
+					//	if (pairCount + 0 > selectedDBox.getCapacity()) { GUI.newError(iFrame, "Данное количество пар не умещается в КРТ"); return; }					
+					//	if (selectedCable.isConnect(pairCount) == false) { GUI.newError(iFrame, "В кабеле нет достаточного места для добавления указанного количества пар"); return; }
 						
 						
 						for (Integer i = fromFrame; i < fromFrame + pairCount; i++)
@@ -794,7 +794,10 @@ public class teleline {
 						for (Integer i = 0; i < 0 + pairCount; i++)
 							if (pc.getInPlace(selectedDBox, i) != null)  { GUI.newError(iFrame, "В КРТ в заданном диапазоне уже существуют кабельные пары!"); return; }				
 						
-						Integer inCableFirst = selectedCable.connect(pairCount);
+						for (Integer i = fromCable; i < fromCable + pairCount; i++)
+							if (pc.getInPlace(selectedCable, i) != null)  { GUI.newError(iFrame, "В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
+						
+						//Integer inCableFirst = selectedCable.connect(pairCount);
 						
 						for (int i = 0; i < pairCount; i++) {
 							
@@ -804,7 +807,7 @@ public class teleline {
 								.attachToElementFrom(selectedFrame)
 								.attachToElementTo(selectedDBox.getId())
 								.attachToCable(selectedCable)
-								.setNumberInCable(inCableFirst + i - 1)
+								.setNumberInCable(fromCable + i - 1)
 								.setFromNumber(fromFrame + i)
 								.setToNumber(0 + i);
 							//	.setType(3);
@@ -1269,12 +1272,17 @@ public class teleline {
 				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
 				GUI.newLabel("Список абонентов:", iFrame, 10, 65, 420, 14);
-				final JList subscriberList = GUI.newList(iFrame, 10, 85, 420, 280);
+				//final JList subscriberList = GUI.newList(iFrame, 10, 85, 420, 280);
+				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 420, 280);
+				final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
+				tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
+				
 				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
 				JButton passportSubscriberButton = GUI.newButton("Карточка", iFrame, 440, 125, 125, 26);
 				JButton createSubscriberButton = GUI.newButton("Добавить", iFrame, 440, 195, 125, 26);
 				JButton deletSubscribereButton = GUI.newButton("Удалить", iFrame, 440, 235, 125, 26);
-				GUI.netsComboBoxLinked(netsComboBox, subscriberList, sc);
+				//GUI.netsComboBoxLinked(netsComboBox, subscriberList, sc);
+				GUI.linkNetsComboBoxSubscriberTable(netsComboBox, subscriberList);
 				
 				GUI.newLabel("Список включений:", iFrame, 10, 380, 420, 14);
 				final JList pathList = GUI.newList(iFrame, 10, 400, 420, 110);
@@ -1288,15 +1296,21 @@ public class teleline {
 				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 440, 585, 125, 26);
 				
 				/*
-				 * Событие выбора абонента в списке
+				 * Событие выбора абонента в таблице
 				 */
 				ListSelectionListener subscriberSelect = new ListSelectionListener(){
 					public void valueChanged(ListSelectionEvent e) {
-						if (subscriberList.getSelectedIndex() != -1) 
-							GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths((Subscriber)subscriberList.getSelectedValue())));
+					//	if (subscriberList.getSelectedIndex() != -1) 
+					//		GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths((Subscriber)subscriberList.getSelectedValue())));
+						if (!subscriberList.getSelectionModel().isSelectionEmpty()){
+							int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+							Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+							GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths(subscriber)));
+						}
 					}
 				};
-				subscriberList.addListSelectionListener(subscriberSelect);
+				subscriberList.getSelectionModel().addListSelectionListener(subscriberSelect);
+				//subscriberList.addListSelectionListener(subscriberSelect);
 				/*
 				 * ---------------------------------------------------------
 				 */
@@ -1305,12 +1319,19 @@ public class teleline {
 				 */
 				ActionListener editSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
-						Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
-						GUI.formSubscriber(sub);
-						GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));
-						subscriberList.setSelectedValue(sub, true);
+					//	if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+					//	Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
+					//	GUI.formSubscriber(sub);
+					//	GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));
+					//	subscriberList.setSelectedValue(sub, true);
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+						GUI.formSubscriber(subscriber);
+						GUI.updateSubscriberInTable(subscriberList, subscriber, selectedIndex);
 					}
+					
+					
 				};
 				editSubscriberButton.addActionListener(editSubscriber);
 				/*
@@ -1321,8 +1342,13 @@ public class teleline {
 				 */
 				ActionListener passportSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
-							GUI.formViewPassport(rw.createSubscriberPassport((Subscriber)subscriberList.getSelectedValue()));
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						//GUI.formViewPassport(rw.createSubscriberPassport((Subscriber)subscriberList.getSelectedValue()));
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+						GUI.formViewPassport(rw.createSubscriberPassport(subscriber));
+						
 					}
 				};
 				passportSubscriberButton.addActionListener(passportSubscriber);
@@ -1334,10 +1360,13 @@ public class teleline {
 				 */
 				ActionListener createSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						
-							GUI.formSubscriber(null);
+						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+						Subscriber subscriber = GUI.formSubscriber(null);
+						if (subscriber != null) GUI.addSubscriberToTable(subscriberList, subscriber);	
+						//GUI.formSubscriber(null);
+							
 						//	((DefaultListModel)subscriberList.getModel()).addElement(obj)
-							GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));
+						//	GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));
 					}
 				};
 				createSubscriberButton.addActionListener(createSubscriber);
@@ -1349,14 +1378,19 @@ public class teleline {
 				 */
 				ActionListener deleteSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
-						Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
 						
-						if (GUI.newDialog(iFrame, "Удалить абонента: "+ sub.toString()+ " ? Все занимаемые пары будут освобождены.") == JOptionPane.YES_OPTION)
-							GUI.removeSubscriber(sub);
-							((DefaultListModel)pathList.getModel()).clear();
-							((DefaultListModel)pairList.getModel()).clear();	
-							((DefaultListModel)subscriberList.getModel()).removeElement(sub);	
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						//Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
+						
+						if (GUI.newDialog(iFrame, "Удалить абонента: "+ subscriber.toString()+ " ? Все занимаемые пары будут освобождены.") == JOptionPane.YES_OPTION)
+							GUI.removeSubscriber(subscriber);
+							((DefaultTableModel) subscriberList.getModel()).removeRow(selectedIndex);
+							//((DefaultListModel)pathList.getModel()).clear();
+							//((DefaultListModel)pairList.getModel()).clear();	
+							//((DefaultListModel)subscriberList.getModel()).removeElement(sub);	
 							
 							//GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));	
 					}
@@ -1384,9 +1418,14 @@ public class teleline {
 				 */
 				ActionListener createPath = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
-							Path path = GUI.formPath((Subscriber)subscriberList.getSelectedValue(), null);
-							if ( path != null) 
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+						
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						//	Path path = GUI.formPath((Subscriber)subscriberList.getSelectedValue(), null);
+						Path path = GUI.formPath(subscriber, null);
+						if ( path != null) 
 								((DefaultListModel)pathList.getModel()).addElement(path);
 								//GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths((Subscriber)subscriberList.getSelectedValue())));
 
@@ -1401,10 +1440,16 @@ public class teleline {
 				 */
 				ActionListener editPath = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+						
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
 						if (pathList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Включение не выбрано!"); return; }
-						if (GUI.formPath((Subscriber)subscriberList.getSelectedValue(), (Path)pathList.getSelectedValue()) != null) 
-							GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths((Subscriber)subscriberList.getSelectedValue())));
+						//if (GUI.formPath((Subscriber)subscriberList.getSelectedValue(), (Path)pathList.getSelectedValue()) != null)
+						if (GUI.formPath(subscriber, (Path)pathList.getSelectedValue()) != null)
+							//GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths((Subscriber)subscriberList.getSelectedValue())));
+							GUI.setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths(subscriber)));
 							
 					}
 				};
@@ -1417,7 +1462,11 @@ public class teleline {
 				 */
 				ActionListener deletePath = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+						//Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
+						
 						if (pathList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Включение не выбрано!"); return; }
 						if (GUI.newDialog(iFrame, "Удалить включение?") == JOptionPane.YES_OPTION) {
 							Path path = (Path)pathList.getSelectedValue();
@@ -1442,7 +1491,8 @@ public class teleline {
 						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
 						final Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
 						
-						if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
+						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
 						
 						if (pathList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Включение не выбрано!"); return; }
 						final Path path = (Path)pathList.getSelectedValue();
