@@ -389,7 +389,7 @@ public class teleline {
 								.attachToElementFrom(selectedFrame)
 								.attachToElementTo(selectedBox)
 								.attachToCable(selectedCable)
-								.setNumberInCable(fromCable + i - 1)
+								.setNumberInCable(fromCable + i)
 								.setFromNumber(fromFrame + i)
 								.setToNumber(fromBox + i);
 								//.setType(0);
@@ -550,7 +550,7 @@ public class teleline {
 								.attachToElementFrom(selectedBox1)
 								.attachToElementTo(selectedBox2)
 								.attachToCable(selectedCable)
-								.setNumberInCable(fromCable + i - 1)
+								.setNumberInCable(fromCable + i)
 								.setFromNumber(fromBox1 + i)
 								.setToNumber(fromBox2 + i);
 								//.setType(1);
@@ -679,7 +679,7 @@ public class teleline {
 								.attachToElementFrom(selectedBox)
 								.attachToElementTo(selectedDBox.getId())
 								.attachToCable(selectedCable)
-								.setNumberInCable(fromCable + i - 1)
+								.setNumberInCable(fromCable + i)
 								.setFromNumber(fromBox + i)
 								.setToNumber(0 + i);
 								//.setType(2);
@@ -807,7 +807,7 @@ public class teleline {
 								.attachToElementFrom(selectedFrame)
 								.attachToElementTo(selectedDBox.getId())
 								.attachToCable(selectedCable)
-								.setNumberInCable(fromCable + i - 1)
+								.setNumberInCable(fromCable + i)
 								.setFromNumber(fromFrame + i)
 								.setToNumber(0 + i);
 							//	.setType(3);
