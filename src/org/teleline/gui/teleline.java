@@ -1266,34 +1266,34 @@ public class teleline {
 		menuItem_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				final JDialog iFrame = GUI.newDialog("Редактировать абонента", 585, 700);
+				final JDialog iFrame = GUI.newDialog("Редактировать абонента", 685, 700);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+				GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
+				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
 				
-				GUI.newLabel("Список абонентов:", iFrame, 10, 65, 420, 14);
+				GUI.newLabel("Список абонентов:", iFrame, 10, 65, 520, 14);
 				//final JList subscriberList = GUI.newList(iFrame, 10, 85, 420, 280);
-				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 420, 280);
+				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 520, 280);
 				final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
 				
-				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton passportSubscriberButton = GUI.newButton("Карточка", iFrame, 440, 125, 125, 26);
-				JButton createSubscriberButton = GUI.newButton("Добавить", iFrame, 440, 195, 125, 26);
-				JButton deletSubscribereButton = GUI.newButton("Удалить", iFrame, 440, 235, 125, 26);
+				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 540, 85, 125, 26);
+				JButton passportSubscriberButton = GUI.newButton("Карточка", iFrame, 540, 125, 125, 26);
+				JButton createSubscriberButton = GUI.newButton("Добавить", iFrame, 540, 195, 125, 26);
+				JButton deletSubscribereButton = GUI.newButton("Удалить", iFrame, 540, 235, 125, 26);
 				//GUI.netsComboBoxLinked(netsComboBox, subscriberList, sc);
 				GUI.linkNetsComboBoxSubscriberTable(netsComboBox, subscriberList);
 				
-				GUI.newLabel("Список включений:", iFrame, 10, 380, 420, 14);
-				final JList pathList = GUI.newList(iFrame, 10, 400, 420, 110);
-				JButton addPathButton = GUI.newButton("Добавить", iFrame, 440, 400, 125, 26);
-				JButton editPathButton = GUI.newButton("Редактировать", iFrame, 440, 440, 125, 26);		
-				JButton deletePathButton = GUI.newButton("Удалить", iFrame, 440, 480, 125, 26);
+				GUI.newLabel("Список включений:", iFrame, 10, 380, 520, 14);
+				final JList pathList = GUI.newList(iFrame, 10, 400, 520, 110);
+				JButton addPathButton = GUI.newButton("Добавить", iFrame, 540, 400, 125, 26);
+				JButton editPathButton = GUI.newButton("Редактировать", iFrame, 540, 440, 125, 26);		
+				JButton deletePathButton = GUI.newButton("Удалить", iFrame, 540, 480, 125, 26);
 				
-				GUI.newLabel("Занимаемые пары:", iFrame, 10, 525, 420, 14);
-				final JList pairList = GUI.newList(iFrame, 10, 545, 420, 110);
-				JButton addPairButton = GUI.newButton("Добавить", iFrame, 440, 545, 125, 26);
-				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 440, 585, 125, 26);
+				GUI.newLabel("Занимаемые пары:", iFrame, 10, 525, 520, 14);
+				final JList pairList = GUI.newList(iFrame, 10, 545, 520, 110);
+				JButton addPairButton = GUI.newButton("Добавить", iFrame, 540, 545, 125, 26);
+				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 540, 585, 125, 26);
 				
 				/*
 				 * Событие выбора абонента в таблице
