@@ -30,7 +30,7 @@ public class Tube extends AbstractElement {
 		this.duct = ductId;
 	}
 	/**
-	 * Возвращает канализацию, которой принадлежит канал
+	 * Возвращает id канализации, которой принадлежит канал
 	 */
 	public Integer getDuct() {
 		return this.duct;
@@ -71,18 +71,17 @@ public class Tube extends AbstractElement {
 	 */
 	public boolean containsCable(Cable cable){
 		
-		Integer cableId = cable.getId();
+		/*Integer cableId = cable.getId();
 
 		Iterator<Integer> i = this.cables.iterator();
 		while (i.hasNext()) if (i.next().equals(cableId)) return true;
-		
-		return false;
+		*/
+		return this.cables.contains(cable.getId()); //false;
 	}
 	/**
 	 * Возвращает количесвто проходящих кабелей
 	 */
 	public Integer cablesCount() {
-		
 		return this.cables.size();
 	}
 	
@@ -93,17 +92,18 @@ public class Tube extends AbstractElement {
 	 */
 	public boolean removeCable(Cable cable){
 		
-		Integer element, cableId = cable.getId();
+		Integer /*element,*/ cableId = cable.getId();
 		
-		Iterator<Integer> i = this.cables.iterator();
-		while (i.hasNext()){ 
+	//	Iterator<Integer> i = this.cables.iterator();
+		return this.cables.remove(cableId);
+	/*	while (i.hasNext()){ 
 			element = i.next();
 			if (element.equals(cableId)) {
 				this.cables.remove(element);
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 	/**
 	 * Возвращает копию коллекции идентификаторов кабелей, проходящих через данный канал
