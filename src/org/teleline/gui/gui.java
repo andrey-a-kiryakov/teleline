@@ -3536,7 +3536,7 @@ public class gui {
 		infoArea.append("Состояние: используется:\r\n");
 		
 		Iterator<Integer> i = t.getCables().iterator();
-		while (i.hasNext()) infoArea.append("Кабель: "+cc.getElement(i.next()).toString()+"\r\n");
+		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)cc.getElement(i.next())).toLongString()+"\r\n");
 	}
 	 
 	/**

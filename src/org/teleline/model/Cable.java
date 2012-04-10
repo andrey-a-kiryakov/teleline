@@ -184,7 +184,7 @@ public class Cable extends LinkedElement {
 		return null;
 	}
 	/**
-	 * Полное строковое представление элемента
+	 * Строковое представление элемента
 	 */
 	public String toString() {
 		
@@ -224,4 +224,29 @@ public class Cable extends LinkedElement {
 		}
 		return s + "-" + this.getNumber();
 	}
+	
+	/**
+	 * Полное строковое представление элемента
+	 */
+	public String toLongString() {
+		
+		String s = "";
+		String s1 = "", s2 = "";
+		
+		Pair p = this.pc.getInPlace(this, 0);
+		
+		if (p != null) {
+			s2 = ", " + p.toString();
+		}
+		
+		switch (this.type.intValue()) {
+		case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
+		case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
+		case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString(); break;
+		case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString(); break;
+		
+		}
+		return s + "-" + this.getNumber() + " ("+s1+")";
+	}
+	
 }
