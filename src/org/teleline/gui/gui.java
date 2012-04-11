@@ -2147,29 +2147,38 @@ public class gui {
 	public Cable formSearchCable (final Integer netId) {
 		final Vector<Cable> v = new Vector<Cable>(); v.add(null);
 		
-		final JDialog iFrame = newDialog("Найти кабель", 485, 530);
-		newLabel("Номер кабеля:", iFrame, 10, 10, 320, 14);
+		final JDialog iFrame = newDialog("Выбрать кабель", 685, 600);
+	/*	newLabel("Номер кабеля:", iFrame, 10, 10, 320, 14);
 		final JTextField cableNumberText = newTextField(iFrame,10, 30, 320, 25);
 		
 		newLabel("Результаты поиска:", iFrame, 10, 65, 320, 14);
 		final JList cableList = newList(iFrame, 10, 85, 320, 400);
+	*/
+		
+		final JTable cableTable = newTable(iFrame, 10, 10, 520, 540);
+		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
+		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
+		
+		clearTable(cableTable);
+		Iterator<StructuredElement> i = cc.getInNet(netId).iterator();
+		while (i.hasNext()) { addCableToTable(cableTable, (Cable)i.next()); }
 		
 		//Список кабелей выводиться сразу
-		setListItems(cableList, cc.sortByIdUp(cc.getInNet(netId)));
+		//setListItems(cableList, cc.sortByIdUp(cc.getInNet(netId)));
 		
-		JButton findByNumberButton = newButton("Найти", iFrame, 340, 30, 125, 26);
+		//JButton findByNumberButton = newButton("Найти", iFrame, 340, 30, 125, 26);
 		
-		JButton okButton = newButton("Выбрать", iFrame, 340, 85, 125, 26);
+		JButton okButton = newButton("Выбрать", iFrame, 540, 10, 125, 26);
 		
 		/*
 		 * Событие кнопки поиска кабеля по номеру
 		 */
-		ActionListener findCableByNumber = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				setListItems(cableList, cc.searchBySNumber(cableNumberText.getText(), netId));
-			}
-		};
-		findByNumberButton.addActionListener(findCableByNumber);
+	//	ActionListener findCableByNumber = new ActionListener() {
+	//		public void actionPerformed(ActionEvent arg0) {				
+	//			setListItems(cableList, cc.searchBySNumber(cableNumberText.getText(), netId));
+	//		}
+	//	};
+	//	findByNumberButton.addActionListener(findCableByNumber);
 		/*
 		 * ---------------------------------------------------------
 		 */
@@ -2179,9 +2188,13 @@ public class gui {
 		 */	
 		ActionListener selectCable = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (cableList.getSelectedIndex() == -1) {newError(iFrame,"Кабель не выбран!"); return;}
-				v.set(0, (Cable)cableList.getSelectedValue());
-				iFrame.dispose();	
+				//if (cableList.getSelectedIndex() == -1) {newError(iFrame,"Кабель не выбран!"); return;}
+				//v.set(0, (Cable)cableList.getSelectedValue());
+				//iFrame.dispose();
+				if (cableTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Кабель не выбран!"); return; }
+				int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
+				v.set(0, (Cable)tableModel.getValueAt( selectedIndex, 0));
+				iFrame.dispose();
 			}
 		};
 		okButton.addActionListener(selectCable);
