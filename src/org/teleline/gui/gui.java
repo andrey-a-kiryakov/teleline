@@ -3549,7 +3549,7 @@ public class gui {
 		infoArea.append("Состояние: используется:\r\n");
 		
 		Iterator<Integer> i = t.getCables().iterator();
-		while (i.hasNext()) infoArea.append("Кабель: "+cc.getElement(i.next()).toString()+"\r\n");
+		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)cc.getElement(i.next())).toLongString()+"\r\n");
 	}
 	 
 	/**
@@ -3700,7 +3700,7 @@ public class gui {
 		rw.addLogMessage("Удалена: КРТ " + dbox.toString());
 	}
 	/**
-	 * Удаляет кабель и все пары в нем. Также пары удаляются из всех включений.
+	 * Удаляет кабель и все пары в нем. Кабель удаляется из всех каналов канализации. Также пары удаляются из всех включений.
 	 * @param cable - Кабель
 	 */
 	public void removeCable(Cable cable) {
@@ -3722,6 +3722,12 @@ public class gui {
 			if (pc.removeElement(pair))
 			rw.addLogMessage("Удалена: Пара " + pair.toString());
 		}
+		
+		Iterator <Tube> t = tuc.getTubesByCable(cable).iterator();
+		while (t.hasNext()) {
+			t.next().removeCable(cable); 
+		}
+		
 		if (cc.removeElement(cable))
 		rw.addLogMessage("Удален: Кабель " + cable.toString());
 	}
