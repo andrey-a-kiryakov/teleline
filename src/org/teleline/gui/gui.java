@@ -57,10 +57,11 @@ public class gui {
 	private PairCollection pc;
 	private PathCollection phc;
 	private SubscriberCollection sc;
+	private DamageCollection dmc;
 	private Validator V;
 	private JFrame frame;
 	
-	public gui(NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, RW rw, Validator V, JFrame frame ) {
+	public gui(NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc, RW rw, Validator V, JFrame frame ) {
 		this.nc = nc;
 		this.dfc = dfc;
 		this.cbc = cbc;
@@ -75,6 +76,7 @@ public class gui {
 		this.pc = pc;
 		this.phc = phc;
 		this.sc = sc;
+		this.dmc = dmc;
 		this.rw = rw;
 		this.V = V;
 		this.frame = frame;

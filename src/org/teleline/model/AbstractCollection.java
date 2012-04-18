@@ -97,6 +97,12 @@ public abstract class AbstractCollection {
 		return (HashSet<AbstractElement>) this.elements.clone();
 	}
 	/**
+	 * Возвращает итератор по всем элементам коллекции
+	 */
+	public Iterator<AbstractElement> getIterator() {
+		return this.elements.iterator();
+	}
+	/**
 	 * Возвращает новую коллекцию, элементы которой отсортированя по id по возрастанию
 	 *@param h - неотсортированный набор элементов
 	 */

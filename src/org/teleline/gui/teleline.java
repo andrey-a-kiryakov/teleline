@@ -58,6 +58,7 @@ public class teleline {
 	public PairCollection pc;
 	public PathCollection phc;
 	public SubscriberCollection sc;
+	public DamageCollection dmc;
 	public Validator V;
 	
 	/**
@@ -102,10 +103,11 @@ public class teleline {
 		pc = new PairCollection(ig);
 		phc = new PathCollection(ig);
 		sc = new SubscriberCollection(ig);
+		dmc = new DamageCollection(ig);
 		V = new Validator();
 		
-		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc);
-		GUI = new gui(nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,rw,V,frmTeleline);
+		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc);
+		GUI = new gui(nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc,rw,V,frmTeleline);
 
 		initialize();
 	}
@@ -183,6 +185,7 @@ public class teleline {
 					pc.removeAllElements(); sc.removeAllElements();
 					phc.removeAllElements(); duc.removeAllElements();
 					tuc.removeAllElements(); buc.removeAllElements();
+					dmc.removeAllElements();
 					
 					if (rw.read(chooser.getSelectedFile())) {
 						GUI.newInfo(frmTeleline, "Файл прочитан!");

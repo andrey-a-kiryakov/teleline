@@ -48,8 +48,9 @@ public class RW {
 	private PairCollection pc;
 	private PathCollection phc;
 	private SubscriberCollection sc;
+	private DamageCollection dmc;
 	
-	public RW(IdGenerator ig, NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc ) {
+	public RW(IdGenerator ig, NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc ) {
 		this.ig = ig;
 		this.nc = nc;
 		this.dfc = dfc;
@@ -65,6 +66,7 @@ public class RW {
 		this.pc = pc;
 		this.phc = phc;
 		this.sc = sc;
+		this.dmc = dmc;
 	}
 	
 	private void writeLog () {
@@ -370,7 +372,7 @@ public class RW {
 			/**
 			 * Записываем элементы "Пара"
 			 */
-			i = pc.elements().iterator();
+			i = pc.getIterator();
 				
 			while(i.hasNext()) {
 				
@@ -393,7 +395,7 @@ public class RW {
 			/**
 			 * Записываем элементы "Включение"
 			 */
-			i = phc.elements().iterator();
+			i = phc.getIterator();
 					
 			while(i.hasNext()) {
 				
@@ -421,10 +423,10 @@ public class RW {
 				
 				system.addContent(pathXML);
 			}	
-			/**
+			/*
 			 * Записываем элементы "Абонент"
 			 */
-				i = sc.elements().iterator();
+				i = sc.getIterator();
 				
 				while(i.hasNext()) {
 					
@@ -441,7 +443,21 @@ public class RW {
 					
 					system.addContent(subscriberXML);
 				}
-		
+			/*
+			 * Записываем элементы "Повреждения"
+			 */
+				i = dmc.getIterator();
+				
+				while (i.hasNext()) {
+					Element damageXML = new Element ("dmg");
+					Damage d = (Damage)i.next();
+					damageXML.setAttribute(new Attribute ("i", d.getId().toString()));
+					damageXML.addContent(new Element ("nm").addContent(d.getName()));
+					damageXML.addContent(new Element ("ds").addContent(d.getDescription()));
+					damageXML.addContent(new Element ("od").addContent(d.getOpenDate()));
+					damageXML.addContent(new Element ("od").addContent(d.getCloseDate()));
+					
+				}
 			XMLOutputter xmlOutput = new XMLOutputter();
 	 		//xmlOutput.setFormat(Format.getPrettyFormat());
 	 		
