@@ -1687,15 +1687,15 @@ public class gui {
 				Integer fromSide = fromSideComboBox.getSelectedIndex();
 				Integer toSide = toSideComboBox.getSelectedIndex();
 				
-				Duct d1 = duc.hasDuct(elementFrom, fromSide);
-				Duct d2 = duc.hasDuct(elementTo, toSide);
+			//	Duct d1 = duc.hasDuct(elementFrom, fromSide);
+			//	Duct d2 = duc.hasDuct(elementTo, toSide);
 				
 				if (elementFrom.getId().equals(elementTo.getId())) { newError(iFrame, "Выберите разные элементы От и До!"); return; }
 
 				if (duct != null) {
 					
-					if (d1 != null && !duct.getId().equals(d1.getId())) { newError(iFrame, "К элементу От " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
-					if (d2 != null && !duct.getId().equals(d2.getId())) { newError(iFrame, "К элементу До " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
+			//		if (d1 != null && !duct.getId().equals(d1.getId())) { newError(iFrame, "К элементу От " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
+			//		if (d2 != null && !duct.getId().equals(d2.getId())) { newError(iFrame, "К элементу До " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
 					
 				/*	
 					Cabinet b = cbc.elementInNet(cabinetNumber, selectedNet.getId());
@@ -1722,8 +1722,8 @@ public class gui {
 						return;
 					}
 				*/	
-					if (d1 != null) { newError(iFrame, "К элементу От  " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
-					if (d2 != null) { newError(iFrame, "К элементу До  " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
+				//	if (d1 != null) { newError(iFrame, "К элементу От  " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
+				//	if (d2 != null) { newError(iFrame, "К элементу До  " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
 					
 					Duct newDuct = new Duct(dfc, cbc, mc, buc); 
 					newDuct
@@ -3388,9 +3388,10 @@ public class gui {
 		
 		int paddingLeft = 10, paddingTop = 10, margin = 5, infoListH = 0;
 		
-		int manholeButtonW = 80, manholeButtonH = 80;
-		int gorizontalDuctW = 100, gorizontalDuctH = 20;
-		int verticalDuctW = 20, verticalDuctH = 100;
+		int manholeButtonW = 120, manholeButtonH = 120;
+		int gorizontalDuctW = 180, gorizontalDuctH = 12;
+		int verticalDuctW = 12, verticalDuctH = 180;
+		int interDucts = 7;
 		
 		int labelW = 50, labelH = 14;
 		
@@ -3441,8 +3442,12 @@ public class gui {
 		manholeButton.setBackground(new Color(0,200,200));
 		panel.add(manholeButton);
 		
-		Integer manholeId = manhole.getId();
-		Iterator<Duct> i = duc.getDucts(manhole).iterator();
+		/*
+		 * Отрисовываем канализацию сверху
+		 */
+		HashSet<Duct> ds = duc.getDuctsBySide(manhole, 0);
+		int ductsBlockW = ds.size() * verticalDuctW + (ds.size() - 1) * interDucts;
+		Iterator<Duct> i = ds.iterator(); int ductIndex = 0;
 		while (i.hasNext()) {
 			Duct duct = i.next();
 			ElementView ductButton = new ElementView();
@@ -3450,44 +3455,94 @@ public class gui {
 			ductButton.setToolTipText(duct.toString());
 			ductButton.setElement(duct);
 			ductButton.addActionListener(ductClick);
-			
-			if (duct.getFrom().equals(manholeId)) {
-				if (duct.getFromSide().equals(0)) {ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2, paddingTop, verticalDuctW, verticalDuctH);}
-				if (duct.getFromSide().equals(1)) {ductButton.setBounds(paddingLeft + margin * 2  + gorizontalDuctW + manholeButtonW, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2, gorizontalDuctW, gorizontalDuctH);}
-				if (duct.getFromSide().equals(2)) {ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2, paddingTop + margin * 2 + verticalDuctH + manholeButtonH, verticalDuctW, verticalDuctH);}
-				if (duct.getFromSide().equals(3)) {ductButton.setBounds(paddingLeft, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2, gorizontalDuctW, gorizontalDuctH);}		
-			}
-			
-			if (duct.getTo().equals(manholeId)) {
-				if (duct.getToSide().equals(0)) {ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2, paddingTop, verticalDuctW, verticalDuctH);}
-				if (duct.getToSide().equals(1)) {ductButton.setBounds(paddingLeft + margin * 2  + gorizontalDuctW + manholeButtonW, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2, gorizontalDuctW, gorizontalDuctH);}
-				if (duct.getToSide().equals(2)) {ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2, paddingTop + margin * 2 + verticalDuctH + manholeButtonH, verticalDuctW, verticalDuctH);}
-				if (duct.getToSide().equals(3)) {ductButton.setBounds(paddingLeft, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2, gorizontalDuctW, gorizontalDuctH);}
-			}
-			
+			ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - ductsBlockW)/2 + ductIndex * (verticalDuctW + interDucts), paddingTop, verticalDuctW, verticalDuctH);
 			panel.add(ductButton);
-	
+
+			ductIndex++;
 		}
-		
 		JLabel front = new JLabel("Перед");
-		front.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2 + verticalDuctW + 10, paddingTop, labelW, labelH);
+		front.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - ductsBlockW)/2 + ductsBlockW + 10, paddingTop, labelW, labelH);
 		panel.add(front);
+		/*
+		 * --------------------------------------------------------
+		 */
+		/*
+		 * Отрисовываем канализацию снизу
+		 */
+		ds = duc.getDuctsBySide(manhole, 2);
+		ductsBlockW = ds.size() * verticalDuctW + (ds.size() - 1) * interDucts;
+		i = ds.iterator(); ductIndex = 0;
+		while (i.hasNext()) {
+			Duct duct = i.next();
+			ElementView ductButton = new ElementView();
+			ductButton.setBackground(new Color(200,0,200));
+			ductButton.setToolTipText(duct.toString());
+			ductButton.setElement(duct);
+			ductButton.addActionListener(ductClick);
+			ductButton.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - ductsBlockW)/2 + ductIndex * (verticalDuctW + interDucts), paddingTop + margin * 2 + verticalDuctH + manholeButtonH, verticalDuctW, verticalDuctH);
+			panel.add(ductButton);
+
+			ductIndex++;
+		}
+		JLabel back = new JLabel("Зад");
+		back.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - ductsBlockW)/2 + ductsBlockW + 10, panelH - labelH - 10, labelW, labelH);
+		panel.add(back);
+		/*
+		 * --------------------------------------------------------
+		 */
 		
+		/*
+		 * Отрисовываем канализацию справа
+		 */
+		ds = duc.getDuctsBySide(manhole, 1);
+		int ductsBlockH = ds.size() * gorizontalDuctH + (ds.size() - 1) * interDucts;
+		i = ds.iterator(); ductIndex = 0;
+		while (i.hasNext()) {
+			Duct duct = i.next();
+			ElementView ductButton = new ElementView();
+			ductButton.setBackground(new Color(200,0,200));
+			ductButton.setToolTipText(duct.toString());
+			ductButton.setElement(duct);
+			ductButton.addActionListener(ductClick);
+			ductButton.setBounds(paddingLeft + margin * 2  + gorizontalDuctW + manholeButtonW, paddingTop + verticalDuctH + margin + (manholeButtonH - ductsBlockH)/2 + ductIndex * (gorizontalDuctH + interDucts), gorizontalDuctW, gorizontalDuctH);
+			panel.add(ductButton);
+
+			ductIndex++;
+		}
 		JLabel right = new JLabel("Право");
-		right.setBounds(panelW - labelW - 10, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2 + gorizontalDuctH + 10, labelW, labelH);
+		right.setBounds(panelW - labelW - 10, paddingTop + verticalDuctH + margin + (manholeButtonH - ductsBlockH)/2 + ductsBlockH + 10, labelW, labelH);
 		panel.add(right);
 	
-		JLabel back = new JLabel("Зад");
-		back.setBounds(paddingLeft + gorizontalDuctW + margin + (manholeButtonW - verticalDuctW)/2 + verticalDuctW + 10, panelH - labelH - 10, labelW, labelH);
-		panel.add(back);
+		/*
+		 * --------------------------------------------------------
+		 */
 		
+		/*
+		 * Отрисовываем канализацию слева
+		 */
+		ds = duc.getDuctsBySide(manhole, 3);
+		ductsBlockH = ds.size() * gorizontalDuctH + (ds.size() - 1) * interDucts;
+		i = ds.iterator(); ductIndex = 0;
+		while (i.hasNext()) {
+			Duct duct = i.next();
+			ElementView ductButton = new ElementView();
+			ductButton.setBackground(new Color(200,0,200));
+			ductButton.setToolTipText(duct.toString());
+			ductButton.setElement(duct);
+			ductButton.addActionListener(ductClick);
+			ductButton.setBounds(paddingLeft, paddingTop + verticalDuctH + margin + (manholeButtonH - ductsBlockH)/2 + ductIndex * (gorizontalDuctH + interDucts), gorizontalDuctW, gorizontalDuctH);
+			panel.add(ductButton);
+
+			ductIndex++;
+		}
 		JLabel left = new JLabel("Лево");
-		left.setBounds(paddingLeft, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2 + gorizontalDuctH + 10, labelW, labelH);
+		left.setBounds(paddingLeft, paddingTop + verticalDuctH + margin + (manholeButtonH - gorizontalDuctH)/2 + ductsBlockH + 10, labelW, labelH);
 		panel.add(left);
-		
+		/*
+		 * --------------------------------------------------------
+		 */
 		
 		iFrame.setVisible(true);
-
 	}
 	/**
 	 * Выводит подробные данные о паре

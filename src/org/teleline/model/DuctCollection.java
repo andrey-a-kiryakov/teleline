@@ -18,22 +18,22 @@ public class DuctCollection extends StructuredElementCollection {
 	}
 	
 	/**
-	 * Проверяет, примыкает ли какой-либо участок канализации с данной стороны к данному структурному элементу
+	 * Возвращает коллекцию участков канализации, примыкающих к данному элементу c данной стороны
 	 * @param man - колодец, шкаф, здание
 	 * @param side - сторона
-	 * @return участок канализации, если примыкает, null - если не примыкает
 	 */
-	public Duct hasDuct(StructuredElement man, Integer side) {
+	public HashSet<Duct> getDuctsBySide(StructuredElement man, Integer side) {
 		
 		Integer manId = man.getId();
+		HashSet<Duct> h = new HashSet<Duct>();
 		Iterator<?> i = this.elements().iterator();
 		Duct element = null;
 		
 		while (i.hasNext()) {
 			element = (Duct)i.next();
-			if ((element.getFrom().equals(manId) && element.getFromSide().equals(side)) || (element.getTo().equals(manId) && element.getToSide().equals(side))) {return element;}
+			if ((element.getFrom().equals(manId) && element.getFromSide().equals(side)) || (element.getTo().equals(manId) && element.getToSide().equals(side))) {h.add(element);}
 		}
-		return null; 
+		return h; 
 	}
 	/**
 	 * Возвращает коллекцию участков канализации, примыкающих к данному элементу
