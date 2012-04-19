@@ -1644,6 +1644,13 @@ public class gui {
 			ductDate.setText(duct.getDate());
 			manufacturingМethod.setText(duct.getМanufacturingМethod());
 		}
+		
+		JButton damageButton = newButton("Повреждения", iFrame, 420, 340, 120, 25);
+		damageButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tableDamageList(null);
+			}
+		});
 		/*
 		 * ------------------------------
 		 */
@@ -2428,6 +2435,34 @@ public class gui {
 		iFrame.setVisible(true);
 		return d;
 	}
+	
+	public JDialog tableDamageList(Collection<Damage> damageCollection) {
+		
+		final JDialog iFrame = newDialog("Список повреждений", 685, 600);
+		iFrame.setResizable(true);
+		
+		final JTable cableTable = newTable(iFrame, 10, 10, 520, 470);
+		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
+		tableModel.setColumnIdentifiers(new String[]{"Характер повреждения","Дата устранения","Дата обнаружения"});
+		
+		
+		JButton editCableButton = newButton("Редактировать", iFrame, 540, 10, 125, 26);
+		
+		JButton createCableButton = newButton("Добавить", iFrame, 540, 80, 125, 26);
+		JButton deleteCableButton = newButton("Удалить", iFrame, 540, 120, 125, 26);
+		
+		Iterator<Damage> i = damageCollection.iterator();
+		while (i.hasNext()) {
+			Damage damage = i.next(); 
+			Vector<Object> v = new Vector<Object>();
+			v.add(damage);
+			v.add(damage.getOpenDate());
+			v.add(damage.getCloseDate());
+			((DefaultTableModel) cableTable.getModel()).addRow(v);
+		}
+		iFrame.setVisible(true);
+		return iFrame;
+	}
 	/**
 	 * Отображает паспорт элемента в браузере
 	 * @param fileName - имя файла
@@ -2651,7 +2686,7 @@ public class gui {
 		JTable table = new JTable(new DefaultTableModel()){
 			public boolean isCellEditable(int arg0, int arg1) {return false; }
 		};
-		
+		table.setRowHeight(18);
 		table.getSelectionModel().setSelectionMode(0);
 		scrollPane.setViewportView(table);
 		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));

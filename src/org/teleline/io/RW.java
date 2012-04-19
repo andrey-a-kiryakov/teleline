@@ -128,10 +128,11 @@ public class RW {
 			Element system = new Element("system");
 			system.setAttribute(new Attribute ("idIndex", ig.getId().toString()));
 			Document document = new Document(system);
-			/**
+			
+			/*
 			 * Записываем элементы "Сеть"
 			 */	
-			Iterator<AbstractElement> i = nc.elements().iterator(); 
+			Iterator<AbstractElement> i = nc.getIterator(); 
 			
 			while (i.hasNext())  {
 			
@@ -144,10 +145,11 @@ public class RW {
 				
 				system.addContent(netXML); 
 			}
-			/**
+			
+			/*
 			 * Записываем элементы "Кросс"
 			 */
-			i = dfc.elements().iterator();
+			i = dfc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -162,10 +164,11 @@ public class RW {
 				
 				system.addContent(frameXML);
 			}
-			/**
+			
+			/*
 			 * Записываем элементы "Шкаф"
 			 */
-			i = cbc.elements().iterator();
+			i = cbc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -188,10 +191,11 @@ public class RW {
 				
 				system.addContent(cabinetXML);
 			}			
-			/**
+			
+			/*
 			 * Записываем элементы "Коробка"
 			 */
-			i = dbc.elements().iterator();
+			i = dbc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -207,10 +211,10 @@ public class RW {
 				system.addContent(dboxXML);
 			}
 			
-			/**
+			/*
 			 * Записываем элементы "Колодец"
 			 */
-			i = mc.elements().iterator();
+			i = mc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -228,15 +232,13 @@ public class RW {
 				manholeXML.addContent(new Element ("c").addContent(f.getConstruction().toString()));
 				manholeXML.addContent(new Element ("f").addContent(f.getForm().toString()));
 				
-				
-				
 				system.addContent(manholeXML);
 			}
 			
-			/**
+			/*
 			 * Записываем элементы "Кабельная канализация"
 			 */
-			i = duc.elements().iterator();
+			i = duc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -260,10 +262,12 @@ public class RW {
 
 				system.addContent(ductXML);
 			}
-			/**
+			
+			/*
 			 * Записываем элементы канал в канализации
 			 */
-			i = tuc.elements().iterator();
+			i = tuc.getIterator();
+			
 			while(i.hasNext()) {
 				
 				Tube f = (Tube)i.next();
@@ -283,10 +287,12 @@ public class RW {
 				}
 				system.addContent(tubeXML);
 			}
-			/**
+			
+			/*
 			 * Записываем элементы здание
 			 */
-			i = buc.elements().iterator();
+			i = buc.getIterator();
+			
 			while(i.hasNext()) {
 				
 				Building f = (Building)i.next();
@@ -302,10 +308,10 @@ public class RW {
 				system.addContent(buildingXML);
 			}
 			
-			/**
+			/*
 			 * Записываем элементы "Громполоса"
 			 */
-			i = fc.elements().iterator();
+			i = fc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -322,10 +328,10 @@ public class RW {
 				system.addContent(frameXML);
 			}
 			
-			/**
+			/*
 			 * Записываем элементы "Бокс"
 			 */
-			i = bc.elements().iterator();
+			i = bc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -342,10 +348,11 @@ public class RW {
 				
 				system.addContent(boxXML);
 			}
-			/**
+			
+			/*
 			 * Записываем элементы "Кабель"
 			 */
-			i = cc.elements().iterator();
+			i = cc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -356,7 +363,6 @@ public class RW {
 				cableXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 			
 				cableXML.addContent(new Element ("capacity").addContent(f.getCapacity().toString()));
-			//	cableXML.addContent(new Element ("usedCapacity").addContent(f.getUsedCapacity().toString()));
 				cableXML.addContent(new Element("type").addContent(f.getType().toString()));
 				cableXML.addContent(new Element("label").addContent(f.getLabel()));
 				cableXML.addContent(new Element("number").addContent(f.getNumber().toString()));
@@ -369,7 +375,8 @@ public class RW {
 				
 				system.addContent(cableXML);
 			}
-			/**
+			
+			/*
 			 * Записываем элементы "Пара"
 			 */
 			i = pc.getIterator();
@@ -388,11 +395,11 @@ public class RW {
 				pairXML.addContent(new Element ("fn").addContent(f.getFromNumber().toString()));
 				pairXML.addContent(new Element ("tn").addContent(f.getToNumber().toString()));
 				pairXML.addContent(new Element ("s").addContent(f.getStatus().toString()));
-			//	pairXML.addContent(new Element("ty").addContent(f.getType().toString()));
 								
 				system.addContent(pairXML);
 			}	
-			/**
+			
+			/*
 			 * Записываем элементы "Включение"
 			 */
 			i = phc.getIterator();
@@ -423,41 +430,44 @@ public class RW {
 				
 				system.addContent(pathXML);
 			}	
+			
 			/*
 			 * Записываем элементы "Абонент"
 			 */
-				i = sc.getIterator();
+			i = sc.getIterator();
 				
-				while(i.hasNext()) {
+			while(i.hasNext()) {
 					
-					Element subscriberXML = new Element ("sub");
-					Subscriber f = (Subscriber)i.next();
-					subscriberXML.setAttribute(new Attribute ("i", f.getId().toString()));
-					subscriberXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				Element subscriberXML = new Element ("sub");
+				Subscriber f = (Subscriber)i.next();
+				subscriberXML.setAttribute(new Attribute ("i", f.getId().toString()));
+				subscriberXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 					
-					subscriberXML.addContent(new Element ("nm").addContent(f.getName()));
-					subscriberXML.addContent(new Element ("ph").addContent(f.getPhoneNumber()));
-					subscriberXML.addContent(new Element ("dt").addContent(f.getDate()));
-					subscriberXML.addContent(new Element ("adr").addContent(f.getAdress()));
-					subscriberXML.addContent(new Element ("eq").addContent(f.getEquipment()));
+				subscriberXML.addContent(new Element ("nm").addContent(f.getName()));
+				subscriberXML.addContent(new Element ("ph").addContent(f.getPhoneNumber()));
+				subscriberXML.addContent(new Element ("dt").addContent(f.getDate()));
+				subscriberXML.addContent(new Element ("adr").addContent(f.getAdress()));
+				subscriberXML.addContent(new Element ("eq").addContent(f.getEquipment()));
 					
-					system.addContent(subscriberXML);
-				}
+				system.addContent(subscriberXML);
+			}
 			/*
 			 * Записываем элементы "Повреждения"
 			 */
-				i = dmc.getIterator();
+			i = dmc.getIterator();
 				
-				while (i.hasNext()) {
-					Element damageXML = new Element ("dmg");
-					Damage d = (Damage)i.next();
-					damageXML.setAttribute(new Attribute ("i", d.getId().toString()));
-					damageXML.addContent(new Element ("nm").addContent(d.getName()));
-					damageXML.addContent(new Element ("ds").addContent(d.getDescription()));
-					damageXML.addContent(new Element ("od").addContent(d.getOpenDate()));
-					damageXML.addContent(new Element ("od").addContent(d.getCloseDate()));
+			while (i.hasNext()) {
 					
-				}
+				Element damageXML = new Element ("dmg");
+				Damage d = (Damage)i.next();
+				damageXML.setAttribute(new Attribute ("i", d.getId().toString()));
+				damageXML.addContent(new Element ("n").addContent(d.getName()));
+				damageXML.addContent(new Element ("d").addContent(d.getDescription()));
+				damageXML.addContent(new Element ("o").addContent(d.getOpenDate()));
+				damageXML.addContent(new Element ("c").addContent(d.getCloseDate()));
+					
+			}
+			
 			XMLOutputter xmlOutput = new XMLOutputter();
 	 		//xmlOutput.setFormat(Format.getPrettyFormat());
 	 		
@@ -470,11 +480,9 @@ public class RW {
 			
 			addLogMessage("Файл сохранен: "+ fileName);
 			writeLog();
-			//System.out.println("File Saved!");
 			return true;
 		  } 
 		catch (IOException io) {
-			//System.out.println(io.getMessage());
 			writeError("Ошибка сохранения файла системы: " + io.toString());
 			return false;
 		  }
@@ -597,7 +605,7 @@ public class RW {
 				mc.putElement(manhole);
 				
 			}
-			/**
+			/*
 			 * Считываем элементы "Кабельная канализация"
 			 */
 			i = system.getChildren("duct").iterator();
@@ -623,7 +631,7 @@ public class RW {
 				duc.putElement(duct);
 				
 			}
-			/**
+			/*
 			 * Считываем элементы "Канал в канализации"
 			 */
 			i = system.getChildren("tube").iterator();
@@ -651,7 +659,8 @@ public class RW {
 				}
 				tuc.putElement(tube);
 			}
-			/**
+			
+			/*
 			 * Считываем элементы "Здание"
 			 */
 			i = system.getChildren("buil").iterator();
@@ -670,7 +679,8 @@ public class RW {
 				buc.putElement(building);
 				
 			}
-			/**
+			
+			/*
 			 * Считываем элементы "Громполоса"
 			 */
 			i = system.getChildren("frame").iterator();
@@ -689,7 +699,8 @@ public class RW {
 				fc.putElement(frame);
 				
 			}			
-			/**
+			
+			/*
 			 * Считываем элементы "Бокс"
 			 */
 			
@@ -711,7 +722,8 @@ public class RW {
 				bc.putElement(box);
 				
 			}	
-			/**
+			
+			/*
 			 * Считываем элементы "Кабель"
 			 */
 			
@@ -725,7 +737,6 @@ public class RW {
 				cable.attachToNet(n.getAttribute("ni").getIntValue());
 								
 				cable.setCapacity(this.valueOf(n.getChildText("capacity")));
-			//	cable.setUsedCapacity(this.valueOf(n.getChildText("usedCapacity")));
 				cable.setType(this.valueOf(n.getChildText("type")));
 				cable.setLabel(n.getChildText("label"));
 				cable.setNumber(this.valueOf(n.getChildText("number")));
@@ -738,7 +749,8 @@ public class RW {
 				
 				cc.putElement(cable);
 			}
-			/**
+			
+			/*
 			 * Считываем элементы "Пара"
 			 */
 			
@@ -757,11 +769,11 @@ public class RW {
 				pair.setFromNumber(this.valueOf(n.getChildText("fn")));
 				pair.setToNumber(this.valueOf(n.getChildText("tn")));
 				pair.setStatus(this.valueOf(n.getChildText("s")));
-			//	pair.setType(this.valueOf(n.getChildText("ty")));			
 				
 				pc.putElement(pair);	
 			}
-			/**
+			
+			/*
 			 * Считываем элементы "Включение"
 			 */
 			i = system.getChildren("path").iterator();
@@ -777,46 +789,10 @@ public class RW {
 				path.setTransit(n.getChildText("t"));
 				path.addmPair(this.valueOf(n.getChildText("mp")));
 				
-				/*Iterator<?> k =  n.getChildren("mp").iterator();
-				while(k.hasNext()) {
-					
-					Element mp = (Element)k.next();
-					
-					Iterator<?> m = mp.getChildren("i").iterator();
-					
-					while(m.hasNext()) {
-						Element p = (Element)m.next();
-						path.addmPair(this.valueOf(p.getValue()));
-					}
-				}*/
 				path.adddrPair(this.valueOf(n.getChildText("drp")));
-			/*	k = n.getChildren("drp").iterator();
-				while(k.hasNext()) {
-					
-					Element drp = (Element)k.next();
-					
-					Iterator<?> m = drp.getChildren("i").iterator();
-					
-					while(m.hasNext()) {
-						Element p = (Element)m.next();
-						path.adddrPair(this.valueOf(p.getValue()));
-					}
-				}*/
 				path.adddbPair(this.valueOf(n.getChildText("dbp")));
 				
-			/*	k = n.getChildren("dbp").iterator();
-				while(k.hasNext()) {
-					
-					Element dbp = (Element)k.next();
-					
-					Iterator<?> m = dbp.getChildren("i").iterator();
-					
-					while(m.hasNext()) {
-						Element p = (Element)m.next();
-						path.adddbPair(this.valueOf(p.getValue()));
-					}
-				}
-			*/	
+				
 				Iterator<?> k =  n.getChildren("icp").iterator();
 				while(k.hasNext()) {
 					
@@ -833,7 +809,8 @@ public class RW {
 				phc.putElement(path);
 				
 			}
-			/**
+			
+			/*
 			 * Считываем элементы "Абонент"
 			 */
 			
@@ -852,13 +829,31 @@ public class RW {
 				subscriber.setAdress(n.getChildText("adr"));
 				subscriber.setEquipment(n.getChildText("eq")); 
 				
-		
 				sc.putElement(subscriber);
 				
 			}
-//			sc.setIdIndex(sc.getMaxId());
-		
-			//System.out.println("File Read!");
+			
+			/*
+			 * Считываем элементы "Повреждение"
+			 */
+			
+			i = system.getChildren("sub").iterator();
+			
+			while(i.hasNext()) { n = (Element)i.next();
+				
+				Damage damage = new Damage();
+				
+				damage.setId(n.getAttribute("i").getIntValue());
+				
+				damage.setName(n.getChildText("n"));
+				damage.setDescription(n.getChildText("d"));
+				damage.setOpenDate(n.getChildText("o"));
+				damage.setCloseDate(n.getChildText("c"));
+				
+				dmc.putElement(damage);
+				
+			}
+			
 			addLogMessage("Файл открыт: "+ xmlFile.getName());
 			writeLog();
 			return true;
