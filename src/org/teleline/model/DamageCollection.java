@@ -23,14 +23,15 @@ public  class DamageCollection extends AbstractCollection {
 		
 		HashSet<Damage> elementSet = new HashSet<Damage>();
 		
-		Integer ownerId = owner.getId();
+		if (owner != null) {
+			Integer ownerId = owner.getId();
 		
-		Iterator<?> i = this.elements().iterator();
-		while (i.hasNext()) {
-			Damage element = (Damage)i.next();	
-			if (element.getId().equals(ownerId)) {elementSet.add(element);}
+			Iterator<?> i = this.elements().iterator();
+			while (i.hasNext()) {
+				Damage element = (Damage)i.next();	
+				if (element.getOwnerId().equals(ownerId)) {elementSet.add(element);}
+			}
 		}
-		
 		return elementSet;
 	}
 }

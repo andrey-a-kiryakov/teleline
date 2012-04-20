@@ -461,11 +461,14 @@ public class RW {
 				Element damageXML = new Element ("dmg");
 				Damage d = (Damage)i.next();
 				damageXML.setAttribute(new Attribute ("i", d.getId().toString()));
+				damageXML.setAttribute(new Attribute ("oi", d.getOwnerId().toString()));
+				
 				damageXML.addContent(new Element ("n").addContent(d.getName()));
 				damageXML.addContent(new Element ("d").addContent(d.getDescription()));
 				damageXML.addContent(new Element ("o").addContent(d.getOpenDate()));
 				damageXML.addContent(new Element ("c").addContent(d.getCloseDate()));
-					
+				
+				system.addContent(damageXML);
 			}
 			
 			XMLOutputter xmlOutput = new XMLOutputter();
@@ -837,14 +840,14 @@ public class RW {
 			 * Считываем элементы "Повреждение"
 			 */
 			
-			i = system.getChildren("sub").iterator();
+			i = system.getChildren("dmg").iterator();
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
 				Damage damage = new Damage();
 				
 				damage.setId(n.getAttribute("i").getIntValue());
-				
+				damage.attachTo(n.getAttribute("oi").getIntValue());
 				damage.setName(n.getChildText("n"));
 				damage.setDescription(n.getChildText("d"));
 				damage.setOpenDate(n.getChildText("o"));

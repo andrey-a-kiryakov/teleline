@@ -143,6 +143,33 @@ public class gui {
 		tableModel.setValueAt(subscriber.getAdress(), index, 2);
 	}
 	/**
+	 * Добавляет повреждение в таблицу
+	 * @param table - таблица
+	 * @param damage - повреждение
+	 */
+	public void addDamageToTable(JTable table, Damage damage){
+		
+		Vector<Object> v = new Vector<Object>();
+		v.add(damage);
+		v.add(damage.getOpenDate());
+		v.add(damage.getCloseDate());
+		((DefaultTableModel) table.getModel()).addRow(v);
+	}
+	/**
+	 * Обновляет строчку с повреждением в таблице
+	 * @param table - таблица
+	 * @param damage - повреждение
+	 * @param index - позиция обновляемой строки в таблице
+	 */
+	public void updateDamageInTable(JTable table, Damage damage, Integer index) {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setValueAt(damage, index, 0);
+		tableModel.setValueAt(damage.getOpenDate(), index, 1);
+		tableModel.setValueAt(damage.getCloseDate(), index, 2);
+	}
+	
+	/**
 	 * Очищает таблицу
 	 * @param table - таблица
 	 */
@@ -1637,20 +1664,24 @@ public class gui {
 		newLabel("Cпособ изготовления (до 150 сим.):", iFrame, 420, 255, 360, 25);
 		final JTextField manufacturingМethod = newTextField(iFrame, 420, 280, 360, 25);
 		
+		
+		
+		JButton damageButton = newButton("Повреждения", iFrame, 420, 340, 120, 25);
+		damageButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tableDamageList(dmc.getDamages(duct), duct);
+			}
+		});
+		damageButton.setEnabled(false);
+		
 		if (duct != null) {
 			ductLenght.setText(duct.getLenght().toString());
 			tubeDiametr.setText(duct.getTubeDiametr().toString());
 			tubeMaterual.setText(duct.getTubeMaterial());
 			ductDate.setText(duct.getDate());
 			manufacturingМethod.setText(duct.getМanufacturingМethod());
+			damageButton.setEnabled(true);
 		}
-		
-		JButton damageButton = newButton("Повреждения", iFrame, 420, 340, 120, 25);
-		damageButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				tableDamageList(null);
-			}
-		});
 		/*
 		 * ------------------------------
 		 */
@@ -1992,16 +2023,18 @@ public class gui {
 		
 		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
 		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		if (dframe != null) {
+		/*if (dframe != null) {
 			comboBox.setSelectedItem(nc.getElement(dframe.getNet()));
 			comboBox.setEnabled(false);
 		}			
-		
+		*/
 		newLabel("Добавить к кроссу:", iFrame, 20, 75, 360, 25);
 		final JComboBox comboBox1 = dframeComboBox(comboBox, iFrame, 20, 100, 360, 25);
 		netsDFrameComboLinked(comboBox, comboBox1);
 		
 		if (dframe != null) {
+			comboBox.setSelectedItem(nc.getElement(dframe.getNet()));
+			comboBox.setEnabled(false);
 			comboBox1.setSelectedItem(dframe);
 			comboBox1.setEnabled(false);
 		}	
@@ -2321,13 +2354,83 @@ public class gui {
 		
 	}
 	/**
+	 * Создает и выводит на экран форму создания/редактирования повреждения
+	 * @param damage - повреждение для редактирования, если null - отображается форма создания нового повреждения
+	 * @return повреждение
+	 */
+	public Damage formDamage(final Damage damage) {
+		final Vector<Damage> v = new Vector<Damage>(); v.add(null);
+		
+		final JDialog iFrame = newDialog("Создать повреждение", 410, 445);
+		
+		newLabel("Дата обнаружения (ДД.ММ.ГГГГ):", iFrame,  20, 15, 360, 25);
+		final JTextField openDate = newTextField(iFrame, 20, 40, 360, 25);
+		
+		newLabel("Дата устранения (ДД.ММ.ГГГГ):", iFrame, 20, 75, 360, 14);
+		final JTextField closeDate = newTextField(iFrame, 20, 100, 360, 25);
+		
+		newLabel("Характер повреждения:", iFrame, 20, 135, 360, 14);
+		final JTextArea name = newTextArea(iFrame, 20, 160, 360, 75);
+		name.setEditable(true);
+		
+		newLabel("Работы по устранению:", iFrame, 20, 250, 360, 14);
+		final JTextArea description = newTextArea(iFrame, 20, 275, 360, 75);
+		description.setEditable(true);
+		
+		
+		if (damage != null){ 
+			iFrame.setTitle("Редактировать повреждение");
+			openDate.setText(damage.getOpenDate());
+			closeDate.setText(damage.getCloseDate());
+			name.setText(damage.getName());
+			description.setText(damage.getDescription());
+		}
+		
+		JButton saveButton = newButton("Сохранить", iFrame, 20, 370, 110, 25);
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (!V.validateDate(openDate.getText())) { newError(iFrame, "Неверный формат даты обнаружения!");return;}
+				if (!V.validateDate(closeDate.getText())) { newError(iFrame, "Неверный формат даты устранения!");return;}	
+				if (!V.validateLongParametr(name.getText())) { newError(iFrame, "Неверный формат характера повреждения!");return;}
+				if (!V.validateLongParametr(description.getText())) { newError(iFrame, "Неверный формат описания повреждения!");return;}
+				
+				if (damage != null) {
+					
+					damage.setName(name.getText());
+					damage.setOpenDate(openDate.getText());
+					damage.setCloseDate(closeDate.getText());
+					damage.setDescription(description.getText());
+					v.set(0, damage);
+					rw.addLogMessage("Повреждение изменено:"  + damage.toString());
+					newInfo(iFrame, "Изменения сохранены");
+				}
+				else {
+					Damage newDamage = new Damage(); 
+					newDamage.setName(name.getText());
+					newDamage.setOpenDate(openDate.getText());
+					newDamage.setCloseDate(closeDate.getText());
+					newDamage.setDescription(description.getText());
+					dmc.addElement(newDamage);
+					v.set(0, newDamage);
+					String mes = "Создано повреждение: "+ newDamage.toString();
+					rw.addLogMessage(mes);
+					newInfo(iFrame, mes);
+				}
+				iFrame.dispose();
+			}
+		});
+		iFrame.setVisible(true);
+		
+		return v.get(0);
+	}
+	/**
 	 * Создает и выводит на экран форму выбора абонента, использующего данную пару
 	 * @param pair - пара
 	 * @return выбранный абонент, либо null если ничего не выбрано
 	 */
 	public Subscriber formPairSubscribers(Pair pair) {
 		
-		final Vector<Integer> v = new Vector<Integer>(); v.add(0);
+		final Vector<Subscriber> v = new Vector<Subscriber>(); v.add(null);
 		final JDialog iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
 		
 		newLabel("Абоненты используюшие пару:", iFrame, 10, 10, 320, 14);
@@ -2348,7 +2451,7 @@ public class gui {
 		ActionListener selectSubscriber = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
-				v.set(0, 1);
+				v.set(0, (Subscriber)subscriberList.getSelectedValue());
 				iFrame.dispose();	
 			}
 		};
@@ -2358,9 +2461,7 @@ public class gui {
 		 */
 		iFrame.setVisible(true);
 		
-		if (v.get(0) == 1) return (Subscriber)subscriberList.getSelectedValue();
-		return null;
-		
+		return v.get(0);
 	}
 	/**
 	 * Создает и выводит на экран форму создания набора участков канализации
@@ -2436,30 +2537,82 @@ public class gui {
 		return d;
 	}
 	
-	public JDialog tableDamageList(Collection<Damage> damageCollection) {
+	public JDialog tableDamageList(Collection<Damage> damageCollection, final AbstractElement owner) {
 		
 		final JDialog iFrame = newDialog("Список повреждений", 685, 600);
 		iFrame.setResizable(true);
 		
-		final JTable cableTable = newTable(iFrame, 10, 10, 520, 470);
-		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
+		final JTable damageTable = newTable(iFrame, 10, 10, 520, 560);
+		final DefaultTableModel tableModel = (DefaultTableModel) damageTable.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Характер повреждения","Дата устранения","Дата обнаружения"});
 		
 		
-		JButton editCableButton = newButton("Редактировать", iFrame, 540, 10, 125, 26);
+		JButton editButton = newButton("Редактировать", iFrame, 540, 10, 125, 26);
 		
-		JButton createCableButton = newButton("Добавить", iFrame, 540, 80, 125, 26);
-		JButton deleteCableButton = newButton("Удалить", iFrame, 540, 120, 125, 26);
+		JButton createButton = newButton("Добавить", iFrame, 540, 80, 125, 26);
+		JButton deleteButton = newButton("Удалить", iFrame, 540, 120, 125, 26);
 		
 		Iterator<Damage> i = damageCollection.iterator();
 		while (i.hasNext()) {
-			Damage damage = i.next(); 
-			Vector<Object> v = new Vector<Object>();
-			v.add(damage);
-			v.add(damage.getOpenDate());
-			v.add(damage.getCloseDate());
-			((DefaultTableModel) cableTable.getModel()).addRow(v);
+			addDamageToTable(damageTable, i.next());
 		}
+		/*
+		 * Событие кнопки редактирования повреждения
+		 */
+		ActionListener editDamage = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				if (damageTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Повреждение не выбрано!"); return; }
+				int selectedIndex = damageTable.getRowSorter().convertRowIndexToModel(damageTable.getSelectionModel().getMinSelectionIndex());
+				Damage damage = (Damage)tableModel.getValueAt(selectedIndex, 0);
+				formDamage(damage);
+				updateDamageInTable(damageTable, damage, selectedIndex);
+			}
+		};
+		editButton.addActionListener(editDamage);
+		/*
+		 * ---------------------------------------------------------
+		 */
+		/*
+		 * Событие кнопки создания повреждения
+		 */
+		ActionListener createCable = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Damage damage = formDamage(null);
+				if (damage != null) {
+					damage.attachTo(owner);
+					addDamageToTable(damageTable, damage);
+				}
+			}
+		};
+		createButton.addActionListener(createCable);
+		/*
+		 * ---------------------------------------------------------
+		 */
+		/*
+		 * Событие кнопки удаления повреждения
+		 */
+		ActionListener deleteDamage = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (damageTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Повреждение не выбрано!"); return; }
+				int selectedIndex = damageTable.getRowSorter().convertRowIndexToModel(damageTable.getSelectionModel().getMinSelectionIndex());
+				Damage damage = (Damage)tableModel.getValueAt( selectedIndex, 0);
+				
+				int n = newDialog(iFrame, "Удалить повреждение: " + damage.toString()+" ?");
+				if (n == JOptionPane.YES_OPTION) {
+					dmc.removeElement(damage);
+					String mes = "Повреждение " + damage.toString() + " удалено";
+					rw.addLogMessage(mes);
+					((DefaultTableModel) damageTable.getModel()).removeRow(selectedIndex);
+					newInfo(iFrame, mes);
+				}	
+			}
+		};
+		deleteButton.addActionListener(deleteDamage);
+		/*
+		 * ---------------------------------------------------------
+		 */
 		iFrame.setVisible(true);
 		return iFrame;
 	}
@@ -2704,6 +2857,8 @@ public class gui {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		iFrame.getContentPane().add(scrollPane);

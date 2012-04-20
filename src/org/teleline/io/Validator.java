@@ -85,11 +85,15 @@ public class Validator {
 	 */
 	public boolean validateCabinetClass(String s) { return Pattern.compile("^[1]|[2]$").matcher(s).matches(); }
 	/**
+	 * Проверяет дополнительные параметры большой длины
+	 */
+	public boolean validateLongParametr(String s) { return Pattern.compile("^.{0,300}$").matcher(s).matches(); }
+	/**
 	 * Проверяет дополнительные параметры
 	 */
 	public boolean validateOtherParametr(String s) { return Pattern.compile("^.{0,150}$").matcher(s).matches(); }
 	/**
 	 * Проверяет дату
 	 */
-	public boolean validateDate(String s) { return Pattern.compile("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{4}$").matcher(s).matches(); }
+	public boolean validateDate(String s) { return Pattern.compile("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{4}$|^$").matcher(s).matches(); }
 }
