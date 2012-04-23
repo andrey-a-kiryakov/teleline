@@ -2009,7 +2009,7 @@ public class RW {
 					while (c.hasNext()) {
 						Cable cable = c.next();
 						Element cablesTableTr = new Element("tr"); cablesTable.addContent(cablesTableTr);
-						cablesTableTr.addContent(new Element("td").addContent(/*cable.toString()*/""));
+						cablesTableTr.addContent(new Element("td").addContent(cable.toLongString()));
 						cablesTableTr.addContent(new Element("td").addContent(duct.toString()+", "+tube.toString()));
 						
 						Tube outTube = null;
