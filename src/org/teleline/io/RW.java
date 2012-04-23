@@ -1821,6 +1821,9 @@ public class RW {
 			Element fromto = new Element("h4");
 			frameTd.addContent(fromto); 
 			
+			/*
+			 * Заголовок таблицы для паспорта
+			 */
 			Element ductsTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(ductsTable);
 			Element ductsTableTr1 = new Element("tr"); ductsTable.addContent(ductsTableTr1);
 			ductsTableTr1.addContent(new Element("th").addContent("№ п/п").setAttribute("rowspan","2"));
@@ -1836,11 +1839,52 @@ public class RW {
 			ductsTableTr2.addContent(new Element("th").addContent("длина линии, м"));
 			ductsTableTr2.addContent(new Element("th").addContent("длина каналов, м"));
 			ductsTableTr2.addContent(new Element("th").addContent("дата"));
+			/*
+			 *-----------------------------------------------------------
+			 */
+			
+			frameTd.addContent(new Element("br")); frameTd.addContent(new Element("br"));
+			
+			/*
+			 * Заголовок таблицы технического состояния
+			 */
+			frameTd.addContent(new Element("h3").addContent("Отметки о техническом состоянии"));
+			Element techTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); 
+			Element techTableTr1 = new Element("tr"); techTable.addContent(techTableTr1);
+			techTableTr1.addContent(new Element("th").addContent("№ п/п"));
+			techTableTr1.addContent(new Element("th").addContent("Участок"));
+			techTableTr1.addContent(new Element("th").addContent("Дата обнаружения повреждения"));
+			techTableTr1.addContent(new Element("th").addContent("Характер повреждения"));
+			techTableTr1.addContent(new Element("th").addContent("Описание работ по устранению"));
+			techTableTr1.addContent(new Element("th").addContent("Дата устранения"));
+			
+			/*
+			 *-----------------------------------------------------------
+			 */
 			
 			Integer n = 1;
 			Iterator<Duct> i = ductSet.iterator();
 			while (i.hasNext()) {
 				Duct duct = i.next();
+				/*
+				 * Заполняем таблицу повреждений
+				 */
+				Integer z = 1;
+				Iterator <Damage> d = dmc.getDamages(duct).iterator();
+				while (d.hasNext()) {
+					Damage damage = d.next();
+					Element techTableTr = new Element("tr"); techTable.addContent(techTableTr);
+					techTableTr.addContent(new Element("td").addContent(z.toString()));
+					techTableTr.addContent(new Element("td").addContent(duct.toString()));
+					techTableTr.addContent(new Element("td").addContent(damage.getOpenDate()));
+					techTableTr.addContent(new Element("td").addContent(damage.getName()));
+					techTableTr.addContent(new Element("td").addContent(damage.getDescription()));
+					techTableTr.addContent(new Element("td").addContent(damage.getCloseDate()));
+					z++;
+				}
+				/*
+				 * -----------------------------
+				 */
 				HashSet<Tube> h = tuc.getDuctsTubes(duct);
 				AbstractElement from = mc.getElement(duct.getFrom());
 				AbstractElement to = mc.getElement(duct.getTo());
@@ -1889,20 +1933,7 @@ public class RW {
 				n++;	
 			}
 			
-			frameTd.addContent(new Element("br")); frameTd.addContent(new Element("br"));
-			frameTd.addContent(new Element("h3").addContent("Отметки о техническом состоянии"));
-			Element techTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(techTable);
-			Element techTableTr1 = new Element("tr"); techTable.addContent(techTableTr1);
-			techTableTr1.addContent(new Element("th").addContent("Дата обнаружения повреждения"));
-			techTableTr1.addContent(new Element("th").addContent("Характер повреждения"));
-			techTableTr1.addContent(new Element("th").addContent("Описание работ по устранению"));
-			techTableTr1.addContent(new Element("th").addContent("Дата устранения"));
-			
-			for (int x = 0; x < 3; x++) {
-				Element techTableTr = new Element("tr"); techTable.addContent(techTableTr);
-				techTableTr.addContent(new Element("td").addContent(new Element("br")).addContent(new Element("br")).addContent(new Element("br")));
-				techTableTr.addContent(new Element("td")).addContent(new Element("td")).addContent(new Element("td"));	
-			}
+			frameTd.addContent(techTable);
 			
 			frameTd.addContent(new Element("br")); frameTd.addContent(new Element("br"));
 			frameTd.addContent(new Element("h4").addContent("Cоставил: инженер _________________________   \"____\"___________201___г. "));

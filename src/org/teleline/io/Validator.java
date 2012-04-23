@@ -87,7 +87,7 @@ public class Validator {
 	/**
 	 * Проверяет дополнительные параметры большой длины
 	 */
-	public boolean validateLongParametr(String s) { return Pattern.compile("^.{0,300}$").matcher(s).matches(); }
+	public boolean validateLongParametr(String s) { return Pattern.compile("^[\\s\\S]{0,300}$").matcher(s).matches(); }
 	/**
 	 * Проверяет дополнительные параметры
 	 */

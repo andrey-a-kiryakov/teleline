@@ -1965,7 +1965,7 @@ public class teleline {
 				ActionListener passportDuct = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
+					//	if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
 						Duct duct = (Duct)ductList.getSelectedValue();
 						Building building = (Building)buc.getElement(duct.getTo());
 						Manhole manhole = (Manhole)mc.getElement(duct.getTo());

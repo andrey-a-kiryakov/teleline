@@ -2369,14 +2369,13 @@ public class gui {
 		newLabel("Дата устранения (ДД.ММ.ГГГГ):", iFrame, 20, 75, 360, 14);
 		final JTextField closeDate = newTextField(iFrame, 20, 100, 360, 25);
 		
-		newLabel("Характер повреждения:", iFrame, 20, 135, 360, 14);
+		newLabel("Характер повреждения (до 300 символов):", iFrame, 20, 135, 360, 14);
 		final JTextArea name = newTextArea(iFrame, 20, 160, 360, 75);
 		name.setEditable(true);
 		
-		newLabel("Работы по устранению:", iFrame, 20, 250, 360, 14);
+		newLabel("Работы по устранению (до 300 символов):", iFrame, 20, 250, 360, 14);
 		final JTextArea description = newTextArea(iFrame, 20, 275, 360, 75);
 		description.setEditable(true);
-		
 		
 		if (damage != null){ 
 			iFrame.setTitle("Редактировать повреждение");
@@ -2389,6 +2388,7 @@ public class gui {
 		JButton saveButton = newButton("Сохранить", iFrame, 20, 370, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if (!V.validateDate(openDate.getText())) { newError(iFrame, "Неверный формат даты обнаружения!");return;}
 				if (!V.validateDate(closeDate.getText())) { newError(iFrame, "Неверный формат даты устранения!");return;}	
 				if (!V.validateLongParametr(name.getText())) { newError(iFrame, "Неверный формат характера повреждения!");return;}
