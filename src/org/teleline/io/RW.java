@@ -1990,6 +1990,7 @@ public class RW {
 			Element cablesTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(cablesTable);
 			Element cablesTableTr1 = new Element("tr"); cablesTable.addContent(cablesTableTr1);
 			cablesTableTr1.addContent(new Element("th").addContent("Кабель"));
+			cablesTableTr1.addContent(new Element("th").addContent("Марка"));
 			cablesTableTr1.addContent(new Element("th").addContent("№ канала приходящего"));
 			cablesTableTr1.addContent(new Element("th").addContent("№ канала уходящего"));
 			cablesTableTr1.addContent(new Element("th").addContent("Расстояние до следующего колодца, м"));
@@ -2010,6 +2011,7 @@ public class RW {
 						Cable cable = c.next();
 						Element cablesTableTr = new Element("tr"); cablesTable.addContent(cablesTableTr);
 						cablesTableTr.addContent(new Element("td").addContent(cable.toLongString()));
+						cablesTableTr.addContent(new Element("td").addContent(cable.getLabel()+"х"+cable.getCapacity()+"*"+cable.getWireDiametr()));
 						cablesTableTr.addContent(new Element("td").addContent(duct.toString()+", "+tube.toString()));
 						
 						Tube outTube = null;
