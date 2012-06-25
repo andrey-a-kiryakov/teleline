@@ -188,7 +188,7 @@ public class gui {
 		frame.setTitle(Title);
 		
 		frame.setResizable(false);
-		frame.setModal(true);
+	//	frame.setModal(true);
 		
 		frame.getContentPane().setLayout(null);
 		
@@ -3177,7 +3177,7 @@ public class gui {
 		
 		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
-		int W = 15, H = 15, marginX = 7, marginY = 7, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
+		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
@@ -3302,7 +3302,7 @@ public class gui {
 
 	public void viewDBox(final DBox element, final Integer netId) {
 			
-		int W = 15, H = 15, marginX = 7, marginY = 7, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
+		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
@@ -3394,7 +3394,7 @@ public class gui {
 		
 		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
-		int W = 15, H = 15, marginX = 7, marginY = 7, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
+		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
@@ -3508,7 +3508,7 @@ public class gui {
 		
 		HashSet<Tube> h = tuc.getDuctsTubes(duct);
 		
-		int W = 25, H = 25, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 30, infoListHeght = 200;
+		int W = 25, H = 25, marginX = 9, marginY = 9, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 30, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)h.size() / (double)inLine);
 		int panelWidth = labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);

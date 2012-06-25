@@ -12,7 +12,6 @@ public class Pair extends AbstractElement {
 	private Integer from = 0;
 	private Integer to = 0;
 	private Integer status = 0; //0 - свободная, 1 - занятая, 2 - поврежденная
-//	private Integer type = 0; //0 - магистральный, 1 - межшкафная, 2 - распределительная, 3 - прямого питания
 	
 	private FrameCollection fc;
 	private BoxCollection bc;
@@ -135,20 +134,7 @@ public class Pair extends AbstractElement {
 	}
 	public Integer getStatus() {
 		return this.status;
-	}
-	/**
-	 * Устанавливает тип "Пары"
-	 */
-//	public void setType(Integer Type) {
-//		this.type = Type;
-//	}
-	/**
-	 * Возвращает тип "Пары"
-	 */
-//	public Integer getType() {
-//		return this.type;
-//	}
-		
+	}		
 	/**
 	 * Строковое представление "Пары"
 	 */

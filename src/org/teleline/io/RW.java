@@ -1302,26 +1302,26 @@ public class RW {
 			Element frameTable = new Element("table").setAttribute("class","frame-table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); body.addContent(frameTable);
 			Element frameTr = new Element("tr").setAttribute("class","frame-tr"); frameTable.addContent(frameTr);
 			Element frameTd = new Element("td").setAttribute("class","frame-td"); frameTr.addContent(frameTd);
+			frameTd.addContent(new Element("h2").addContent("Карточка абонента"));
 			
 			Element table = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(table);
 			Element tr1 = new Element("tr"); table.addContent(tr1);
 			tr1.addContent(new Element("th").setAttribute("colspan","2").addContent("Номер: " + sub.getPhoneNumber()));
 			tr1.addContent(new Element("th").setAttribute("colspan","6").addContent("Абонент: " + sub.getName()).addContent(new Element("br")).addContent("Адрес установки: " + sub.getAdress()));
-			tr1.addContent(new Element("th").addContent("Дата установки").addContent(new Element("br")).addContent(sub.getDate()));
+			tr1.addContent(new Element("th").addContent("Дата установки:").addContent(new Element("br")).addContent(sub.getDate()));
 			
 			Element tr2 = new Element("tr"); table.addContent(tr2);
 			tr2.addContent(new Element("td").addContent("Громполоса"));
 			tr2.addContent(new Element("td").addContent("Пара").addContent(new Element("br")).addContent("громполосы"));
 			tr2.addContent(new Element("td").addContent("Шкаф"));
 			tr2.addContent(new Element("td").addContent("№").addContent(new Element("br")).addContent("МБ/РБ"));
-			tr2.addContent(new Element("td").addContent("Магистраль").addContent(new Element("br")).addContent("Распределение"));
+			tr2.addContent(new Element("td").addContent("Магистраль/").addContent(new Element("br")).addContent("Распределение"));
 			tr2.addContent(new Element("td").addContent("№ РБ"));
 			tr2.addContent(new Element("td").addContent("Распред."));
 			tr2.addContent(new Element("td").addContent("Рамка").addContent(new Element("br")).addContent("перехода"));
 			tr2.addContent(new Element("td").addContent("Примечание"));
 			
 			Element newTr = new Element("tr");;
-			//System.out.println(sub.geticPair().size());
 			
 			Iterator<Path> pt = phc.getSubscriberPaths(sub).iterator();
 			while (pt.hasNext()) {
@@ -1343,7 +1343,7 @@ public class RW {
 					
 	
 				}
-			if (path.ismPair()) {	
+				if (path.ismPair()) {	
 				
 					Pair p = (Pair)pc.getElement(path.getmPair());
 					Frame f = (Frame)fc.getElement(p.getElementFrom());
@@ -1354,21 +1354,21 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(f.toString()));
 					newTr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
 					newTr.addContent(new Element("td").addContent(cb.toString()));
-					newTr.addContent(new Element("td").addContent(b.toString()));
+					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getToNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 					
-			}
-			else {
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-			}
+				}
+				if (!path.ismPair() && path.isicPair()) {
+					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(" "));
+				}
 			
 		
 			for (int i = 0; i < path.geticPair().size(); i++) {
-				Pair p = (Pair)pc.getElement(path.geticPair().get(0));
+				Pair p = (Pair)pc.getElement(path.geticPair().get(i));
 				Cable c = (Cable)cc.getElement(p.getCable());
 				
 				Box bto = (Box)bc.getElement(p.getElementTo());
@@ -1377,46 +1377,48 @@ public class RW {
 				//Cabinet cbfrom = (Cabinet)cbc.getElement(bfrom.getOwnerId());
 				Cabinet cbto = (Cabinet)cbc.getElement(bto.getOwnerId());
 				
-				newTr.addContent(new Element("td").addContent(bfrom.toString()));
+				newTr.addContent(new Element("td").addContent(bfrom.toString()+"-"+p.getFromNumber()));
 				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(" ")); //рамка перехода
+				newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 				table.addContent(newTr);
 				
 				newTr = new Element("tr");
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(" ")); //громполоса
+				newTr.addContent(new Element("td").addContent(" ")); //пара громполосы
 				
 				newTr.addContent(new Element("td").addContent(cbto.toString()));
-				newTr.addContent(new Element("td").addContent(bto.toString()));
+				newTr.addContent(new Element("td").addContent(bto.toString()+"-"+p.getToNumber()));
 				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 			}
 			
-			if (!path.isicPair() || !path.isdbPair()) {
-				
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
-				table.addContent(newTr);
-			}
 			
-			if (path.isicPair() && path.isdbPair()) {
+			if ( path.ismPair() && ((path.isicPair() && path.isdbPair()) || (!path.isicPair() && path.isdbPair()))) { //есть/нет передача, есть распределение
 				
 					Pair p = (Pair)pc.getElement(path.getdbPair());
 					Box b = (Box)bc.getElement(p.getElementFrom());
 						
 					Cable c = (Cable)cc.getElement(p.getCable());
-					newTr.addContent(new Element("td").addContent(b.toString()));
+					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getFromNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 						
 					newTr.addContent(new Element("td").addContent(" "));
-					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 					table.addContent(newTr);
 				
 			}
 			
-			if (!path.isicPair() && path.isdbPair()) {
+			if ( path.ismPair() && ((path.isicPair() && !path.isdbPair()) || (!path.isicPair() && !path.isdbPair()))) { //есть/нет передачи, нет распределения
+				
+				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(path.getName())); //примечание
+				table.addContent(newTr);
+			}
+			
+			
+			if (!path.ismPair() && !path.isicPair() && path.isdbPair()) { //только распределение
 				
 				
 					Pair p = (Pair)pc.getElement(path.getdbPair());
@@ -1430,12 +1432,11 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(cb.toString()));
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(" "));
-					newTr.addContent(new Element("td").addContent(b.toString()));
+					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getFromNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 					newTr.addContent(new Element("td").addContent(" "));
-					newTr.addContent(new Element("td").addContent(" "));
-					table.addContent(newTr);
-				
+					newTr.addContent(new Element("td").addContent(path.getName())); //примечание
+					table.addContent(newTr);	
 			}
 		
 			}
@@ -1453,16 +1454,16 @@ public class RW {
 			tr1.addContent(new Element("th").addContent("ДВО"));
 			tr1.addContent(new Element("td").addContent("Дата включения"));
 			tr1.addContent(new Element("td").addContent("Дата выключения"));
-			tr1.addContent(new Element("td").addContent("-"));
-			tr1.addContent(new Element("td").addContent("-"));
+		//	tr1.addContent(new Element("td").addContent("-"));
+		//	tr1.addContent(new Element("td").addContent("-"));
 			
 			for (int i = 0; i < 3; i++) {
 				tr2 = new Element("tr"); table.addContent(tr2);
+				tr2.addContent(new Element("td").addContent(new Element("br")));
 				tr2.addContent(new Element("td").addContent(" "));
 				tr2.addContent(new Element("td").addContent(" "));
-				tr2.addContent(new Element("td").addContent(" "));
-				tr2.addContent(new Element("td").addContent("-"));
-				tr2.addContent(new Element("td").addContent("-"));
+			//	tr2.addContent(new Element("td").addContent("-"));
+			//	tr2.addContent(new Element("td").addContent("-"));
 			}
 			
 			table = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(table);
@@ -1471,15 +1472,15 @@ public class RW {
 			tr1.addContent(new Element("td").addContent("Дата включения"));
 			tr1.addContent(new Element("td").addContent("Дата выключения"));
 			tr1.addContent(new Element("td").addContent("Причина"));
-			tr1.addContent(new Element("td").addContent("-"));
+			//tr1.addContent(new Element("td").addContent("-"));
 			
 			for (int i = 0; i < 3; i++) {
 				tr2 = new Element("tr"); table.addContent(tr2);
+				tr2.addContent(new Element("td").addContent(new Element("br")));
 				tr2.addContent(new Element("td").addContent(" "));
 				tr2.addContent(new Element("td").addContent(" "));
 				tr2.addContent(new Element("td").addContent(" "));
-				tr2.addContent(new Element("td").addContent(" "));
-				tr2.addContent(new Element("td").addContent("-"));
+				//tr2.addContent(new Element("td").addContent("-"));
 			}
 					
 			XMLOutputter xmlOutput = new XMLOutputter();
