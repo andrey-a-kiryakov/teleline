@@ -2961,7 +2961,7 @@ public class gui {
 		ActionListener boxClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				viewConnectedPointElement((Box)((ElementView)e.getSource()).getElement(), cabinet.getNet(), false );			
+				viewConnectedPointElement((Box)((ElementView)e.getSource()).getElement(), cabinet.getNet(), false, null, null );			
 			}
 		};
 		
@@ -3080,7 +3080,7 @@ public class gui {
 		ActionListener frameClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				viewConnectedPointElement((Frame)((ElementView)e.getSource()).getElement(), dframe.getNet(), false );			
+				viewConnectedPointElement((Frame)((ElementView)e.getSource()).getElement(), dframe.getNet(), false, null, null );			
 			}
 		};
 		
@@ -3173,7 +3173,7 @@ public class gui {
 		iFrame.setVisible(true);
 	}
 	
-	public Pair viewConnectedPointElement(final ConnectedPointElement element, final Integer netId, final boolean selectMode) {
+	public Pair viewConnectedPointElement(final ConnectedPointElement element, final Integer netId, final boolean selectPlaceMode, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
 		
 		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
@@ -3203,8 +3203,19 @@ public class gui {
 		 */
 		ActionListener pairClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				Pair p = (Pair)((ElementView)e.getSource()).getElement();
-				viewPairInfo(p,infoArea);	
+				
+				if (listForSelectedPair != null) {
+					Vector<Pair> v = new Vector<Pair>(); v.add(p);
+					setListItems(listForSelectedPair, v);
+					listForSelectedPair.setSelectedIndex(0);
+					iFrame.dispose();
+				}
+				else {
+					
+					viewPairInfo(p,infoArea);
+				}
 			}
 		};
 		/*
@@ -3217,9 +3228,9 @@ public class gui {
 		 */
 		ActionListener placeClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (selectMode) {
+				if (selectPlaceMode) {
 					Pair p = (Pair)((ElementView)e.getSource()).getElement();
-					returnedPair.set(0, p);
+					textFieldForSelectResult.setText(p.getFromNumber().toString());
 					iFrame.dispose();
 				}
 			}
@@ -3390,9 +3401,9 @@ public class gui {
 		iFrame.setVisible(true);
 	}
 	
-	public Pair viewCable(final Cable element, final Integer netId, final boolean selectMode) {
+	public void viewCable(final Cable element, final Integer netId, final boolean selectMode, final JTextField textFieldForSelectResult) {
 		
-		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
+		//final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
@@ -3430,7 +3441,8 @@ public class gui {
 			public void actionPerformed(ActionEvent e) {
 				if (selectMode) {
 					Pair p = (Pair)((ElementView)e.getSource()).getElement();
-					returnedPair.set(0, p);
+					//returnedPair.set(0, p);
+					textFieldForSelectResult.setText(p.getFromNumber().toString());
 					iFrame.dispose();
 				}
 			}};
@@ -3501,7 +3513,7 @@ public class gui {
 		}
 	
 		iFrame.setVisible(true);
-		return returnedPair.get(0);
+	//	return returnedPair.get(0);
 	}
 	
 	public void viewDuct(final Duct duct, final Integer netId) {

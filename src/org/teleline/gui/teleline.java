@@ -305,8 +305,9 @@ public class teleline {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) dframeFrom.setText(p.getFromNumber().toString());
+						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, dframeFrom,null);
+						//System.out.println(p.getElementFrom());
+						//if (p != null) dframeFrom.setText(p.getFromNumber().toString());
 					}
 				});
 				
@@ -321,8 +322,8 @@ public class teleline {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) boxFrom.setText(p.getFromNumber().toString());
+						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, boxFrom, null);
+						//if (p != null) boxFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -337,8 +338,8 @@ public class teleline {
 					public void actionPerformed(ActionEvent arg0) {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) cableFrom.setText(p.getFromNumber().toString());
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, cableFrom);
+						//if (p != null) cableFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -470,8 +471,8 @@ public class teleline {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана бокс!"); return; }
-						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) box1From.setText(p.getFromNumber().toString());
+						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, box1From, null);
+						//if (p != null) box1From.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -487,8 +488,8 @@ public class teleline {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) box2From.setText(p.getFromNumber().toString());
+						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, box2From, null);
+						//if (p != null) box2From.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -503,8 +504,8 @@ public class teleline {
 					public void actionPerformed(ActionEvent arg0) {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) cableFrom.setText(p.getFromNumber().toString());
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, cableFrom);
+						//if (p != null) cableFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -618,8 +619,8 @@ public class teleline {
 							if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 							if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 							if (comboBox2.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-							Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-							if (p != null) boxFrom.setText(p.getFromNumber().toString());
+							Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, boxFrom, null);
+							//if (p != null) boxFrom.setText(p.getFromNumber().toString());
 						}
 					});
 				
@@ -633,8 +634,8 @@ public class teleline {
 						public void actionPerformed(ActionEvent arg0) {
 							if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 							if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-							Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-							if (p != null) cableFrom.setText(p.getFromNumber().toString());
+							GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, cableFrom);
+							//if (p != null) cableFrom.setText(p.getFromNumber().toString());
 
 						}
 					});
@@ -745,8 +746,8 @@ public class teleline {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) dframeFrom.setText(p.getFromNumber().toString());
+						Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, dframeFrom, null);
+						//if (p != null) dframeFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -761,8 +762,8 @@ public class teleline {
 					public void actionPerformed(ActionEvent arg0) {
 						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						Pair p = GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true);
-						if (p != null) cableFrom.setText(p.getFromNumber().toString());
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), true, cableFrom);
+						//if (p != null) cableFrom.setText(p.getFromNumber().toString());
 
 					}
 				});
@@ -1523,18 +1524,12 @@ public class teleline {
 
 						
 						JButton selectFrom = GUI.newButton("Выбрать", iSubFrame, 290, 230, 90, 25);
-						
 						selectFrom.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 			
 								if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iSubFrame, "Не выбран кросс/шкаф!"); return; }
 								if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iSubFrame, "Не выбрана громполоса/бокс!"); return; }
-								Pair p = GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId, true);
-								if (p != null) {
-									Vector<Pair> v = new Vector<Pair>(); v.add(p);
-									GUI.setListItems(selectedPairList, v);
-									selectedPairList.setSelectedIndex(0);
-								}
+								GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId, false, null, selectedPairList);
 							}
 						});
 						    
@@ -1707,7 +1702,7 @@ public class teleline {
 						//GUI.viewCable((Cable)cableList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
 						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId(), false);
+						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId(), false, null);
 					}
 				};
 				viewCableButton.addActionListener(viewCable);
