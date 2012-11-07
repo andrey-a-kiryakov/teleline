@@ -1367,7 +1367,7 @@ public class teleline {
 						//if (subscriberList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Абонент не выбран!"); return; }
 						//Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
 						
-						if (GUI.newDialog(iFrame, "Удалить абонента: "+ subscriber.toString()+ " ? Все занимаемые пары будут освобождены.") == JOptionPane.YES_OPTION)
+						if (GUI.newDialog(iFrame, "Удалить абонента: "+ subscriber.toString()+ " ? Все занимаемые пары будут освобождены.") == JOptionPane.YES_OPTION) {
 							GUI.removeSubscriber(subscriber);
 							((DefaultTableModel) subscriberList.getModel()).removeRow(selectedIndex);
 							//((DefaultListModel)pathList.getModel()).clear();
@@ -1375,6 +1375,7 @@ public class teleline {
 							//((DefaultListModel)subscriberList.getModel()).removeElement(sub);	
 							
 							//GUI.setListItems(subscriberList, sc.sortByIdUp(sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId())));	
+						}
 					}
 				};
 				deletSubscribereButton.addActionListener(deleteSubscriber);
