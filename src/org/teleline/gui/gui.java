@@ -2412,29 +2412,29 @@ public class gui {
 	 * @param pair - пара
 	 * @return форма
 	 */
-	public FormPairSubscribers formPairSubscribers(Pair pair) {
+	//public FormPairSubscribers formPairSubscribers(Pair pair) {
 		
-		FormPairSubscribers form = new FormPairSubscribers();
+		//FormPairSubscribers form = new FormPairSubscribers();
 		
-		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
+		//form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
 		
-		form.addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
+		//form.addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
 		//newLabel("Абоненты используюшие пару:", form.iFrame, 10, 10, 320, 14);
-		form.subscriberList = newList(form.iFrame, 10, 30, 320, 200);
+		//form.subscriberList = newList(form.iFrame, 10, 30, 320, 200);
 		
-		HashSet<Subscriber> s = new HashSet<Subscriber>();
+		//HashSet<Subscriber> s = new HashSet<Subscriber>();
 		
-		Iterator<Path> i = phc.getPairsPath(pair).iterator();
-		while (i.hasNext()) s.add((Subscriber)sc.getElement(i.next().getSubscriber()));
+		//Iterator<Path> i = phc.getPairsPath(pair).iterator();
+		//while (i.hasNext()) s.add((Subscriber)sc.getElement(i.next().getSubscriber()));
 	
-		setListItems(form.subscriberList, sc.sortByIdUp(s));
-		form.subscriberList.setSelectedIndex(0);
+		//setListItems(form.subscriberList, sc.sortByIdUp(s));
+		//form.subscriberList.setSelectedIndex(0);
 		
-		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
-		form.iFrame.setVisible(true);
+		//form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
+		//form.iFrame.setVisible(true);
 		
-		return form;
-	}
+		//return form;
+	//}
 	/**
 	 * Создает и выводит на экран форму создания набора участков канализации
 	 * @param net - сеть
@@ -4196,7 +4196,8 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
-				final FormPairSubscribers form = formPairSubscribers(p);
+				final FormPairSubscribers form = new FormPairSubscribers("Пара: " + p.toString(), 485, 270);
+				form.fillSubscriberList(sc, phc, p);
 				
 				ActionListener selectSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
