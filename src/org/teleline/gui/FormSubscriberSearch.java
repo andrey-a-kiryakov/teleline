@@ -1,13 +1,14 @@
 package org.teleline.gui;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JTextField;
-
-public class FormSubscriberSearch {
+/**
+*Класс элементов Форма для формы поиска абонента по номеру и телефону
+*
+*/
+public class FormSubscriberSearch extends Form{
 	
-	public JDialog iFrame;
 	public JTextField textField;
 	public JTextField textField_1;
 	public JList subscriberList;

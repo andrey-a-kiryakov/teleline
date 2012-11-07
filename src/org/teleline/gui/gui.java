@@ -2326,30 +2326,13 @@ public class gui {
 	 */
 	public FormPairPaths formPairPaths(Pair pair) {
 		
-		//final Vector<Integer> v = new Vector<Integer>(); v.add(0);
 		final FormPairPaths form = new FormPairPaths();
 		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
-		
-		newLabel("Включения:", form.iFrame, 10, 10, 320, 14);
+		form.addLabel("Включения:", 10, 10, 320, 14);
 		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
 		setListItems(form.pathList, phc.sortByIdUp(phc.getPairsPath(pair)));
 		form.pathList.setSelectedIndex(0);
-		
 		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
-		/*
-		 * Событие кнопки выбора включения
-		 */	
-	/*	ActionListener selectPath = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
-				v.set(0, 1);
-				iFrame.dispose();	
-			}
-		};
-		okButton.addActionListener(selectPath);*/
-		/*
-		 * ---------------------------------------------------------
-		 */
 		form.iFrame.setVisible(true);
 		return form;
 		
@@ -2427,42 +2410,30 @@ public class gui {
 	/**
 	 * Создает и выводит на экран форму выбора абонента, использующего данную пару
 	 * @param pair - пара
-	 * @return выбранный абонент, либо null если ничего не выбрано
+	 * @return форма
 	 */
-	public Subscriber formPairSubscribers(Pair pair) {
+	public FormPairSubscribers formPairSubscribers(Pair pair) {
 		
-		final Vector<Subscriber> v = new Vector<Subscriber>(); v.add(null);
-		final JDialog iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
+		FormPairSubscribers form = new FormPairSubscribers();
 		
-		newLabel("Абоненты используюшие пару:", iFrame, 10, 10, 320, 14);
-		final JList subscriberList = newList(iFrame, 10, 30, 320, 200);
+		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
+		
+		form.addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
+		//newLabel("Абоненты используюшие пару:", form.iFrame, 10, 10, 320, 14);
+		form.subscriberList = newList(form.iFrame, 10, 30, 320, 200);
 		
 		HashSet<Subscriber> s = new HashSet<Subscriber>();
 		
 		Iterator<Path> i = phc.getPairsPath(pair).iterator();
 		while (i.hasNext()) s.add((Subscriber)sc.getElement(i.next().getSubscriber()));
 	
-		setListItems(subscriberList, sc.sortByIdUp(s));
-		subscriberList.setSelectedIndex(0);
+		setListItems(form.subscriberList, sc.sortByIdUp(s));
+		form.subscriberList.setSelectedIndex(0);
 		
-		JButton okButton = newButton("Выбрать", iFrame, 340, 30, 125, 26);
-		/*
-		 * Событие кнопки выбора абонента
-		 */	
-		ActionListener selectSubscriber = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
-				v.set(0, (Subscriber)subscriberList.getSelectedValue());
-				iFrame.dispose();	
-			}
-		};
-		okButton.addActionListener(selectSubscriber);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		iFrame.setVisible(true);
+		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
+		form.iFrame.setVisible(true);
 		
-		return v.get(0);
+		return form;
 	}
 	/**
 	 * Создает и выводит на экран форму создания набора участков канализации
@@ -4225,8 +4196,17 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
-				Subscriber sub = formPairSubscribers(p);
-				if (sub != null) formViewPassport(rw.createSubscriberPassport(sub));
+				final FormPairSubscribers form = formPairSubscribers(p);
+				
+				ActionListener selectSubscriber = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (form.subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
+						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
+						if (sub != null) formViewPassport(rw.createSubscriberPassport(sub));
+						form.iFrame.dispose();	
+					}
+				};
+				form.okButton.addActionListener(selectSubscriber);
 			}
 		});
 		

@@ -3,9 +3,9 @@ package org.teleline.gui;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-public class FormSubscriberPaths extends Form {
+public class FormPairSubscribers extends Form {
 	
-	public JList pathList;
+	//public JDialog iFrame;
+	public JList subscriberList;
 	public JButton okButton;
-	
 }

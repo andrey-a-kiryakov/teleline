@@ -1,5 +1,6 @@
 package org.teleline.gui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -1255,7 +1256,7 @@ public class teleline {
 				
 				GUI.newLabel("Список абонентов:", iFrame, 10, 65, 520, 14);
 				//final JList subscriberList = GUI.newList(iFrame, 10, 85, 420, 280);
-				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 520, 280);
+				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 520, 320);
 				final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
 				
@@ -1266,16 +1267,16 @@ public class teleline {
 				//GUI.netsComboBoxLinked(netsComboBox, subscriberList, sc);
 				GUI.linkNetsComboBoxSubscriberTable(netsComboBox, subscriberList);
 				
-				GUI.newLabel("Список включений:", iFrame, 10, 380, 520, 14);
-				final JList pathList = GUI.newList(iFrame, 10, 400, 520, 110);
-				JButton addPathButton = GUI.newButton("Добавить", iFrame, 540, 400, 125, 26);
-				JButton editPathButton = GUI.newButton("Редактировать", iFrame, 540, 440, 125, 26);		
-				JButton deletePathButton = GUI.newButton("Удалить", iFrame, 540, 480, 125, 26);
+				GUI.newLabel("Список включений:", iFrame, 10, 420, 520, 14);
+				final JList pathList = GUI.newList(iFrame, 10, 440, 520, 90);
+				JButton addPathButton = GUI.newButton("Добавить", iFrame, 540, 440, 125, 26);
+				JButton editPathButton = GUI.newButton("Редактировать", iFrame, 540, 470, 125, 26);		
+				JButton deletePathButton = GUI.newButton("Удалить", iFrame, 540, 500, 125, 26);
 				
-				GUI.newLabel("Занимаемые пары:", iFrame, 10, 525, 520, 14);
-				final JList pairList = GUI.newList(iFrame, 10, 545, 520, 110);
-				JButton addPairButton = GUI.newButton("Добавить", iFrame, 540, 545, 125, 26);
-				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 540, 585, 125, 26);
+				GUI.newLabel("Занимаемые пары:", iFrame, 10, 545, 520, 14);
+				final JList pairList = GUI.newList(iFrame, 10, 565, 520, 90);
+				JButton addPairButton = GUI.newButton("Добавить", iFrame, 540, 565, 125, 26);
+				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 540, 595, 125, 26);
 				
 				/*
 				 * Событие выбора абонента в таблице
