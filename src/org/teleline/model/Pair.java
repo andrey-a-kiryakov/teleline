@@ -140,6 +140,7 @@ public class Pair extends AbstractElement {
 	 */
 	public String toString() {
 		String t = "";	
+		//System.out.println(this.getCable());
 		Integer type = ((Cable)cc.getElement(this.getCable())).getType();
 		switch (type) {
 		case 0: 

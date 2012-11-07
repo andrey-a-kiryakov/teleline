@@ -10,7 +10,6 @@ public class DBox extends StructuredElement{
 	private Integer capacity = 10;
 	private Integer building = 0;
 	private String plase = "";
-	//private Integer usedCapacity = 0;
 	DFrameCollection dfc;
 	CabinetCollection cbc;
 	FrameCollection fc;
@@ -90,7 +89,6 @@ public class DBox extends StructuredElement{
 		Building bl = (Building)buc.getElement(this.building);
 		String build = "";
 		if (bl != null) build = bl.toString();
-	//	Cable c = cc.getDCableIn(this);
 		
 		if (p == null) { 
 			return "КРТ (id=" + this.getId().toString() + ", без пар, "+ build + ")"; }

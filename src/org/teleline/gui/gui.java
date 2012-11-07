@@ -2123,30 +2123,31 @@ public class gui {
 	 * @param netId - id сети
 	 * @return выбранного среди найденых абонента или null, если ничего не выбрано
 	 */
-	public Subscriber formSearchSubscriber (final Integer netId) {
+	public FormSubscriberSearch formSearchSubscriber (final Integer netId) {
 		final Vector<Integer> v = new Vector<Integer>(); v.add(0);
+		final FormSubscriberSearch form = new FormSubscriberSearch();
 		
-		final JDialog iFrame = newDialog("Найти абонента", 485, 580);
-		newLabel("Телефонный номер:", iFrame, 10, 10, 320, 14);
-		final JTextField textField = newTextField(iFrame,10, 30, 320, 25);
-		newLabel("Имя:", iFrame, 10, 65, 320, 14);
-		final JTextField textField_1 = newTextField(iFrame, 10, 85, 320, 25);
-		newLabel("Результаты поиска:", iFrame, 10, 120, 320, 14);
-		final JList subscriberList = newList(iFrame, 10, 140, 320, 400);
+		form.iFrame = newDialog("Найти абонента", 485, 580);
+		newLabel("Телефонный номер:", form.iFrame, 10, 10, 320, 14);
+		final JTextField textField = newTextField(form.iFrame,10, 30, 320, 25);
+		newLabel("Имя:", form.iFrame, 10, 65, 320, 14);
+		final JTextField textField_1 = newTextField(form.iFrame, 10, 85, 320, 25);
+		newLabel("Результаты поиска:", form.iFrame, 10, 120, 320, 14);
+		form.subscriberList = newList(form.iFrame, 10, 140, 320, 400);
 
-		JButton findByPhoneButton = newButton("Найти", iFrame, 340, 30, 125, 26);
-		JButton findByNameButton = newButton("Найти", iFrame, 340, 85, 125, 26);
-		JButton okButton = newButton("Выбрать", iFrame, 340, 140, 125, 26);
+		form.findByPhoneButton = newButton("Найти", form.iFrame, 340, 30, 125, 26);
+		form.findByNameButton = newButton("Найти", form.iFrame, 340, 85, 125, 26);
+		form.okButton = newButton("Выбрать", form.iFrame, 340, 140, 125, 26);
 		
 		/*
-		 * Событие кнопки поиска абонента о телефону
+		 * Событие кнопки поиска абонента по телефону
 		 */
 		ActionListener findSubscriberByPhone = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
-				setListItems(subscriberList, sc.searchByPhone(textField.getText(), netId));
+				setListItems(form.subscriberList, sc.searchByPhone(textField.getText(), netId));
 			}
 		};
-		findByPhoneButton.addActionListener(findSubscriberByPhone);
+		form.findByPhoneButton.addActionListener(findSubscriberByPhone);
 		/*
 		 * ---------------------------------------------------------
 		 */
@@ -2155,31 +2156,33 @@ public class gui {
 		 */
 		ActionListener findSubscriberByName = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setListItems(subscriberList, sc.searchByName(textField_1.getText(), netId));				
+				setListItems(form.subscriberList, sc.searchByName(textField_1.getText(), netId));				
 			}
 		};
-		findByNameButton.addActionListener(findSubscriberByName);
+		form.findByNameButton.addActionListener(findSubscriberByName);
 		/*
 		 * ---------------------------------------------------------
 		 */
 		/*
 		 * Событие кнопки выбора абонента
 		 */	
-		ActionListener selectSubscriber = new ActionListener() {
+	/*	ActionListener selectSubscriber = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
 				v.set(0, 1);
 				iFrame.dispose();	
 			}
 		};
-		okButton.addActionListener(selectSubscriber);
+		okButton.addActionListener(selectSubscriber);*/
 		/*
 		 * ---------------------------------------------------------
 		 */
-		iFrame.setVisible(true);
+		form.iFrame.setVisible(true);
 		
-		if (v.get(0) == 1) return (Subscriber)subscriberList.getSelectedValue();
-		return null;
+	//	if (v.get(0) == 1) return (Subscriber)subscriberList.getSelectedValue();
+	//	return null;
+		
+		return form;
 	}
 	/**
 	 * Создает и выводит на экран форму поиска кабеля
@@ -2250,37 +2253,36 @@ public class gui {
 	/**
 	 * Создает и выводит на экран форму выбора включения абонента
 	 * @param sub - абонент
-	 * @return выбранное включение, либо null если ничего не выбрано
+	 * @return форма
 	 */
-	public Path formSubscriberPaths(Subscriber sub) {
+	public FormSubscriberPaths formSubscriberPaths(Subscriber sub) {
 		
-		final Vector<Path> v = new Vector<Path>(); v.add(null);
-		final JDialog iFrame = newDialog("Абонент: " + sub.toString(), 485, 270);
+		final FormSubscriberPaths form = new FormSubscriberPaths();
+		form.iFrame = newDialog("Абонент: " + sub.toString(), 485, 270);
 		
-		newLabel("Включения:", iFrame, 10, 10, 320, 14);
-		final JList pathList = newList(iFrame, 10, 30, 320, 200);
-		setListItems(pathList, phc.sortByIdUp(phc.getSubscriberPaths(sub)));
-		pathList.setSelectedIndex(0);
+		newLabel("Включения:", form.iFrame, 10, 10, 320, 14);
+		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
+		setListItems(form.pathList, phc.sortByIdUp(phc.getSubscriberPaths(sub)));
+		form.pathList.setSelectedIndex(0);
 		
-		JButton okButton = newButton("Выбрать", iFrame, 340, 30, 125, 26);
+		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
 		/*
 		 * Событие кнопки выбора включения
 		 */	
-		ActionListener selectPath = new ActionListener() {
+		/*ActionListener selectPath = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
 				v.set(0, (Path)pathList.getSelectedValue());
 				iFrame.dispose();	
 			}
 		};
-		okButton.addActionListener(selectPath);
+		okButton.addActionListener(selectPath);*/
 		/*
 		 * ---------------------------------------------------------
 		 */
-		iFrame.setVisible(true);
+		form.iFrame.setVisible(true);
 		
-		return v.get(0);
-		
+		return form;
 	}
 	/**
 	 * Создает и выводит на экран форму выбора кабеля в канале канализации
@@ -2320,37 +2322,36 @@ public class gui {
 	/**
 	 * Создает и выводит на экран форму выбора включений данной пары
 	 * @param pair - пара
-	 * @return выбранное включение, либо null если ничего не выбрано
+	 * @return форма
 	 */
-	public Path formPairPaths(Pair pair) {
+	public FormPairPaths formPairPaths(Pair pair) {
 		
-		final Vector<Integer> v = new Vector<Integer>(); v.add(0);
-		final JDialog iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
+		//final Vector<Integer> v = new Vector<Integer>(); v.add(0);
+		final FormPairPaths form = new FormPairPaths();
+		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
 		
-		newLabel("Включения:", iFrame, 10, 10, 320, 14);
-		final JList pathList = newList(iFrame, 10, 30, 320, 200);
-		setListItems(pathList, phc.sortByIdUp(phc.getPairsPath(pair)));
-		pathList.setSelectedIndex(0);
+		newLabel("Включения:", form.iFrame, 10, 10, 320, 14);
+		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
+		setListItems(form.pathList, phc.sortByIdUp(phc.getPairsPath(pair)));
+		form.pathList.setSelectedIndex(0);
 		
-		JButton okButton = newButton("Выбрать", iFrame, 340, 30, 125, 26);
+		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
 		/*
 		 * Событие кнопки выбора включения
 		 */	
-		ActionListener selectPath = new ActionListener() {
+	/*	ActionListener selectPath = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
 				v.set(0, 1);
 				iFrame.dispose();	
 			}
 		};
-		okButton.addActionListener(selectPath);
+		okButton.addActionListener(selectPath);*/
 		/*
 		 * ---------------------------------------------------------
 		 */
-		iFrame.setVisible(true);
-		
-		if (v.get(0) == 1) return (Path)pathList.getSelectedValue();
-		return null;
+		form.iFrame.setVisible(true);
+		return form;
 		
 	}
 	/**
@@ -2961,7 +2962,7 @@ public class gui {
 		ActionListener boxClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				viewConnectedPointElement((Box)((ElementView)e.getSource()).getElement(), cabinet.getNet(), false, null, null );			
+				viewConnectedPointElement((Box)((ElementView)e.getSource()).getElement(), cabinet.getNet(), null, null );			
 			}
 		};
 		
@@ -3080,7 +3081,7 @@ public class gui {
 		ActionListener frameClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				viewConnectedPointElement((Frame)((ElementView)e.getSource()).getElement(), dframe.getNet(), false, null, null );			
+				viewConnectedPointElement((Frame)((ElementView)e.getSource()).getElement(), dframe.getNet(), null, null );			
 			}
 		};
 		
@@ -3172,10 +3173,16 @@ public class gui {
 	
 		iFrame.setVisible(true);
 	}
-	
-	public Pair viewConnectedPointElement(final ConnectedPointElement element, final Integer netId, final boolean selectPlaceMode, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
+	/**
+	 * Отображает окно просмотра элементов
+	 * @param element - отображаемый элемент
+	 * @param netId - Id сети
+	 * @param textFieldForSelectResult - элемент, где отобразиться выбор места, в случае режима выбора свободного места
+	 * @param listForSelectedPair - элемент, где отобразиться выбор пары, в случае режима выбора пары
+	 */
+	public void viewConnectedPointElement(final ConnectedPointElement element, final Integer netId, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
 		
-		final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
+		//final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
@@ -3213,7 +3220,6 @@ public class gui {
 					iFrame.dispose();
 				}
 				else {
-					
 					viewPairInfo(p,infoArea);
 				}
 			}
@@ -3228,7 +3234,7 @@ public class gui {
 		 */
 		ActionListener placeClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (selectPlaceMode) {
+				if (textFieldForSelectResult != null) {
 					Pair p = (Pair)((ElementView)e.getSource()).getElement();
 					textFieldForSelectResult.setText(p.getFromNumber().toString());
 					iFrame.dispose();
@@ -3302,13 +3308,10 @@ public class gui {
 					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
 					button.addActionListener(placeClick);
 				}
-
 			x++;
-			
 		}
-	
 		iFrame.setVisible(true);
-		return returnedPair.get(0);
+		//return returnedPair.get(0);
 	}
 
 	public void viewDBox(final DBox element, final Integer netId) {
@@ -3401,7 +3404,7 @@ public class gui {
 		iFrame.setVisible(true);
 	}
 	
-	public void viewCable(final Cable element, final Integer netId, final boolean selectMode, final JTextField textFieldForSelectResult) {
+	public void viewCable(final Cable element, final Integer netId, final JTextField textFieldForSelectResult) {
 		
 		//final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
 		
@@ -3439,7 +3442,7 @@ public class gui {
 		 */
 		ActionListener placeClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (selectMode) {
+				if (textFieldForSelectResult != null) {
 					Pair p = (Pair)((ElementView)e.getSource()).getElement();
 					//returnedPair.set(0, p);
 					textFieldForSelectResult.setText(p.getFromNumber().toString());
@@ -4123,22 +4126,38 @@ public class gui {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Pair p = (Pair) ep.getElement();
-				Subscriber sub = formSearchSubscriber(netId);
+				final ElementView ep = (ElementView)pm.getInvoker();
+				final Pair p = (Pair) ep.getElement();
+				final FormSubscriberSearch form = formSearchSubscriber(netId);
 				
-				if (sub != null) {
-					Path path = formSubscriberPaths(sub);
-					if (path != null) {
-						Pair oldPair = addPairToPath(path,p,iFrame); 
-						setPairButtonColor(p, ep);
-						if (oldPair != null) {
-							ElementView oldPairButton = elementViewHash.get(oldPair);
-							if (oldPairButton != null)
-								setPairButtonColor(oldPair, oldPairButton);
-						}
+				ActionListener selectSubscriber = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (form.subscriberList.getSelectedIndex() == -1) {newError(form.iFrame,"Абонент не выбран!"); return;}
+						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
+						
+						final FormSubscriberPaths formPath = formSubscriberPaths(sub);
+						
+						ActionListener selectPath = new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								if (formPath.pathList.getSelectedIndex() == -1) {newError(formPath.iFrame,"Включение не выбрано!"); return;}
+								Path path = (Path)formPath.pathList.getSelectedValue();
+								
+								Pair oldPair = addPairToPath(path,p,iFrame);
+								setPairButtonColor(p, ep);
+								if (oldPair != null) {
+									ElementView oldPairButton = elementViewHash.get(oldPair);
+									if (oldPairButton != null)
+										setPairButtonColor(oldPair, oldPairButton);
+								}
+								formPath.iFrame.dispose();	
+							}
+						};
+						formPath.okButton.addActionListener(selectPath);
+	
+						form.iFrame.dispose();	
 					}
-				}
+				};
+				form.okButton.addActionListener(selectSubscriber);
 			}
 		});
 		
@@ -4174,10 +4193,15 @@ public class gui {
 		menuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Pair p = (Pair) ep.getElement();
-				Path path = formPairPaths(p);
-				if (path != null)
+				final ElementView ep = (ElementView)pm.getInvoker();
+				final Pair p = (Pair) ep.getElement();
+				final FormPairPaths form =  formPairPaths(p);
+				
+				ActionListener selectPath = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (form.pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
+					Path path = (Path)form.pathList.getSelectedValue();
+					
 					if (path.removePair(p)) {
 						rw.addLogMessage("Пара "+ p.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
 
@@ -4187,6 +4211,10 @@ public class gui {
 							setPairButtonColor(p, ep);
 						}
 					}				
+					form.iFrame.dispose();	
+					}
+				};
+				form.okButton.addActionListener(selectPath);			
 			}
 		});
 		

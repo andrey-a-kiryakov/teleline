@@ -1,6 +1,5 @@
 package org.teleline.model;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
