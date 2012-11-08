@@ -9,8 +9,8 @@ import javax.swing.JTextField;
 */
 public class FormSubscriberSearch extends Form{
 	
-	public FormSubscriberSearch(String title, int width, int height) {
-		super(title, width, height);
+	public FormSubscriberSearch() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	public JTextField textField;

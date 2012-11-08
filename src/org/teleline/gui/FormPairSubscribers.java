@@ -19,12 +19,14 @@ public class FormPairSubscribers extends Form {
 	public JList subscriberList;
 	public JButton okButton;
 	
-	public FormPairSubscribers(String title, int width, int height) {
-		super(title, width, height);
+	public FormPairSubscribers(SubscriberCollection sc, PathCollection phc, Pair pair) {
+		super();
 		// TODO Auto-generated constructor stub
-		this.addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
+		this.createDialog("Пара: " + pair.toString(), 485, 270);
+		addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
 		subscriberList = addList(10, 30, 320, 200);
 		okButton = addButton("Выбрать", 340, 30, 125, 26);
+		fillSubscriberList (sc, phc, pair);
 		iFrame.setVisible(true);
 		
 	}

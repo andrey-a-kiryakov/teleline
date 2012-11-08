@@ -1,34 +1,40 @@
 package org.teleline.gui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public abstract class Form {
 	
 	public JDialog  iFrame;
 	
-	public Form(String title, int width, int height) {
+	public Form() {
 		
-		iFrame = createDialog(title, width, height);
 		
 	}
 	
-	private JDialog createDialog (String title, int width, int height) {
+	protected JDialog createDialog (String title, int width, int height) {
 		
-		JDialog frame = new JDialog();
-		frame.setSize(width, height);
-		//frame.setLocationRelativeTo(this.frame);
-		frame.setTitle(title);
-		frame.setResizable(false);
+		iFrame = new JDialog();
+		iFrame.setSize(width, height);
+		iFrame.setLocationRelativeTo(iFrame);
+		iFrame.setTitle(title);
+		iFrame.setResizable(false);
 	//	frame.setModal(true);
-		frame.getContentPane().setLayout(null);
-		return frame;
+		iFrame.getContentPane().setLayout(null);
+		return iFrame;
 	}
 	
 	public JList addList( int x, int y, int w, int h) {
@@ -61,5 +67,39 @@ public abstract class Form {
 		iFrame.getContentPane().add(newLabel);
 		
 		return newLabel;
+	}
+	
+	@SuppressWarnings("serial")
+	public JTable addTable( int x, int y, int w, int h) {
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(x, y, w, h);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JTable table = new JTable(new DefaultTableModel()){
+			public boolean isCellEditable(int arg0, int arg1) {return false; }
+		};
+		table.setRowHeight(18);
+		table.getSelectionModel().setSelectionMode(0);
+		scrollPane.setViewportView(table);
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+		iFrame.getContentPane().add(scrollPane);
+		return table;
+	}
+	
+	protected void util_setListItems (final JList List, Collection<?> Collection) {
+		
+		((DefaultListModel)List.getModel()).clear();
+			
+		Iterator<?> listItem = Collection.iterator();
+		while (listItem.hasNext()) ((DefaultListModel)List.getModel()).addElement(listItem.next());
+
+	}
+	
+	public void util_clearTable (JTable table) {
+		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0;  i--) {
+			((DefaultTableModel) table.getModel()).removeRow(i);
+		}
+		
 	}
 }

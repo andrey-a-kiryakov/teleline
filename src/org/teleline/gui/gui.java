@@ -2193,13 +2193,7 @@ public class gui {
 		final Vector<Cable> v = new Vector<Cable>(); v.add(null);
 		
 		final JDialog iFrame = newDialog("Выбрать кабель", 685, 600);
-	/*	newLabel("Номер кабеля:", iFrame, 10, 10, 320, 14);
-		final JTextField cableNumberText = newTextField(iFrame,10, 30, 320, 25);
-		
-		newLabel("Результаты поиска:", iFrame, 10, 65, 320, 14);
-		final JList cableList = newList(iFrame, 10, 85, 320, 400);
-	*/
-		
+			
 		final JTable cableTable = newTable(iFrame, 10, 10, 520, 540);
 		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
@@ -2207,35 +2201,14 @@ public class gui {
 		clearTable(cableTable);
 		Iterator<StructuredElement> i = cc.getInNet(netId).iterator();
 		while (i.hasNext()) { addCableToTable(cableTable, (Cable)i.next()); }
-		
-		//Список кабелей выводиться сразу
-		//setListItems(cableList, cc.sortByIdUp(cc.getInNet(netId)));
-		
-		//JButton findByNumberButton = newButton("Найти", iFrame, 340, 30, 125, 26);
-		
+				
 		JButton okButton = newButton("Выбрать", iFrame, 540, 10, 125, 26);
-		
-		/*
-		 * Событие кнопки поиска кабеля по номеру
-		 */
-	//	ActionListener findCableByNumber = new ActionListener() {
-	//		public void actionPerformed(ActionEvent arg0) {				
-	//			setListItems(cableList, cc.searchBySNumber(cableNumberText.getText(), netId));
-	//		}
-	//	};
-	//	findByNumberButton.addActionListener(findCableByNumber);
-		/*
-		 * ---------------------------------------------------------
-		 */
 		
 		/*
 		 * Событие кнопки выбора кабеля
 		 */	
 		ActionListener selectCable = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//if (cableList.getSelectedIndex() == -1) {newError(iFrame,"Кабель не выбран!"); return;}
-				//v.set(0, (Cable)cableList.getSelectedValue());
-				//iFrame.dispose();
 				if (cableTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Кабель не выбран!"); return; }
 				int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
 				v.set(0, (Cable)tableModel.getValueAt( selectedIndex, 0));
@@ -2249,40 +2222,6 @@ public class gui {
 		iFrame.setVisible(true);
 		
 		return v.get(0);
-	}
-	/**
-	 * Создает и выводит на экран форму выбора включения абонента
-	 * @param sub - абонент
-	 * @return форма
-	 */
-	public FormSubscriberPaths formSubscriberPaths(Subscriber sub) {
-		
-		final FormSubscriberPaths form = new FormSubscriberPaths();
-		form.iFrame = newDialog("Абонент: " + sub.toString(), 485, 270);
-		
-		newLabel("Включения:", form.iFrame, 10, 10, 320, 14);
-		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
-		setListItems(form.pathList, phc.sortByIdUp(phc.getSubscriberPaths(sub)));
-		form.pathList.setSelectedIndex(0);
-		
-		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
-		/*
-		 * Событие кнопки выбора включения
-		 */	
-		/*ActionListener selectPath = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
-				v.set(0, (Path)pathList.getSelectedValue());
-				iFrame.dispose();	
-			}
-		};
-		okButton.addActionListener(selectPath);*/
-		/*
-		 * ---------------------------------------------------------
-		 */
-		form.iFrame.setVisible(true);
-		
-		return form;
 	}
 	/**
 	 * Создает и выводит на экран форму выбора кабеля в канале канализации
@@ -2407,34 +2346,6 @@ public class gui {
 		
 		return v.get(0);
 	}
-	/**
-	 * Создает и выводит на экран форму выбора абонента, использующего данную пару
-	 * @param pair - пара
-	 * @return форма
-	 */
-	//public FormPairSubscribers formPairSubscribers(Pair pair) {
-		
-		//FormPairSubscribers form = new FormPairSubscribers();
-		
-		//form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
-		
-		//form.addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
-		//newLabel("Абоненты используюшие пару:", form.iFrame, 10, 10, 320, 14);
-		//form.subscriberList = newList(form.iFrame, 10, 30, 320, 200);
-		
-		//HashSet<Subscriber> s = new HashSet<Subscriber>();
-		
-		//Iterator<Path> i = phc.getPairsPath(pair).iterator();
-		//while (i.hasNext()) s.add((Subscriber)sc.getElement(i.next().getSubscriber()));
-	
-		//setListItems(form.subscriberList, sc.sortByIdUp(s));
-		//form.subscriberList.setSelectedIndex(0);
-		
-		//form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
-		//form.iFrame.setVisible(true);
-		
-		//return form;
-	//}
 	/**
 	 * Создает и выводит на экран форму создания набора участков канализации
 	 * @param net - сеть
@@ -4050,15 +3961,26 @@ public class gui {
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Tube t = (Tube) ep.getElement();
-				Cable cable = formSearchCable(netId);
-				if (cable != null) {
-					if (t.containsCable(cable)) { newError(iFrame, "Кабель уже содержиться в канале"); return; }
-					t.addCable(cable);
-					rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + duc.getElement(t.getDuct()));
-					setTubeButtonColor(t, ep);
-				}	
+				final ElementView ep = (ElementView)pm.getInvoker();
+				final Tube t = (Tube) ep.getElement();
+				final FormSearchCable form = new FormSearchCable(cc,netId);
+				
+				ActionListener selectCable = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (form.cableTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Кабель не выбран!"); return; }
+						int selectedIndex = form.cableTable.getRowSorter().convertRowIndexToModel(form.cableTable.getSelectionModel().getMinSelectionIndex());
+						
+						Cable cable = (Cable)((DefaultTableModel)form.cableTable.getModel()).getValueAt( selectedIndex, 0);
+						
+						if (t.containsCable(cable)) { newError(iFrame, "Кабель уже содержиться в канале"); return; }
+						
+						t.addCable(cable);
+						rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + duc.getElement(t.getDuct()));
+						setTubeButtonColor(t, ep);	
+						form.iFrame.dispose();
+					}
+				};
+				form.okButton.addActionListener(selectCable);
 			}
 		});
 		
@@ -4106,7 +4028,7 @@ public class gui {
 						if (form.subscriberList.getSelectedIndex() == -1) {newError(form.iFrame,"Абонент не выбран!"); return;}
 						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
 						
-						final FormSubscriberPaths formPath = formSubscriberPaths(sub);
+						final FormSubscriberPaths formPath = new FormSubscriberPaths(phc,sub);
 						
 						ActionListener selectPath = new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
@@ -4196,8 +4118,7 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
-				final FormPairSubscribers form = new FormPairSubscribers("Пара: " + p.toString(), 485, 270);
-				form.fillSubscriberList(sc, phc, p);
+				final FormPairSubscribers form = new FormPairSubscribers(sc, phc, p);
 				
 				ActionListener selectSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
