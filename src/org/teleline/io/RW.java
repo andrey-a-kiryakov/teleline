@@ -69,7 +69,7 @@ public class RW {
 		this.dmc = dmc;
 	}
 	
-	private void writeLog () {
+	public void writeLog () {
 		
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(fLog, true));
@@ -479,13 +479,20 @@ public class RW {
 			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
 			String fileName = fSave + DF.format(Calendar.getInstance().getTime()) + ".xml";
 			
+			addLogMessage("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
+			writeLog();
+			
 			xmlOutput.output(document, new FileOutputStream(fileName));
 			
-			addLogMessage("Файл сохранен: "+ fileName);
+			File file = new File(fileName);
+			
+			
+			addLogMessage("Файл сохранен: "+ fileName + "(" + file.length() + " байт)");
 			writeLog();
 			return true;
 		  } 
 		catch (IOException io) {
+			writeError("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
 			writeError("Ошибка сохранения файла системы: " + io.toString());
 			return false;
 		  }
@@ -857,8 +864,10 @@ public class RW {
 				
 			}
 			
-			addLogMessage("Файл открыт: "+ xmlFile.getName());
+			addLogMessage("Файл открыт: "+ xmlFile.getName() + "("+ xmlFile.length() + " байт)");
+			addLogMessage("Количество элементов после открытия файла: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
 			writeLog();
+			
 			return true;
 			
 		  } catch (IOException io) {
@@ -891,7 +900,7 @@ public class RW {
 	
 	public void addLogMessage(String message) {
 		
-		SimpleDateFormat DF = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+		SimpleDateFormat DF = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss:SSS");
 		
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(fNonSavedLog, true));	

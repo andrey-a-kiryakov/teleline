@@ -103,6 +103,12 @@ public abstract class AbstractCollection {
 		return this.elements.iterator();
 	}
 	/**
+	 * Возвращает размер коллекции
+	 */
+	public int getSize() {
+		return elements.size();
+	}
+	/**
 	 * Возвращает новую коллекцию, элементы которой отсортированя по id по возрастанию
 	 *@param h - неотсортированный набор элементов
 	 */

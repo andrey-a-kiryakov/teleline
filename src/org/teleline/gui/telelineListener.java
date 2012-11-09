@@ -31,6 +31,8 @@ public class telelineListener implements WindowListener {
 		 
 		 }
 		 win.rw.deleteNotSavedLog();
+		 win.rw.addLogMessage("== Программа закрыта ==");
+	     win.rw.writeLog();
 		 		 
     }
 
@@ -52,6 +54,8 @@ public class telelineListener implements WindowListener {
 
 	public void windowOpened(WindowEvent e) {
        win.rw.checkFolders();
+       win.rw.addLogMessage("== Программа запущена ==");
+       win.rw.writeLog();
     }
 
 	public void windowActivated(WindowEvent e) {
