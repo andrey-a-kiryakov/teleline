@@ -122,7 +122,7 @@ public class RW {
 	/**
 	 * Сохраняет данные системы в файл
 	 */
-	public boolean save() {
+	public File save() {
 		
 		try {	 
 			Element system = new Element("system");
@@ -489,12 +489,12 @@ public class RW {
 			
 			addLogMessage("Файл сохранен: "+ fileName + "(" + file.length() + " байт)");
 			writeLog();
-			return true;
+			return file;
 		  } 
 		catch (IOException io) {
 			writeError("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
 			writeError("Ошибка сохранения файла системы: " + io.toString());
-			return false;
+			return null;
 		  }
 		
 	}

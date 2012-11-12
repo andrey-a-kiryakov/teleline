@@ -40,7 +40,7 @@ import java.awt.event.InputEvent;
 
 public class teleline {
 	
-	private JFrame frmTeleline;
+	JFrame frmTeleline;
 	public IdGenerator ig;
 	public gui GUI;
 	public RW rw;
@@ -160,8 +160,10 @@ public class teleline {
 				
 				if (rw.isSaved() == false) {
 					if (GUI.newDialog(frmTeleline, "Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
-						if (rw.save()) {
+						File file = rw.save();
+						if (file != null) {
 							GUI.newInfo(frmTeleline, "Файл сохранен");
+							frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
 							return;
 						}
 						else {
@@ -188,7 +190,9 @@ public class teleline {
 					dmc.removeAllElements();
 					
 					if (rw.read(chooser.getSelectedFile())) {
-						GUI.newInfo(frmTeleline, "Файл прочитан!");
+						GUI.newInfo(frmTeleline, "Файл \"" + chooser.getSelectedFile().getName() + "\" прочитан");
+						frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + chooser.getSelectedFile().getName());
+						
 					}
 					else {
 						GUI.newError(frmTeleline, "Ошибка при чтении файла");
@@ -202,9 +206,10 @@ public class teleline {
 		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				if (rw.save()) {
+				File file = rw.save();
+				if (file != null) {
 					GUI.newInfo(frmTeleline, "Файл сохранен");
+					frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
 				}
 				else {
 					GUI.newError(frmTeleline, "Ошибка при сохранении файла");
