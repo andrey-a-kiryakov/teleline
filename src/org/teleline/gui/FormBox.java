@@ -36,7 +36,7 @@ public class FormBox extends Form {
 		// TODO Auto-generated constructor stub
 		
 		createDialog("Создать бокс", 410, 455);
-	/*	if (box != null) iFrame.setTitle("Редактировать бокс");
+		if (box != null) iFrame.setTitle("Редактировать бокс");
 		
 		addLabel("Сеть:", 20, 15, 360, 25);
 		netsComboBox = addComboBox(20, 40, 360, 25);
@@ -130,7 +130,7 @@ public class FormBox extends Form {
     		placeComboBox.addItem(box.getPlaceNumber());
     		placeComboBox.setSelectedItem(box.getPlaceNumber());
     	}
-     */   
+        
         saveButton = addButton("Сохранить", 20, 380, 110, 25);
     	
        /* saveButton.addActionListener(new ActionListener() {

@@ -1,6 +1,5 @@
 package org.teleline.gui;
 
-import java.awt.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,7 +25,7 @@ import org.teleline.model.Sys;
 public abstract class Form {
 	
 	public JDialog  iFrame;
-	protected Sys iSys;
+	public Sys iSys;
 	
 	public Form() {
 		
@@ -43,6 +42,9 @@ public abstract class Form {
 	//	frame.setModal(true);
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
+	}
+	public void setSys(Sys iSys) {
+		this.iSys = iSys;
 	}
 	/**
 	 * Добавляет список к форме

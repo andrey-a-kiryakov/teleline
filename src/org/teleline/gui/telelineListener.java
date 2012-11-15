@@ -18,11 +18,11 @@ public class telelineListener implements WindowListener {
 	}
 	public void windowClosing(WindowEvent e) {
 		 
-		 if (win.rw.isSaved() == false){ 
+		 if (win.sys.rw.isSaved() == false){ 
 			
 			 if (win.GUI.newDialog(e.getComponent(), "Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
 				 
-				 File file = win.rw.save();
+				 File file = win.sys.rw.save();
 				 if (file != null) {
 					 win.GUI.newInfo(e.getComponent(), "Файл успешно сохранен");
 					 win.frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
@@ -33,9 +33,9 @@ public class telelineListener implements WindowListener {
 			 }
 		 
 		 }
-		 win.rw.deleteNotSavedLog();
-		 win.rw.addLogMessage("== Программа закрыта ==");
-	     win.rw.writeLog();
+		 win.sys.rw.deleteNotSavedLog();
+		 win.sys.rw.addLogMessage("== Программа закрыта ==");
+	     win.sys.rw.writeLog();
 		 		 
     }
 
@@ -56,9 +56,9 @@ public class telelineListener implements WindowListener {
     }
 
 	public void windowOpened(WindowEvent e) {
-       win.rw.checkFolders();
-       win.rw.addLogMessage("== Программа запущена ==");
-       win.rw.writeLog();
+       win.sys.rw.checkFolders();
+       win.sys.rw.addLogMessage("== Программа запущена ==");
+       win.sys.rw.writeLog();
     }
 
 	public void windowActivated(WindowEvent e) {
