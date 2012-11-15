@@ -14,9 +14,6 @@ public class Duct extends LinkedElement {
 	private String date = "";
 	private String method = "";
 	
-	
-	//private Vector<Integer> cables = new Vector<Integer>();
-	
 	private ManholeCollection mc;
 	private CabinetCollection cbc;
 	private DFrameCollection dfc;

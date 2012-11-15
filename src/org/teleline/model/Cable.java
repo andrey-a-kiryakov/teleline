@@ -6,7 +6,7 @@ package org.teleline.model;
 *@author Кирьяков Андрей
 */
 public class Cable extends LinkedElement {
-	//private Integer usedCapacity = 0;
+
 	private Integer lenght = 1; //длина кабеля в (м)
 	private String wireDiametr = "0,5"; // диаметр жилы (мм)
 	private String year = "2011"; //год протяжки
@@ -25,7 +25,7 @@ public class Cable extends LinkedElement {
 	 * Конструктор
 	 */
 	public Cable(DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, FrameCollection fc, BoxCollection bc, PairCollection pc) {
-		this.capacity = 100;
+	//	this.capacity = 100; //ёмкость по умолчанию
 		this.dfc = dfc;
 		this.cbc = cbc;
 		this.dbc = dbc;
@@ -34,15 +34,6 @@ public class Cable extends LinkedElement {
 		this.pc = pc;
 	}
 	
-	/**
-	 * Устанавливает используемую емкость елемента в "Парах"
-	 * Функция используется только при чтении из файла
-	 */
-/*	public Cable setUsedCapacity (Integer capacity) {
-		this.usedCapacity = capacity;
-		return this;
-	}
-*/	
 	/**
 	 * Возвращает используемую емкость елемента в "Парах"
 	 */
@@ -118,20 +109,10 @@ public class Cable extends LinkedElement {
 	 * Проверяет, можно ли добавить в кабель данное количество "Пар"
 	 * * @param количество добавляемых "Пар"
 	 */
-	public boolean isConnect (Integer pairCount) {
+/*	public boolean isConnect (Integer pairCount) {
 		if ((this.capacity - this.pc.getInCable(this).size()) >= pairCount) return true;
 		return false;
-	}
-	/**
-	 * Добавляет в кабель данное количество "Пар"
-	 * @param количество добавляемых "Пар"
-	 * @return номер первой присоединеной пары
-	 */
-	public Integer connect(Integer pairCount) { 
-		//this.usedCapacity += pairCount; 
-		//return this.usedCapacity - pairCount + 1;
-		return 0;
-	}
+	}*/
 	/**
 	 * Устанавливает марку кабеля
 	 */
@@ -159,7 +140,7 @@ public class Cable extends LinkedElement {
 		return this.type;
 	}
 	/**
-	 * Возвращает элемент из которого выходит кабель
+	 * Возвращает элемент, из которого выходит кабель
 	 */
 	public AbstractElement getFromElement() {
 		
@@ -171,7 +152,10 @@ public class Cable extends LinkedElement {
 		}
 		return null;
 	}
-	
+	/**
+	 * Возвращает элемент, в который приходит кабель
+	 * @return
+	 */
 	public AbstractElement getToElement() {
 		
 		switch (this.type.intValue()) {
@@ -184,69 +168,56 @@ public class Cable extends LinkedElement {
 		return null;
 	}
 	/**
-	 * Строковое представление элемента
+	 * Стандартное строковое представление элемента
 	 */
 	public String toString() {
 		
 		String s = "";
-	/*	String s1 = "", s2 = "";
 		
-		Pair p = this.pc.getInPlace(this, 0);
-		
-		if (p != null) {
-			s2 = ", " + p.toString();
-		}
-	*/	
 		switch (this.type.intValue()) {
-		case 0: s = "M";/* s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString();*/ break;
-		case 1: s = "Рпер";/* s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString();*/ break;
-		case 2: s = "Р";/* s1  = this.cbc.getElement(this.getFrom()).toString();*/ break;
-		case 3: s = "ПП";/* s1  = this.dfc.getElement(this.getFrom()).toString();*/ break;
-		
+			case 0: s = "M"; break;
+			case 1: s = "Рпер"; break;
+			case 2: s = "Р"; break;
+			case 3: s = "ПП"; break;
 		}
-		return s + "-" + this.getNumber();// + " ("+s1+")";
+		return s + "-" + this.getNumber();
 	}
 	
 	/**
 	 * Сокращенное строковое представление элемента
 	 */
 	public String toShortString() {
+		
 		String s = "";
 		
-		
 		switch (this.type.intValue()) {
-		case 0: s = "M"; break;
-		case 1: s = "Рпер";  break;
-		case 2: s = "Р";  break;
-		case 3: s = "ПП";  break;
-		
-		
+			case 0: s = "M"; break;
+			case 1: s = "Рпер";  break;
+			case 2: s = "Р";  break;
+			case 3: s = "ПП";  break;
 		}
 		return s + "-" + this.getNumber();
 	}
-	
 	/**
 	 * Полное строковое представление элемента
 	 */
 	public String toLongString() {
 		
 		String s = "";
-		String s1 = "", s2 = "";
+		String s1 = "";//, s2 = "";
 		
-		Pair p = this.pc.getInPlace(this, 0);
+	//	Pair p = this.pc.getInPlace(this, 0);
 		
-		if (p != null) {
+		/*if (p != null) {
 			s2 = ", " + p.toString();
-		}
+		}*/
 		
 		switch (this.type.intValue()) {
-		case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
-		case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
-		case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString(); break;
-		case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString(); break;
-		
+			case 0: s = "M"; s1 = this.dfc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
+			case 1: s = "Рпер"; s1 = this.cbc.getElement(this.getFrom()).toString()+" - "+this.cbc.getElement(this.getTo()).toString(); break;
+			case 2: s = "Р"; s1  = this.cbc.getElement(this.getFrom()).toString(); break;
+			case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString(); break;
 		}
 		return s + "-" + this.getNumber() + " ("+s1+")";
 	}
-	
 }

@@ -1,24 +1,32 @@
 package org.teleline.gui;
 
+import java.awt.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.teleline.model.AbstractElement;
+import org.teleline.model.Sys;
+
 public abstract class Form {
 	
 	public JDialog  iFrame;
+	protected Sys iSys;
 	
 	public Form() {
 		
@@ -36,7 +44,10 @@ public abstract class Form {
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
 	}
-	
+	/**
+	 * Добавляет список к форме
+	 * @return список
+	 */
 	public JList addList( int x, int y, int w, int h) {
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -51,7 +62,10 @@ public abstract class Form {
 				
 		return list;
 	}
-	
+	/**
+	 * Добавляет кнопку к форме
+	 * @return кнопка
+	 */
 	public JButton addButton(String Text, int x, int y, int w, int h) {
 		
 		JButton button = new JButton(Text);
@@ -60,13 +74,41 @@ public abstract class Form {
 		
 		return button;
 	}
-	
+	/**
+	 * Добавляет надпись к форме
+	 * @return надпись
+	 */
 	public JLabel addLabel(String Text, int x, int y, int w, int h) {
+		
 		JLabel newLabel = new JLabel(Text);
 		newLabel.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(newLabel);
 		
 		return newLabel;
+	}
+	/**
+	 * Добавляет выпадающий список к форме
+	 * @return выпадающий список
+	 */
+	public JComboBox addComboBox(int x, int y, int w, int h) {
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(x, y, w, h);
+		iFrame.getContentPane().add(comboBox);
+		
+		return comboBox;
+	}
+	/**
+	 * Добавляет текстовое поле к форме
+	 * @return текстовое поле
+	 */
+	public JTextField addTextField(int x, int y, int w, int h) {
+		
+		JTextField textField = new JTextField();
+		textField.setBounds(x, y, w, h);
+		iFrame.getContentPane().add(textField);
+		
+		return textField;
 	}
 	
 	@SuppressWarnings("serial")
@@ -102,4 +144,20 @@ public abstract class Form {
 		}
 		
 	}
+	/**
+	 * Устанавливает (добавляет) элементы выпадающего списка
+	 * @param ComboBox - выпадающий список
+	 * @param Collection - коллекция элементов
+	 */
+	public void util_setComboBoxItems(final JComboBox ComboBox, Collection<?> Collection) {
+		
+		Iterator<?> i = Collection.iterator();
+		while (i.hasNext())  {ComboBox.addItem((AbstractElement)i.next());}
+		
+	}
+	
+	public void util_newInfo (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Операция выполнена успешно", JOptionPane.INFORMATION_MESSAGE);}
+	
+	public void util_newError (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Ошибка", JOptionPane.ERROR_MESSAGE);}
+
 }

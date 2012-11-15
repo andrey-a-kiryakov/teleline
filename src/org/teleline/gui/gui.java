@@ -1129,11 +1129,12 @@ public class gui {
 		
 		newLabel("Мест в шкафу:", iFrame, 20, 135, 360, 25);
 		final JComboBox comboBox1 = new JComboBox();
+		comboBox1.addItem((Integer)1);
 		comboBox1.addItem((Integer)3);
 		comboBox1.addItem((Integer)4);
 		comboBox1.addItem((Integer)6);
 		comboBox1.addItem((Integer)12);
-		comboBox1.setSelectedIndex(3);
+		comboBox1.setSelectedIndex(4);
 		comboBox1.setBounds(20, 160, 360, 25);
 		iFrame.getContentPane().add(comboBox1);
 		
@@ -2863,6 +2864,14 @@ public class gui {
 			//	JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 			//	ElementView ep = (ElementView)pm.getInvoker();
 			//	ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
+			/*	FormBox form = new FormBox(null, cabinet); 
+				
+				form.saveButton.addActionListener(new ActionListener() {
+		    		public void actionPerformed(ActionEvent arg0) {
+		    			iFrame.dispose();
+						viewCabinet(cabinet);
+		    		}
+				});*/
 				if (formBox(null, cabinet) != null ) {
 					iFrame.dispose();
 					viewCabinet(cabinet);
