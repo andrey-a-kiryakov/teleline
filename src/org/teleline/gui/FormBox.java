@@ -1,5 +1,5 @@
 /**
- *  Создает и выводит на экран форму создания/режактирования элемента "Бокс"
+ *  Создает и выводит на экран форму создания/редактирования элемента "Бокс"
  * @param box - элемент "Бокс", если null - выводится форма создания нового элемента
  */
 package org.teleline.gui;
@@ -7,11 +7,9 @@ package org.teleline.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JTextField;
 
 import org.teleline.model.Box;
@@ -19,32 +17,32 @@ import org.teleline.model.Cabinet;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.Net;
 import org.teleline.model.StructuredElement;
+import org.teleline.model.Sys;
 
 public class FormBox extends Form {
 	
 	private JComboBox comboBox1;
-	private JComboBox comboBox2;
 	private JComboBox comboBox3;
 	private JComboBox placeComboBox;
-	private JComboBox netsComboBox;
+//	private JComboBox netsComboBox;
 	private JComboBox cabinetsComboBox;
 	private JTextField formatedText;
 	public JButton saveButton;
 	
-	public FormBox(final Box box, final Cabinet cabinet) {
-		super();
+	public FormBox(final Sys iSys, final Box box, final Cabinet cabinet) {
+		super(iSys);
 		// TODO Auto-generated constructor stub
 		
 		createDialog("Создать бокс", 410, 455);
 		if (box != null) iFrame.setTitle("Редактировать бокс");
 		
-		addLabel("Сеть:", 20, 15, 360, 25);
-		netsComboBox = addComboBox(20, 40, 360, 25);
-		util_setComboBoxItems(netsComboBox, iSys.nc.sortByIdUp(iSys.nc.elements()));
-		if (cabinet != null) {
-			netsComboBox.setSelectedItem(iSys.nc.getElement(cabinet.getNet()));
-			netsComboBox.setEnabled(false);
-		}
+	//	addLabel("Сеть:", 20, 15, 360, 25);
+	//	netsComboBox = addComboBox(20, 40, 360, 25);
+	//	util_setComboBoxItems(netsComboBox, iSys.nc.sortByIdUp(iSys.nc.elements()));
+	//	if (cabinet != null) {
+	//		netsComboBox.setSelectedItem(iSys.nc.getElement(cabinet.getNet()));
+	//		netsComboBox.setEnabled(false);
+	//	}
 		
 		addLabel("Тип бокса:", 20, 75, 360, 25);
 		comboBox1 = addComboBox(20, 100, 360, 25);
@@ -57,22 +55,22 @@ public class FormBox extends Form {
 		
 		addLabel("Добавить в шкаф:", 20, 135, 360, 25);
 		cabinetsComboBox = addComboBox(20, 160, 360, 25);
-		if (netsComboBox.getSelectedIndex() > -1) {
-			util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(((Net)netsComboBox.getSelectedItem()).getId(), 0)));
-		}
-		
+	//	if (netsComboBox.getSelectedIndex() > -1) {
+			util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(iSys.nc.getOnlyElement().getId(), 0)));
+	//	}
+	/*	
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cabinetsComboBox.removeAllItems();
-                util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByIdUp(iSys.cbc.getInNetByClass(((Net)netsComboBox.getSelectedItem()).getId(), 0)));               
+                util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByIdUp(iSys.cbc.getInNetByClass(iSys.nc.getOnlyElement().getId(), 0)));               
             }
         };
         netsComboBox.addActionListener(actionListener); 
-        
+      */  
 		
 		if (cabinet != null) {
-			comboBox2.setSelectedItem(cabinet);
-			comboBox2.setEnabled(false);
+			cabinetsComboBox.setSelectedItem(cabinet);
+			cabinetsComboBox.setEnabled(false);
 		}
 		
 		addLabel("Номер бокса (0-999):", 20, 195, 360, 25);
@@ -133,16 +131,16 @@ public class FormBox extends Form {
         
         saveButton = addButton("Сохранить", 20, 380, 110, 25);
     	
-       /* saveButton.addActionListener(new ActionListener() {
+        saveButton.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent arg0) {
     			
-    			if (netsComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана сеть!"); return; }
+    		//	if (netsComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана сеть!"); return; }
     			if (cabinetsComboBox.getSelectedIndex() == -1) { util_newError("Не выбран шкаф!"); return; }
     			if (placeComboBox.getSelectedIndex() == -1) { util_newError("Не выбрано место!"); return; }
     			if (!iSys.v.validateBoxNumber(formatedText.getText())) { util_newError("Не верный номер бокса!"); return; }
     			
     			Cabinet selectedCabinet = (Cabinet)cabinetsComboBox.getSelectedItem();
-    			Integer boxNumber = rw.valueOf(formatedText.getText());
+    			Integer boxNumber = iSys.rw.valueOf(formatedText.getText());
 
     			if (box != null) {
     				Box b = iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex());
@@ -160,12 +158,12 @@ public class FormBox extends Form {
     					.setCapacity((Integer)comboBox3.getSelectedItem());
     				
     				box.setNumber(boxNumber);
-    			//	rw.addLogMessage("Бокс изменен: " + old + " => " + box.toString());
+    				iSys.rw.addLogMessage("Бокс изменен: " + old + " => " + box.toString());
     				util_newInfo("Изменения сохранены");
     				
     			}
     			else {
-    				if (iSys.bc.getInPlace((Integer)placeComboBox.getSelectedItem(), selectedCabinet.getId()) != null) { newError(iFrame, "Данное место в шкафу занято!"); return; }
+    				if (iSys.bc.getInPlace((Integer)placeComboBox.getSelectedItem(), selectedCabinet.getId()) != null) { util_newError("Данное место в шкафу занято!"); return; }
     				if (iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex()) != null ) {
     					util_newError("Бокс с таким типом и номером уже сущесвует в этом шкафу!"); return;
     				}
@@ -179,15 +177,14 @@ public class FormBox extends Form {
     				
     				iSys.bc.addElement(newBox);
     				String mes = "Создан "+(String)comboBox1.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
-    			//	rw.addLogMessage(mes);
+    				iSys.rw.addLogMessage(mes);
     				util_newInfo(mes);
+    				//System.out.println(8888);
     				
     			}
     			iFrame.dispose();
     		}
-    	});*/
+    	});
     	iFrame.setVisible(true);
-    	
-		
-	}
+	}	
 }

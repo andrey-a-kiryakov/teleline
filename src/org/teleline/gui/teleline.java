@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
-import org.teleline.io.RW;
-import org.teleline.io.Validator;
 import org.teleline.model.*;
 
 import javax.swing.JMenuBar;
@@ -90,6 +88,9 @@ public class teleline {
 	public teleline() {
 		
 		sys = new Sys();
+		Net net = new Net();
+		net.setName("Новая сеть");
+		sys.nc.addElement(net);
 /*		
 		ig = new IdGenerator();
 		
@@ -111,7 +112,7 @@ public class teleline {
 		V = new Validator();
 		
 		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc);*/
-		GUI = new gui(sys.nc,sys.dfc,sys.cbc,sys.dbc,sys.mc,sys.duc,sys.buc,sys.tuc,sys.fc,sys.bc,sys.cc,sys.pc,sys.phc,sys.sc,sys.dmc,sys.rw,sys.v,frmTeleline);
+		GUI = new gui(sys,/*sys.nc,sys.dfc,sys.cbc,sys.dbc,sys.mc,sys.duc,sys.buc,sys.tuc,sys.fc,sys.bc,sys.cc,sys.pc,sys.phc,sys.sc,sys.dmc,sys.rw,sys.v,*/frmTeleline);
 
 		initialize();
 	}
@@ -224,11 +225,11 @@ public class teleline {
 		
 		final JMenu menuCreate = new JMenu("Создать");
 		menuBar.add(menuCreate);
-		
+	/*	
 		JMenuItem menuItem = new JMenuItem("Сеть");
 		menuItem.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { GUI.formNet(null); }});
 		menuCreate.add(menuItem);
-		
+	*/	
 		JMenuItem menuItem_1 = new JMenuItem("Кросс");
 		menuItem_1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {GUI.formDFrame(null);}});
 		JSeparator separator = new JSeparator();
@@ -251,7 +252,7 @@ public class teleline {
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {GUI.formBox(null,null);}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(sys,null,null);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -268,24 +269,26 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Создать магистральные пары", 410,  570);
 				
-				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+			//	GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+			//	final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+				
+				final Integer netId = sys.nc.getOnlyElement().getId();
 				
 				GUI.newLabel("От кросса/громполосы:", iFrame, 20, 75, 360, 25);
-				final JComboBox comboBox1 = GUI.dframeComboBox(comboBox, iFrame, 20, 100, 360, 25);
+				final JComboBox comboBox1 = GUI.dframeComboBox(sys.nc.getOnlyElement().getId()/*comboBox*/, iFrame, 20, 100, 360, 25);
 				final JComboBox comboBox2 = GUI.frameComboBox(comboBox1, iFrame, 20, 135, 360, 25);
 				GUI.dframeComboBoxLinked(comboBox1, comboBox2);
 				
 				GUI.newLabel("До шкафа/бокса:", iFrame, 20, 170, 360, 25);
-				final JComboBox comboBox3 = GUI.cabinetComboBox(comboBox, 1, iFrame, 20, 195, 360, 25);
+				final JComboBox comboBox3 = GUI.cabinetComboBox(netId, 1, iFrame, 20, 195, 360, 25);
 				final JComboBox comboBox4 = GUI.boxComboBox(comboBox3, 0, iFrame, 20, 230, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox3, comboBox4, 0);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 0, iFrame, 20, 440, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(netId/*comboBox*/, comboBox1, comboBox3, 0, iFrame, 20, 440, 360, 25);
 				
-				GUI.netsDFrameComboLinked(comboBox, comboBox1);
-				GUI.netsCabinetComboLinked(comboBox, comboBox3, 1);
-				GUI.netsCableComboLinked(comboBox, comboBox1, comboBox3, comboBox6, 0);
+		//		GUI.netsDFrameComboLinked(comboBox, comboBox1);
+		//		GUI.netsCabinetComboLinked(comboBox, comboBox3, 1);
+				GUI.netsCableComboLinked(netId, comboBox1, comboBox3, comboBox6, 0);
 				
 		        GUI.newLabel("Количество создаваемых пар:", iFrame, 20, 265, 360, 25);
 				
@@ -311,10 +314,10 @@ public class teleline {
 				
 				selectFrom.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+			//			if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), dframeFrom, null);
+						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, dframeFrom, null);
 					}
 				});
 				
@@ -326,10 +329,10 @@ public class teleline {
 				
 				selectBox.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), boxFrom, null);
+						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, boxFrom, null);
 					}
 				});
 				
@@ -341,9 +344,9 @@ public class teleline {
 				
 				selectCable.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+					//	if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), cableFrom);
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, cableFrom);
 					}
 				});
 			   
@@ -354,7 +357,7 @@ public class teleline {
 				saveButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+					//	if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
 						if (comboBox3.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран шкаф!"); return; }
@@ -425,24 +428,26 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Создать межшкафные пары", 410, 570);
 				
-				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+		//		final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+				
+				final Integer netId = sys.nc.getOnlyElement().getId();
 				
 				GUI.newLabel("От шкафа/бокса (№1):", iFrame, 20, 75, 360, 25);
-				final JComboBox comboBox1 = GUI.cabinetComboBox(comboBox, 0, iFrame, 20, 100, 360, 25);
+				final JComboBox comboBox1 = GUI.cabinetComboBox(netId, 0, iFrame, 20, 100, 360, 25);
 				final JComboBox comboBox2 = GUI.boxComboBox(comboBox1, 1, iFrame, 20, 135, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox1, comboBox2, 1);
 				
 				GUI.newLabel("До шкафа/бокса (№2):", iFrame, 20, 170, 360, 25);
-				final JComboBox comboBox3 = GUI.cabinetComboBox(comboBox, 0, iFrame, 20, 195, 360, 25);
+				final JComboBox comboBox3 = GUI.cabinetComboBox(netId, 0, iFrame, 20, 195, 360, 25);
 				final JComboBox comboBox4 = GUI.boxComboBox(comboBox3, 1, iFrame, 20, 230, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox3, comboBox4, 1);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 1, iFrame, 20, 440, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(netId/*comboBox*/, comboBox1, comboBox3, 1, iFrame, 20, 440, 360, 25);
 				
-				GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
-				GUI.netsCabinetComboLinked(comboBox, comboBox3, 0);
-				GUI.netsCableComboLinked(comboBox, comboBox1, comboBox3, comboBox6, 1);
+		//		GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
+		//		GUI.netsCabinetComboLinked(comboBox, comboBox3, 0);
+				GUI.netsCableComboLinked(netId, comboBox1, comboBox3, comboBox6, 1);
 				
 				GUI.newLabel("Количество создаваемых пар:", iFrame, 20, 265, 360, 25);
 					
@@ -468,10 +473,10 @@ public class teleline {
 				
 				selectFrom.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), box1From, null);
+						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, box1From, null);
 					}
 				});
 				
@@ -483,10 +488,10 @@ public class teleline {
 				
 				selectBox.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+			//			if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), box2From, null);
+						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, box2From, null);
 					}
 				});
 				
@@ -498,9 +503,9 @@ public class teleline {
 				
 				selectCable.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), cableFrom);
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, cableFrom);
 					}
 				});
 				    
@@ -577,22 +582,24 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Создать распределительные пары", 410, 500);
 				
-				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+		//		final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+				
+				final Integer netId = sys.nc.getOnlyElement().getId();
 				
 				GUI.newLabel("От шкафа/бокса:", iFrame, 20, 75, 360, 25);
-				final JComboBox comboBox1 = GUI.cabinetComboBox(comboBox, 0, iFrame, 20, 100, 360, 25);
+				final JComboBox comboBox1 = GUI.cabinetComboBox(netId, 0, iFrame, 20, 100, 360, 25);
 				final JComboBox comboBox2 = GUI.boxComboBox(comboBox1, 2, iFrame, 20, 135, 360, 25);
 				GUI.cabinetComboBoxLinked(comboBox1, comboBox2, 2);
 				
 				GUI.newLabel("До коробки:", iFrame, 20, 170, 360, 25);
-				final JComboBox comboBox3 = GUI.dboxComboBox(comboBox, iFrame, 20, 195, 360, 25);
+				final JComboBox comboBox3 = GUI.dboxComboBox(netId/*comboBox*/, iFrame, 20, 195, 360, 25);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 2, iFrame, 20, 380, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(netId/*comboBox*/, comboBox1, comboBox3, 2, iFrame, 20, 380, 360, 25);
 				
-				GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
-				GUI.netsDBoxComboLinked(comboBox, comboBox3);
-				GUI.netsCableComboLinked(comboBox, comboBox1, comboBox3, comboBox6, 2);
+		//		GUI.netsCabinetComboLinked(comboBox, comboBox1, 0);
+		//		GUI.netsDBoxComboLinked(comboBox, comboBox3);
+				GUI.netsCableComboLinked(netId, comboBox1, comboBox3, comboBox6, 2);
 		   	
 		        GUI.newLabel("Количество создаваемых пар:", iFrame, 20, 230, 360, 25);
 				
@@ -610,10 +617,10 @@ public class teleline {
 					
 					selectBox.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+					//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 							if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 							if (comboBox2.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-							GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), boxFrom, null);
+							GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, boxFrom, null);
 						}
 					});
 				
@@ -625,9 +632,9 @@ public class teleline {
 					
 					selectCable.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+				//			if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
 							if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-							GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), cableFrom);
+							GUI.viewCable((Cable)comboBox6.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, cableFrom);
 						}
 					});
 				
@@ -701,22 +708,24 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Создать пары прямого питания", 410, 500);
 				
-				GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-				final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+			//	GUI.newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+			//	final JComboBox comboBox = GUI.newNetsComboBox(iFrame, 20, 40, 360, 25);
+				final Integer netId = sys.nc.getOnlyElement().getId();
 				
 				GUI.newLabel("От кросса/громполосы:", iFrame, 20, 75, 360, 25);
-				final JComboBox comboBox1 = GUI.dframeComboBox(comboBox, iFrame, 20, 100, 360, 25);
+				final JComboBox comboBox1 = GUI.dframeComboBox(netId/*comboBox*/, iFrame, 20, 100, 360, 25);
 				final JComboBox comboBox2 = GUI.frameComboBox(comboBox1, iFrame, 20, 135, 360, 25);
 				GUI.dframeComboBoxLinked(comboBox1, comboBox2);
 				
 				GUI.newLabel("До коробки:", iFrame, 20, 170, 360, 25);
-				final JComboBox comboBox3 = GUI.dboxComboBox(comboBox, iFrame, 20, 195, 360, 25);
+				//final JComboBox comboBox3 = GUI.dboxComboBox(comboBox, iFrame, 20, 195, 360, 25);
+				final JComboBox comboBox3 = GUI.dboxComboBox(netId, iFrame, 20, 195, 360, 25);
 				
-				final JComboBox comboBox6 = GUI.cableComboBox(comboBox, comboBox1, comboBox3, 3, iFrame, 20, 380, 360, 25);
+				final JComboBox comboBox6 = GUI.cableComboBox(netId, comboBox1, comboBox3, 3, iFrame, 20, 380, 360, 25);
 				
-				GUI.netsDFrameComboLinked(comboBox, comboBox1);
-				GUI.netsDBoxComboLinked(comboBox, comboBox3);
-				GUI.netsCableComboLinked(comboBox, comboBox1, comboBox3, comboBox6, 3);
+			//	GUI.netsDFrameComboLinked(comboBox, comboBox1);
+			//	GUI.netsDBoxComboLinked(comboBox, comboBox3);
+				GUI.netsCableComboLinked(netId, comboBox1, comboBox3, comboBox6, 3);
 				
 		        GUI.newLabel("Количество создаваемых пар:", iFrame, 20, 230, 360, 25);
 				
@@ -734,10 +743,10 @@ public class teleline {
 				
 				selectFrom.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
+				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), dframeFrom, null);
+						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, dframeFrom, null);
 					}
 				});
 				
@@ -749,9 +758,9 @@ public class teleline {
 				
 				selectCable.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
+					//	if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox6.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кабель!"); return; }
-						GUI.viewCable((Cable)comboBox6.getSelectedItem(), ((Net)comboBox.getSelectedItem()).getId(), cableFrom);
+						GUI.viewCable((Cable)comboBox6.getSelectedItem(), netId, cableFrom);
 					}
 				});
 			    
@@ -855,7 +864,9 @@ public class teleline {
 		JMenuItem menuItem_14 = new JMenuItem("Сеть");
 		menuItem_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final JDialog iFrame = GUI.newDialog("Редактировать сеть", 585, 600);
+				GUI.formNet((Net)sys.nc.getOnlyElement());
+				
+			/*	final JDialog iFrame = GUI.newDialog("Редактировать сеть", 585, 600);
 				
 				
 				GUI.newLabel("Список сетей:", iFrame, 10, 10, 420, 14);
@@ -867,11 +878,11 @@ public class teleline {
 				
 				JButton createNetButton = GUI.newButton("Добавить", iFrame, 440, 180, 125, 26);
 				JButton deleteNetButton = GUI.newButton("Удалить", iFrame, 440, 225, 125, 26);
-				
+			*/	
 				/*
 				 * Событие кнопки редактирования сети
 				 */
-				ActionListener editDFrame = new ActionListener() {
+		/*		ActionListener editDFrame = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (netList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
 						
@@ -880,27 +891,27 @@ public class teleline {
 						
 					}
 				};
-				editNetButton.addActionListener(editDFrame);
+				editNetButton.addActionListener(editDFrame);*/
 				/*
 				 * ---------------------------------------------------------
 				 */
 				/*
 				 * Событие кнопки создания сети
 				 */
-				ActionListener createNet = new ActionListener() {
+			/*	ActionListener createNet = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						GUI.formNet(null);
 						GUI.setListItems(netList, sys.nc.sortByIdUp(sys.nc.elements()));
 					}
 				};
-				createNetButton.addActionListener(createNet);
+				createNetButton.addActionListener(createNet);*/
 				/*
 				 * ---------------------------------------------------------
 				 */
 				/*
 				 * Событие кнопки удаления сети
 				 */
-				ActionListener deleteNet = new ActionListener() {
+			/*	ActionListener deleteNet = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (netList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }	
 						int n = GUI.newDialog(iFrame, "Удалить сеть: " + (Net)netList.getSelectedValue()+" и все её содержимое?");
@@ -910,26 +921,12 @@ public class teleline {
 						}
 					}
 				};
-				deleteNetButton.addActionListener(deleteNet);
+				deleteNetButton.addActionListener(deleteNet);*/
 				/*
 				 * ---------------------------------------------------------
 				 */
-				
-				/*
-				 * Событие кнопки просмотра карты
-				 */
-			/*	ActionListener createMap = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (netList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
-						//GUI.formMap();
-					}
-				};
-				mapNetButton.addActionListener(createMap);
-			*/	/*
-				 * ---------------------------------------------------------
-				 */
-				
-				iFrame.setVisible(true);	
+
+				//iFrame.setVisible(true);	
 			}
 		});
 		menuChange.add(menuItem_14);
@@ -946,20 +943,27 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Редактировать кросс", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+			//	GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+			//	final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
-				GUI.newLabel("Список кроссов:", iFrame, 10, 65, 420, 14);
-				final JList dframeList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список кроссов:", iFrame, 10, 10, 420, 14);
+				final JList dframeList = GUI.newList(iFrame, 10, 30, 420, 530);
+				GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
+			
+			//	GUI.netsComboBoxLinked(netsComboBox, dframeList, sys.dfc);
 				
-				GUI.netsComboBoxLinked(netsComboBox, dframeList, sys.dfc);
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
+				JButton editDFrameButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
+				JButton viewDFrameButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
+				JButton passportDFrameButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
+				JButton createDFrameButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
+				JButton deleteDFrameButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
 				
-				JButton editDFrameButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton viewDFrameButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
-				JButton passportDFrameButton = GUI.newButton("Паспорт", iFrame, 440, 165, 125, 26);
-				JButton createDFrameButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteDFrameButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
-				
+				refreshButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0) {
+						GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
+					}
+				});
 				/*
 				 * Событие кнопки редактирования кросса
 				 */
@@ -969,8 +973,10 @@ public class teleline {
 							GUI.newError(iFrame, "Кросс не выбран!"); 
 							return; 
 						}
+						
 						GUI.formDFrame((DFramе)dframeList.getSelectedValue());
-						GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));	
+					//	GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));	
+					//	GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
 					}
 				};
 				editDFrameButton.addActionListener(editDFrame);
@@ -998,12 +1004,13 @@ public class teleline {
 				 */
 				ActionListener createDFrame = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) {
+					/*	if (netsComboBox.getSelectedIndex() == -1) {
 							GUI.newError(iFrame, "Сеть не выбрана!");
 							return;
-						}
+						}*/
 						GUI.formDFrame(null);
-						GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));
+						//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));
+						//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
 					}
 				};
 				createDFrameButton.addActionListener(createDFrame);
@@ -1020,7 +1027,8 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeDFrame((DFramе)dframeList.getSelectedValue());
 							GUI.newInfo(iFrame, "Кросс и все его содержимое удалены");
-							GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));	
+							//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));
+							GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
 						}		
 					}
 				};
@@ -1490,7 +1498,7 @@ public class teleline {
 						pairTypeComboBox.setBounds(20, 40, 360, 25);
 						
 						final JLabel label = GUI.newLabel("Идщую от кросса/громполосы:", iSubFrame, 20, 75, 360, 25);
-						final JComboBox comboBox1 = GUI.dframeComboBox(netsComboBox, iSubFrame, 20, 100, 360, 25);
+						final JComboBox comboBox1 = GUI.dframeComboBox(sys.nc.getOnlyElement().getId()/*netsComboBox*/, iSubFrame, 20, 100, 360, 25);
 						final JComboBox comboBox2 = GUI.frameComboBox(comboBox1, iSubFrame, 20, 135, 360, 25);
 						GUI.dframeComboBoxLinked(comboBox1, comboBox2);
 						

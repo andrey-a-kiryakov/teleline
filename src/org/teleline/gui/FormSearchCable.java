@@ -10,13 +10,15 @@ import javax.swing.table.DefaultTableModel;
 import org.teleline.model.Cable;
 import org.teleline.model.CableCollection;
 import org.teleline.model.StructuredElement;
+import org.teleline.model.Sys;
 
 public class FormSearchCable extends Form {
 	
 	public JTable cableTable;
 	public JButton okButton;
 	
-	public FormSearchCable(CableCollection cc, Integer netId) {
+	public FormSearchCable(Sys iSys, Integer netId) {
+		super(iSys);
 		
 		createDialog("Выбрать кабель", 685, 600);
 		
@@ -24,7 +26,7 @@ public class FormSearchCable extends Form {
 		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
 		util_clearTable(cableTable);
-		Iterator<StructuredElement> i = cc.getInNet(netId).iterator();
+		Iterator<StructuredElement> i = iSys.cc.getInNet(netId).iterator();
 		while (i.hasNext()) { addCableToTable((Cable)i.next()); }		
 		okButton = addButton("Выбрать", 540, 10, 125, 26);
 		iFrame.setVisible(true);

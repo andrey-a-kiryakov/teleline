@@ -27,9 +27,9 @@ public abstract class Form {
 	public JDialog  iFrame;
 	public Sys iSys;
 	
-	public Form() {
+	public Form(Sys iSys) {
 		
-		
+		this.iSys = iSys;
 	}
 	
 	protected JDialog createDialog (String title, int width, int height) {

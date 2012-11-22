@@ -216,23 +216,30 @@ public class gui {
 	 * @param NetsComboBox - выпадающий список сетей, из него берется сеть
 	 * @return выпадающий список
 	 */
-	public JComboBox dframeComboBox( JComboBox NetsComboBox, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox dframeComboBox(Integer netId,/* JComboBox NetsComboBox,*/ JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
+	/*	if (NetsComboBox.getSelectedIndex() > -1) {
 			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-		}
+		}*/
+		
+		if (netId > -1) {
+			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(netId)));
+	}
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
 		
 		return comboBox;
 	}
 	
-	public JComboBox cabinetComboBox(JComboBox NetsComboBox, Integer cabinetClass, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox cabinetComboBox(Integer netId/*JComboBox NetsComboBox*/, Integer cabinetClass, JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
-			setComboBoxItems(comboBox, cbc.sortByNumberUp(cbc.getInNetByClass(((Net)NetsComboBox.getSelectedItem()).getId(), cabinetClass)));
+		/*if (NetsComboBox.getSelectedIndex() > -1) {
+			setComboBoxItems(comboBox, sys.cbc.sortByNumberUp(sys.cbc.getInNetByClass(((Net)NetsComboBox.getSelectedItem()).getId(), cabinetClass)));
+		}*/
+		if (netId > -1) {
+			setComboBoxItems(comboBox, sys.cbc.sortByNumberUp(sys.cbc.getInNetByClass(netId, cabinetClass)));
 		}
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
@@ -244,12 +251,16 @@ public class gui {
 	 * @param NetsComboBox- выпадающий список сетей
 	 * @return выпадающий список
 	 */
-	public JComboBox buildingComboBox(JComboBox NetsComboBox, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox buildingComboBox(Integer netId,/*JComboBox NetsComboBox,*/ JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
+	/*	if (NetsComboBox.getSelectedIndex() > -1) {
 			setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-		}
+		}*/
+		
+		if (netId > -1) {
+		setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(netId)));
+	}
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
 		
@@ -277,12 +288,16 @@ public class gui {
 	 * @param NetsComboBox - выпадающий список сетей
 	 * @return выпадающий список
 	 */
-	public JComboBox manholeDFrameComboBox(JComboBox NetsComboBox, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox manholeDFrameComboBox(Integer netId/*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
-			setComboBoxItems(comboBox, mc.sortByIdUp(mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-			setComboBoxItems(comboBox, dfc.sortByIdUp(dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
+	/*	if (NetsComboBox.getSelectedIndex() > -1) {
+			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
+			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
+		}*/
+		if (netId > -1) {
+			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(netId)));
+			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(netId)));
 		}
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
@@ -294,14 +309,19 @@ public class gui {
 	 * @param NetsComboBox - выпадающий список сетей
 	 * @return выпадающий список
 	 */
-	public JComboBox manholeCabinetBuildingComboBox(JComboBox NetsComboBox, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox manholeCabinetBuildingComboBox(Integer netId/*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
+	/*	if (NetsComboBox.getSelectedIndex() > -1) {
 			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
 			setComboBoxItems(comboBox, sys.cbc.sortByIdUp(sys.cbc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
 			setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
 			
+		}*/
+		if (netId > -1) {
+			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(netId)));
+			setComboBoxItems(comboBox, sys.cbc.sortByIdUp(sys.cbc.getInNet(netId)));
+			setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(netId)));
 		}
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
@@ -309,29 +329,33 @@ public class gui {
 		return comboBox;
 	}
 	
-	public JComboBox dboxComboBox(JComboBox NetsComboBox, JDialog iFrame, int x, int y, int w, int h){
+	public JComboBox dboxComboBox(Integer netId /*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
-		if (NetsComboBox.getSelectedIndex() > -1) {
+	/*	if (NetsComboBox.getSelectedIndex() > -1) {
 			setComboBoxItems(comboBox, sys.dbc.sortByIdUp(sys.dbc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-		}
+		}*/
+		if (netId > -1) {
+		setComboBoxItems(comboBox, sys.dbc.sortByIdUp(sys.dbc.getInNet(netId)));
+	}
+	
 		comboBox.setBounds(x, y, w, h);
 		iFrame.getContentPane().add(comboBox);
 		
 		return comboBox;
 	}
 	
-	public JComboBox cableComboBox(JComboBox NetsComboBox, JComboBox FromComboBox, JComboBox ToComboBox, Integer Type, JDialog iFrame,  int x, int y, int w, int h){
+	public JComboBox cableComboBox(Integer netId/*JComboBox NetsComboBox*/, JComboBox FromComboBox, JComboBox ToComboBox, Integer Type, JDialog iFrame,  int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
 		if (Type < 2) {
-			if (NetsComboBox.getSelectedIndex() > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
+			if (netId > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
 				setComboBoxItems(comboBox, sys.cc.sortByIdUp(sys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));
 			}
 		}
 		
 		if (Type >= 2) {
-			if (NetsComboBox.getSelectedIndex() > -1 && FromComboBox.getSelectedIndex() > -1) {
+			if (netId > -1 && FromComboBox.getSelectedIndex() > -1) {
 				setComboBoxItems(comboBox, sys.cc.sortByIdUp(sys.cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
 			}
 		}
@@ -370,7 +394,7 @@ public class gui {
 	 * @param LinkedComboBox - связанный выпадающий список
 	 * @param cabinetClass - класс шкафа
 	 */
-	public void netsCabinetComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox, final Integer cabinetClass) {
+/*	public void netsCabinetComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox, final Integer cabinetClass) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -379,7 +403,7 @@ public class gui {
             }
         };
         NetsComboBox.addActionListener(actionListener);      
-	}
+	}*/
 	/**
 	 * Связывает выпадающий список сетей с выпадающим списком колодцев
 	 * @param NetsComboBox - выпадающий список сетей
@@ -420,8 +444,8 @@ public class gui {
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 LinkedComboBox.removeAllItems();
-                setComboBoxItems(LinkedComboBox, mc.sortByIdUp(mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-                setComboBoxItems(LinkedComboBox, dfc.sortByIdUp(dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
+                setComboBoxItems(LinkedComboBox, sys.mc.sortByIdUp(sys.mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
+                setComboBoxItems(LinkedComboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
                 
             }
         };
@@ -451,7 +475,7 @@ public class gui {
 	 * @param NetsComboBox - выпадающий список сетей
 	 * @param LinkedComboBox - связанный выпадающий список
 	 */
-	public void netsDBoxComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
+/*	public void netsDBoxComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -460,7 +484,7 @@ public class gui {
             }
         };
         NetsComboBox.addActionListener(actionListener);      
-	}
+	}*/
 	/**
 	 * Связывает выпадающий список сетей и родителей с выпадающим списком кабелей. 
 	 * Кабели сортируются по id. 
@@ -468,26 +492,26 @@ public class gui {
 	 * @param LinkedComboBox - связанный выпадающий список
 	 * @param Type - тип кабелей
 	 */
-	public void netsCableComboLinked(final JComboBox NetsComboBox, final JComboBox FromComboBox, final JComboBox ToComboBox, final JComboBox LinkedComboBox, final Integer Type) {
+	public void netsCableComboLinked(final Integer netId/*final JComboBox NetsComboBox*/, final JComboBox FromComboBox, final JComboBox ToComboBox, final JComboBox LinkedComboBox, final Integer Type) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	LinkedComboBox.removeAllItems();
             	if (Type < 2)
-            		if (NetsComboBox.getSelectedIndex() > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
+            		if (netId > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
             			
-            			setComboBoxItems(LinkedComboBox, cc.sortByIdUp(cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));               
+            			setComboBoxItems(LinkedComboBox, sys.cc.sortByIdUp(sys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));               
             		}
             	
             	if (Type >= 2) {
-        			if (NetsComboBox.getSelectedIndex() > -1 && FromComboBox.getSelectedIndex() > -1) {
-        				setComboBoxItems(LinkedComboBox, cc.sortByIdUp(cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
+        			if (netId > -1 && FromComboBox.getSelectedIndex() > -1) {
+        				setComboBoxItems(LinkedComboBox, sys.cc.sortByIdUp(sys.cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
         			}
         		}
             	
             }
         };
-        NetsComboBox.addActionListener(actionListener);
+     //   NetsComboBox.addActionListener(actionListener);
         FromComboBox.addActionListener(actionListener);
         ToComboBox.addActionListener(actionListener);
         
@@ -498,7 +522,7 @@ public class gui {
 	 * @param NetsComboBox - выпадающий список сетей
 	 * @param LinkedComboBox - связанный выпадающий список
 	 */
-	public void netsDFrameComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
+/*	public void netsDFrameComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -507,7 +531,7 @@ public class gui {
             }
         };
         NetsComboBox.addActionListener(actionListener);      
-	}
+	}*/
 	/**
 	 * Связывает выпадающий список сетей с обычным списком структурных элементов.
 	 * Структурные элементы сортируются по id.
@@ -648,14 +672,14 @@ public class gui {
 	 * @param fromComboBox - список для элементов, из которых выходит кабель
 	 * @param toComboBox - список для элементов, в которые приходит кабель
 	 */
-	public void cableTypeComboLinked(final JComboBox netsComboBox, final JComboBox typeComboBox, final JComboBox fromComboBox, final JComboBox toComboBox){
+	public void cableTypeComboLinked(final Integer netId /*final JComboBox netsComboBox*/, final JComboBox typeComboBox, final JComboBox fromComboBox, final JComboBox toComboBox){
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	
-            	if (netsComboBox.getSelectedIndex() > -1 && typeComboBox.getSelectedIndex() > -1) {
+            	if (netId > -1 /*netsComboBox.getSelectedIndex() > -1*/ && typeComboBox.getSelectedIndex() > -1) {
             		Integer type = typeComboBox.getSelectedIndex();
-            		Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
+            //		Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
         	
             		fromComboBox.removeAllItems(); fromComboBox.setEnabled(true);
             		toComboBox.removeAllItems(); toComboBox.setEnabled(true);
@@ -685,11 +709,11 @@ public class gui {
             }
 		};
 		typeComboBox.addActionListener(actionListener);
-        netsComboBox.addActionListener(actionListener);
+    //    netsComboBox.addActionListener(actionListener);
         
-        if (netsComboBox.getSelectedIndex() > -1 && typeComboBox.getSelectedIndex() > -1) {
+        if (netId > -1 /*netsComboBox.getSelectedIndex() > -1*/ && typeComboBox.getSelectedIndex() > -1) {
     		Integer type = typeComboBox.getSelectedIndex();
-    		Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
+    	//	Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
 	
     		fromComboBox.removeAllItems(); fromComboBox.setEnabled(true);
     		toComboBox.removeAllItems(); toComboBox.setEnabled(true);
@@ -830,8 +854,8 @@ public class gui {
 		
 		final JDialog iFrame = newDialog("Создать здание", 410, 345);
 		
-		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Улица (до 150 символов):", iFrame, 20, 75, 360, 14);
 		final JTextField street = newTextField(iFrame, 20, 100, 360, 25);
@@ -845,8 +869,8 @@ public class gui {
 		if (building != null){ 
 			iFrame.setTitle("Редактировать здание");
 			
-			comboBox.setSelectedItem(sys.nc.getElement(building.getNet()));
-			comboBox.setEnabled(false);
+	//		comboBox.setSelectedItem(sys.nc.getElement(building.getNet()));
+	//		comboBox.setEnabled(false);
 			
 			name.setText(building.getName());
 			street.setText(building.getStreet());
@@ -856,7 +880,7 @@ public class gui {
 		JButton saveButton = newButton("Сохранить", iFrame, 20, 260, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+	//			if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateOtherParametr(street.getText())) { newError(iFrame, "Неверный формат названия улицы!");return;}
 				if (!sys.v.validateBuildingNumber(number.getText())) { newError(iFrame, "Неверный формат номера дома!");return;}
 				if (!sys.v.validateOtherParametr(name.getText())) { newError(iFrame, "Неверный формат названия здания!");return;}
@@ -874,7 +898,8 @@ public class gui {
 					newBuilding.setName(name.getText());
 					newBuilding.setSNumber(number.getText());
 					newBuilding.setStreet(street.getText());
-					newBuilding.attachToNet((Net)comboBox.getSelectedItem());
+			//		newBuilding.attachToNet((Net)comboBox.getSelectedItem());
+					newBuilding.attachToNet((Net)sys.nc.getOnlyElement());
 					sys.buc.addElement(newBuilding);
 					String mes = "Создано здание: "+ newBuilding.toString();
 					sys.rw.addLogMessage(mes);
@@ -950,13 +975,13 @@ public class gui {
 		
 		final JDialog iFrame = newDialog("Создать абонента", iFrameMinWidth, iFrameMinHeight);
 		
-		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+//		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+//		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		if (sub != null) {
 			iFrame.setTitle("Редактировать абонента");
-			comboBox.setSelectedItem(sys.nc.getElement(sub.getNet()));
-			comboBox.setEnabled(false);
+	//		comboBox.setSelectedItem(sys.nc.getElement(sub.getNet()));
+	//		comboBox.setEnabled(false);
 		}
 		newLabel("Имя абонента (1-50 символов):", iFrame, 20, 75, 360, 25);
 		final JTextField name = newTextField(iFrame, 20, 100, 360, 25);
@@ -993,9 +1018,10 @@ public class gui {
         JButton saveButton = newButton("Сохранить", iFrame, 20, 200, 110, 25);
         saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Net selectedNet = (Net)comboBox.getSelectedItem();
+				//Net selectedNet = (Net)comboBox.getSelectedItem();
+				Net selectedNet = (Net)sys.nc.getOnlyElement();
 										
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+		//		if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateSubscriberName(name.getText())) {newError(iFrame, "Неверный формат имени абонента!"); return;}
 				if (!sys.v.validatePhoneNumber(phoneNumber.getText())) {newError(iFrame, "Неверный формат номера телефона!"); return;}
 				
@@ -1003,7 +1029,7 @@ public class gui {
 				if (!sys.v.validateOtherParametr(subscriberEquipment.getText())) { newError(iFrame, "Неверный формат типа оборудования (до 150 символов)!"); return; }
 				if (!sys.v.validateOtherParametr(subscriberDate.getText())) { newError(iFrame, "Неверный формат даты установки абонента (до 150 символов)!"); return; }
 				
-				Subscriber s = (Subscriber)sc.findByPhoneNumber(phoneNumber.getText(), selectedNet.getId());
+				Subscriber s = (Subscriber)sys.sc.findByPhoneNumber(phoneNumber.getText(), selectedNet.getId());
 										
 				if (sub != null) {
 					v.set(0, sub);
@@ -1025,7 +1051,7 @@ public class gui {
 						if (newDialog(iFrame, "Абонент с таким телефонным номером уже сущесвует в этой сети! \r\n Создать еще одного абонента с данным номером?") == JOptionPane.NO_OPTION) { return; }
 					
 					Subscriber newSubscriber = new Subscriber();
-					Path newPath = new Path(sc,pc);
+					Path newPath = new Path(sys.sc,sys.pc);
 					
 					newSubscriber
 						.setDate(subscriberDate.getText())
@@ -1062,8 +1088,8 @@ public class gui {
 		final JDialog iFrame = newDialog("Создать кросс", 410, 285);
 		if (dframe != null) iFrame.setTitle("Редактировать кросс");
 		
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Название кросса (1-50 символов):", iFrame, 20, 75, 360, 25);
 		final JTextField textField = newTextField(iFrame,20, 100, 360, 25);
@@ -1077,10 +1103,10 @@ public class gui {
 		iFrame.getContentPane().add(placesBox);
 
 		if (dframe != null) {
-			comboBox.removeAllItems();
-			comboBox.addItem(nc.getElement(dframe.getNet()));
-			comboBox.setSelectedIndex(0);
-			comboBox.setEnabled(false);
+		//	comboBox.removeAllItems();
+		//	comboBox.addItem(sys.nc.getElement(dframe.getNet()));
+		//	comboBox.setSelectedIndex(0);
+		//	comboBox.setEnabled(false);
 			textField.setText(dframe.getName());
 			placesBox.setSelectedItem(dframe.getPlacesCount());
 			placesBox.setEnabled(false);
@@ -1090,7 +1116,7 @@ public class gui {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateDFrameName(textField.getText())) { newError(iFrame, "Неверный формат названия кросса!"); return;};
 				
 					if (dframe != null) {
@@ -1102,10 +1128,12 @@ public class gui {
 				else {
 					DFramе newDFrame = new DFramе(); 
 					newDFrame.setName(textField.getText()); 
-					newDFrame.attachToNet((Net)comboBox.getSelectedItem());
+				//	newDFrame.attachToNet((Net)comboBox.getSelectedItem());
+					newDFrame.attachToNet((Net)sys.nc.getOnlyElement());
 					newDFrame.setPlacesCount((Integer)placesBox.getSelectedItem());
 					sys.dfc.addElement(newDFrame);
-					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)comboBox.getSelectedItem()).toString();
+					//String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)comboBox.getSelectedItem()).toString();
+					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)sys.nc.getOnlyElement()).toString();
 					sys.rw.addLogMessage(mes);
 					newInfo(iFrame, mes);
 				}
@@ -1124,8 +1152,8 @@ public class gui {
 		
 		final JDialog iFrame = newDialog("Создать шкаф", iFrameMinWidth, iFrameMinHeight);
 		 
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Номер шкафа (1-4 символа: А-Я,а-я,0-9):", iFrame, 20, 75, 360, 25);
 		final JTextField formatedText = newTextField(iFrame, 20, 100, 360, 25);
@@ -1148,8 +1176,8 @@ public class gui {
 			
 			iFrame.setTitle("Редактировать шкаф");
 			
-			comboBox.setSelectedItem(sys.nc.getElement(cabinet.getNet()));
-			comboBox.setEnabled(false);
+		//	comboBox.setSelectedItem(sys.nc.getElement(cabinet.getNet()));
+		//	comboBox.setEnabled(false);
 			formatedText.setText(cabinet.getSNumber());
 			
 			comboBox1.setSelectedItem(cabinet.getPlacesCount());
@@ -1206,7 +1234,7 @@ public class gui {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateCabinetNumber(formatedText.getText())) { newError(iFrame, "Неверный номер шкафа!"); return; }
 				if (!sys.v.validateCabinetClass(cabinetClass.getText())) { newError(iFrame, "Неверный класс шкафа!"); return; }
 				if (!sys.v.validateOtherParametr(cabinetAdress.getText())) { newError(iFrame, "Неверный формат адреса шкафа (до 150 символов)!"); return; }
@@ -1214,12 +1242,12 @@ public class gui {
 				if (!sys.v.validateOtherParametr(cabinetMaterual.getText())) { newError(iFrame, "Неверный формат материала шкафа (до 150 символов)!"); return; }
 				if (!sys.v.validateOtherParametr(cabinetDate.getText())) { newError(iFrame, "Неверный формат даты установки шкафа (до 150 символов)!"); return; }
 				
-				Net selectedNet = (Net)comboBox.getSelectedItem();
+			//	Net selectedNet = (Net)comboBox.getSelectedItem();
 				String cabinetNumber = formatedText.getText();
 
 				if (cabinet != null) {
 					
-					Cabinet b = sys.cbc.elementInNet(cabinetNumber, selectedNet.getId());
+					Cabinet b = sys.cbc.elementInNet(cabinetNumber, sys.nc.getOnlyElement().getId());
 					if (b != null && !cabinet.getId().equals(b.getId())) {newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети"); return;}
 					
 					String old = cabinet.toString();
@@ -1236,7 +1264,7 @@ public class gui {
 				}
 				else {
 					
-					if (sys.cbc.elementInNet(cabinetNumber, selectedNet.getId()) != null) {
+					if (sys.cbc.elementInNet(cabinetNumber, sys.nc.getOnlyElement().getId()) != null) {
 						newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети");
 						return;
 					}
@@ -1249,12 +1277,13 @@ public class gui {
 						.setDate(cabinetDate.getText())
 						.setSetup(cabinetSetup.getSelectedIndex())
 						.setArea(cabinetArea.getSelectedIndex())
-						.attachToNet(selectedNet)
+					//	.attachToNet(selectedNet)
+						.attachToNet((Net)sys.nc.getOnlyElement())
 						.setPlacesCount((Integer)comboBox1.getSelectedItem())
 						.setSNumber(cabinetNumber);
 						newCabinet.setCabinetClass(sys.rw.valueOf(cabinetClass.getText()));
 					sys.cbc.addElement(newCabinet);
-					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ selectedNet.toString();
+					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ ((Net)sys.nc.getOnlyElement()).toString();
 					sys.rw.addLogMessage(mes);
 					newInfo(iFrame, mes);
 				}
@@ -1275,8 +1304,8 @@ public class gui {
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 520, iFrameMaxHeight = 520;
 		final JDialog iFrame = newDialog("Создать кабель", iFrameMinWidth, iFrameMinHeight);
 		
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Тип кабеля:", iFrame, 20, 75, 360, 25);
 		final JComboBox typeComboBox = new JComboBox();
@@ -1296,7 +1325,7 @@ public class gui {
 		final JComboBox toComboBox = new JComboBox();
 		iFrame.getContentPane().add(toComboBox);
 		toComboBox.setBounds(20, 220, 360, 25);
-		cableTypeComboLinked(netsComboBox, typeComboBox, fromComboBox, toComboBox);
+		cableTypeComboLinked(sys.nc.getOnlyElement().getId()/*netsComboBox*/, typeComboBox, fromComboBox, toComboBox);
 		
 		newLabel("Номер (0-999):", iFrame, 20, 255, 360, 25);
 		final JTextField cableNumber  = newTextField(iFrame, 20, 280, 360, 25);
@@ -1324,8 +1353,8 @@ public class gui {
 		
 		if (cable != null) {
 			iFrame.setTitle("Редактировать кабель");
-			netsComboBox.setSelectedItem(sys.nc.getElement(cable.getNet()));
-			netsComboBox.setEnabled(false);
+	//		netsComboBox.setSelectedItem(sys.nc.getElement(cable.getNet()));
+	//		netsComboBox.setEnabled(false);
 			typeComboBox.setSelectedIndex(cable.getType());
 			typeComboBox.setEnabled(false);
 			comboBox2.setSelectedItem(cable.getCapacity());
@@ -1388,13 +1417,13 @@ public class gui {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 									
-				if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+	//			if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateCableNumber(cableNumber.getText())) { newError(iFrame, "Неверный формат номера кабеля!"); return;}						
 				if (!sys.v.validateCableLenght(cableLenght.getText())) { newError(iFrame, "Неверный формат длины кабеля!"); return;}						
 				if (!sys.v.validateCableWireDiametr(cableWireDiametr.getText())) { newError(iFrame, "Неверный формат диаметра жилы кабеля!"); return;}						
 				if (!sys.v.validateCableYear(cableYear.getText())) { newError(iFrame, "Неверный формат года прокладки кабеля!"); return;}						
 				
-				Net selectedNet = (Net)netsComboBox.getSelectedItem();
+	//			Net selectedNet = (Net)netsComboBox.getSelectedItem();
 				Integer type = typeComboBox.getSelectedIndex();
 				Integer number = sys.rw.valueOf(cableNumber.getText());
 				StructuredElement from = (StructuredElement)fromComboBox.getSelectedItem();
@@ -1455,7 +1484,9 @@ public class gui {
 					//}
 					
 					Cable newCable = new Cable(sys.dfc,sys.cbc,sys.dbc,sys.fc,sys.bc,sys.pc); 
-					newCable.attachToNet(selectedNet);
+				//	newCable.attachToNet(selectedNet);
+					newCable.attachToNet((Net)sys.nc.getOnlyElement());
+						
 					newCable
 						.setType(type)
 						.setLabel((String)comboBox3.getSelectedItem())
@@ -1470,7 +1501,7 @@ public class gui {
 					if (type >= 2) newCable.setTo(0);
 					
 					sys.cc.addElement(newCable); v.set(0, newCable);
-					String mes = "Создан "+(String)typeComboBox.getSelectedItem()+" кабель: "+ newCable.toString()+ ", присоединён к сети: "+ selectedNet.toString();
+					String mes = "Создан "+(String)typeComboBox.getSelectedItem()+" кабель: "+ newCable.toString()+ ", присоединён к сети: "+ sys.nc.getOnlyElement().toString();
 					newInfo(iFrame, mes);
 					sys.rw.addLogMessage(mes);
 				}
@@ -1494,8 +1525,8 @@ public class gui {
 		
 		final JDialog iFrame = newDialog("Создать колодец", iFrameMinWidth, iFrameMinHeight);
 		 
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Номер колодца (1-4 символа: А-Я,а-я,0-9):", iFrame, 20, 75, 360, 25);
 		final JTextField manholeNumberText = newTextField(iFrame, 20, 100, 360, 25);
@@ -1542,8 +1573,8 @@ public class gui {
 			
 			iFrame.setTitle("Редактировать колодец");
 			
-			comboBox.setSelectedItem(sys.nc.getElement(man.getNet()));
-			comboBox.setEnabled(false);
+		//	comboBox.setSelectedItem(sys.nc.getElement(man.getNet()));
+		//	comboBox.setEnabled(false);
 			manholeNumberText.setText(man.getSNumber());
 			manholeConstruction.setSelectedIndex(man.getConstruction());
 			manholeForm.setSelectedIndex(man.getForm());
@@ -1554,18 +1585,18 @@ public class gui {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+		//		if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateCabinetNumber(manholeNumberText.getText())) { newError(iFrame, "Неверный номер колодца!"); return; }
 				if (!sys.v.validateDate(manholeDate.getText())) { newError(iFrame, "Неверный формат даты постройки!"); return; }
 				if (!sys.v.validateOtherParametr(manholeAdress.getText())) { newError(iFrame, "Неверный формат адреса колодца!"); return; }
 				if (!sys.v.validateOtherParametr(manholeSize.getText())) { newError(iFrame, "Неверный формат размера колодца!"); return; }
 				
-				Net selectedNet = (Net)comboBox.getSelectedItem();
+		//		Net selectedNet = (Net)comboBox.getSelectedItem();
 				String manholeNumber = manholeNumberText.getText();
 
 				if (man != null) {
 					
-					Manhole b = sys.mc.elementInNet(manholeNumber, selectedNet.getId());
+					Manhole b = sys.mc.elementInNet(manholeNumber, sys.nc.getOnlyElement().getId()/*selectedNet.getId()*/);
 					if (b != null && !man.getId().equals(b.getId())) {newError(iFrame, "Колодец с номером " + manholeNumber + " уже сущесвует в этой сети"); return;}
 					
 					String old = man.toString();
@@ -1581,7 +1612,7 @@ public class gui {
 				}
 				else {
 					
-					if (sys.mc.elementInNet(manholeNumber, selectedNet.getId()) != null) {
+					if (sys.mc.elementInNet(manholeNumber, sys.nc.getOnlyElement().getId()/*selectedNet.getId()*/) != null) {
 						newError(iFrame, "Колодец с номером "+manholeNumber+" уже сущесвует в этой сети");
 						return;
 					}
@@ -1593,11 +1624,12 @@ public class gui {
 						.setSize(manholeSize.getText())
 						.setConstruction(manholeConstruction.getSelectedIndex())
 						.setForm(manholeForm.getSelectedIndex())
-						.attachToNet(selectedNet)
+						//.attachToNet(selectedNet)
+						.attachToNet((Net)sys.nc.getOnlyElement())
 						.setSNumber(manholeNumber);
 						
 					sys.mc.addElement(newManhole);
-					String mes = "Создан колодец: "+ newManhole.toString()+ ", добавлен в сеть: "+ selectedNet.toString();
+					String mes = "Создан колодец: "+ newManhole.toString()+ ", добавлен в сеть: "+ sys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
 					sys.rw.addLogMessage(mes);
 					newInfo(iFrame, mes);
 				}
@@ -1618,11 +1650,11 @@ public class gui {
 
 		final JDialog iFrame = newDialog("Создать канализацию", iFrameMinWidth, iFrameMinHeight);
 		
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("От:", iFrame, 20, 75, 360, 25);
-		final JComboBox fromComboBox = manholeDFrameComboBox(netsComboBox, iFrame, 20, 100, 360, 25);
+		final JComboBox fromComboBox = manholeDFrameComboBox(sys.nc.getOnlyElement().getId()/*netsComboBox*/, iFrame, 20, 100, 360, 25);
 		final JComboBox fromSideComboBox = new JComboBox();
 		fromSideComboBox.addItem("Спереди");
 		fromSideComboBox.addItem("Справа");
@@ -1632,7 +1664,7 @@ public class gui {
 		fromSideComboBox.setBounds(20, 135, 360, 25);
 		
 		newLabel("До:", iFrame, 20, 170, 360, 25);
-		final JComboBox toComboBox = manholeCabinetBuildingComboBox(netsComboBox, iFrame, 20, 195, 360, 25);
+		final JComboBox toComboBox = manholeCabinetBuildingComboBox(sys.nc.getOnlyElement().getId()/*netsComboBox*/, iFrame, 20, 195, 360, 25);
 		final JComboBox toSideComboBox = new JComboBox();
 		toSideComboBox.addItem("Спереди");
 		toSideComboBox.addItem("Справа");
@@ -1641,8 +1673,8 @@ public class gui {
 		iFrame.getContentPane().add(toSideComboBox);
 		toSideComboBox.setBounds(20, 230, 360, 25);
 		
-		netsManholeDFrameComboLinked(netsComboBox,fromComboBox);
-		netsManholeCabinetBuildingComboLinked(netsComboBox,toComboBox);
+	//	netsManholeDFrameComboLinked(netsComboBox,fromComboBox);
+	//	netsManholeCabinetBuildingComboLinked(netsComboBox,toComboBox);
 		
 		newLabel("Каналов в канализации (1-99):", iFrame, 20, 265, 360, 25);
 		final JTextField capacityText = newTextField(iFrame, 20, 290, 360, 25);
@@ -1692,7 +1724,7 @@ public class gui {
 		if (duct != null) {
 			iFrame.setTitle("Редактировать канализацию");
 			
-			netsComboBox.setSelectedItem(sys.nc.getElement(duct.getNet())); netsComboBox.setEnabled(false);
+		//	netsComboBox.setSelectedItem(sys.nc.getElement(duct.getNet())); netsComboBox.setEnabled(false);
 			
 			AbstractElement from = sys.mc.getElement(duct.getFrom());
 			if (from == null) from = sys.dfc.getElement(duct.getFrom());
@@ -1714,7 +1746,7 @@ public class gui {
 		JButton saveButton = newButton("Сохранить", iFrame, 20, 340, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+		//		if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (fromComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрано начало канализации!"); return; }
 				if (toComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбран конец канализации!"); return; }
 				if (!sys.v.validateDuctCapacity(capacityText.getText())) { newError(iFrame, "Неверный формат емкости канализации!"); return; }
@@ -1724,7 +1756,7 @@ public class gui {
 				if (!sys.v.validateOtherParametr(tubeMaterual.getText())) { newError(iFrame, "Неверный формат материала трубопровода!"); return; }
 				if (!sys.v.validateOtherParametr(manufacturingМethod.getText())) { newError(iFrame, "Неверный формат способа изготовления!"); return; }
 				
-				Net selectedNet = (Net)netsComboBox.getSelectedItem();
+		//		Net selectedNet = (Net)netsComboBox.getSelectedItem();
 				Integer capacity = sys.rw.valueOf(capacityText.getText());
 				StructuredElement elementFrom = (StructuredElement)fromComboBox.getSelectedItem();
 				StructuredElement elementTo = (StructuredElement)toComboBox.getSelectedItem();
@@ -1780,10 +1812,10 @@ public class gui {
 						.setМanufacturingМethod(manufacturingМethod.getText())
 						.setFrom(elementFrom.getId())
 						.setTo(elementTo.getId())
-						
-						.attachToNet(selectedNet);
+						//.attachToNet(selectedNet);
+						.attachToNet((Net)sys.nc.getOnlyElement());
 					sys.duc.addElement(newDuct);
-					String mes = "Создан участок канализации: "+ newDuct.toString()+ ", добавлен в сеть: "+ selectedNet.toString();
+					String mes = "Создан участок канализации: "+ newDuct.toString()+ ", добавлен в сеть: "+ sys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
 					sys.rw.addLogMessage(mes);
 					
 					for (int i = 0; i < capacity; i++) {
@@ -1814,13 +1846,13 @@ public class gui {
 		
 		final JDialog iFrame = newDialog("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
 		
-		newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		
 		newLabel("Здание:", iFrame, 20, 75, 360, 25);
-		final JComboBox buildingsComboBox = buildingComboBox(netsComboBox, iFrame, 20, 100, 360, 25);
+		final JComboBox buildingsComboBox = buildingComboBox(sys.nc.getOnlyElement().getId(), iFrame, 20, 100, 360, 25);
 		
-		netsBuildingComboLinked (netsComboBox,buildingsComboBox);
+	//	netsBuildingComboLinked (netsComboBox,buildingsComboBox);
 		
 		newLabel("Емкость коробки:", iFrame, 20, 135, 360, 25);
 		final JComboBox comboBox1 = new JComboBox();
@@ -1838,8 +1870,8 @@ public class gui {
 		 */
 		if (dbox != null) {
 			iFrame.setTitle ("Редактировать КРТ");
-			netsComboBox.setSelectedItem(sys.nc.getElement(dbox.getNet())); 
-			netsComboBox.setEnabled(false);
+		//	netsComboBox.setSelectedItem(sys.nc.getElement(dbox.getNet())); 
+		//	netsComboBox.setEnabled(false);
 			buildingsComboBox.setSelectedItem(sys.buc.getElement(dbox.getBuilding()));
 			plase.setText(dbox.getPlase());
 		}
@@ -1847,9 +1879,9 @@ public class gui {
 		JButton saveButton = newButton("Сохранить", iFrame, 20, 220, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Net selectedNet = (Net)netsComboBox.getSelectedItem();
+			//	Net selectedNet = (Net)netsComboBox.getSelectedItem();
 				
-				if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+			//	if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (buildingsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрано здание!"); return; }
 				if (!sys.v.validateOtherParametr(plase.getText())) { newError(iFrame, "Неверный формат места расположения!"); return; }
 				if (dbox!= null) {
@@ -1866,10 +1898,11 @@ public class gui {
 					newDBox
 						.setBuilding((Building)buildingsComboBox.getSelectedItem())
 						.setPlase(plase.getText())
-						.attachToNet(selectedNet);
+						.attachToNet((Net)sys.nc.getOnlyElement());
+					//	.attachToNet(selectedNet);
 					newDBox.setCapacity((Integer)comboBox1.getSelectedItem());				
 					sys.dbc.addElement(newDBox);
-					String mes = "Создана коробка: "+ newDBox.toString()+ ", присоединена к сети: "+ selectedNet.toString();
+					String mes = "Создана коробка: "+ newDBox.toString()+ ", присоединена к сети: "+ sys.nc.getOnlyElement().toString();
 					sys.rw.addLogMessage(mes);
 					newInfo(iFrame, mes);
 				}
@@ -1884,7 +1917,7 @@ public class gui {
 	 * Создает и выводит на экран форму создания/режактирования элемента "Бокс"
 	 * @param box - элемент "Бокс", если null - выводится форма создания нового элемента
 	 */
-	public Box formBox(final Box box, final Cabinet cabinet) {
+/*	public Box formBox(final Box box, final Cabinet cabinet) {
 		
 	
 		final Vector<Box> v = new Vector<Box>(); v.add(null);
@@ -2014,7 +2047,7 @@ public class gui {
 		
 		iFrame.setVisible(true); 
 		return v.get(0);
-	}
+	}*/
 	/**
 	 * Создает и выводит на экран форму создания/редактирования элемента "Громполоса"
 	 * @param frame - громполоса, если null - выводится форма создания нового элемента
@@ -2025,20 +2058,20 @@ public class gui {
 		final JDialog iFrame = newDialog("Создать громполосу", 410, 400);
 		if (frame != null) iFrame.setTitle("Редактировать громполосу");
 		
-		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
+	//	newLabel("Сеть:", iFrame, 20, 15, 360, 25);
+	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
 		/*if (dframe != null) {
 			comboBox.setSelectedItem(nc.getElement(dframe.getNet()));
 			comboBox.setEnabled(false);
 		}			
 		*/
 		newLabel("Добавить к кроссу:", iFrame, 20, 75, 360, 25);
-		final JComboBox comboBox1 = dframeComboBox(comboBox, iFrame, 20, 100, 360, 25);
-		netsDFrameComboLinked(comboBox, comboBox1);
+		final JComboBox comboBox1 = dframeComboBox(sys.nc.getOnlyElement().getId(), iFrame, 20, 100, 360, 25);
+	//	netsDFrameComboLinked(comboBox, comboBox1);
 		
 		if (dframe != null) {
-			comboBox.setSelectedItem(sys.nc.getElement(dframe.getNet()));
-			comboBox.setEnabled(false);
+	//		comboBox.setSelectedItem(sys.nc.getElement(dframe.getNet()));
+	//		comboBox.setEnabled(false);
 			comboBox1.setSelectedItem(dframe);
 			comboBox1.setEnabled(false);
 		}	
@@ -2074,7 +2107,7 @@ public class gui {
 		JButton saveButton = newButton("Сoхранить", iFrame, 20, 320, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
+			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!sys.v.validateFrameNumber(frameNumberText.getText())) { newError(iFrame, "Неверный формат номера громполосы!"); return; }
 				
 				DFramе selectedDFrame = (DFramе)comboBox1.getSelectedItem();
@@ -2101,7 +2134,7 @@ public class gui {
 				else {
 					
 					if (sys.fc.getInPlace((Integer)comboBox4.getSelectedItem(), selectedDFrame.getId()) != null) { newError(iFrame, "Данное место в кроссе занято!"); return; }
-					if (sys.fc.isInOwner(frameNumber, selectedDFrame.getId()) != null ) { newError(iFrame, "Громполоса с таким номером уже сущесвует в этом шкафу!"); return; }
+					if (sys.fc.isInOwner(frameNumber, selectedDFrame.getId()) != null ) { newError(iFrame, "Громполоса с таким номером уже сущесвует в данном кроссе!"); return; }
 					
 					Frame newFrame = new Frame();  
 					newFrame.attachTo(selectedDFrame);
@@ -2129,7 +2162,7 @@ public class gui {
 	 */
 	public FormSubscriberSearch formSearchSubscriber (final Integer netId) {
 		final Vector<Integer> v = new Vector<Integer>(); v.add(0);
-		final FormSubscriberSearch form = new FormSubscriberSearch();
+		final FormSubscriberSearch form = new FormSubscriberSearch(sys);
 		
 		form.iFrame = newDialog("Найти абонента", 485, 580);
 		newLabel("Телефонный номер:", form.iFrame, 10, 10, 320, 14);
@@ -2269,7 +2302,7 @@ public class gui {
 	 */
 	public FormPairPaths formPairPaths(Pair pair) {
 		
-		final FormPairPaths form = new FormPairPaths();
+		final FormPairPaths form = new FormPairPaths(sys);
 		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
 		form.addLabel("Включения:", 10, 10, 320, 14);
 		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
@@ -2845,6 +2878,14 @@ public class gui {
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		int x = 0, y = 0;
 		
+		JButton refreshButton = newButton("Обновить", iFrame, 20,10,90,26);
+		refreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				iFrame.dispose();
+				viewCabinet(cabinet);			
+			}
+		});
+		
 		ActionListener boxClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -2864,22 +2905,7 @@ public class gui {
 		popupMenu.add(menuItem);
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			//	JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-			//	ElementView ep = (ElementView)pm.getInvoker();
-			//	ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				FormBox form = new FormBox(null, cabinet); 
-				
-				
-				form.saveButton.addActionListener(new ActionListener() {
-		    		public void actionPerformed(ActionEvent arg0) {
-		    			iFrame.dispose();
-						viewCabinet(cabinet);
-		    		}
-				});
-			/*	if (formBox(null, cabinet) != null ) {
-					iFrame.dispose();
-					viewCabinet(cabinet);
-				}*/
+				new FormBox(sys, null, cabinet); 
 			}	
 		});
 		
@@ -2892,11 +2918,7 @@ public class gui {
 				ElementView ep = (ElementView)pm.getInvoker();
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
 				
-				if (formBox((Box)p, cabinet) != null ) {
-					iFrame.dispose();
-					viewCabinet(cabinet);
-				}
-				
+				new FormBox(sys, (Box)p, cabinet); 
 			}
 		});
 		
@@ -3658,20 +3680,20 @@ public class gui {
 		if (c.getType().equals(0)) {
 			Frame f = (Frame)sys.fc.getElement(p.getElementFrom());
 			Box b = (Box)sys.bc.getElement(p.getElementTo());
-			infoArea.append("Тип: магистральная\r\nУчасток: "+ sys.dfc.getElement(f.getOwnerId()).toString()+" - "+cbc.getElement(b.getOwnerId()).toString()+"\r\n");
+			infoArea.append("Тип: магистральная\r\nУчасток: "+ sys.dfc.getElement(f.getOwnerId()).toString()+" - "+sys.cbc.getElement(b.getOwnerId()).toString()+"\r\n");
 		}
 		if (c.getType().equals(1)) {
 			Box b1 = (Box)sys.bc.getElement(p.getElementFrom());
 			Box b2 = (Box)sys.bc.getElement(p.getElementTo());
-			infoArea.append("Тип: межшкафная\r\nУчасток: "+ sys.cbc.getElement(b1.getOwnerId()).toString()+" - "+cbc.getElement(b2.getOwnerId()).toString()+"\r\n");
+			infoArea.append("Тип: межшкафная\r\nУчасток: "+ sys.cbc.getElement(b1.getOwnerId()).toString()+" - "+sys.cbc.getElement(b2.getOwnerId()).toString()+"\r\n");
 		}
 		if (c.getType().equals(2)) {
 			Box b = (Box)sys.bc.getElement(p.getElementFrom());
-			infoArea.append("Тип: распределительная\r\nУчасток: "+ sys.cbc.getElement(b.getOwnerId()).toString()+" - "+dbc.getElement(p.getElementTo()).toString()+"\r\n");
+			infoArea.append("Тип: распределительная\r\nУчасток: "+ sys.cbc.getElement(b.getOwnerId()).toString()+" - "+sys.dbc.getElement(p.getElementTo()).toString()+"\r\n");
 		}
 		if (c.getType().equals(3)) {
 			Frame f = (Frame)sys.fc.getElement(p.getElementFrom());
-			infoArea.append("Тип: прямого питания\r\nУчасток: "+ sys.dfc.getElement(f.getOwnerId()).toString()+" - "+dbc.getElement(p.getElementTo()).toString()+"\r\n");
+			infoArea.append("Тип: прямого питания\r\nУчасток: "+ sys.dfc.getElement(f.getOwnerId()).toString()+" - "+sys.dbc.getElement(p.getElementTo()).toString()+"\r\n");
 		}
 		infoArea.append("Кабель: "+c.toShortString()+"\r\n");
 		infoArea.append("Пара: "+p.toString()+"\r\n");
@@ -3745,17 +3767,17 @@ public class gui {
 	 */
 	public void removeCabinet (Cabinet element) {
 		
-		Iterator<ConnectedPointElement> k = bc.getInOwner(element.getId()).iterator();
+		Iterator<ConnectedPointElement> k = sys.bc.getInOwner(element.getId()).iterator();
 		while (k.hasNext()) removeBox((Box)k.next());
 		
-		Iterator<Duct> i = duc.getDucts(element).iterator();
+		Iterator<Duct> i = sys.duc.getDucts(element).iterator();
 		while (i.hasNext()) removeDuct(i.next());
 		
-		Iterator<Cable> c = cc.getCables(element).iterator();
+		Iterator<Cable> c = sys.cc.getCables(element).iterator();
 		while (c.hasNext()) removeCable(c.next());
 		
-		if (cbc.removeElement(element))
-		rw.addLogMessage("Удален: Шкаф " + element.toString());
+		if (sys.cbc.removeElement(element))
+			sys.rw.addLogMessage("Удален: Шкаф " + element.toString());
 	}
 	
 	/**
@@ -3789,19 +3811,19 @@ public class gui {
 		
 		while (p.hasNext()){
 			pair = p.next();
-			Iterator<AbstractElement> ph = phc.elements().iterator();
+			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
 			while (ph.hasNext()) {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 				}
 			}
-			if (pc.removeElement(pair))
-			rw.addLogMessage("Удалена: Пара " + pair.toString());
+			if (sys.pc.removeElement(pair))
+				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
 		}
-		if(bc.removeElement(box))
-		rw.addLogMessage("Удален: Бокс " + box.toString());
+		if(sys.bc.removeElement(box))
+			sys.rw.addLogMessage("Удален: Бокс " + box.toString());
 	}
 	/**
 	 * Удаляет громполосу и все пары в ней. Также пары удаляются из занятых пар у абонентов
@@ -3815,20 +3837,20 @@ public class gui {
 		
 		while (p.hasNext()){
 			pair = p.next();
-			Iterator<AbstractElement> ph = phc.elements().iterator();
+			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
 			while (ph.hasNext()) {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 				}
 			}
 			
-			if (pc.removeElement(pair))
-			rw.addLogMessage("Удалена: Пара " + pair.toString());
+			if (sys.pc.removeElement(pair))
+				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
 		}
-		if (fc.removeElement(frame))
-		rw.addLogMessage("Удален: Громполоса " + frame.toString());
+		if (sys.fc.removeElement(frame))
+			sys.rw.addLogMessage("Удален: Громполоса " + frame.toString());
 	}	
 	/**
 	 * Удаляет КРТ и все пары в ней. Также пары удаляются из всех включений
@@ -3842,19 +3864,19 @@ public class gui {
 		
 		while (p.hasNext()){
 			pair = p.next();
-			Iterator<AbstractElement> ph = phc.elements().iterator();
+			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
 			while (ph.hasNext()) {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 				}
 			}
-			if (pc.removeElement(pair))
-			rw.addLogMessage("Удалена: Пара " + pair.toString());
+			if (sys.pc.removeElement(pair))
+				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
 		}
-		if (dbc.removeElement(dbox))
-		rw.addLogMessage("Удалена: КРТ " + dbox.toString());
+		if (sys.dbc.removeElement(dbox))
+			sys.rw.addLogMessage("Удалена: КРТ " + dbox.toString());
 	}
 	/**
 	 * Удаляет кабель и все пары в нем. Кабель удаляется из всех каналов канализации. Также пары удаляются из всех включений.
@@ -3873,20 +3895,20 @@ public class gui {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 				}
 			}
-			if (pc.removeElement(pair))
-			rw.addLogMessage("Удалена: Пара " + pair.toString());
+			if (sys.pc.removeElement(pair))
+				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
 		}
 		
-		Iterator <Tube> t = tuc.getTubesByCable(cable).iterator();
+		Iterator <Tube> t = sys.tuc.getTubesByCable(cable).iterator();
 		while (t.hasNext()) {
 			t.next().removeCable(cable); 
 		}
 		
-		if (cc.removeElement(cable))
-		rw.addLogMessage("Удален: Кабель " + cable.toString());
+		if (sys.cc.removeElement(cable))
+			sys.rw.addLogMessage("Удален: Кабель " + cable.toString());
 	}
 	/**
 	 * Удаляет участок канализации. Удаляются все каналы в канализации. Кабели проходящии по данному участку не удаляются.
@@ -3894,10 +3916,10 @@ public class gui {
 	 */
 	public void removeDuct(Duct duct) {
 		
-		Iterator<Tube> i = tuc.getDuctsTubes(duct).iterator();
+		Iterator<Tube> i = sys.tuc.getDuctsTubes(duct).iterator();
 		while (i.hasNext()) removeTube(i.next());
-		if (duc.removeElement(duct))
-			rw.addLogMessage("Удален: Участок кабельной канализации " + duct.toString());
+		if (sys.duc.removeElement(duct))
+			sys.rw.addLogMessage("Удален: Участок кабельной канализации " + duct.toString());
 	}
 	/**
 	 * Удаляет канал в канализации. Кабели, проходящие по каналу не удалаются
@@ -3905,8 +3927,8 @@ public class gui {
 	 */
 	public void removeTube(Tube tube) {
 		
-		if (tuc.removeElement(tube))
-			rw.addLogMessage("Удален: Канал " + tube.toString() + " в канализации "+ duc.getElement(tube.getDuct()));
+		if (sys.tuc.removeElement(tube))
+			sys.rw.addLogMessage("Удален: Канал " + tube.toString() + " в канализации "+ sys.duc.getElement(tube.getDuct()));
 	}
 	/**
 	 * Удаляет колодец. Все участки кабельной канализации проходящие через колодец - удаляются
@@ -3914,9 +3936,9 @@ public class gui {
 	 */
 	public void removeManhole(Manhole man){
 		
-		Iterator<Duct> i = duc.getDucts(man).iterator();
+		Iterator<Duct> i = sys.duc.getDucts(man).iterator();
 		while (i.hasNext()) removeDuct(i.next());
-		if (mc.removeElement(man)) rw.addLogMessage("Удален: Колодец " + man.toString());
+		if (sys.mc.removeElement(man)) sys.rw.addLogMessage("Удален: Колодец " + man.toString());
 	}
 	/**
 	 * Удаляет здание. Удаляется также участок канализации, подходящий к зданию.
@@ -3924,10 +3946,10 @@ public class gui {
 	 */
 	public void removeBuilding(Building building) {
 		
-		Iterator<Duct> i = duc.getDucts(building).iterator();
+		Iterator<Duct> i = sys.duc.getDucts(building).iterator();
 		while (i.hasNext()) removeDuct(i.next());
 		
-		if (buc.removeElement(building)) rw.addLogMessage("Удален: Здание " + building.toString());
+		if (sys.buc.removeElement(building)) sys.rw.addLogMessage("Удален: Здание " + building.toString());
 	}
 	/**
 	 * Удаляет абонента. Удаляются также все включения данного абонента
@@ -3935,9 +3957,9 @@ public class gui {
 	 */
 	public void removeSubscriber(Subscriber sub) {
 		
-		Iterator <Path> p = phc.getSubscriberPaths(sub).iterator();
+		Iterator <Path> p = sys.phc.getSubscriberPaths(sub).iterator();
 		while (p.hasNext()) removePath(p.next());
-		if (sc.removeElement(sub)) rw.addLogMessage("Удален: Абонент " + sub.toString());
+		if (sys.sc.removeElement(sub)) sys.rw.addLogMessage("Удален: Абонент " + sub.toString());
 	}
 	/**
 	 * Удаляет включение. Пара освобождается, если больше не задействована ни в одном включении
@@ -3950,15 +3972,15 @@ public class gui {
 		
 		while (p.hasNext()){
 			Pair pair = p.next();
-			rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+			sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 			
-			if (phc.isPairUsed(pair) == null)  {
+			if (sys.phc.isPairUsed(pair) == null)  {
 				pair.setStatus(0);
-				rw.addLogMessage("Пара "+ pair.toString()+" освобождена ");
+				sys.rw.addLogMessage("Пара "+ pair.toString()+" освобождена ");
 			}	
 		}
-		if (phc.removeElement(path))
-		rw.addLogMessage("Удален: Включение " + path.toString() + " у абонента: "+ sc.getElement(path.getSubscriber()).toString());
+		if (sys.phc.removeElement(path))
+			sys.rw.addLogMessage("Удален: Включение " + path.toString() + " у абонента: "+ sys.sc.getElement(path.getSubscriber()).toString());
 	}
 	/**
 	 * Всплывающее меню для канала канализации
@@ -3976,7 +3998,7 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				final ElementView ep = (ElementView)pm.getInvoker();
 				final Tube t = (Tube) ep.getElement();
-				final FormSearchCable form = new FormSearchCable(cc,netId);
+				final FormSearchCable form = new FormSearchCable(sys,netId);
 				
 				ActionListener selectCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
@@ -3988,7 +4010,7 @@ public class gui {
 						if (t.containsCable(cable)) { newError(iFrame, "Кабель уже содержиться в канале"); return; }
 						
 						t.addCable(cable);
-						rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + duc.getElement(t.getDuct()));
+						sys.rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + sys.duc.getElement(t.getDuct()));
 						setTubeButtonColor(t, ep);	
 						form.iFrame.dispose();
 					}
@@ -4041,7 +4063,7 @@ public class gui {
 						if (form.subscriberList.getSelectedIndex() == -1) {newError(form.iFrame,"Абонент не выбран!"); return;}
 						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
 						
-						final FormSubscriberPaths formPath = new FormSubscriberPaths(phc,sub);
+						final FormSubscriberPaths formPath = new FormSubscriberPaths(sys,sub);
 						
 						ActionListener selectPath = new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
@@ -4075,7 +4097,7 @@ public class gui {
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(2);
-				rw.addLogMessage("Пара "+ p.toString()+", изменен статус на поврежденная");
+				sys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на поврежденная");
 				setPairButtonColor(p, ep);
 			}
 		});
@@ -4088,7 +4110,7 @@ public class gui {
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(0);
-				rw.addLogMessage("Пара "+ p.toString()+", изменен статус на исправная");
+				sys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на исправная");
 				setPairButtonColor(p, ep);
 				
 			}
@@ -4109,11 +4131,11 @@ public class gui {
 					Path path = (Path)form.pathList.getSelectedValue();
 					
 					if (path.removePair(p)) {
-						rw.addLogMessage("Пара "+ p.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+						sys.rw.addLogMessage("Пара "+ p.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
 
-						if (phc.isPairUsed(p) == null)  {
+						if (sys.phc.isPairUsed(p) == null)  {
 							p.setStatus(0);
-							rw.addLogMessage("Пара "+ p.toString()+" освобождена ");
+							sys.rw.addLogMessage("Пара "+ p.toString()+" освобождена ");
 							setPairButtonColor(p, ep);
 						}
 					}				
@@ -4131,13 +4153,13 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
-				final FormPairSubscribers form = new FormPairSubscribers(sc, phc, p);
+				final FormPairSubscribers form = new FormPairSubscribers(sys, p);
 				
 				ActionListener selectSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (form.subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
 						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
-						if (sub != null) formViewPassport(rw.createSubscriberPassport(sub));
+						if (sub != null) formViewPassport(sys.rw.createSubscriberPassport(sub));
 						form.iFrame.dispose();	
 					}
 				};

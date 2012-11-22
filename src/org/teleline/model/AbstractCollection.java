@@ -51,6 +51,20 @@ public abstract class AbstractCollection {
 		return null;			
 	}
 	/**
+	 * Возвращает единственный элемент коллекции из 1 элемента
+	 * @return элемент
+	 */
+	public AbstractElement getOnlyElement() {
+		
+		Iterator<AbstractElement> i = this.elements.iterator();
+		AbstractElement element = null;
+		
+		while (i.hasNext()){element = i.next(); return element;}
+		
+		return null;			
+		
+	}
+	/**
 	 * Удаляет елемент из коллекции
 	 * @param элемент
 	 */

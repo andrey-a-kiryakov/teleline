@@ -157,7 +157,7 @@ public class RW {
 				
 				Element frameXML = new Element ("dframe");
 				frameXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				frameXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//frameXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 				
 				frameXML.addContent(new Element ("name").addContent(f.getName()));
 				frameXML.addContent(new Element ("places").addContent(f.getPlacesCount().toString()));
@@ -176,7 +176,7 @@ public class RW {
 				
 				Element cabinetXML = new Element ("cab");
 				cabinetXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				cabinetXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//cabinetXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 				
 				cabinetXML.addContent(new Element ("class").addContent(f.getCabinetClass().toString()));
 				cabinetXML.addContent(new Element ("number").addContent(f.getSNumber()));
@@ -202,7 +202,7 @@ public class RW {
 				Element dboxXML = new Element ("dbox");
 				DBox f = (DBox)i.next();
 				dboxXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				dboxXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//dboxXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 			
 				dboxXML.addContent(new Element ("capacity").addContent(f.getCapacity().toString()));
 				dboxXML.addContent(new Element ("b").addContent(f.getBuilding().toString()));
@@ -222,7 +222,7 @@ public class RW {
 				
 				Element manholeXML = new Element ("manhole");
 				manholeXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				manholeXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//manholeXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 				
 				manholeXML.addContent(new Element ("number").addContent(f.getSNumber()));
 				manholeXML.addContent(new Element ("d").addContent(f.getDate()));
@@ -246,7 +246,7 @@ public class RW {
 				
 				Element ductXML = new Element ("duct");
 				ductXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				ductXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//ductXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 				
 				ductXML.addContent(new Element("from").addContent(f.getFrom().toString()));
 				ductXML.addContent(new Element("to").addContent(f.getTo().toString()));
@@ -299,7 +299,7 @@ public class RW {
 				
 				Element buildingXML = new Element ("buil");
 				buildingXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				buildingXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//buildingXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 				
 				buildingXML.addContent(new Element ("street").addContent(f.getStreet()));
 				buildingXML.addContent(new Element ("number").addContent(f.getSNumber()));
@@ -360,7 +360,7 @@ public class RW {
 				
 				Element cableXML = new Element ("cable");
 				cableXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				cableXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//cableXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 			
 				cableXML.addContent(new Element ("capacity").addContent(f.getCapacity().toString()));
 				cableXML.addContent(new Element("type").addContent(f.getType().toString()));
@@ -441,7 +441,7 @@ public class RW {
 				Element subscriberXML = new Element ("sub");
 				Subscriber f = (Subscriber)i.next();
 				subscriberXML.setAttribute(new Attribute ("i", f.getId().toString()));
-				subscriberXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
+				//subscriberXML.setAttribute(new Attribute ("ni", f.getNet().toString()));
 					
 				subscriberXML.addContent(new Element ("nm").addContent(f.getName()));
 				subscriberXML.addContent(new Element ("ph").addContent(f.getPhoneNumber()));
@@ -477,7 +477,7 @@ public class RW {
 	 		xmlOutput.setFormat(Format.getCompactFormat());
 	 		
 			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
-			String fileName = fSave + DF.format(Calendar.getInstance().getTime()) + ".xml";
+			String fileName = fSave +((Net)nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
 			
 			addLogMessage("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
 			writeLog();
@@ -510,6 +510,7 @@ public class RW {
 			Element system = document.getRootElement();
 			ig.setIdIndex(system.getAttribute("idIndex").getIntValue());
 			
+			Integer netId = 1;
 			Element n = null;
 			Iterator<?> i = null;
 			
@@ -521,8 +522,8 @@ public class RW {
 			while(i.hasNext()) { n = (Element)i.next();
 				
 				Net net = new Net();
-				
-				net.setId(n.getAttribute("i").getIntValue()); 
+				netId = n.getAttribute("i").getIntValue();
+				net.setId(netId); 
 				net.setName(n.getChildText("name"));
 				
 				nc.putElement(net);
@@ -538,7 +539,8 @@ public class RW {
 				DFramе dframe = new DFramе();
 				
 				dframe.setId(n.getAttribute("i").getIntValue()); 
-				dframe.attachToNet(n.getAttribute("ni").getIntValue());
+				//dframe.attachToNet(n.getAttribute("ni").getIntValue());
+				dframe.attachToNet(netId);
 				dframe.setName(n.getChildText("name"));
 				dframe.setPlacesCount(this.valueOf(n.getChildText("places")));
 				
@@ -555,7 +557,8 @@ public class RW {
 				Cabinet cabinet = new Cabinet();
 				
 				cabinet.setId(n.getAttribute("i").getIntValue()); 
-				cabinet.attachToNet(n.getAttribute("ni").getIntValue());
+				//cabinet.attachToNet(n.getAttribute("ni").getIntValue());
+				cabinet.attachToNet(netId);
 							
 				cabinet.setSNumber(n.getChildText("number"));
 				cabinet.setCabinetClass(this.valueOf(n.getChildText("class")));
@@ -582,8 +585,9 @@ public class RW {
 				DBox dbox = new DBox(dfc,cbc,fc,bc,pc,cc,buc);
 				
 				dbox.setId(n.getAttribute("i").getIntValue()); 
-				dbox.attachToNet(n.getAttribute("ni").getIntValue());
-			
+				//dbox.attachToNet(n.getAttribute("ni").getIntValue());
+				dbox.attachToNet(netId);
+				
 				dbox.setCapacity(this.valueOf(n.getChildText("capacity")));
 				dbox.setBuilding(this.valueOf(n.getChildText("b")));
 				dbox.setPlase(n.getChildText("p"));
@@ -602,7 +606,9 @@ public class RW {
 				Manhole manhole = new Manhole();
 				
 				manhole.setId(n.getAttribute("i").getIntValue()); 
-				manhole.attachToNet(n.getAttribute("ni").getIntValue());
+				//manhole.attachToNet(n.getAttribute("ni").getIntValue());
+				manhole.attachToNet(netId);
+				
 				manhole.setSNumber(n.getChildText("number"));
 				
 				manhole.setDate(n.getChildText("d"));
@@ -624,7 +630,8 @@ public class RW {
 			
 				Duct duct = new Duct(dfc, cbc, mc, buc);
 				duct.setId(n.getAttribute("i").getIntValue()); 
-				duct.attachToNet(n.getAttribute("ni").getIntValue());
+				//duct.attachToNet(n.getAttribute("ni").getIntValue());
+				duct.attachToNet(netId);
 				
 				duct.setFrom(this.valueOf(n.getChildText("from")));
 				duct.setTo(this.valueOf(n.getChildText("to")));
@@ -680,7 +687,8 @@ public class RW {
 				Building building = new Building();
 				
 				building.setId(n.getAttribute("i").getIntValue()); 
-				building.attachToNet(n.getAttribute("ni").getIntValue());
+				//building.attachToNet(n.getAttribute("ni").getIntValue());
+				building.attachToNet(netId);
 				
 				building.setSNumber(n.getChildText("number"));
 				building.setName(n.getChildText("name"));
@@ -744,7 +752,8 @@ public class RW {
 				Cable cable = new Cable(dfc,cbc,dbc,fc,bc,pc);
 				
 				cable.setId(n.getAttribute("i").getIntValue()); 
-				cable.attachToNet(n.getAttribute("ni").getIntValue());
+				//cable.attachToNet(n.getAttribute("ni").getIntValue());
+				cable.attachToNet(netId);
 								
 				cable.setCapacity(this.valueOf(n.getChildText("capacity")));
 				cable.setType(this.valueOf(n.getChildText("type")));
@@ -831,8 +840,8 @@ public class RW {
 				Subscriber subscriber = new Subscriber();
 				
 				subscriber.setId(n.getAttribute("i").getIntValue()); 
-				subscriber.attachToNet(n.getAttribute("ni").getIntValue()); 
-				
+				//subscriber.attachToNet(n.getAttribute("ni").getIntValue()); 
+				subscriber.attachToNet(netId);
 				subscriber.setName(n.getChildText("nm")); 
 				subscriber.setPhoneNumber(n.getChildText("ph")); 
 				subscriber.setDate(n.getChildText("dt"));
