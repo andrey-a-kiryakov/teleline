@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -948,6 +949,7 @@ public class teleline {
 				
 				GUI.newLabel("Список кроссов:", iFrame, 10, 10, 420, 14);
 				final JList dframeList = GUI.newList(iFrame, 10, 30, 420, 530);
+				
 				GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
 			
 			//	GUI.netsComboBoxLinked(netsComboBox, dframeList, sys.dfc);
@@ -1065,20 +1067,33 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Редактировать шкаф", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
-				GUI.newLabel("Список шкафов:", iFrame, 10, 65, 420, 14);
-				final JList cabinetList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список шкафов:", iFrame, 10, 10, 420, 14);
+				final JList cabinetList = GUI.newList(iFrame, 10, 30, 420, 525);
 				
-				GUI.netsComboBoxLinked(netsComboBox, cabinetList, sys.cbc);
+		//		GUI.netsComboBoxLinked(netsComboBox, cabinetList, sys.cbc);
+				GUI.setListItems(cabinetList, sys.cbc.sortByNumberUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement())));
 				
-				JButton editCabinetButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton viewCabinetButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
-				JButton passportCabinetButton = GUI.newButton("Паспорт", iFrame, 440, 165, 125, 26);
-				JButton createCabinetButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteCabinetButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
+				JButton editCabinetButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
+				JButton viewCabinetButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
+				JButton passportCabinetButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
+				JButton createCabinetButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
+				JButton deleteCabinetButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
 				
+				/*
+				 * Событие кнопки обновления списка шкафов
+				 */
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						GUI.setListItems(cabinetList, sys.cbc.sortByNumberUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement())));	
+					}
+				});
+				/*
+				 * ---------------------------------------------------------
+				 */
 				/*
 				 * Событие кнопки редактирования шкафа
 				 */
@@ -1088,7 +1103,7 @@ public class teleline {
 						if (item == -1) { GUI.newError(iFrame, "Шкаф не выбран!"); return; }
 						
 						GUI.formCabinet((Cabinet)cabinetList.getSelectedValue());
-						GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
+				//		GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
 						cabinetList.setSelectedIndex(item);
 						
 					}
@@ -1115,9 +1130,9 @@ public class teleline {
 				 */
 				ActionListener createCabinet = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
 						GUI.formCabinet(null);
-						GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
+					//	GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				};
 				createCabinetButton.addActionListener(createCabinet);
@@ -1134,7 +1149,7 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeCabinet((Cabinet)cabinetList.getSelectedValue());
 							GUI.newInfo(iFrame, "Шкаф и все его содержимое удалены");
-							GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));	
+							GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
 						}		
 					}
 				};
@@ -1173,13 +1188,14 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Редактировать КРТ", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
 				GUI.newLabel("Список КРТ:", iFrame, 10, 65, 420, 14);		
 				final JList dboxList = GUI.newList(iFrame, 10, 85, 420, 470);
 				
-				GUI.netsComboBoxLinked(netsComboBox, dboxList, sys.dbc);
+		//		GUI.netsComboBoxLinked(netsComboBox, dboxList, sys.dbc);
+				GUI.setListItems(dboxList, sys.dbc.sortByNumberUp(sys.dbc.getInNet((Net)sys.nc.getOnlyElement())));
 				
 				JButton editDBoxButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
 				JButton viewDBoxButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
@@ -1195,7 +1211,7 @@ public class teleline {
 						if (dboxList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Коробка не выбрана!"); return; }
 						
 						GUI.formDBox((DBox)dboxList.getSelectedValue());
-						GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)netsComboBox.getSelectedItem())));
+					//	GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)netsComboBox.getSelectedItem())));
 						
 					}
 				};
@@ -1209,7 +1225,7 @@ public class teleline {
 				ActionListener viewDBox = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (dboxList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Коробка не выбрана!"); return; }
-						GUI.viewDBox((DBox)dboxList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
+						GUI.viewDBox((DBox)dboxList.getSelectedValue(), sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/);
 					}
 				};
 				viewDBoxButton.addActionListener(viewDBox);
@@ -1221,9 +1237,9 @@ public class teleline {
 				 */
 				ActionListener createDBox = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
+				//		if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
 						GUI.formDBox(null);
-						GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)netsComboBox.getSelectedItem())));
+					//	GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				};
 				createDBoxButton.addActionListener(createDBox);
@@ -1240,7 +1256,7 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeDBox((DBox)dboxList.getSelectedValue());
 							GUI.newInfo(iFrame, "Коробка и все ее содержимое удалены");
-							GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)netsComboBox.getSelectedItem())));	
+							GUI.setListItems(dboxList, sys.dbc.sortByIdUp(sys.dbc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
 						}		
 					}
 				};
@@ -1253,11 +1269,11 @@ public class teleline {
 				 */
 				ActionListener passportDBox = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) {
+					/*	if (netsComboBox.getSelectedIndex() == -1) {
 							GUI.newError(iFrame, "Сеть не выбрана!");
 							return;
-						}
-						GUI.formViewPassport(sys.rw.createDBoxPassport((Net)netsComboBox.getSelectedItem()));
+						}*/
+						GUI.formViewPassport(sys.rw.createDBoxPassport((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/));
 					}		
 				};
 				passportDBoxButton.addActionListener(passportDBox);
@@ -1279,19 +1295,26 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Редактировать абонента", 685, 700);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
+			//	GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
+			//	final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
 				
-				GUI.newLabel("Список абонентов:", iFrame, 10, 65, 520, 14);
-				final JTable subscriberList = GUI.newTable(iFrame, 10, 85, 520, 320);
+				GUI.newLabel("Список абонентов:", iFrame, 10, 10, 520, 14);
+				final JTable subscriberList = GUI.newTable(iFrame, 10, 30, 520, 375);
 				final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
 				
-				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 540, 85, 125, 26);
-				JButton passportSubscriberButton = GUI.newButton("Карточка", iFrame, 540, 125, 125, 26);
-				JButton createSubscriberButton = GUI.newButton("Добавить", iFrame, 540, 195, 125, 26);
-				JButton deletSubscribereButton = GUI.newButton("Удалить", iFrame, 540, 235, 125, 26);
-				GUI.linkNetsComboBoxSubscriberTable(netsComboBox, subscriberList);
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 540, 30, 125, 26);
+				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 540, 105, 125, 26);
+				JButton passportSubscriberButton = GUI.newButton("Карточка", iFrame, 540, 145, 125, 26);
+				JButton createSubscriberButton = GUI.newButton("Добавить", iFrame, 540, 255, 125, 26);
+				JButton deletSubscribereButton = GUI.newButton("Удалить", iFrame, 540, 295, 125, 26);
+		//		GUI.linkNetsComboBoxSubscriberTable(netsComboBox, subscriberList);
+				
+				
+					Iterator<StructuredElement> i = sys.sc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
+		    		while (i.hasNext()) {
+		    			GUI.addSubscriberToTable(subscriberList, (Subscriber)i.next());
+		    		}
 				
 				GUI.newLabel("Список включений:", iFrame, 10, 420, 520, 14);
 				final JList pathList = GUI.newList(iFrame, 10, 440, 520, 90);
@@ -1304,6 +1327,15 @@ public class teleline {
 				JButton addPairButton = GUI.newButton("Добавить", iFrame, 540, 565, 125, 26);
 				JButton deletePairButton = GUI.newButton("Удалить", iFrame, 540, 595, 125, 26);
 				
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						GUI.clearTable(subscriberList);
+						Iterator<StructuredElement> i = sys.sc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
+			    		while (i.hasNext()) {
+			    			GUI.addSubscriberToTable(subscriberList, (Subscriber)i.next());
+			    		}
+					}
+				});
 				/*
 				 * Событие выбора абонента в таблице
 				 */
@@ -1364,7 +1396,7 @@ public class teleline {
 				 */
 				ActionListener createSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						Subscriber subscriber = GUI.formSubscriber(null);
 						if (subscriber != null) GUI.addSubscriberToTable(subscriberList, subscriber);	
 					}
@@ -1476,9 +1508,11 @@ public class teleline {
 				ActionListener addPair = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
-						final Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
-						
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
+					//	final Integer netId = ((Net)netsComboBox.getSelectedItem()).getId();
+//						
+						final Integer netId = sys.nc.getOnlyElement().getId();
+							
 						if (subscriberList.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Абонент не выбран!"); return; }
 						
 						if (pathList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Включение не выбрано!"); return; }
@@ -1493,7 +1527,6 @@ public class teleline {
 						pairTypeComboBox.addItem("Распределительную");
 						pairTypeComboBox.addItem("Прямого питания");
 											
-						
 						iSubFrame.getContentPane().add(pairTypeComboBox);
 						pairTypeComboBox.setBounds(20, 40, 360, 25);
 						
@@ -1634,22 +1667,42 @@ public class teleline {
 				
 				final JDialog iFrame = GUI.newDialog("Редактировать кабель", 685, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
 				
-				GUI.newLabel("Список кабелей:", iFrame, 10, 65, 520, 14);
-				final JTable cableTable = GUI.newTable(iFrame, 10, 85, 520, 470);
+				GUI.newLabel("Список кабелей:", iFrame, 10, 10, 520, 14);
+				final JTable cableTable = GUI.newTable(iFrame, 10, 30, 520, 525);
 				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
 				
-				GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
+			//	GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
 				
-				JButton editCableButton = GUI.newButton("Редактировать", iFrame, 540, 85, 125, 26);
-				JButton viewCableButton = GUI.newButton("Смотреть", iFrame, 540, 125, 125, 26);
-				JButton passportCableButton = GUI.newButton("Паспорт", iFrame, 540, 165, 125, 26);
-				JButton createCableButton = GUI.newButton("Добавить", iFrame, 540, 235, 125, 26);
-				JButton deleteCableButton = GUI.newButton("Удалить", iFrame, 540, 275, 125, 26);
+				Iterator<StructuredElement> i = sys.cc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
+	    		while (i.hasNext()) {
+	    			GUI.addCableToTable(cableTable, (Cable)i.next());
+	    		}
 				
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 540, 30, 125, 26);
+				JButton editCableButton = GUI.newButton("Редактировать", iFrame, 540, 105, 125, 26);
+				JButton viewCableButton = GUI.newButton("Смотреть", iFrame, 540, 145, 125, 26);
+				JButton passportCableButton = GUI.newButton("Паспорт", iFrame, 540, 185, 125, 26);
+				JButton createCableButton = GUI.newButton("Добавить", iFrame, 540, 255, 125, 26);
+				JButton deleteCableButton = GUI.newButton("Удалить", iFrame, 540, 295, 125, 26);
+				/*
+				 * Событие кнопки обновления списка кабелей
+				 */
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						GUI.clearTable(cableTable);
+						Iterator<StructuredElement> i = sys.cc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
+			    		while (i.hasNext()) {
+			    			GUI.addCableToTable(cableTable, (Cable)i.next());
+			    		}
+					}
+				});
+				/*
+				 * ---------------------------------------------------------
+				 */
 				/*
 				 * Событие кнопки редактирования кабеля
 				 */
@@ -1673,7 +1726,7 @@ public class teleline {
 					public void actionPerformed(ActionEvent arg0) {
 						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),((Net)netsComboBox.getSelectedItem()).getId(), null);
+						GUI.viewCable((Cable)tableModel.getValueAt( selectedIndex, 0),sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/, null);
 					}
 				};
 				viewCableButton.addActionListener(viewCable);
@@ -1685,7 +1738,7 @@ public class teleline {
 				 */
 				ActionListener createCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						Cable cable = GUI.formCable(null);
 						if (cable != null) GUI.addCableToTable(cableTable, cable);
 					}
@@ -1752,19 +1805,27 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Редактировать колодец", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
-				GUI.newLabel("Список колодцев:", iFrame, 10, 65, 420, 14);
-				final JList manholeList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список колодцев:", iFrame, 10, 10, 420, 14);
+				final JList manholeList = GUI.newList(iFrame, 10, 30, 420, 525);
 				
-				GUI.netsComboBoxLinked(netsComboBox, manholeList, sys.mc);
+		//		GUI.netsComboBoxLinked(netsComboBox, manholeList, sys.mc);
+				GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement())));
 				
-				JButton editManholeButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton viewManholeButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
-				JButton passportManholeButton = GUI.newButton("Паспорт", iFrame, 440, 165, 125, 26);
-				JButton createManholeButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteManholeButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
+				JButton editManholeButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
+				JButton viewManholeButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
+				JButton passportManholeButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
+				JButton createManholeButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
+				JButton deleteManholeButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
+				
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) { 
+						GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement())));
+					}
+				});
 				/*
 				 * Событие кнопки редактирования колодца
 				 */
@@ -1772,7 +1833,7 @@ public class teleline {
 					public void actionPerformed(ActionEvent arg0) {
 						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
 						GUI.formManhole((Manhole)manholeList.getSelectedValue());
-						GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));	
+				//		GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));	
 					}
 				};
 				editManholeButton.addActionListener(editManhole);
@@ -1785,7 +1846,7 @@ public class teleline {
 				ActionListener viewManhole = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
-						GUI.viewManhole((Manhole)manholeList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
+						GUI.viewManhole((Manhole)manholeList.getSelectedValue(), sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/);
 					}
 				};
 				viewManholeButton.addActionListener(viewManhole);
@@ -1797,9 +1858,9 @@ public class teleline {
 				 */
 				ActionListener createManhole = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+				//		if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						GUI.formManhole(null);
-						GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));
+				//		GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				};
 				createManholeButton.addActionListener(createManhole);
@@ -1816,7 +1877,7 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeManhole((Manhole)manholeList.getSelectedValue());
 							GUI.newInfo(iFrame, "Колодец и участки канализации, проходящие через него, удалены");
-							GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));	
+							GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
 						}		
 					}
 				};
@@ -1849,31 +1910,43 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Редактировать канализацию", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
-				GUI.newLabel("Список участков канализации:", iFrame, 10, 65, 420, 14);
-				final JList ductList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список участков канализации:", iFrame, 10, 10, 420, 14);
+				final JList ductList = GUI.newList(iFrame, 10, 30, 420, 525);
 				
-				GUI.netsComboBoxLinked(netsComboBox, ductList, sys.duc);
+		//		GUI.netsComboBoxLinked(netsComboBox, ductList, sys.duc);
 				
-				JButton editDuctButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
-				JButton viewDuctButton = GUI.newButton("Смотреть", iFrame, 440, 125, 125, 26);
-				JButton passportDuctButton = GUI.newButton("Паспорт", iFrame, 440, 165, 125, 26);
-				JButton createDuctButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteDuctButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
+				GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)sys.nc.getOnlyElement())));
 				
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
+				JButton editDuctButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
+				JButton viewDuctButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
+				JButton passportDuctButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
+				JButton createDuctButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
+				JButton deleteDuctButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
+				/*
+				 * Событие кнопки обновления списка участков канализации
+				 */
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)sys.nc.getOnlyElement())));
+					}
+				});
+				/*
+				 * ---------------------------------------------------------
+				 */
 				/*
 				 * Событие кнопки редактирования канализации
 				 */
-				ActionListener editDuct = new ActionListener() {
+				editDuctButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
 						GUI.formDuct((Duct)ductList.getSelectedValue());
-						GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
+				//		GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
 					}
-				};
-				editDuctButton.addActionListener(editDuct);
+				});
 				/*
 				 * ---------------------------------------------------------
 				 */
@@ -1883,7 +1956,7 @@ public class teleline {
 				ActionListener viewDuct = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						GUI.viewDuct((Duct)ductList.getSelectedValue(), ((Net)netsComboBox.getSelectedItem()).getId());
+						GUI.viewDuct((Duct)ductList.getSelectedValue(), sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/);
 					}
 				};
 				viewDuctButton.addActionListener(viewDuct);
@@ -1895,9 +1968,9 @@ public class teleline {
 				 */
 				ActionListener createCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						GUI.formDuct(null);
-						GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));
+					//	GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				};
 				createDuctButton.addActionListener(createCable);
@@ -1914,7 +1987,7 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeDuct((Duct)ductList.getSelectedValue());
 							GUI.newInfo(iFrame, "Участок канализации удален.");
-							GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
+						//	GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
 						}		
 					}
 				};
@@ -1927,13 +2000,13 @@ public class teleline {
 				 */
 				ActionListener passportDuct = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 					//	if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
 						Duct duct = (Duct)ductList.getSelectedValue();
 						Building building = (Building)sys.buc.getElement(duct.getTo());
 						//Manhole manhole = (Manhole)mc.getElement(duct.getTo());
 						if (building != null)  { GUI.formViewPassport(sys.rw.createCableglandPassport(duct)); return;}
-						Vector<Duct> v = GUI.formCreateDuctsSet((Net)netsComboBox.getSelectedItem());
+						Vector<Duct> v = GUI.formCreateDuctsSet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/);
 						if (v.size() >0) {
 							GUI.formViewPassport(sys.rw.createDuctPassport(v));
 						}
@@ -1956,44 +2029,49 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				final JDialog iFrame = GUI.newDialog("Здания", 585, 600);
 				
-				GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-				final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
+		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
+		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
 				
-				GUI.newLabel("Список зданий:", iFrame, 10, 65, 420, 14);
-				final JList buildingList = GUI.newList(iFrame, 10, 85, 420, 470);
+				GUI.newLabel("Список зданий:", iFrame, 10, 10, 420, 14);
+				final JList buildingList = GUI.newList(iFrame, 10, 30, 420, 525);
 				
-				GUI.netsComboBoxLinked(netsComboBox, buildingList, sys.buc);
+				//GUI.netsComboBoxLinked(netsComboBox, buildingList, sys.buc);
 				
-				JButton editBuildingButton = GUI.newButton("Редактировать", iFrame, 440, 85, 125, 26);
+				GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement())));
 				
-				JButton createBuildingButton = GUI.newButton("Добавить", iFrame, 440, 235, 125, 26);
-				JButton deleteBuildingButton = GUI.newButton("Удалить", iFrame, 440, 275, 125, 26);
+				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
+				JButton editBuildingButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
+				JButton createBuildingButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
+				JButton deleteBuildingButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
 				
+				refreshButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) { 
+						GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement())));
+					}
+				});
 				/*
 				 * Событие кнопки редактирования здания
 				 */
-				ActionListener editBuilding = new ActionListener() {
+				editBuildingButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (buildingList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Здание не выбрано!"); return; }
 						GUI.formBuilding((Building)buildingList.getSelectedValue());
-						GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));	
+					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));	
 					}
-				};
-				editBuildingButton.addActionListener(editBuilding);
+				});
 				/*
 				 * ---------------------------------------------------------
 				 */
 				/*
 				 * Событие кнопки создания здания
 				 */
-				ActionListener createBuilding = new ActionListener() {
+				createBuildingButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
+					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
 						GUI.formBuilding(null);
-						GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));
+					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
-				};
-				createBuildingButton.addActionListener(createBuilding);
+				});
 				/*
 				 * ---------------------------------------------------------
 				 */
@@ -2007,7 +2085,7 @@ public class teleline {
 						if (n == JOptionPane.YES_OPTION) {
 							GUI.removeBuilding((Building)buildingList.getSelectedValue());
 							GUI.newInfo(iFrame, "Здание удалено");
-							GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));	
+							GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
 						}		
 					}
 				};

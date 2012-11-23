@@ -3,7 +3,6 @@ package org.teleline.gui;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-import org.teleline.model.PathCollection;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Sys;
 

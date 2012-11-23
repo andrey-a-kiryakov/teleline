@@ -114,7 +114,7 @@ public abstract class Form {
 	}
 	
 	@SuppressWarnings("serial")
-	public JTable addTable( int x, int y, int w, int h) {
+	public JTable addTable(int x, int y, int w, int h) {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(x, y, w, h);
@@ -123,7 +123,7 @@ public abstract class Form {
 		JTable table = new JTable(new DefaultTableModel()){
 			public boolean isCellEditable(int arg0, int arg1) {return false; }
 		};
-		table.setRowHeight(18);
+		table.setRowHeight(20);
 		table.getSelectionModel().setSelectionMode(0);
 		scrollPane.setViewportView(table);
 		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));

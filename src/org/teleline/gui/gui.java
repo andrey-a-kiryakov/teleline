@@ -104,7 +104,7 @@ public class gui {
 	}
 	
 	/**
-	 * Обновляет строчку с кабелем в таблицк
+	 * Обновляет строчку с кабелем в таблице
 	 * @param table - таблица
 	 * @param cable - кабель
 	 * @param index - позиция обновляемой строки в таблице
@@ -539,7 +539,7 @@ public class gui {
 	 * @param List - список структурных элементов
 	 * @param lc - коллекция структурных элементов
 	 */
-	public void netsComboBoxLinked(final JComboBox NetsComboBox, final JList List, final StructuredElementCollection lc) {
+/*	public void netsComboBoxLinked(final JComboBox NetsComboBox, final JList List, final StructuredElementCollection lc) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -553,13 +553,13 @@ public class gui {
         if (NetsComboBox.getSelectedIndex() > -1) setListItems(List, lc.sortByIdUp(lc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
         
         NetsComboBox.addActionListener(actionListener);
-	}
+	}*/
 	/**
 	 * Связывает выпадающий список сетей и таблицу кабелей
 	 * @param netsComboBox - выпадающий список сетей
 	 * @param cableTable - таблица кабелей
 	 */
-	public void linkNetsComboBoxCableTable (final JComboBox netsComboBox, final JTable cableTable) {
+/*	public void linkNetsComboBoxCableTable (final JComboBox netsComboBox, final JTable cableTable) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -584,13 +584,13 @@ public class gui {
 		
     	netsComboBox.addActionListener(actionListener);
         
-	}
+	}*/
 	/**
 	 * Связывает выпадающий список сетей и таблицу абонентов
 	 * @param netsComboBox - выпадающий список сетей
 	 * @param subscriberTable - таблица абонентов
 	 */
-	public void linkNetsComboBoxSubscriberTable (final JComboBox netsComboBox, final JTable subscriberTable) {
+/*	public void linkNetsComboBoxSubscriberTable (final JComboBox netsComboBox, final JTable subscriberTable) {
 		
 		ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -615,7 +615,7 @@ public class gui {
 		
     	netsComboBox.addActionListener(actionListener);
         
-	}
+	}*/
 	
 	/**
 	 * Связывает выпадающий список кроссов с выпадающим списком громполос
@@ -863,7 +863,7 @@ public class gui {
 		newLabel("Дом № (1-4 символа: А-Я,а-я,0-9):", iFrame, 20, 135, 360, 14);
 		final JTextField number = newTextField(iFrame, 20, 160, 360, 25);
 		
-		newLabel("Название (до 150 символов):", iFrame, 20, 195, 360, 14);
+		newLabel("Описание (до 150 символов):", iFrame, 20, 195, 360, 14);
 		final JTextField name = newTextField(iFrame, 20, 220, 360, 25);
 		
 		if (building != null){ 
@@ -2865,15 +2865,15 @@ public class gui {
 		int panelWidth = W * inLine + marginX * (inLine + 1);
 		int panelHeight = H * lines + marginY * (lines + 1);
 		
-		final JDialog iFrame = newDialog("Просмотр шкафа", panelWidth + 40 + 10, panelHeight + 100);
+		final JDialog iFrame = newDialog("Просмотр шкафа", panelWidth + 40 + 10, panelHeight + 140);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(cabinet.toString());
 		panel.setBackground(new Color(0, 128, 128));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
+		panel.setBounds(20, 90, panelWidth, panelHeight);
 		iFrame.getContentPane().add(panel);
 		
-		JLabel head = newLabel(cabinet.toString(), iFrame, 20, 10, panelWidth, 30);
+		JLabel head = newLabel(cabinet.toString(), iFrame, 20, 45, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		int x = 0, y = 0;
@@ -2883,6 +2883,13 @@ public class gui {
 			public void actionPerformed(ActionEvent e) {
 				iFrame.dispose();
 				viewCabinet(cabinet);			
+			}
+		});
+		
+		JButton dboxButton = newButton("Коробки", iFrame, 120,10,90,26);
+		dboxButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				new FormCabinetsDBoxs(sys, cabinet);
 			}
 		});
 		

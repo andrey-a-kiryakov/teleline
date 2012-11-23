@@ -86,12 +86,12 @@ public class DBox extends StructuredElement{
 	public String toString() {
 		
 		Pair p = pc.getInPlace(this, 0);
-		Building bl = (Building)buc.getElement(this.building);
-		String build = "";
-		if (bl != null) build = bl.toString();
+	//	Building bl = (Building)buc.getElement(this.building);
+	//	String build = "";
+	//	if (bl != null) build = bl.toString();
 		
 		if (p == null) { 
-			return "КРТ (id=" + this.getId().toString() + ", без пар, "+ build + ")"; }
+			return "КРТ (id=" + this.getId().toString() + ", без пар, "/*+ build +*/ +")"; }
 		
 		else {
 			StructuredElement s;
@@ -100,11 +100,11 @@ public class DBox extends StructuredElement{
 			if (b == null ) {
 				b = (ConnectedPointElement)fc.getElement(p.getElementFrom());
 				s = (StructuredElement)dfc.getElement(b.getOwnerId());
-				return  "КРТ"+b.getNumber().toString()+ "-" + ((Integer)(p.getFromNumber() / 10)).toString() +" ("+build+")";
+				return  "КРТ"+b.getNumber().toString()+ "-" + ((Integer)(p.getFromNumber() / 10)).toString()/* +" ("+build+")"*/;
 			}
 			else {
 				s = (StructuredElement)cbc.getElement(b.getOwnerId());}
-				return s.getSNumber() + "КРТ"+b.getNumber().toString()+ "-" + ((Integer)(p.getFromNumber() / 10)).toString()+" ("+build+")";
+				return s.getSNumber() + "КРТ"+b.getNumber().toString()+ "-" + ((Integer)(p.getFromNumber() / 10)).toString()/*+" ("+build+")"*/;
 			
 		}
 	}
