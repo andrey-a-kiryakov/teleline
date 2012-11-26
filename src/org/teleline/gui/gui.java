@@ -1080,69 +1080,6 @@ public class gui {
 	}
 	
 	/**
-	 * Создает и выводит на экран форму создания/режактирования элемента "Кросс"
-	 * @param dframe - элемент "Кросс", если null - выводится форма создания нового элемента
-	 */
-	public void formDFrame(final DFramе dframe) {
-		
-		final JDialog iFrame = newDialog("Создать кросс", 410, 285);
-		if (dframe != null) iFrame.setTitle("Редактировать кросс");
-		
-	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		
-		newLabel("Название кросса (1-50 символов):", iFrame, 20, 75, 360, 25);
-		final JTextField textField = newTextField(iFrame,20, 100, 360, 25);
-		
-		newLabel("Мест в кроссе:", iFrame, 20, 135, 360, 25);
-		final JComboBox placesBox = new JComboBox();
-		placesBox.addItem((Integer)10);
-		placesBox.addItem((Integer)20);
-		placesBox.addItem((Integer)30);
-		placesBox.setBounds(20, 160, 360, 25);
-		iFrame.getContentPane().add(placesBox);
-
-		if (dframe != null) {
-		//	comboBox.removeAllItems();
-		//	comboBox.addItem(sys.nc.getElement(dframe.getNet()));
-		//	comboBox.setSelectedIndex(0);
-		//	comboBox.setEnabled(false);
-			textField.setText(dframe.getName());
-			placesBox.setSelectedItem(dframe.getPlacesCount());
-			placesBox.setEnabled(false);
-		}
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 200, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (!sys.v.validateDFrameName(textField.getText())) { newError(iFrame, "Неверный формат названия кросса!"); return;};
-				
-					if (dframe != null) {
-					String oldDFrame = dframe.toString();
-					dframe.setName(textField.getText());
-					sys.rw.addLogMessage("Кросс изменен: " + oldDFrame + " => " + dframe.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					DFramе newDFrame = new DFramе(); 
-					newDFrame.setName(textField.getText()); 
-				//	newDFrame.attachToNet((Net)comboBox.getSelectedItem());
-					newDFrame.attachToNet((Net)sys.nc.getOnlyElement());
-					newDFrame.setPlacesCount((Integer)placesBox.getSelectedItem());
-					sys.dfc.addElement(newDFrame);
-					//String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)comboBox.getSelectedItem()).toString();
-					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)sys.nc.getOnlyElement()).toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		iFrame.setVisible(true);
-	}
-	/**
 	 * Создает и выводит на экран форму создания/редактирования кабеля
 	 * @param cable - элемент "Кабель", если null - выводится форма создания нового элемента
 	 */

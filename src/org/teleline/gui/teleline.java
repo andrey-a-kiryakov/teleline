@@ -41,26 +41,7 @@ import java.awt.event.InputEvent;
 public class teleline {
 	
 	JFrame frmTeleline;
-//	public IdGenerator ig;
-	public gui GUI;
-/*	public RW rw;
-	public NetCollection nc;
-	public DFrameCollection dfc;
-	public CabinetCollection cbc; 
-	public DBoxCollection dbc;
-	public ManholeCollection mc;
-	public DuctCollection duc;
-	public BuildingCollection buc;
-	public TubeCollection tuc;
-	public FrameCollection fc;
-	public BoxCollection bc;
-	public CableCollection cc;
-	public PairCollection pc;
-	public PathCollection phc;
-	public SubscriberCollection sc;
-	public DamageCollection dmc;
-	public Validator V;
-*/	
+	public gui GUI;	
 	public Sys sys;
 	
 	/**
@@ -93,28 +74,7 @@ public class teleline {
 		Net net = new Net();
 		net.setName("Новая сеть");
 		sys.nc.addElement(net);
-/*		
-		ig = new IdGenerator();
-		
-		nc = new NetCollection(ig);
-		dfc = new DFrameCollection(ig);
-		cbc = new CabinetCollection(ig);
-		dbc = new DBoxCollection(ig);
-		mc = new ManholeCollection(ig);
-		duc = new DuctCollection(ig);
-		buc = new BuildingCollection(ig);
-		tuc = new TubeCollection(ig);
-		fc = new FrameCollection(ig);
-		bc = new BoxCollection(ig);
-		cc = new CableCollection(ig);
-		pc = new PairCollection(ig);
-		phc = new PathCollection(ig);
-		sc = new SubscriberCollection(ig);
-		dmc = new DamageCollection(ig);
-		V = new Validator();
-		
-		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc);*/
-		GUI = new gui(sys,/*sys.nc,sys.dfc,sys.cbc,sys.dbc,sys.mc,sys.duc,sys.buc,sys.tuc,sys.fc,sys.bc,sys.cc,sys.pc,sys.phc,sys.sc,sys.dmc,sys.rw,sys.v,*/frmTeleline);
+		GUI = new gui(sys,frmTeleline);
 
 		initialize();
 	}
@@ -233,7 +193,7 @@ public class teleline {
 		menuCreate.add(menuItem);
 	*/	
 		JMenuItem menuItem_1 = new JMenuItem("Кросс");
-		menuItem_1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {GUI.formDFrame(null);}});
+		menuItem_1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormDFrame(sys, null);}});
 		JSeparator separator = new JSeparator();
 		menuCreate.add(separator);
 		menuCreate.add(menuItem_1);
@@ -977,9 +937,7 @@ public class teleline {
 							return; 
 						}
 						
-						GUI.formDFrame((DFramе)dframeList.getSelectedValue());
-					//	GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));	
-					//	GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
+						new FormDFrame(sys, (DFramе)dframeList.getSelectedValue());
 					}
 				};
 				editDFrameButton.addActionListener(editDFrame);
@@ -1007,13 +965,7 @@ public class teleline {
 				 */
 				ActionListener createDFrame = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-					/*	if (netsComboBox.getSelectedIndex() == -1) {
-							GUI.newError(iFrame, "Сеть не выбрана!");
-							return;
-						}*/
-						GUI.formDFrame(null);
-						//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));
-						//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
+						new FormDFrame(sys, null);
 					}
 				};
 				createDFrameButton.addActionListener(createDFrame);
