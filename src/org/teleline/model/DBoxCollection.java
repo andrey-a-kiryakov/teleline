@@ -35,5 +35,4 @@ public class DBoxCollection extends StructuredElementCollection {
 		
 		return h;
 	}
-	
 }

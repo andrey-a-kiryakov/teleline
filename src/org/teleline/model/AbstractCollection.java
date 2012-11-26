@@ -111,6 +111,12 @@ public abstract class AbstractCollection {
 		return (HashSet<AbstractElement>) this.elements.clone();
 	}
 	/**
+	 * Возвращает все! (не копии) элементы коллекции.
+	 */
+	public HashSet<AbstractElement> getElements() {
+		return (HashSet<AbstractElement>) this.elements();
+	}
+	/**
 	 * Возвращает итератор по всем элементам коллекции
 	 */
 	public Iterator<AbstractElement> getIterator() {

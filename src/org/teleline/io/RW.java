@@ -2181,7 +2181,7 @@ public class RW {
 	 * Создает и сохраняет в файл адресный лист коробок
 	 * @return имя файла
 	 */
-	public String createDBoxPassport(Net net) {
+	public String createDBoxPassport(Vector<DBox> dbv) {
 		try {
 			
 			Element html = new Element("html");
@@ -2212,10 +2212,10 @@ public class RW {
 			cablesTableTr1.addContent(new Element("th").addContent("Место установки"));
 			cablesTableTr1.addContent(new Element("th").addContent("Расстояние до шкафа, м"));
 			
-			Iterator <AbstractElement> i = dbc.sortByIdUp(dbc.getInNet(net)).iterator();
+			Iterator <DBox> i = dbv.iterator();
 			
 			while (i.hasNext()) {
-				DBox dbox = (DBox)i.next();
+				DBox dbox = i.next();
 				Building build = (Building)buc.getElement(dbox.getBuilding());
 				Pair p = pc.getInPlace(dbox, 0);
 				

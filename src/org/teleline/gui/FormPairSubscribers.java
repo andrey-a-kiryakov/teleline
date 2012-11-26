@@ -1,5 +1,7 @@
 package org.teleline.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -20,7 +22,7 @@ public class FormPairSubscribers extends Form {
 	public JList subscriberList;
 	public JButton okButton;
 	
-	public FormPairSubscribers(Sys iSys, Pair pair) {
+	public FormPairSubscribers(final Sys iSys, Pair pair) {
 		super(iSys);
 		// TODO Auto-generated constructor stub
 		this.createDialog("Пара: " + pair.toString(), 485, 270);
@@ -28,6 +30,17 @@ public class FormPairSubscribers extends Form {
 		subscriberList = addList(10, 30, 320, 200);
 		okButton = addButton("Выбрать", 340, 30, 125, 26);
 		fillSubscriberList (iSys.sc, iSys.phc, pair);
+		
+		ActionListener selectSubscriber = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (subscriberList.getSelectedIndex() == -1) {util_newError("Абонент не выбран!"); return;}
+				Subscriber sub = (Subscriber)subscriberList.getSelectedValue();
+				if (sub != null) util_viewPassport(iSys.rw.createSubscriberPassport(sub));
+				iFrame.dispose();	
+			}
+		};
+		okButton.addActionListener(selectSubscriber);
+		
 		iFrame.setVisible(true);
 		
 	}

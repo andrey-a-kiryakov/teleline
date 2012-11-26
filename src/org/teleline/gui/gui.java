@@ -1143,159 +1143,6 @@ public class gui {
 		iFrame.setVisible(true);
 	}
 	/**
-	 * Создает и выводит на экран форму создания/редактирования элемента "Шкаф"
-	 * @param cabinet - элемент "Шкаф", если null - выводится форма создания нового элемента
-	 */
-	public void formCabinet(final Cabinet cabinet) {
-		
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 370, iFrameMaxHeight = 430;
-		
-		final JDialog iFrame = newDialog("Создать шкаф", iFrameMinWidth, iFrameMinHeight);
-		 
-	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		
-		newLabel("Номер шкафа (1-4 символа: А-Я,а-я,0-9):", iFrame, 20, 75, 360, 25);
-		final JTextField formatedText = newTextField(iFrame, 20, 100, 360, 25);
-		
-		newLabel("Мест в шкафу:", iFrame, 20, 135, 360, 25);
-		final JComboBox comboBox1 = new JComboBox();
-		comboBox1.addItem((Integer)1);
-		comboBox1.addItem((Integer)3);
-		comboBox1.addItem((Integer)4);
-		comboBox1.addItem((Integer)6);
-		comboBox1.addItem((Integer)12);
-		comboBox1.setSelectedIndex(4);
-		comboBox1.setBounds(20, 160, 360, 25);
-		iFrame.getContentPane().add(comboBox1);
-		
-		newLabel("Класс шкафа (1-2):", iFrame, 20, 195, 360, 25);
-		final JTextField cabinetClass = newTextField(iFrame, 20, 220, 360, 25);
-		
-		if (cabinet != null) {
-			
-			iFrame.setTitle("Редактировать шкаф");
-			
-		//	comboBox.setSelectedItem(sys.nc.getElement(cabinet.getNet()));
-		//	comboBox.setEnabled(false);
-			formatedText.setText(cabinet.getSNumber());
-			
-			comboBox1.setSelectedItem(cabinet.getPlacesCount());
-			comboBox1.setEnabled(false);
-			
-			cabinetClass.setText(cabinet.getCabinetClass().toString());
-			cabinetClass.setEnabled(false);
-		}
-		
-		/*
-		 * Дополнительные параметры шкафа
-		 */
-		newLabel("Адрес:", iFrame, 420, 15, 360, 25);
-		final JTextField cabinetAdress = newTextField(iFrame, 420, 40, 360, 25);
-		
-		newLabel("Место расположения:", iFrame, 420, 75, 360, 25);
-		final JTextField cabinetPlase = newTextField(iFrame, 420, 100, 360, 25);
-		
-		newLabel("Конструкция, материал:", iFrame, 420, 135, 360, 25);
-		final JTextField cabinetMaterual = newTextField(iFrame, 420, 160, 360, 25);
-		
-		newLabel("Дата установки:", iFrame, 420, 195, 360, 25);
-		final JTextField cabinetDate = newTextField(iFrame, 420, 220, 360, 25);
-		
-		newLabel("Cпособ установки:", iFrame, 420, 255, 360, 25);
-		final JComboBox cabinetSetup = new JComboBox();
-		cabinetSetup.addItem("Без шкафной коробки");
-		cabinetSetup.addItem("Со шкафной коробки");
-		cabinetSetup.setSelectedIndex(0);
-		cabinetSetup.setBounds(420, 280, 360, 25);
-		iFrame.getContentPane().add(cabinetSetup);		
-		
-		newLabel("Уличный или в помещении:", iFrame, 420, 315, 360, 25);
-		final JComboBox cabinetArea = new JComboBox();
-		cabinetArea.addItem("Уличный");
-		cabinetArea.addItem("В помещении");
-		cabinetArea.setSelectedIndex(0);
-		cabinetArea.setBounds(420, 340, 360, 25);
-		iFrame.getContentPane().add(cabinetArea);		
-			
-		if (cabinet != null) {
-			cabinetAdress.setText(cabinet.getAdress());
-			cabinetPlase.setText(cabinet.getPlace());
-			cabinetMaterual.setText(cabinet.getMaterial());
-			cabinetDate.setText(cabinet.getDate());
-			cabinetSetup.setSelectedIndex(cabinet.getSetup());
-			cabinetArea.setSelectedIndex(cabinet.getArea());	
-		}
-		/*
-		 * ------------------------------
-		 */
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 280, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (!sys.v.validateCabinetNumber(formatedText.getText())) { newError(iFrame, "Неверный номер шкафа!"); return; }
-				if (!sys.v.validateCabinetClass(cabinetClass.getText())) { newError(iFrame, "Неверный класс шкафа!"); return; }
-				if (!sys.v.validateOtherParametr(cabinetAdress.getText())) { newError(iFrame, "Неверный формат адреса шкафа (до 150 символов)!"); return; }
-				if (!sys.v.validateOtherParametr(cabinetPlase.getText())) { newError(iFrame, "Неверный формат места расположения шкафа (до 150 символов)!"); return; }
-				if (!sys.v.validateOtherParametr(cabinetMaterual.getText())) { newError(iFrame, "Неверный формат материала шкафа (до 150 символов)!"); return; }
-				if (!sys.v.validateOtherParametr(cabinetDate.getText())) { newError(iFrame, "Неверный формат даты установки шкафа (до 150 символов)!"); return; }
-				
-			//	Net selectedNet = (Net)comboBox.getSelectedItem();
-				String cabinetNumber = formatedText.getText();
-
-				if (cabinet != null) {
-					
-					Cabinet b = sys.cbc.elementInNet(cabinetNumber, sys.nc.getOnlyElement().getId());
-					if (b != null && !cabinet.getId().equals(b.getId())) {newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети"); return;}
-					
-					String old = cabinet.toString();
-					cabinet
-						.setAdress(cabinetAdress.getText())
-						.setPlace(cabinetPlase.getText())
-						.setMaterial(cabinetMaterual.getText())
-						.setDate(cabinetDate.getText())
-						.setSetup(cabinetSetup.getSelectedIndex())
-						.setArea(cabinetArea.getSelectedIndex())
-						.setSNumber(cabinetNumber);
-					sys.rw.addLogMessage("Шкаф изменен: " + old + " => " + cabinet.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					
-					if (sys.cbc.elementInNet(cabinetNumber, sys.nc.getOnlyElement().getId()) != null) {
-						newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети");
-						return;
-					}
-					
-					Cabinet newCabinet = new Cabinet(); 
-					newCabinet
-						.setAdress(cabinetAdress.getText())
-						.setPlace(cabinetPlase.getText())
-						.setMaterial(cabinetMaterual.getText())
-						.setDate(cabinetDate.getText())
-						.setSetup(cabinetSetup.getSelectedIndex())
-						.setArea(cabinetArea.getSelectedIndex())
-					//	.attachToNet(selectedNet)
-						.attachToNet((Net)sys.nc.getOnlyElement())
-						.setPlacesCount((Integer)comboBox1.getSelectedItem())
-						.setSNumber(cabinetNumber);
-						newCabinet.setCabinetClass(sys.rw.valueOf(cabinetClass.getText()));
-					sys.cbc.addElement(newCabinet);
-					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ ((Net)sys.nc.getOnlyElement()).toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		
-		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 280, 60, 25);
-	
-		iFrame.setVisible(true);
-	}
-	/**
 	 * Создает и выводит на экран форму создания/редактирования кабеля
 	 * @param cable - элемент "Кабель", если null - выводится форма создания нового элемента
 	 */
@@ -1836,83 +1683,7 @@ public class gui {
 		iFrame.setVisible(true);
 				
 	}
-	/**
-	 * Создает и выводит на экран форму создания/редактирования элемента "Распределительная коробка"
-	 * @param dbox - элемент "КРТ", если null - выводится форма создания нового элемента
-	 */
-	public void formDBox(final DBox dbox) {
-		
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 310, iFrameMaxHeight = 310;
-		
-		final JDialog iFrame = newDialog("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
-		
-	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		
-		newLabel("Здание:", iFrame, 20, 75, 360, 25);
-		final JComboBox buildingsComboBox = buildingComboBox(sys.nc.getOnlyElement().getId(), iFrame, 20, 100, 360, 25);
-		
-	//	netsBuildingComboLinked (netsComboBox,buildingsComboBox);
-		
-		newLabel("Емкость коробки:", iFrame, 20, 135, 360, 25);
-		final JComboBox comboBox1 = new JComboBox();
-		comboBox1.addItem((Integer)10);
-		comboBox1.setSelectedIndex(0);
-		iFrame.getContentPane().add(comboBox1);
-		comboBox1.setBounds(20, 160, 360, 25);
-		/*
-		 * Дополнительные параметры коробки
-		 */
-		newLabel("Место расположения (до 150 символов):", iFrame, 420, 15, 360, 25);
-		final JTextField plase = newTextField(iFrame, 420, 40, 360, 25);
-		/*
-		 * ----------------
-		 */
-		if (dbox != null) {
-			iFrame.setTitle ("Редактировать КРТ");
-		//	netsComboBox.setSelectedItem(sys.nc.getElement(dbox.getNet())); 
-		//	netsComboBox.setEnabled(false);
-			buildingsComboBox.setSelectedItem(sys.buc.getElement(dbox.getBuilding()));
-			plase.setText(dbox.getPlase());
-		}
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 220, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			//	Net selectedNet = (Net)netsComboBox.getSelectedItem();
-				
-			//	if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (buildingsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрано здание!"); return; }
-				if (!sys.v.validateOtherParametr(plase.getText())) { newError(iFrame, "Неверный формат места расположения!"); return; }
-				if (dbox!= null) {
-					
-					String old = dbox.toString();
-					dbox
-						.setBuilding((Building)buildingsComboBox.getSelectedItem())
-						.setPlase(plase.getText());
-					sys.rw.addLogMessage("Коробка изменена: " + old + " => " + dbox.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					DBox newDBox = new DBox(sys.dfc,sys.cbc,sys.fc,sys.bc,sys.pc,sys.cc,sys.buc); 
-					newDBox
-						.setBuilding((Building)buildingsComboBox.getSelectedItem())
-						.setPlase(plase.getText())
-						.attachToNet((Net)sys.nc.getOnlyElement());
-					//	.attachToNet(selectedNet);
-					newDBox.setCapacity((Integer)comboBox1.getSelectedItem());				
-					sys.dbc.addElement(newDBox);
-					String mes = "Создана коробка: "+ newDBox.toString()+ ", присоединена к сети: "+ sys.nc.getOnlyElement().toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 220, 60, 25);
-		
-		iFrame.setVisible(true);
-	}
+	
 	/**
 	 * Создает и выводит на экран форму создания/режактирования элемента "Бокс"
 	 * @param box - элемент "Бокс", если null - выводится форма создания нового элемента
@@ -2160,66 +1931,9 @@ public class gui {
 	 * @param netId - id сети
 	 * @return выбранного среди найденых абонента или null, если ничего не выбрано
 	 */
-	public FormSubscriberSearch formSearchSubscriber (final Integer netId) {
-		final Vector<Integer> v = new Vector<Integer>(); v.add(0);
-		final FormSubscriberSearch form = new FormSubscriberSearch(sys);
-		
-		form.iFrame = newDialog("Найти абонента", 485, 580);
-		newLabel("Телефонный номер:", form.iFrame, 10, 10, 320, 14);
-		final JTextField textField = newTextField(form.iFrame,10, 30, 320, 25);
-		newLabel("Имя:", form.iFrame, 10, 65, 320, 14);
-		final JTextField textField_1 = newTextField(form.iFrame, 10, 85, 320, 25);
-		newLabel("Результаты поиска:", form.iFrame, 10, 120, 320, 14);
-		form.subscriberList = newList(form.iFrame, 10, 140, 320, 400);
-
-		form.findByPhoneButton = newButton("Найти", form.iFrame, 340, 30, 125, 26);
-		form.findByNameButton = newButton("Найти", form.iFrame, 340, 85, 125, 26);
-		form.okButton = newButton("Выбрать", form.iFrame, 340, 140, 125, 26);
-		
-		/*
-		 * Событие кнопки поиска абонента по телефону
-		 */
-		ActionListener findSubscriberByPhone = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				setListItems(form.subscriberList, sys.sc.searchByPhone(textField.getText(), netId));
-			}
-		};
-		form.findByPhoneButton.addActionListener(findSubscriberByPhone);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		/*
-		 * Событие кнопки поиска абонента о телефону
-		 */
-		ActionListener findSubscriberByName = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setListItems(form.subscriberList, sys.sc.searchByName(textField_1.getText(), netId));				
-			}
-		};
-		form.findByNameButton.addActionListener(findSubscriberByName);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		/*
-		 * Событие кнопки выбора абонента
-		 */	
-	/*	ActionListener selectSubscriber = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
-				v.set(0, 1);
-				iFrame.dispose();	
-			}
-		};
-		okButton.addActionListener(selectSubscriber);*/
-		/*
-		 * ---------------------------------------------------------
-		 */
-		form.iFrame.setVisible(true);
-		
-	//	if (v.get(0) == 1) return (Subscriber)subscriberList.getSelectedValue();
-	//	return null;
-		
-		return form;
+	public FormSubscriberSearch formSearchSubscriber () {
+	
+		return new FormSubscriberSearch(sys);
 	}
 	/**
 	 * Создает и выводит на экран форму поиска кабеля
@@ -2300,16 +2014,9 @@ public class gui {
 	 * @param pair - пара
 	 * @return форма
 	 */
-	public FormPairPaths formPairPaths(Pair pair) {
+	public FormPairPaths formPairPaths(Pair p) {
 		
-		final FormPairPaths form = new FormPairPaths(sys);
-		form.iFrame = newDialog("Пара: " + pair.toString(), 485, 270);
-		form.addLabel("Включения:", 10, 10, 320, 14);
-		form.pathList = newList(form.iFrame, 10, 30, 320, 200);
-		setListItems(form.pathList, sys.phc.sortByIdUp(sys.phc.getPairsPath(pair)));
-		form.pathList.setSelectedIndex(0);
-		form.okButton = newButton("Выбрать", form.iFrame, 340, 30, 125, 26);
-		form.iFrame.setVisible(true);
+		final FormPairPaths form = new FormPairPaths(sys,p);
 		return form;
 		
 	}
@@ -2687,37 +2394,6 @@ public class gui {
 		}
 		return null;
 	}
-/*	public void formMap () {
-		
-		final int iFrameMinWidth = 300, iFrameMaxWidth = 650, iFrameMinHeight = 300, iFrameMaxHeight = 430;
-		
-		final JDialog iFrame = newDialog("Карта сети", iFrameMinWidth, iFrameMinHeight);
-		
-		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		iFrame.getContentPane().add(newGrafics(), BorderLayout.CENTER);
-		iFrame.setResizable(true);
-		iFrame.setVisible(true);
-		
-	}
-	public JScrollPane newGrafics() {
-		
-		GraficsPanel graficsPanel = new GraficsPanel ();
-
-		JScrollPane scrollPane = new JScrollPane(graficsPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
-		graficsPanel.setLayout(new BorderLayout(0, 0));
-		JButton b = new JButton("2");
-		b.setSize(300, 1000);
-		graficsPanel.add(b, BorderLayout.SOUTH);
-		
-		
-		graficsPanel.setSize(2000, 2000);
-		
-		
-		return scrollPane;
-	
-	}*/
 	/**
 	 * Создает и добавляет в окно надпись
 	 * @param Text - текст надписи
@@ -2889,7 +2565,34 @@ public class gui {
 		JButton dboxButton = newButton("Коробки", iFrame, 120,10,90,26);
 		dboxButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new FormCabinetsDBoxs(sys, cabinet);
+				
+				
+				HashSet<AbstractElement> dboxes = new HashSet<AbstractElement>();
+				
+				Iterator<Cable> i = sys.cc.getDCableOut(cabinet).iterator();
+				while (i.hasNext()) {
+					
+					Cable cable = i.next();
+					
+					Iterator<Pair> t = sys.pc.getInCable(cable).iterator();
+					
+					
+					while (t.hasNext()) {
+						Pair pair = t.next();
+						
+						AbstractElement ae = sys.dbc.getElement(pair.getElementTo());
+							
+						 if (!dboxes.contains(ae)) { 
+							
+							dboxes.add(ae);
+			
+						 }
+					}
+				}
+				
+				FormDBoxes fb = new FormDBoxes(sys, dboxes);
+				fb.iFrame.setTitle("Коробки шкафа "+ cabinet.toString());
+				fb.refreshButton.setEnabled(false);
 			}
 		});
 		
@@ -2938,7 +2641,7 @@ public class gui {
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();	
 				
 				if (newDialog(iFrame, "Удалить бокс " + ((Box)p).toString()+" и все пары в нем?") == JOptionPane.YES_OPTION) {
-					removeBox((Box)p);
+					sys.removeBox((Box)p);
 					iFrame.dispose();
 					viewCabinet(cabinet);
 				}
@@ -3057,7 +2760,7 @@ public class gui {
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();	
 				
 				if (newDialog(iFrame, "Удалить громполосу " + p.toString()+" и все пары в ней?") == JOptionPane.YES_OPTION) {
-					removeFrame((Frame)p);
+					sys.removeFrame((Frame)p);
 					iFrame.dispose();
 					viewDFrame(dframe);
 				}
@@ -3238,7 +2941,7 @@ public class gui {
 		//return returnedPair.get(0);
 	}
 
-	public void viewDBox(final DBox element, final Integer netId) {
+/*	public void viewDBox(final DBox element, final Integer netId) {
 			
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
@@ -3326,7 +3029,7 @@ public class gui {
 		}
 	
 		iFrame.setVisible(true);
-	}
+	}*/
 	
 	public void viewCable(final Cable element, final Integer netId, final JTextField textFieldForSelectResult) {
 		
@@ -3737,258 +3440,6 @@ public class gui {
 		Iterator<Integer> i = t.getCables().iterator();
 		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)sys.cc.getElement(i.next())).toLongString()+"\r\n");
 	}
-	 
-	/**
-	 * Удаляет сеть и все элементы в ней
-	 * @param net - сеть
-	 */
-	public void removeNet (Net net) {
-		
-		Iterator<StructuredElement> i = sys.cbc.getInNet(net).iterator();
-		while (i.hasNext()) removeCabinet((Cabinet)i.next());
-		
-		i = sys.dfc.getInNet(net).iterator();
-		while (i.hasNext()) removeDFrame((DFramе)i.next());
-		
-		i = sys.dbc.getInNet(net).iterator();
-		while (i.hasNext()) removeDBox((DBox)i.next());
-		
-		i = sys.mc.getInNet(net).iterator();
-		while (i.hasNext()) removeManhole((Manhole)i.next());
-		
-		i = sys.buc.getInNet(net).iterator();
-		while (i.hasNext()) removeBuilding((Building)i.next());
-		
-		i = sys.cc.getInNet(net).iterator();
-		while (i.hasNext()) removeCable((Cable)i.next());
-		
-		i = sys.sc.getInNet(net).iterator();
-		while (i.hasNext()) removeSubscriber((Subscriber)i.next());
-		
-		if (sys.nc.removeElement(net))
-			sys.rw.addLogMessage("Удалена: Сеть " + net.toString());
-	}
-	/**
-	 * Удаляет шкаф и все боксы в нем, подходяшие участки канализаци и кабели
-	 * @param element - шкаф
-	 */
-	public void removeCabinet (Cabinet element) {
-		
-		Iterator<ConnectedPointElement> k = sys.bc.getInOwner(element.getId()).iterator();
-		while (k.hasNext()) removeBox((Box)k.next());
-		
-		Iterator<Duct> i = sys.duc.getDucts(element).iterator();
-		while (i.hasNext()) removeDuct(i.next());
-		
-		Iterator<Cable> c = sys.cc.getCables(element).iterator();
-		while (c.hasNext()) removeCable(c.next());
-		
-		if (sys.cbc.removeElement(element))
-			sys.rw.addLogMessage("Удален: Шкаф " + element.toString());
-	}
-	
-	/**
-	 * Удаляет кросс и все громполосы в нем, подходяшие участки канализаци и кабели
-	 * @param element - кросс
-	 */
-	public void removeDFrame (DFramе element) {
-		
-		Iterator<ConnectedPointElement> k = sys.fc.getInOwner(element.getId()).iterator();
-		while (k.hasNext()) removeFrame((Frame)k.next());
-		
-		Iterator<Duct> i = sys.duc.getDucts(element).iterator();
-		while (i.hasNext()) removeDuct(i.next());
-		
-		Iterator<Cable> c = sys.cc.getCables(element).iterator();
-		while (c.hasNext()) removeCable(c.next());
-		
-		if (sys.dfc.removeElement(element))
-			sys.rw.addLogMessage("Удален: Кросс " + element.toString());
-	}
-
-	/**
-	 * Удаляет бокс и все пары в нем. Также пары удаляются из занятых пар у абонентов
-	 * @param box - бокс
-	 */
-	public void removeBox (Box box) {
-		
-		Pair pair = null;
-		Path path = null;
-		Iterator <Pair> p = sys.pc.getInOwner(box).iterator();
-		
-		while (p.hasNext()){
-			pair = p.next();
-			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
-			while (ph.hasNext()) {
-				path = (Path) ph.next();
-				if (path.isPairUsed(pair)) {
-					path.removePair(pair);
-					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-				}
-			}
-			if (sys.pc.removeElement(pair))
-				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
-		}
-		if(sys.bc.removeElement(box))
-			sys.rw.addLogMessage("Удален: Бокс " + box.toString());
-	}
-	/**
-	 * Удаляет громполосу и все пары в ней. Также пары удаляются из занятых пар у абонентов
-	 * @param frame - громполоса
-	 */
-	public void removeFrame (Frame frame) {
-		
-		Pair pair = null;
-		Path path = null;
-		Iterator <Pair> p = sys.pc.getInOwner(frame).iterator();
-		
-		while (p.hasNext()){
-			pair = p.next();
-			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
-			while (ph.hasNext()) {
-				path = (Path) ph.next();
-				if (path.isPairUsed(pair)) {
-					path.removePair(pair);
-					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-				}
-			}
-			
-			if (sys.pc.removeElement(pair))
-				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
-		}
-		if (sys.fc.removeElement(frame))
-			sys.rw.addLogMessage("Удален: Громполоса " + frame.toString());
-	}	
-	/**
-	 * Удаляет КРТ и все пары в ней. Также пары удаляются из всех включений
-	 * @param dbox - КРТ
-	 */
-	public void removeDBox (DBox dbox) {
-		
-		Pair pair = null;
-		Path path = null;
-		Iterator <Pair> p = sys.pc.getInOwner(dbox).iterator();
-		
-		while (p.hasNext()){
-			pair = p.next();
-			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
-			while (ph.hasNext()) {
-				path = (Path) ph.next();
-				if (path.isPairUsed(pair)) {
-					path.removePair(pair);
-					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-				}
-			}
-			if (sys.pc.removeElement(pair))
-				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
-		}
-		if (sys.dbc.removeElement(dbox))
-			sys.rw.addLogMessage("Удалена: КРТ " + dbox.toString());
-	}
-	/**
-	 * Удаляет кабель и все пары в нем. Кабель удаляется из всех каналов канализации. Также пары удаляются из всех включений.
-	 * @param cable - Кабель
-	 */
-	public void removeCable(Cable cable) {
-		
-		Pair pair = null;
-		Path path = null;
-		
-		Iterator <Pair> p = sys.pc.getInCable(cable).iterator();
-		while (p.hasNext()){
-			pair = p.next();
-			Iterator<AbstractElement> ph = sys.phc.elements().iterator();
-			while (ph.hasNext()) {
-				path = (Path) ph.next();
-				if (path.isPairUsed(pair)) {
-					path.removePair(pair);
-					sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-				}
-			}
-			if (sys.pc.removeElement(pair))
-				sys.rw.addLogMessage("Удалена: Пара " + pair.toString());
-		}
-		
-		Iterator <Tube> t = sys.tuc.getTubesByCable(cable).iterator();
-		while (t.hasNext()) {
-			t.next().removeCable(cable); 
-		}
-		
-		if (sys.cc.removeElement(cable))
-			sys.rw.addLogMessage("Удален: Кабель " + cable.toString());
-	}
-	/**
-	 * Удаляет участок канализации. Удаляются все каналы в канализации. Кабели проходящии по данному участку не удаляются.
-	 * @param duct - Канализация
-	 */
-	public void removeDuct(Duct duct) {
-		
-		Iterator<Tube> i = sys.tuc.getDuctsTubes(duct).iterator();
-		while (i.hasNext()) removeTube(i.next());
-		if (sys.duc.removeElement(duct))
-			sys.rw.addLogMessage("Удален: Участок кабельной канализации " + duct.toString());
-	}
-	/**
-	 * Удаляет канал в канализации. Кабели, проходящие по каналу не удалаются
-	 * @param tube - канал
-	 */
-	public void removeTube(Tube tube) {
-		
-		if (sys.tuc.removeElement(tube))
-			sys.rw.addLogMessage("Удален: Канал " + tube.toString() + " в канализации "+ sys.duc.getElement(tube.getDuct()));
-	}
-	/**
-	 * Удаляет колодец. Все участки кабельной канализации проходящие через колодец - удаляются
-	 * @param man - колодец
-	 */
-	public void removeManhole(Manhole man){
-		
-		Iterator<Duct> i = sys.duc.getDucts(man).iterator();
-		while (i.hasNext()) removeDuct(i.next());
-		if (sys.mc.removeElement(man)) sys.rw.addLogMessage("Удален: Колодец " + man.toString());
-	}
-	/**
-	 * Удаляет здание. Удаляется также участок канализации, подходящий к зданию.
-	 * @param building - здание
-	 */
-	public void removeBuilding(Building building) {
-		
-		Iterator<Duct> i = sys.duc.getDucts(building).iterator();
-		while (i.hasNext()) removeDuct(i.next());
-		
-		if (sys.buc.removeElement(building)) sys.rw.addLogMessage("Удален: Здание " + building.toString());
-	}
-	/**
-	 * Удаляет абонента. Удаляются также все включения данного абонента
-	 * @param sub - Абонент
-	 */
-	public void removeSubscriber(Subscriber sub) {
-		
-		Iterator <Path> p = sys.phc.getSubscriberPaths(sub).iterator();
-		while (p.hasNext()) removePath(p.next());
-		if (sys.sc.removeElement(sub)) sys.rw.addLogMessage("Удален: Абонент " + sub.toString());
-	}
-	/**
-	 * Удаляет включение. Пара освобождается, если больше не задействована ни в одном включении
-	 * @param path - Абонент
-	 */
-	public void removePath(Path path) {
-		
-		Iterator <Pair> p = path.getUsedPairs().iterator();
-		path.removeAllPairs();
-		
-		while (p.hasNext()){
-			Pair pair = p.next();
-			sys.rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-			
-			if (sys.phc.isPairUsed(pair) == null)  {
-				pair.setStatus(0);
-				sys.rw.addLogMessage("Пара "+ pair.toString()+" освобождена ");
-			}	
-		}
-		if (sys.phc.removeElement(path))
-			sys.rw.addLogMessage("Удален: Включение " + path.toString() + " у абонента: "+ sys.sc.getElement(path.getSubscriber()).toString());
-	}
 	/**
 	 * Всплывающее меню для канала канализации
 	 * @param iFrame - окно
@@ -4063,7 +3514,7 @@ public class gui {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				final ElementView ep = (ElementView)pm.getInvoker();
 				final Pair p = (Pair) ep.getElement();
-				final FormSubscriberSearch form = formSearchSubscriber(netId);
+				final FormSubscriberSearch form = formSearchSubscriber();
 				
 				ActionListener selectSubscriber = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
