@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import org.teleline.model.Box;
 import org.teleline.model.Cabinet;
 import org.teleline.model.ConnectedPointElement;
-import org.teleline.model.Net;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Sys;
 
@@ -24,7 +23,6 @@ public class FormBox extends Form {
 	private JComboBox comboBox1;
 	private JComboBox comboBox3;
 	private JComboBox placeComboBox;
-//	private JComboBox netsComboBox;
 	private JComboBox cabinetsComboBox;
 	private JTextField formatedText;
 	public JButton saveButton;
@@ -33,19 +31,11 @@ public class FormBox extends Form {
 		super(iSys);
 		// TODO Auto-generated constructor stub
 		
-		createDialog("Создать бокс", 410, 455);
+		createDialog("Создать бокс", 410, 385);
 		if (box != null) iFrame.setTitle("Редактировать бокс");
-		
-	//	addLabel("Сеть:", 20, 15, 360, 25);
-	//	netsComboBox = addComboBox(20, 40, 360, 25);
-	//	util_setComboBoxItems(netsComboBox, iSys.nc.sortByIdUp(iSys.nc.elements()));
-	//	if (cabinet != null) {
-	//		netsComboBox.setSelectedItem(iSys.nc.getElement(cabinet.getNet()));
-	//		netsComboBox.setEnabled(false);
-	//	}
-		
-		addLabel("Тип бокса:", 20, 75, 360, 25);
-		comboBox1 = addComboBox(20, 100, 360, 25);
+
+		addLabel("Тип бокса:", 20, 10, 360, 25);
+		comboBox1 = addComboBox(20, 35, 360, 25);
 		comboBox1.addItem("Магистральный");
 		comboBox1.addItem("Передаточный");
 		comboBox1.addItem("Распределительный");
@@ -53,33 +43,21 @@ public class FormBox extends Form {
 		comboBox1.setSelectedIndex(0);
 		if (box != null) {comboBox1.setSelectedIndex(box.getType());}
 		
-		addLabel("Добавить в шкаф:", 20, 135, 360, 25);
-		cabinetsComboBox = addComboBox(20, 160, 360, 25);
-	//	if (netsComboBox.getSelectedIndex() > -1) {
-			util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(iSys.nc.getOnlyElement().getId(), 0)));
-	//	}
-	/*	
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cabinetsComboBox.removeAllItems();
-                util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByIdUp(iSys.cbc.getInNetByClass(iSys.nc.getOnlyElement().getId(), 0)));               
-            }
-        };
-        netsComboBox.addActionListener(actionListener); 
-      */  
+		addLabel("Добавить в шкаф:", 20, 65, 360, 25);
+		cabinetsComboBox = addComboBox(20, 90, 360, 25);
+		util_setComboBoxItems(cabinetsComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(iSys.nc.getOnlyElement().getId(), 0)));
 		
 		if (cabinet != null) {
 			cabinetsComboBox.setSelectedItem(cabinet);
 			cabinetsComboBox.setEnabled(false);
 		}
 		
-		addLabel("Номер бокса (0-999):", 20, 195, 360, 25);
-		formatedText = addTextField(20, 220, 360, 25);
+		addLabel("Номер бокса (0-999):", 20, 120, 360, 25);
+		formatedText = addTextField(20, 145, 360, 25);
 		if (box != null) formatedText.setText(box.getNumber().toString());
 		
-		addLabel("Емкость бокса:", 20, 255, 360, 25);
-		
-		comboBox3 = addComboBox(20, 280, 360, 25);
+		addLabel("Емкость бокса:", 20, 175, 360, 25);
+		comboBox3 = addComboBox(20, 200, 360, 25);
 		comboBox3.addItem((Integer)50);
 		comboBox3.addItem((Integer)100);
 		comboBox3.setSelectedIndex(1);
@@ -89,8 +67,8 @@ public class FormBox extends Form {
 			comboBox3.setEnabled(false);
 		}
 		
-		addLabel("Место в шкафу:", 20, 315, 360, 25);
-		placeComboBox = addComboBox(20, 340, 360, 25);
+		addLabel("Место в шкафу:", 20, 230, 360, 25);
+		placeComboBox = addComboBox(20, 255, 360, 25);
 		
 		ActionListener actionListener1 = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -129,12 +107,11 @@ public class FormBox extends Form {
     		placeComboBox.setSelectedItem(box.getPlaceNumber());
     	}
         
-        saveButton = addButton("Сохранить", 20, 380, 110, 25);
+        saveButton = addButton("Сохранить", 20, 310, 110, 25);
     	
         saveButton.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent arg0) {
     			
-    		//	if (netsComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана сеть!"); return; }
     			if (cabinetsComboBox.getSelectedIndex() == -1) { util_newError("Не выбран шкаф!"); return; }
     			if (placeComboBox.getSelectedIndex() == -1) { util_newError("Не выбрано место!"); return; }
     			if (!iSys.v.validateBoxNumber(formatedText.getText())) { util_newError("Не верный номер бокса!"); return; }
@@ -179,8 +156,6 @@ public class FormBox extends Form {
     				String mes = "Создан "+(String)comboBox1.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
     				iSys.rw.addLogMessage(mes);
     				util_newInfo(mes);
-    				//System.out.println(8888);
-    				
     			}
     			iFrame.dispose();
     		}

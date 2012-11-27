@@ -747,7 +747,7 @@ public class gui {
 	 * @param structuredElementComboBox - список шкафов
 	 * @param placesComboBox - список свободных мест
 	 */
-	public void structuredElementPlaceComboLinked(final JComboBox structuredElementComboBox, final JComboBox placesComboBox, final ConnectedPointElementCollection bc) {
+/*	public void structuredElementPlaceComboLinked(final JComboBox structuredElementComboBox, final JComboBox placesComboBox, final ConnectedPointElementCollection bc) {
 		
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -781,7 +781,7 @@ public class gui {
     		
         }
     	structuredElementComboBox.addActionListener(actionListener);   
-	}
+	}*/
 	/**
 	 * Устанавливает (добавляет) элементы выпадающего списка
 	 * @param ComboBox - выпадающий список
@@ -1622,157 +1622,15 @@ public class gui {
 	}
 	
 	/**
-	 * Создает и выводит на экран форму создания/режактирования элемента "Бокс"
-	 * @param box - элемент "Бокс", если null - выводится форма создания нового элемента
-	 */
-/*	public Box formBox(final Box box, final Cabinet cabinet) {
-		
-	
-		final Vector<Box> v = new Vector<Box>(); v.add(null);
-		
-		final JDialog iFrame = newDialog("Создать бокс", 410, 455);
-		if (box != null) iFrame.setTitle("Редактировать бокс");
-		
-		newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-		
-		final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		if (cabinet != null) {
-			comboBox.setSelectedItem(sys.nc.getElement(cabinet.getNet()));
-			comboBox.setEnabled(false);
-		}
-		
-		newLabel("Тип бокса:", iFrame, 20, 75, 360, 25);
-		
-		final JComboBox comboBox1 = new JComboBox();
-		comboBox1.addItem("Магистральный");
-		comboBox1.addItem("Передаточный");
-		comboBox1.addItem("Распределительный");
-		comboBox1.addItem("Универсальный");
-		comboBox1.setSelectedIndex(0);
-		iFrame.getContentPane().add(comboBox1);
-		comboBox1.setBounds(20, 100, 360, 25);
-		
-		if (box != null) {
-			comboBox1.setSelectedIndex(box.getType());
-		}
-		
-		newLabel("Добавить в шкаф:", iFrame, 20, 135, 360, 25);
-						
-		final JComboBox comboBox2 = cabinetComboBox(comboBox, 0, iFrame, 20, 160, 360, 25);
-		netsCabinetComboLinked(comboBox, comboBox2, 0);
-		
-		if (cabinet != null) {
-			comboBox2.setSelectedItem(cabinet);
-			comboBox2.setEnabled(false);
-		}
-		
-			
-		newLabel("Номер бокса (0-999):", iFrame, 20, 195, 360, 25);
-		final JTextField formatedText = newTextField(iFrame, 20, 220, 360, 25);
-		
-		if (box != null) formatedText.setText(box.getNumber().toString());
-		
-		newLabel("Емкость бокса:", iFrame, 20, 255, 360, 25);
-		
-		final JComboBox comboBox3 = new JComboBox();
-		
-		comboBox3.addItem((Integer)50);
-		comboBox3.addItem((Integer)100);
-		comboBox3.setSelectedIndex(1);
-		comboBox3.setBounds(20, 280, 360, 25);
-		iFrame.getContentPane().add(comboBox3);
-		if (box != null) {
-			comboBox3.setSelectedItem(box.getCapacity());
-			comboBox3.setEnabled(false);
-		}
-		
-		newLabel("Место в шкафу:", iFrame, 20, 315, 360, 25);
-		final JComboBox comboBox4 = new JComboBox();
-		comboBox4.setBounds(20, 340, 360, 25);
-		iFrame.getContentPane().add(comboBox4);
-		
-		structuredElementPlaceComboLinked(comboBox2, comboBox4, sys.bc);
-		if (box != null) {
-			comboBox4.addItem(box.getPlaceNumber());
-			comboBox4.setSelectedItem(box.getPlaceNumber());
-		}
-
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 380, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (comboBox2.getSelectedIndex() == -1) { newError(iFrame, "Не выбран шкаф!"); return; }
-				if (comboBox4.getSelectedIndex() == -1) { newError(iFrame, "Не выбрано место!"); return; }
-				if (!sys.v.validateBoxNumber(formatedText.getText())) { newError(iFrame, "Не верный номер бокса!"); return; }
-				
-				Cabinet selectedCabinet = (Cabinet)comboBox2.getSelectedItem();
-				Integer boxNumber = sys.rw.valueOf(formatedText.getText());
-
-				if (box != null) {
-					Box b = sys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex());
-					Box bx = (Box)sys.bc.getInPlace((Integer)comboBox4.getSelectedItem(), selectedCabinet.getId());
-					
-					if (b != null && !box.getId().equals(b.getId())) {newError(iFrame, "Бокс с таким типом и номером уже сущесвует в этом шкафу!"); return;}
-					if (bx != null && !box.getId().equals(bx.getId())) {newError(iFrame, "Данное место в шкафу занято!"); return;}
-					
-					String old = box.toString();
-					box.setType((Integer)comboBox1.getSelectedIndex());
-					box
-						.attachTo(selectedCabinet)
-						.setNumber(boxNumber)
-						.setPlaceNumber((Integer)comboBox4.getSelectedItem())
-						.setCapacity((Integer)comboBox3.getSelectedItem());
-					
-					box.setNumber(boxNumber);
-					sys.rw.addLogMessage("Бокс изменен: " + old + " => " + box.toString());
-					newInfo(iFrame, "Изменения сохранены");
-					v.clear(); v.add(box);
-				}
-				else {
-					if (sys.bc.getInPlace((Integer)comboBox4.getSelectedItem(), selectedCabinet.getId()) != null) { newError(iFrame, "Данное место в шкафу занято!"); return; }
-					if (sys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex()) != null ) {
-						newError(iFrame, "Бокс с таким типом и номером уже сущесвует в этом шкафу!"); return;
-					}
-					Box newBox = new Box();
-					newBox.setType((Integer)comboBox1.getSelectedIndex());
-					newBox
-						.attachTo(selectedCabinet)
-						.setNumber(boxNumber)
-						.setPlaceNumber((Integer)comboBox4.getSelectedItem())
-						.setCapacity((Integer)comboBox3.getSelectedItem());
-					
-					sys.bc.addElement(newBox);
-					String mes = "Создан "+(String)comboBox1.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-					v.clear(); v.add(newBox);
-					
-				}
-				iFrame.dispose();
-			}
-		});
-		
-		iFrame.setVisible(true); 
-		return v.get(0);
-	}*/
-	/**
 	 * Создает и выводит на экран форму создания/редактирования элемента "Громполоса"
 	 * @param frame - громполоса, если null - выводится форма создания нового элемента
 	 */
-	public Frame formFrame(final Frame frame, DFramе dframe) {
+	/*public Frame formFrame(final Frame frame, DFramе dframe) {
 		final Vector<Frame> v = new Vector<Frame>(); v.add(null);
 		
 		final JDialog iFrame = newDialog("Создать громполосу", 410, 400);
 		if (frame != null) iFrame.setTitle("Редактировать громполосу");
 		
-	//	newLabel("Сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		/*if (dframe != null) {
-			comboBox.setSelectedItem(nc.getElement(dframe.getNet()));
-			comboBox.setEnabled(false);
-		}			
-		*/
 		newLabel("Добавить к кроссу:", iFrame, 20, 75, 360, 25);
 		final JComboBox comboBox1 = dframeComboBox(sys.nc.getOnlyElement().getId(), iFrame, 20, 100, 360, 25);
 	//	netsDFrameComboLinked(comboBox, comboBox1);
@@ -1862,7 +1720,7 @@ public class gui {
 		
 		iFrame.setVisible(true);
 		return v.get(0);
-	}
+	}*/
 	/**
 	 * Создает и выводит на экран форму поиска абонента
 	 * @param netId - id сети
@@ -2664,10 +2522,11 @@ public class gui {
 			//	JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 			//	ElementView ep = (ElementView)pm.getInvoker();
 			//	ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				if (formFrame(null, dframe) != null ) {
+				new FormFrame(sys, null, dframe);
+				/*if (formFrame(null, dframe) != null ) {
 					iFrame.dispose();
 					viewDFrame(dframe);
-				}
+				}*/
 			}	
 		});
 		
@@ -2680,10 +2539,12 @@ public class gui {
 				ElementView ep = (ElementView)pm.getInvoker();
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
 				
+				new FormFrame(sys,(Frame)p, dframe);
+				/*
 				if (formFrame((Frame)p, dframe) != null ) {
 					iFrame.dispose();
 					viewDFrame(dframe);
-				}
+				}*/
 				
 			}
 		});

@@ -15,7 +15,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -210,7 +209,7 @@ public class teleline {
 		menuCreate.add(separator_1);
 		
 		JMenuItem menuItem_4 = new JMenuItem("Громполосу");
-		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {GUI.formFrame(null,null);}});
+		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(sys, null,null);}});
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
