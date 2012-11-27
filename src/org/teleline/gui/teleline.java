@@ -278,7 +278,7 @@ public class teleline {
 			//			if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, dframeFrom, null);
+						new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox2.getSelectedItem(), dframeFrom, null);
 					}
 				});
 				
@@ -293,7 +293,7 @@ public class teleline {
 				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, boxFrom, null);
+						new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox4.getSelectedItem(), boxFrom, null);
 					}
 				});
 				
@@ -437,7 +437,7 @@ public class teleline {
 				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, box1From, null);
+						new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox2.getSelectedItem(), box1From, null);
 					}
 				});
 				
@@ -452,7 +452,7 @@ public class teleline {
 			//			if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox3.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 						if (comboBox4.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox4.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, box2From, null);
+						new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox4.getSelectedItem(), box2From, null);
 					}
 				});
 				
@@ -581,7 +581,7 @@ public class teleline {
 					//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 							if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран шкаф!"); return; }
 							if (comboBox2.getSelectedIndex() == -1)	{ GUI.newError(iFrame, "Не выбран бокс!"); return; }
-							GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, boxFrom, null);
+							new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox2.getSelectedItem(), boxFrom, null);
 						}
 					});
 				
@@ -707,7 +707,7 @@ public class teleline {
 				//		if (comboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана сеть!"); return; }
 						if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбран кросс!"); return; }
 						if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iFrame, "Не выбрана громполоса!"); return; }
-						GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId/*((Net)comboBox.getSelectedItem()).getId()*/, dframeFrom, null);
+						new FormViewConnectedPointElement(sys, (ConnectedPointElement)comboBox2.getSelectedItem(), dframeFrom, null);
 					}
 				});
 				
@@ -1017,115 +1017,7 @@ public class teleline {
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				final JDialog iFrame = GUI.newDialog("Редактировать шкаф", 585, 600);
-				
-		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
-				
-				GUI.newLabel("Список шкафов:", iFrame, 10, 10, 420, 14);
-				final JList cabinetList = GUI.newList(iFrame, 10, 30, 420, 525);
-				
-		//		GUI.netsComboBoxLinked(netsComboBox, cabinetList, sys.cbc);
-				GUI.setListItems(cabinetList, sys.cbc.sortByNumberUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement())));
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
-				JButton editCabinetButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
-				JButton viewCabinetButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
-				JButton passportCabinetButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
-				JButton createCabinetButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
-				JButton deleteCabinetButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
-				
-				/*
-				 * Событие кнопки обновления списка шкафов
-				 */
-				refreshButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						GUI.setListItems(cabinetList, sys.cbc.sortByNumberUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement())));	
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки редактирования шкафа
-				 */
-				ActionListener editCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						Integer item =cabinetList.getSelectedIndex(); 
-						if (item == -1) { GUI.newError(iFrame, "Шкаф не выбран!"); return; }
-						
-						new FormCabinet(sys, (Cabinet)cabinetList.getSelectedValue());
-				//		GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
-						cabinetList.setSelectedIndex(item);
-						
-					}
-				};
-				editCabinetButton.addActionListener(editCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра шкафа
-				 */
-				ActionListener viewCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (cabinetList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Шкаф не выбран!"); return; }
-						GUI.viewCabinet((Cabinet)cabinetList.getSelectedValue());
-					}
-				};
-				viewCabinetButton.addActionListener(viewCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания шкафа
-				 */
-				ActionListener createCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
-						new FormCabinet(sys, null);
-					//	GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)netsComboBox.getSelectedItem())));
-					}
-				};
-				createCabinetButton.addActionListener(createCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления шкафа
-				 */
-				ActionListener deleteCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (cabinetList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Шкаф не выбран!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить " + cabinetList.getSelectedValue().toString()+" и все его содержимое?");
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeCabinet((Cabinet)cabinetList.getSelectedValue());
-							GUI.newInfo(iFrame, "Шкаф и все его содержимое удалены");
-							GUI.setListItems(cabinetList, sys.cbc.sortByIdUp(sys.cbc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
-						}		
-					}
-				};
-				deleteCabinetButton.addActionListener(deleteCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра паспорта шкафа
-				 */
-				ActionListener passportCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (cabinetList.getSelectedIndex() == -1) { 
-							GUI.newError(iFrame, "Шкаф не выбран!"); 
-							return; 
-						}
-						GUI.formViewPassport(sys.rw.createCabinetPassport((Cabinet)cabinetList.getSelectedValue()));
-					}		
-				};
-				passportCabinetButton.addActionListener(passportCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				iFrame.setVisible(true);	
+				new FormCabinets(sys,sys.cbc.getElements());	
 			}
 		});
 		JSeparator separator_5 = new JSeparator();
@@ -1389,7 +1281,7 @@ public class teleline {
 			
 								if (comboBox1.getSelectedIndex() == -1) { GUI.newError(iSubFrame, "Не выбран кросс/шкаф!"); return; }
 								if (comboBox2.getSelectedIndex() == -1) { GUI.newError(iSubFrame, "Не выбрана громполоса/бокс!"); return; }
-								GUI.viewConnectedPointElement((ConnectedPointElement)comboBox2.getSelectedItem(), netId, null, selectedPairList);
+								new FormViewConnectedPointElement(sys,(ConnectedPointElement)comboBox2.getSelectedItem(), null, selectedPairList);
 							}
 						});
 						    

@@ -1,34 +1,42 @@
+/**
+ * Отображает окно просмотра элементов
+ * @param element - отображаемый элемент
+ * @param netId - Id сети
+ * @param textFieldForSelectResult - элемент, где отобразиться выбор места, в случае режима выбора свободного места
+ * @param listForSelectedPair - элемент, где отобразиться выбор пары, в случае режима выбора пары
+ */
 package org.teleline.gui;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.teleline.model.DBox;
+import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.Pair;
 import org.teleline.model.Sys;
 
-public class FormViewDBox extends Form {
-	
-	public FormViewDBox(Sys iSys, final DBox element) {
+public class FormViewConnectedPointElement extends Form {
+
+	public FormViewConnectedPointElement(Sys iSys,final ConnectedPointElement element, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
 		super(iSys);
 		// TODO Auto-generated constructor stub
-			
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		Integer netId = iSys.nc.getOnlyElement().getId();
-		
-		createDialog("Просмотр КРТ", panelWidth + 40, panelHeight + infoListHeght + 100);
+		createDialog("Просмотр бокса", panelWidth + 40, panelHeight + infoListHeght + 100);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(element.toString());
@@ -41,12 +49,49 @@ public class FormViewDBox extends Form {
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		ActionListener pairClick = new ActionListener() { public void actionPerformed(ActionEvent e) {Pair p = (Pair)((ElementView)e.getSource()).getElement(); viewPairInfo(p, infoArea);}};
-		
-		ActionListener placeClick = new ActionListener() { public void actionPerformed(ActionEvent e) {}};
-		
 		//хеш всех созданых кнопок для пар
 		HashMap<Pair, ElementView> elementViewHash = new HashMap<Pair, ElementView>();
+		
+		/*
+		 *Событие нажатия на существующую пару 
+		 */
+		ActionListener pairClick = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Pair p = (Pair)((ElementView)e.getSource()).getElement();
+				
+				if (listForSelectedPair != null) {
+					Vector<Pair> v = new Vector<Pair>(); v.add(p);
+					util_setListItems(listForSelectedPair, v);
+					listForSelectedPair.setSelectedIndex(0);
+					iFrame.dispose();
+				}
+				else {
+					viewPairInfo(p,infoArea);
+				}
+			}
+		};
+		/*
+		 * ----------------------------------
+		 */
+		
+		/*
+		 * Событие нажатия на пустое место. 
+		 * Используятся для выбора места для расположения создаваемых пар
+		 */
+		ActionListener placeClick = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textFieldForSelectResult != null) {
+					Pair p = (Pair)((ElementView)e.getSource()).getElement();
+					textFieldForSelectResult.setText(p.getFromNumber().toString());
+					iFrame.dispose();
+				}
+			}
+		};
+		/*
+		 * ----------------------------------
+		 */
+		
 		JPopupMenu popupMenu = popupMenuForPair(elementViewHash);
 
 		for (int ln = 0; ln < inLine; ln++) {
@@ -82,11 +127,18 @@ public class FormViewDBox extends Form {
 					button.setBounds(labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
 				}
 				panel.add(button);
+				/*
+				 * Создание виртуальных пар для пустого места.
+				 * В параметр fromNumber записывается номер места.
+				 */
 				Pair pairForEmptyPlace = new Pair(iSys.fc,iSys.bc,iSys.dbc,iSys.cc);
 				pairForEmptyPlace.setFromNumber(place);
 				button.setElement(pairForEmptyPlace);
-			
-				Pair pair = iSys.pc.getInPlace((DBox)element, (Integer)place);
+				/*
+				 * ----------------------------------
+				 */
+				
+				Pair pair = iSys.pc.getInPlace((ConnectedPointElement)element, (Integer)place);
 				
 				if (pair != null) {
 					button.setToolTipText("Пара: "+ pair.toString());
@@ -103,11 +155,9 @@ public class FormViewDBox extends Form {
 					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
 					button.addActionListener(placeClick);
 				}
-
 			x++;
-			
 		}
-	
 		iFrame.setVisible(true);
-}
+	}
+	
 }

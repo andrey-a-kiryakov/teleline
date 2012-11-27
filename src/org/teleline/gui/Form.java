@@ -34,6 +34,7 @@ import javax.swing.table.TableRowSorter;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
 import org.teleline.model.Cable;
+import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.Path;
@@ -194,7 +195,6 @@ public abstract class Form {
 	public JPopupMenu popupMenuForPair (final HashMap<Pair, ElementView> elementViewHash){
 		
 		JPopupMenu popupMenu = new JPopupMenu();
-		final Integer netId = iSys.nc.getOnlyElement().getId();
 		
 		JMenuItem menuItem = new JMenuItem("Закрепить за абонентом");
 		popupMenu.add(menuItem);
@@ -585,6 +585,35 @@ public abstract class Form {
 					
 				}
 				
+			}
+		});
+	}
+	
+	public static void addPopupToConnectedPointElement(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+				//popup.setElement((ElementView)e.getSource());
+				ConnectedPointElement p = (ConnectedPointElement)((ElementView)popup.getInvoker()).getElement();
+				((JMenuItem)popup.getSubElements()[0]).setEnabled(false);
+				((JMenuItem)popup.getSubElements()[1]).setEnabled(false);
+				((JMenuItem)popup.getSubElements()[2]).setEnabled(false);
+				
+				if (p == null) { ((JMenuItem)popup.getSubElements()[0]).setEnabled(true); }
+				else {
+					((JMenuItem)popup.getSubElements()[1]).setEnabled(true);
+					((JMenuItem)popup.getSubElements()[2]).setEnabled(true);
+				}
 			}
 		});
 	}

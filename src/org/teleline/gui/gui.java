@@ -38,49 +38,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.teleline.io.*;
 import org.teleline.model.*;
 
 public class gui {
 	public Sys sys;
-/*	
-	private RW rw;
-	private NetCollection nc;
-	private DFrameCollection dfc;
-	private CabinetCollection cbc; 
-	private DBoxCollection dbc;
-	private ManholeCollection mc;
-	private DuctCollection duc;
-	private BuildingCollection buc;
-	private TubeCollection tuc;
-	private FrameCollection fc;
-	private BoxCollection bc;
-	private CableCollection cc;
-	private PairCollection pc;
-	private PathCollection phc;
-	private SubscriberCollection sc;
-	private DamageCollection dmc;
-	private Validator V;*/
+
 	private JFrame frame;
 	
 	public gui(Sys iSys,/*NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc, RW rw, Validator V,*/ JFrame frame ) {
-	/*	this.nc = nc;
-		this.dfc = dfc;
-		this.cbc = cbc;
-		this.dbc = dbc;
-		this.mc = mc;
-		this.duc = duc;
-		this.buc = buc;
-		this.tuc = tuc;
-		this.fc = fc;
-		this.bc = bc;
-		this.cc = cc;
-		this.pc = pc;
-		this.phc = phc;
-		this.sc = sc;
-		this.dmc = dmc;
-		this.rw = rw;
-		this.V = V;*/
 		this.frame = frame;
 		this.sys = iSys;
 	}
@@ -196,20 +161,6 @@ public class gui {
 		frame.getContentPane().setLayout(null);
 		
 		return frame;
-	}
-	/**
-	 * Создает выпадающий список сетей
-	 * @param nc - коллекция элементов сеть
-	 */
-	public JComboBox newNetsComboBox(JDialog iFrame, int x, int y, int w, int h) {
-		
-		JComboBox comboBox = new JComboBox();
-		setComboBoxItems(comboBox, sys.nc.sortByIdUp(sys.nc.elements()));
-		
-		comboBox.setBounds(x, y, w, h);
-		iFrame.getContentPane().add(comboBox);
-		
-		return comboBox;
 	}
 	/**
 	 * Создает выпадающий список кроссов
@@ -389,22 +340,6 @@ public class gui {
 		return comboBox;
 	}
 	/**
-	 * Связывает выпадающий список сетей с выпадающим списком шкафов
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @param LinkedComboBox - связанный выпадающий список
-	 * @param cabinetClass - класс шкафа
-	 */
-/*	public void netsCabinetComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox, final Integer cabinetClass) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                LinkedComboBox.removeAllItems();
-                setComboBoxItems(LinkedComboBox, sys.cbc.sortByIdUp(sys.cbc.getInNetByClass(((Net)NetsComboBox.getSelectedItem()).getId(), cabinetClass)));               
-            }
-        };
-        NetsComboBox.addActionListener(actionListener);      
-	}*/
-	/**
 	 * Связывает выпадающий список сетей с выпадающим списком колодцев
 	 * @param NetsComboBox - выпадающий список сетей
 	 * @param LinkedComboBox - связанный выпадающий список
@@ -469,22 +404,6 @@ public class gui {
         };
         NetsComboBox.addActionListener(actionListener);      
 	}
-	
-	/**
-	 * Связывает выпадающий список сетей с выпадающим списком КРТ
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @param LinkedComboBox - связанный выпадающий список
-	 */
-/*	public void netsDBoxComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                LinkedComboBox.removeAllItems();
-                setComboBoxItems(LinkedComboBox, sys.dbc.sortByIdUp(sys.dbc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));               
-            }
-        };
-        NetsComboBox.addActionListener(actionListener);      
-	}*/
 	/**
 	 * Связывает выпадающий список сетей и родителей с выпадающим списком кабелей. 
 	 * Кабели сортируются по id. 
@@ -516,44 +435,6 @@ public class gui {
         ToComboBox.addActionListener(actionListener);
         
 	}
-	/**
-	 * Связывает выпадающий список сетей с выпадающим списком кроссов 
-	 * Кроссы сортируются по id. 
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @param LinkedComboBox - связанный выпадающий список
-	 */
-/*	public void netsDFrameComboLinked(final JComboBox NetsComboBox, final JComboBox LinkedComboBox) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                LinkedComboBox.removeAllItems();
-                setComboBoxItems(LinkedComboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-            }
-        };
-        NetsComboBox.addActionListener(actionListener);      
-	}*/
-	/**
-	 * Связывает выпадающий список сетей с обычным списком структурных элементов.
-	 * Структурные элементы сортируются по id.
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @param List - список структурных элементов
-	 * @param lc - коллекция структурных элементов
-	 */
-/*	public void netsComboBoxLinked(final JComboBox NetsComboBox, final JList List, final StructuredElementCollection lc) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	
-            	if (NetsComboBox.getSelectedIndex() > -1)
-                setListItems(List, lc.sortByIdUp(lc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-                
-            }
-        };
-               
-        if (NetsComboBox.getSelectedIndex() > -1) setListItems(List, lc.sortByIdUp(lc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-        
-        NetsComboBox.addActionListener(actionListener);
-	}*/
 	/**
 	 * Связывает выпадающий список сетей и таблицу кабелей
 	 * @param netsComboBox - выпадающий список сетей
@@ -742,46 +623,6 @@ public class gui {
     	}
 		
 	}
-	/**
-	 * Связывает список шкафов или кроссов с выпадающим списком свободных мест
-	 * @param structuredElementComboBox - список шкафов
-	 * @param placesComboBox - список свободных мест
-	 */
-/*	public void structuredElementPlaceComboLinked(final JComboBox structuredElementComboBox, final JComboBox placesComboBox, final ConnectedPointElementCollection bc) {
-		
-        ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	
-            	placesComboBox.removeAllItems();
-            	
-            	if (structuredElementComboBox.getSelectedIndex() > -1) {
-            		StructuredElement cab = (StructuredElement)structuredElementComboBox.getSelectedItem();
-            			
-            		for (int i = 0; i < cab.getPlacesCount(); i++) {
-            			int k = 0;
-            			Iterator<?> it = bc.getInOwner(cab.getId()).iterator();
-            			while (it.hasNext())  if (((ConnectedPointElement)it.next()).getPlaceNumber().intValue() == i)  { k = 1; break;}
-            			if (k == 0) placesComboBox.addItem((Integer)i);
-            		}
-            	}
-            }
-        };
-        
-         placesComboBox.removeAllItems();
-    	
-        if (structuredElementComboBox.getSelectedIndex() > -1) {
-        	StructuredElement cab = (StructuredElement)structuredElementComboBox.getSelectedItem();
-        		
-    			for (int i = 0; i < cab.getPlacesCount(); i++) {
-    				int k = 0;
-    				Iterator<?> it = bc.getInOwner(cab.getId()).iterator();
-    				while (it.hasNext())  if (((ConnectedPointElement)it.next()).getPlaceNumber().intValue() == i)  { k = 1; break;}
-    				if (k == 0) placesComboBox.addItem((Integer)i);
-    			}
-    		
-        }
-    	structuredElementComboBox.addActionListener(actionListener);   
-	}*/
 	/**
 	 * Устанавливает (добавляет) элементы выпадающего списка
 	 * @param ComboBox - выпадающий список
@@ -1620,107 +1461,7 @@ public class gui {
 		iFrame.setVisible(true);
 				
 	}
-	
-	/**
-	 * Создает и выводит на экран форму создания/редактирования элемента "Громполоса"
-	 * @param frame - громполоса, если null - выводится форма создания нового элемента
-	 */
-	/*public Frame formFrame(final Frame frame, DFramе dframe) {
-		final Vector<Frame> v = new Vector<Frame>(); v.add(null);
-		
-		final JDialog iFrame = newDialog("Создать громполосу", 410, 400);
-		if (frame != null) iFrame.setTitle("Редактировать громполосу");
-		
-		newLabel("Добавить к кроссу:", iFrame, 20, 75, 360, 25);
-		final JComboBox comboBox1 = dframeComboBox(sys.nc.getOnlyElement().getId(), iFrame, 20, 100, 360, 25);
-	//	netsDFrameComboLinked(comboBox, comboBox1);
-		
-		if (dframe != null) {
-	//		comboBox.setSelectedItem(sys.nc.getElement(dframe.getNet()));
-	//		comboBox.setEnabled(false);
-			comboBox1.setSelectedItem(dframe);
-			comboBox1.setEnabled(false);
-		}	
-		
-		newLabel("Номер громполосы (0-99):", iFrame, 20, 135, 360, 25);
-		final JTextField frameNumberText = newTextField(iFrame, 20, 160, 360, 25);
-		if (frame != null) frameNumberText.setText(frame.getNumber().toString());
-		
-		newLabel("Емкость громполосы:", iFrame, 20, 195, 360, 25);
-		final JComboBox comboBox3 = new JComboBox();			
-		comboBox3.addItem((Integer)25);
-		comboBox3.addItem((Integer)50);
-		comboBox3.addItem((Integer)100);
-		comboBox3.addItem((Integer)150);
-		comboBox3.setSelectedIndex(2);
-		iFrame.getContentPane().add(comboBox3);
-		comboBox3.setBounds(20, 220, 360, 25);
-		if (frame != null) {
-			comboBox3.setSelectedItem(frame.getCapacity());
-			comboBox3.setEnabled(false);
-		}
-		
-		newLabel("Место в кроссе:", iFrame, 20, 255, 360, 25);
-		final JComboBox comboBox4 = new JComboBox();
-		comboBox4.setBounds(20, 280, 360, 25);
-		iFrame.getContentPane().add(comboBox4);
-		structuredElementPlaceComboLinked(comboBox1, comboBox4, sys.fc);
-		if (frame != null) {
-			comboBox4.addItem(frame.getPlaceNumber());
-			comboBox4.setSelectedItem(frame.getPlaceNumber());
-		}
-		
-		JButton saveButton = newButton("Сoхранить", iFrame, 20, 320, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (!sys.v.validateFrameNumber(frameNumberText.getText())) { newError(iFrame, "Неверный формат номера громполосы!"); return; }
-				
-				DFramе selectedDFrame = (DFramе)comboBox1.getSelectedItem();
-				Integer frameNumber = sys.rw.valueOf(frameNumberText.getText());
-				
-				if (frame != null) {
-					
-					Frame f = (Frame)sys.fc.isInOwner(frameNumber, selectedDFrame.getId());
-					Frame fx = (Frame)sys.fc.getInPlace((Integer)comboBox4.getSelectedItem(), selectedDFrame.getId());
-					
-					if (f != null && !frame.getId().equals(f.getId())) {newError(iFrame, "Громполоса с таким номером уже сущесвует в данном кроссе!"); return;}
-					if (fx != null && !frame.getId().equals(fx.getId())) {newError(iFrame, "Данное место в кроссе занято!"); return;}
-					
-					String old = frame.toString();
-					frame.attachTo(selectedDFrame);
-					frame.setNumber(frameNumber);
-					frame.setCapacity((Integer)comboBox3.getSelectedItem());
-					frame.setPlaceNumber((Integer)comboBox4.getSelectedItem());
-					
-					sys.rw.addLogMessage("Громполоса изменена: " + old + " => " + frame.toString());
-					newInfo(iFrame, "Изменения сохранены");
-					v.clear(); v.add(frame);
-				}
-				else {
-					
-					if (sys.fc.getInPlace((Integer)comboBox4.getSelectedItem(), selectedDFrame.getId()) != null) { newError(iFrame, "Данное место в кроссе занято!"); return; }
-					if (sys.fc.isInOwner(frameNumber, selectedDFrame.getId()) != null ) { newError(iFrame, "Громполоса с таким номером уже сущесвует в данном кроссе!"); return; }
-					
-					Frame newFrame = new Frame();  
-					newFrame.attachTo(selectedDFrame);
-					newFrame.setNumber(frameNumber);
-					newFrame.setCapacity((Integer)comboBox3.getSelectedItem());
-					newFrame.setPlaceNumber((Integer)comboBox4.getSelectedItem());
-					sys.fc.addElement(newFrame);
-					String mes = "Создана громполоса: "+ newFrame.toString()+ ", добавлена в кросс: "+ selectedDFrame.toString();
-					newInfo(iFrame, mes);
-					sys.rw.addLogMessage(mes);
-					v.clear(); v.add(newFrame);
-					
-				}
-				iFrame.dispose();
-			}
-		});
-		
-		iFrame.setVisible(true);
-		return v.get(0);
-	}*/
+
 	/**
 	 * Создает и выводит на экран форму поиска абонента
 	 * @param netId - id сети
@@ -2329,157 +2070,6 @@ public class gui {
 	
 	public void newError (Component parent, String mes) {JOptionPane.showMessageDialog(parent, mes, "Ошибка", JOptionPane.ERROR_MESSAGE);}
 	
-	public void viewCabinet(final Cabinet cabinet) {
-		
-		int W = 100, H = 120, marginX = 20, marginY = 20, inLine = 3;
-		int lines = (int) Math.ceil ((double)cabinet.getPlacesCount().intValue() / (double)inLine);
-		int panelWidth = W * inLine + marginX * (inLine + 1);
-		int panelHeight = H * lines + marginY * (lines + 1);
-		
-		final JDialog iFrame = newDialog("Просмотр шкафа", panelWidth + 40 + 10, panelHeight + 140);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(cabinet.toString());
-		panel.setBackground(new Color(0, 128, 128));
-		panel.setBounds(20, 90, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
-		
-		JLabel head = newLabel(cabinet.toString(), iFrame, 20, 45, panelWidth, 30);
-		head.setFont(new Font("Dialog", Font.BOLD, 16));
-		head.setHorizontalAlignment(SwingConstants.CENTER);
-		int x = 0, y = 0;
-		
-		JButton refreshButton = newButton("Обновить", iFrame, 20,10,90,26);
-		refreshButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				iFrame.dispose();
-				viewCabinet(cabinet);			
-			}
-		});
-		
-		JButton dboxButton = newButton("Коробки", iFrame, 120,10,90,26);
-		dboxButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				HashSet<AbstractElement> dboxes = new HashSet<AbstractElement>();
-				
-				Iterator<Cable> i = sys.cc.getDCableOut(cabinet).iterator();
-				while (i.hasNext()) {
-					
-					Cable cable = i.next();
-					
-					Iterator<Pair> t = sys.pc.getInCable(cable).iterator();
-					
-					
-					while (t.hasNext()) {
-						Pair pair = t.next();
-						
-						AbstractElement ae = sys.dbc.getElement(pair.getElementTo());
-							
-						 if (!dboxes.contains(ae)) { 
-							
-							dboxes.add(ae);
-			
-						 }
-					}
-				}
-				
-				FormDBoxes fb = new FormDBoxes(sys, dboxes);
-				fb.iFrame.setTitle("Коробки шкафа "+ cabinet.toString());
-				fb.refreshButton.setEnabled(false);
-			}
-		});
-		
-		ActionListener boxClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				viewConnectedPointElement((Box)((ElementView)e.getSource()).getElement(), cabinet.getNet(), null, null );			
-			}
-		};
-		
-		ActionListener placeClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-						
-			}
-		};
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-
-		JMenuItem menuItem = new JMenuItem("Добавить");
-		popupMenu.add(menuItem);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new FormBox(sys, null, cabinet); 
-			}	
-		});
-		
-	
-		JMenuItem menuItem_1 = new JMenuItem("Редактировать");
-		popupMenu.add(menuItem_1);
-		menuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				
-				new FormBox(sys, (Box)p, cabinet); 
-			}
-		});
-		
-		JMenuItem menuItem_2 = new JMenuItem("Удалить");
-		popupMenu.add(menuItem_2);
-		menuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();	
-				
-				if (newDialog(iFrame, "Удалить бокс " + ((Box)p).toString()+" и все пары в нем?") == JOptionPane.YES_OPTION) {
-					sys.removeBox((Box)p);
-					iFrame.dispose();
-					viewCabinet(cabinet);
-				}
-			}
-		});
-		
-		for (int place = 0; place < cabinet.getPlacesCount(); place++) {
-			
-			if ( x > inLine - 1)  { x = 0; y++; }
-				
-				ElementView button = new ElementView();
-				button.setBounds(marginX + x*(W + marginX), marginY + y*(H + marginY), W, H);
-				panel.add(button);
-				button.setElement(null);
-				
-				addPopupToConnectedPointElement(button, popupMenu);
-	
-				Box box =  (Box)sys.bc.getInPlace((Integer)place, cabinet.getId());
-				if (box != null) {
-					button.setText(box.toString());
-					button.setToolTipText("Бокс: "+ box.toString());
-					button.setElement(box);
-					if (box.getType() == 0) button.setBackground(new Color(200, 0, 200));
-					if (box.getType() == 1) button.setBackground(new Color(0, 200, 200));
-					if (box.getType() == 2) button.setBackground(new Color(200, 200, 0));
-					if (box.getType() == 3) button.setBackground(new Color(80, 80, 80));
-					button.addActionListener(boxClick);
-					button.setForeground(new Color(0, 0, 0));
-				}
-				else {
-					button.setBackground(new Color(230, 230, 230));
-					button.setForeground(new Color(160, 160, 160));
-					
-					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
-					button.addActionListener(placeClick);
-					button.setText(((Integer)place).toString());
-				}
-			x++;
-		}
-	
-		iFrame.setVisible(true);
-	}
-	
 	public void viewDFrame(final DFramе dframe) {
 		
 		int W = 80, H = 100, marginX = 20, marginY = 20, inLine = 10;
@@ -2499,11 +2089,19 @@ public class gui {
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		int x = 0, y = 0;
+	
+		JButton refreshButton = newButton("Обновить", iFrame, 20,10,90,26);
+		refreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				iFrame.dispose();
+				viewDFrame(dframe);			
+			}
+		});
 		
 		ActionListener frameClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				viewConnectedPointElement((Frame)((ElementView)e.getSource()).getElement(), dframe.getNet(), null, null );			
+				new FormViewConnectedPointElement(sys, (Frame)((ElementView)e.getSource()).getElement(), null, null );			
 			}
 		};
 		
@@ -2598,236 +2196,7 @@ public class gui {
 	
 		iFrame.setVisible(true);
 	}
-	/**
-	 * Отображает окно просмотра элементов
-	 * @param element - отображаемый элемент
-	 * @param netId - Id сети
-	 * @param textFieldForSelectResult - элемент, где отобразиться выбор места, в случае режима выбора свободного места
-	 * @param listForSelectedPair - элемент, где отобразиться выбор пары, в случае режима выбора пары
-	 */
-	public void viewConnectedPointElement(final ConnectedPointElement element, final Integer netId, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
-		
-		//final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
-		
-		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
-		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
-		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
-		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
-		
-		final JDialog iFrame = newDialog("Просмотр бокса", panelWidth + 40, panelHeight + infoListHeght + 100);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(element.toString());
-		panel.setBackground(new Color(200, 200, 200));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
-		
-		final JTextArea infoArea = newTextArea(iFrame, 20, 40 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = newLabel(element.toString(), iFrame, 20, 10, panelWidth, 30);
-		head.setFont(new Font("Dialog", Font.BOLD, 16));
-		head.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		//хеш всех созданых кнопок для пар
-		HashMap<Pair, ElementView> elementViewHash = new HashMap<Pair, ElementView>();
-		
-		/*
-		 *Событие нажатия на существующую пару 
-		 */
-		ActionListener pairClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				Pair p = (Pair)((ElementView)e.getSource()).getElement();
-				
-				if (listForSelectedPair != null) {
-					Vector<Pair> v = new Vector<Pair>(); v.add(p);
-					setListItems(listForSelectedPair, v);
-					listForSelectedPair.setSelectedIndex(0);
-					iFrame.dispose();
-				}
-				else {
-					viewPairInfo(p,infoArea);
-				}
-			}
-		};
-		/*
-		 * ----------------------------------
-		 */
-		
-		/*
-		 * Событие нажатия на пустое место. 
-		 * Используятся для выбора места для расположения создаваемых пар
-		 */
-		ActionListener placeClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (textFieldForSelectResult != null) {
-					Pair p = (Pair)((ElementView)e.getSource()).getElement();
-					textFieldForSelectResult.setText(p.getFromNumber().toString());
-					iFrame.dispose();
-				}
-			}
-		};
-		/*
-		 * ----------------------------------
-		 */
-		
-		JPopupMenu popupMenu = popupMenuForPair(iFrame, netId, elementViewHash);
 
-		for (int ln = 0; ln < inLine; ln++) {
-			JLabel l = new JLabel(((Integer)ln).toString());
-			l.setFont(new Font("Dialog", Font.BOLD, 10));
-			if (ln > 4) {
-				l.setBounds(groupDevision + labelPlaceLeft + marginX + ln*(W + marginX), marginY, W, H);
-			}
-			else {
-				l.setBounds(labelPlaceLeft + marginX + ln*(W + marginX), marginY, 20, H);
-			}
-			l.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(l);
-		}
-		int x = 0, y = 0;
-		for (int place = 0; place < element.getCapacity(); place++) {
-			
-			if ( x > inLine - 1)  { x = 0; y++; }
-			
-				
-				if (x == 0) {
-					JLabel l = new JLabel(((Integer)place).toString());
-					l.setFont(new Font("Dialog", Font.BOLD, 10));
-					l.setBounds(marginX, labelPlaceTop + marginY + y*(H + marginY), 30, H);
-					l.setHorizontalAlignment(SwingConstants.RIGHT);
-					panel.add(l);
-				}
-				ElementView button = new ElementView();
-				if (x > 4) {
-					button.setBounds(groupDevision + labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				else {
-					button.setBounds(labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				panel.add(button);
-				/*
-				 * Создание виртуальных пар для пустого места.
-				 * В параметр fromNumber записывается номер места.
-				 */
-				Pair pairForEmptyPlace = new Pair(sys.fc,sys.bc,sys.dbc,sys.cc);
-				pairForEmptyPlace.setFromNumber(place);
-				button.setElement(pairForEmptyPlace);
-				/*
-				 * ----------------------------------
-				 */
-				
-				Pair pair = sys.pc.getInPlace((ConnectedPointElement)element, (Integer)place);
-				
-				if (pair != null) {
-					button.setToolTipText("Пара: "+ pair.toString());
-					button.setElement(pair);
-					if (pair.getStatus() == 0) button.setBackground(new Color(0, 200, 0));
-					if (pair.getStatus() == 1) button.setBackground(new Color(0, 0, 200));
-					if (pair.getStatus() == 2) button.setBackground(new Color(250, 0, 0));
-					button.addActionListener(pairClick);
-					addPopupToPair(button, popupMenu);
-					elementViewHash.put(pair, button);
-				}
-				else {
-					button.setBackground(new Color(230, 230, 230));
-					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
-					button.addActionListener(placeClick);
-				}
-			x++;
-		}
-		iFrame.setVisible(true);
-		//return returnedPair.get(0);
-	}
-
-/*	public void viewDBox(final DBox element, final Integer netId) {
-			
-		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
-		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
-		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
-		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
-		
-		final JDialog iFrame = newDialog("Просмотр КРТ", panelWidth + 40, panelHeight + infoListHeght + 100);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(element.toString());
-		panel.setBackground(new Color(200, 200, 200));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
-		
-		final JTextArea infoArea = newTextArea(iFrame, 20, 40 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = newLabel(element.toString(), iFrame, 20, 10, panelWidth, 30);
-		head.setFont(new Font("Dialog", Font.BOLD, 16));
-		head.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		ActionListener pairClick = new ActionListener() { public void actionPerformed(ActionEvent e) {Pair p = (Pair)((ElementView)e.getSource()).getElement(); viewPairInfo(p, infoArea);}};
-		
-		ActionListener placeClick = new ActionListener() { public void actionPerformed(ActionEvent e) {}};
-		
-		//хеш всех созданых кнопок для пар
-		HashMap<Pair, ElementView> elementViewHash = new HashMap<Pair, ElementView>();
-		JPopupMenu popupMenu = popupMenuForPair(iFrame, netId, elementViewHash);
-
-		for (int ln = 0; ln < inLine; ln++) {
-			JLabel l = new JLabel(((Integer)ln).toString());
-			l.setFont(new Font("Dialog", Font.BOLD, 10));
-			if (ln > 4) {
-				l.setBounds(groupDevision + labelPlaceLeft + marginX + ln*(W + marginX), marginY, W, H);
-			}
-			else {
-				l.setBounds(labelPlaceLeft + marginX + ln*(W + marginX), marginY, 20, H);
-			}
-			l.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(l);
-		}
-		int x = 0, y = 0;
-		for (int place = 0; place < element.getCapacity(); place++) {
-			
-			if ( x > inLine - 1)  { x = 0; y++; }
-			
-				
-				if (x == 0) {
-					JLabel l = new JLabel(((Integer)place).toString());
-					l.setFont(new Font("Dialog", Font.BOLD, 10));
-					l.setBounds(marginX, labelPlaceTop + marginY + y*(H + marginY), 30, H);
-					l.setHorizontalAlignment(SwingConstants.RIGHT);
-					panel.add(l);
-				}
-				ElementView button = new ElementView();
-				if (x > 4) {
-					button.setBounds(groupDevision + labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				else {
-					button.setBounds(labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				panel.add(button);
-				Pair pairForEmptyPlace = new Pair(sys.fc,sys.bc,sys.dbc,sys.cc);
-				pairForEmptyPlace.setFromNumber(place);
-				button.setElement(pairForEmptyPlace);
-			
-				Pair pair = sys.pc.getInPlace((DBox)element, (Integer)place);
-				
-				if (pair != null) {
-					button.setToolTipText("Пара: "+ pair.toString());
-					button.setElement(pair);
-					if (pair.getStatus() == 0) button.setBackground(new Color(0, 200, 0));
-					if (pair.getStatus() == 1) button.setBackground(new Color(0, 0, 200));
-					if (pair.getStatus() == 2) button.setBackground(new Color(250, 0, 0));
-					button.addActionListener(pairClick);
-					addPopupToPair(button, popupMenu);
-					elementViewHash.put(pair, button);
-				}
-				else {
-					button.setBackground(new Color(230, 230, 230));
-					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
-					button.addActionListener(placeClick);
-				}
-
-			x++;
-			
-		}
-	
-		iFrame.setVisible(true);
-	}*/
 	
 	public void viewCable(final Cable element, final Integer netId, final JTextField textFieldForSelectResult) {
 		
