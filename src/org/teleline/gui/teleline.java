@@ -807,7 +807,7 @@ public class teleline {
 		menuCreate.add(mntmNewMenuItem_4);
 		
 		JMenuItem menuItem_19 = new JMenuItem("Здание");
-		menuItem_19.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {GUI.formBuilding(null);}});
+		menuItem_19.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormBuilding(sys, null);}});
 		menuCreate.add(menuItem_19);
 		
 		JSeparator separator_4 = new JSeparator();
@@ -1791,7 +1791,7 @@ public class teleline {
 				editBuildingButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (buildingList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Здание не выбрано!"); return; }
-						GUI.formBuilding((Building)buildingList.getSelectedValue());
+						new FormBuilding(sys, (Building)buildingList.getSelectedValue());
 					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));	
 					}
 				});
@@ -1804,7 +1804,7 @@ public class teleline {
 				createBuildingButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						GUI.formBuilding(null);
+						new FormBuilding(sys, null);
 					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				});
