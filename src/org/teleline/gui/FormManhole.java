@@ -19,21 +19,21 @@ public class FormManhole extends Form {
 
 	public FormManhole(final Sys iSys, final Manhole man) {
 		super(iSys);
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 370, iFrameMaxHeight = 370;
+		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 310, iFrameMaxHeight = 310;
 		
 		createDialog("Создать колодец", iFrameMinWidth, iFrameMinHeight);
 		
-		addLabel("Номер колодца (1-4 символа: А-Я,а-я,0-9):", 20, 75, 360, 25);
-		final JTextField manholeNumberText = addTextField(20, 100, 360, 25);
+		addLabel("Номер колодца (1-4 символа: А-Я,а-я,0-9):", 20, 15, 360, 25);
+		final JTextField manholeNumberText = addTextField(20, 40, 360, 25);
 		
-		addLabel("Конструкция:", 20, 135, 360, 25);
-		final JComboBox manholeConstruction = addComboBox(20, 160, 360, 25);
+		addLabel("Конструкция:", 20, 75, 360, 25);
+		final JComboBox manholeConstruction = addComboBox(20, 100, 360, 25);
 		manholeConstruction.addItem("Железобетонный");
-		manholeConstruction.addItem("Ктрпичный");
+		manholeConstruction.addItem("Кирпичный");
 		manholeConstruction.setSelectedIndex(0);		
 		
-		addLabel("Форма:", 20, 195, 360, 25);
-		final JComboBox manholeForm = addComboBox(20, 220, 360, 25);
+		addLabel("Форма:", 20, 135, 360, 25);
+		final JComboBox manholeForm = addComboBox(20, 160, 360, 25);
 		manholeForm.addItem("Овальный");
 		manholeForm.addItem("Прямоугольный");
 		manholeForm.setSelectedIndex(0);		
@@ -69,7 +69,7 @@ public class FormManhole extends Form {
 			
 		}
 		
-		JButton saveButton = addButton("Сохранить", 20, 280, 110, 25);
+		JButton saveButton = addButton("Сохранить", 20, 220, 110, 25);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -99,7 +99,7 @@ public class FormManhole extends Form {
 				else {
 					
 					if (iSys.mc.elementInNet(manholeNumber, iSys.nc.getOnlyElement().getId()) != null) {
-						util_newError("Колодец с номером "+manholeNumber+" уже сущесвует в этой сети");
+						util_newError("Колодец с номером " + manholeNumber + " уже сущесвует в этой сети");
 						return;
 					}
 					
@@ -111,8 +111,7 @@ public class FormManhole extends Form {
 						.setConstruction(manholeConstruction.getSelectedIndex())
 						.setForm(manholeForm.getSelectedIndex())
 						.attachToNet((Net)iSys.nc.getOnlyElement())
-						.setSNumber(manholeNumber);
-						
+						.setSNumber(manholeNumber);	
 					iSys.mc.addElement(newManhole);
 					String mes = "Создан колодец: "+ newManhole.toString()+ ", добавлен в сеть: "+ iSys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
 					iSys.rw.addLogMessage(mes);
@@ -121,7 +120,7 @@ public class FormManhole extends Form {
 				iFrame.dispose();
 			}
 		});
-		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 280, 60, 25);
+		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 220, 60, 25);
 
 		iFrame.setVisible(true);
 	}
