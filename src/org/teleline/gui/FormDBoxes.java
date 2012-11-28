@@ -4,15 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -20,15 +17,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.teleline.model.AbstractElement;
-import org.teleline.model.Building;
-import org.teleline.model.Cabinet;
-import org.teleline.model.Cable;
 import org.teleline.model.DBox;
-import org.teleline.model.Net;
 import org.teleline.model.Pair;
-import org.teleline.model.StructuredElement;
 import org.teleline.model.Sys;
-
 public class FormDBoxes extends Form {
 	
 	final public JTable table;
@@ -36,7 +27,6 @@ public class FormDBoxes extends Form {
 	
 	public FormDBoxes(final Sys iSys, Collection<AbstractElement> collection/*, Cabinet cab*/) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
 		
 		createDialog("Коробки", 785, 600);
 		

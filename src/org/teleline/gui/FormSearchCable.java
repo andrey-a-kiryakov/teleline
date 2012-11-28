@@ -8,7 +8,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.Cable;
-import org.teleline.model.CableCollection;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Sys;
 

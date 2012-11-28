@@ -804,7 +804,7 @@ public class teleline {
 		menuCreate.add(separator_3);
 		
 		JMenuItem menuItem_10 = new JMenuItem("Колодец");
-		menuItem_10.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {GUI.formManhole(null);}});
+		menuItem_10.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormManhole(sys, null);}});
 		menuCreate.add(menuItem_10);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Канализацию");
@@ -830,71 +830,9 @@ public class teleline {
 		JMenuItem menuItem_14 = new JMenuItem("Сеть");
 		menuItem_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GUI.formNet((Net)sys.nc.getOnlyElement());
-				
-			/*	final JDialog iFrame = GUI.newDialog("Редактировать сеть", 585, 600);
-				
-				
-				GUI.newLabel("Список сетей:", iFrame, 10, 10, 420, 14);
-				final JList netList = GUI.newList(iFrame, 10, 30, 420, 520);
-				GUI.setListItems(netList, sys.nc.sortByIdUp(sys.nc.elements()));
-				
-				JButton editNetButton = GUI.newButton("Редактировать", iFrame, 440, 30, 125, 26);
-			//	JButton mapNetButton = GUI.newButton("Карта", iFrame, 340, 75, 125, 26);
-				
-				JButton createNetButton = GUI.newButton("Добавить", iFrame, 440, 180, 125, 26);
-				JButton deleteNetButton = GUI.newButton("Удалить", iFrame, 440, 225, 125, 26);
-			*/	
-				/*
-				 * Событие кнопки редактирования сети
-				 */
-		/*		ActionListener editDFrame = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (netList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }
-						
-						GUI.formNet((Net)netList.getSelectedValue());
-						GUI.setListItems(netList, sys.nc.sortByIdUp(sys.nc.elements()));
-						
-					}
-				};
-				editNetButton.addActionListener(editDFrame);*/
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания сети
-				 */
-			/*	ActionListener createNet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						GUI.formNet(null);
-						GUI.setListItems(netList, sys.nc.sortByIdUp(sys.nc.elements()));
-					}
-				};
-				createNetButton.addActionListener(createNet);*/
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления сети
-				 */
-			/*	ActionListener deleteNet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (netList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана!"); return; }	
-						int n = GUI.newDialog(iFrame, "Удалить сеть: " + (Net)netList.getSelectedValue()+" и все её содержимое?");
-						if (n == JOptionPane.YES_OPTION) {
-							GUI.removeNet((Net)netList.getSelectedValue());
-							GUI.setListItems(netList, sys.nc.sortByIdUp(sys.nc.elements()));
-						}
-					}
-				};
-				deleteNetButton.addActionListener(deleteNet);*/
-				/*
-				 * ---------------------------------------------------------
-				 */
-
-				//iFrame.setVisible(true);	
-			}
-		});
+				new FormNet(sys, (Net)sys.nc.getOnlyElement());
+				}
+			});
 		menuChange.add(menuItem_14);
 		
 		JSeparator separator_6 = new JSeparator();

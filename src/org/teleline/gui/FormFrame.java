@@ -22,7 +22,6 @@ public class FormFrame extends Form {
 
 	public FormFrame(final Sys iSys, final Frame frame, DFramе dframe) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
 		
 		createDialog("Создать громполосу", 410, 330);
 		

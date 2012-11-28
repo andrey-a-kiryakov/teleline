@@ -17,7 +17,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.teleline.model.AbstractElement;
-import org.teleline.model.Cabinet;
 import org.teleline.model.Manhole;
 import org.teleline.model.Sys;
 
@@ -58,14 +57,12 @@ public class FormManholes extends Form {
 			public void actionPerformed(ActionEvent arg0) {
 				util_clearTable(table);
 				
-				Iterator<AbstractElement> i = iSys.cbc.getIterator();
+				Iterator<AbstractElement> i = iSys.mc.getIterator();
 				while(i.hasNext()) {
-					Cabinet cab = (Cabinet)i.next();
+					Manhole man = (Manhole)i.next();
 					Vector<Object> v = new Vector<Object>();
-					v.add(cab);
-					v.add(cab.getCabinetClass());
-					v.add(cab.getPlacesCount());
-					v.add(cab.getAdress());
+					v.add(man);
+					v.add(man.getAdress());
 					tableModel.addRow(v);
 				}
 			}
@@ -94,7 +91,7 @@ public class FormManholes extends Form {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectionModel().isSelectionEmpty()){ util_newError("Колодец не выбран!"); return; }
 				int selectedIndex = table.getRowSorter().convertRowIndexToModel(table.getSelectionModel().getMinSelectionIndex());
-				//new FormManhole(iSys,(Cabinet) tableModel.getValueAt(selectedIndex, 0));
+				new FormManhole(iSys,(Manhole) tableModel.getValueAt(selectedIndex, 0));
 			}
 		});
 		
@@ -119,7 +116,7 @@ public class FormManholes extends Form {
 		 */
 		createButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//new FormCabinet(iSys, null);
+				new FormManhole(iSys, null);
 			}
 		});
 		/*

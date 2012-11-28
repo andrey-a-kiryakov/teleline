@@ -749,7 +749,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Cable cable = new Cable(dfc,cbc,dbc,fc,bc,pc);
+				Cable cable = new Cable(dfc,cbc,/*dbc,fc,bc,*/pc);
 				
 				cable.setId(n.getAttribute("i").getIntValue()); 
 				//cable.attachToNet(n.getAttribute("ni").getIntValue());

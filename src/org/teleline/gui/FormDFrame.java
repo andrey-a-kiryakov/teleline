@@ -19,7 +19,7 @@ public class FormDFrame extends Form {
 
 	public FormDFrame(final Sys iSys, final DFramе dframe) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
+
 		createDialog("Создать кросс", 410, 235);
 		if (dframe != null) iFrame.setTitle("Редактировать кросс");
 		

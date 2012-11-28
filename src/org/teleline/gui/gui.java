@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -45,7 +44,7 @@ public class gui {
 
 	private JFrame frame;
 	
-	public gui(Sys iSys,/*NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc, RW rw, Validator V,*/ JFrame frame ) {
+	public gui(Sys iSys, JFrame frame ) {
 		this.frame = frame;
 		this.sys = iSys;
 	}
@@ -435,69 +434,7 @@ public class gui {
         ToComboBox.addActionListener(actionListener);
         
 	}
-	/**
-	 * Связывает выпадающий список сетей и таблицу кабелей
-	 * @param netsComboBox - выпадающий список сетей
-	 * @param cableTable - таблица кабелей
-	 */
-/*	public void linkNetsComboBoxCableTable (final JComboBox netsComboBox, final JTable cableTable) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	
-            	if (netsComboBox.getSelectedIndex() > -1) {
-            		clearTable(cableTable);
-            		Iterator<StructuredElement> i = sys.cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
-            		while (i.hasNext()) {
-            			addCableToTable(cableTable, (Cable)i.next());
-            		}
-            	}
-            }
-		};
-        
-		if (netsComboBox.getSelectedIndex() > -1) {
-			clearTable(cableTable);
-			Iterator<StructuredElement> i = sys.cc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
-    		while (i.hasNext()) {
-    			addCableToTable(cableTable, (Cable)i.next());
-    		}
-		}
-		
-    	netsComboBox.addActionListener(actionListener);
-        
-	}*/
-	/**
-	 * Связывает выпадающий список сетей и таблицу абонентов
-	 * @param netsComboBox - выпадающий список сетей
-	 * @param subscriberTable - таблица абонентов
-	 */
-/*	public void linkNetsComboBoxSubscriberTable (final JComboBox netsComboBox, final JTable subscriberTable) {
-		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	
-            	if (netsComboBox.getSelectedIndex() > -1) {
-            		clearTable(subscriberTable);
-            		Iterator<StructuredElement> i = sys.sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
-            		while (i.hasNext()) {
-            			addSubscriberToTable(subscriberTable, (Subscriber)i.next());
-            		}
-            	}
-            }
-		};
-        
-		if (netsComboBox.getSelectedIndex() > -1) {
-			clearTable(subscriberTable);
-			Iterator<StructuredElement> i = sys.sc.getInNet(((Net)netsComboBox.getSelectedItem()).getId()).iterator();
-    		while (i.hasNext()) {
-    			addSubscriberToTable(subscriberTable, (Subscriber)i.next());
-    		}
-		}
-		
-    	netsComboBox.addActionListener(actionListener);
-        
-	}*/
-	
+
 	/**
 	 * Связывает выпадающий список кроссов с выпадающим списком громполос
 	 * @param dframeComboBox - список кроссов
@@ -571,45 +508,6 @@ public class gui {
 		Iterator<?> listItem = Collection.iterator();
 		while (listItem.hasNext()) ((DefaultListModel)List.getModel()).addElement(listItem.next());
 
-	}
-	/**
-	 * Создает и выводит на экран форму создания/редактирования элемента Сеть
-	 * @param net - сеть для редактирования, если null - отображается форма создания новой сети
-	 */
-	public void formNet(final Net net){
-		
-		final JDialog iFrame = newDialog("Создать сеть", 410, 165);
-		newLabel("Название сети (1-50 символов):", iFrame, 20, 15, 360, 14);
-		
-		final JTextField name = newTextField(iFrame, 20, 40, 360, 25);
-		if (net != null){ 
-			iFrame.setTitle("Редактировать сеть");
-			name.setText(net.getName());
-		}
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 75, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (!sys.v.validateNetName(name.getText())) { newError(iFrame, "Неверный формат названия сети!");return;}
-				if (net != null) {
-					Net oldNet =  net;
-					net.setName(name.getText());
-					sys.rw.addLogMessage("Сеть изменена:" + oldNet.toString() +" => " + net.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					Net newNet = new Net(); 
-					newNet.setName(name.getText()); 
-					sys.nc.addElement(newNet);
-					String mes = "Создана сеть: "+ newNet.toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		
-		iFrame.setVisible(true);
 	}
 	/**
 	 * Создает и выводит на экран форму создания/редактирования элемента Включение
@@ -777,133 +675,6 @@ public class gui {
 		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 200, 60, 25);
 		iFrame.setVisible(true);
 		return v.get(0);
-	}
-	
-	/**
-	 * Создает и выводит на экран форму создания/редактирования колодца
-	 * @param man - колодец, если null - выводится форма создания нового элемента
-	 */
-	
-	public void formManhole(final Manhole man) {
-
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 370, iFrameMaxHeight = 370;
-		
-		final JDialog iFrame = newDialog("Создать колодец", iFrameMinWidth, iFrameMinHeight);
-		 
-	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox comboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		
-		newLabel("Номер колодца (1-4 символа: А-Я,а-я,0-9):", iFrame, 20, 75, 360, 25);
-		final JTextField manholeNumberText = newTextField(iFrame, 20, 100, 360, 25);
-		
-		newLabel("Конструкция:", iFrame, 20, 135, 360, 25);
-		final JComboBox manholeConstruction = new JComboBox();
-		manholeConstruction.addItem("Железобетонный");
-		manholeConstruction.addItem("Ктрпичный");
-		manholeConstruction.setSelectedIndex(0);
-		manholeConstruction.setBounds(20, 160, 360, 25);
-		iFrame.getContentPane().add(manholeConstruction);		
-		
-		newLabel("Форма:", iFrame, 20, 195, 360, 25);
-		final JComboBox manholeForm = new JComboBox();
-		manholeForm.addItem("Овальный");
-		manholeForm.addItem("Прямоугольный");
-		manholeForm.setSelectedIndex(0);
-		manholeForm.setBounds(20, 220, 360, 25);
-		iFrame.getContentPane().add(manholeForm);		
-		
-		/*
-		 * Дополнительные параметры колодца
-		 */
-		newLabel("Адрес:", iFrame, 420, 15, 360, 25);
-		final JTextField manholeAdress = newTextField(iFrame, 420, 40, 360, 25);
-		
-		newLabel("Дата постройки (ДД.ММ.ГГГГ):", iFrame, 420, 75, 360, 25);
-		final JTextField manholeDate = newTextField(iFrame, 420, 100, 360, 25);
-		manholeDate.setText("01.01.2012");
-		
-		newLabel("Размеры (для нетиповых):", iFrame, 420, 135, 360, 25);
-		final JTextField manholeSize = newTextField(iFrame, 420, 160, 360, 25);
-			
-		if (man != null) {
-			manholeAdress.setText(man.getAdress());
-			manholeDate.setText(man.getDate());
-			manholeSize.setText(man.getSize());	
-		}
-		/*
-		 * ------------------------------
-		 */
-		
-		if (man != null) {
-			
-			iFrame.setTitle("Редактировать колодец");
-			
-		//	comboBox.setSelectedItem(sys.nc.getElement(man.getNet()));
-		//	comboBox.setEnabled(false);
-			manholeNumberText.setText(man.getSNumber());
-			manholeConstruction.setSelectedIndex(man.getConstruction());
-			manholeForm.setSelectedIndex(man.getForm());
-			
-		}
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 280, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-		//		if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (!sys.v.validateCabinetNumber(manholeNumberText.getText())) { newError(iFrame, "Неверный номер колодца!"); return; }
-				if (!sys.v.validateDate(manholeDate.getText())) { newError(iFrame, "Неверный формат даты постройки!"); return; }
-				if (!sys.v.validateOtherParametr(manholeAdress.getText())) { newError(iFrame, "Неверный формат адреса колодца!"); return; }
-				if (!sys.v.validateOtherParametr(manholeSize.getText())) { newError(iFrame, "Неверный формат размера колодца!"); return; }
-				
-		//		Net selectedNet = (Net)comboBox.getSelectedItem();
-				String manholeNumber = manholeNumberText.getText();
-
-				if (man != null) {
-					
-					Manhole b = sys.mc.elementInNet(manholeNumber, sys.nc.getOnlyElement().getId()/*selectedNet.getId()*/);
-					if (b != null && !man.getId().equals(b.getId())) {newError(iFrame, "Колодец с номером " + manholeNumber + " уже сущесвует в этой сети"); return;}
-					
-					String old = man.toString();
-					man
-						.setAdress(manholeAdress.getText())
-						.setDate(manholeDate.getText())
-						.setSize(manholeSize.getText())
-						.setConstruction(manholeConstruction.getSelectedIndex())
-						.setForm(manholeForm.getSelectedIndex())
-						.setSNumber(manholeNumber);
-					sys.rw.addLogMessage("Колодец изменен: " + old + " => " + man.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					
-					if (sys.mc.elementInNet(manholeNumber, sys.nc.getOnlyElement().getId()/*selectedNet.getId()*/) != null) {
-						newError(iFrame, "Колодец с номером "+manholeNumber+" уже сущесвует в этой сети");
-						return;
-					}
-					
-					Manhole newManhole = new Manhole(); 
-					newManhole
-						.setAdress(manholeAdress.getText())
-						.setDate(manholeDate.getText())
-						.setSize(manholeSize.getText())
-						.setConstruction(manholeConstruction.getSelectedIndex())
-						.setForm(manholeForm.getSelectedIndex())
-						//.attachToNet(selectedNet)
-						.attachToNet((Net)sys.nc.getOnlyElement())
-						.setSNumber(manholeNumber);
-						
-					sys.mc.addElement(newManhole);
-					String mes = "Создан колодец: "+ newManhole.toString()+ ", добавлен в сеть: "+ sys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		newMoreButton(iFrame,iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 280, 60, 25);
-
-		iFrame.setVisible(true);
 	}
 	/**
 	 * Создает и выводит на экран форму создания/редактирования элемента "Кабельная канализация"

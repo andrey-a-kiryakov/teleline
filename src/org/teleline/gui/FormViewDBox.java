@@ -19,14 +19,11 @@ public class FormViewDBox extends Form {
 	
 	public FormViewDBox(Sys iSys, final DBox element) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
 			
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
 		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
-		
-		Integer netId = iSys.nc.getOnlyElement().getId();
 		
 		createDialog("Просмотр КРТ", panelWidth + 40, panelHeight + infoListHeght + 100);
 		JPanel panel = new JPanel();
