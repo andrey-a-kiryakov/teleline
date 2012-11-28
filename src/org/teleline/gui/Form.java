@@ -40,6 +40,7 @@ import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Sys;
+import org.teleline.model.Tube;
 
 public abstract class Form {
 	
@@ -307,6 +308,70 @@ public abstract class Form {
 		return popupMenu;
 		
 	}
+	/**
+	 * Всплывающее меню для канала канализации
+	 * @param iFrame - окно
+	 * @param netId - id сети
+	 * @return JPopupMenu объект всплывающего меню
+	 */
+	public JPopupMenu popupMenuForTube (){
+		JPopupMenu popupMenu = new JPopupMenu();
+
+		JMenuItem menuItem = new JMenuItem("Добавить кабель");
+		popupMenu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
+				final ElementView ep = (ElementView)pm.getInvoker();
+				final Tube t = (Tube) ep.getElement();
+				final FormSearchCable form = new FormSearchCable(iSys,iSys.nc.getOnlyElement().getId());
+				
+				ActionListener selectCable = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (form.cableTable.getSelectionModel().isSelectionEmpty()){ form.util_newError("Кабель не выбран!"); return; }
+						int selectedIndex = form.cableTable.getRowSorter().convertRowIndexToModel(form.cableTable.getSelectionModel().getMinSelectionIndex());
+						
+						Cable cable = (Cable)((DefaultTableModel)form.cableTable.getModel()).getValueAt( selectedIndex, 0);
+						
+						if (t.containsCable(cable)) { form.util_newError("Кабель уже содержиться в канале"); return; }
+						
+						t.addCable(cable);
+						iSys.rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + iSys.duc.getElement(t.getDuct()));
+						util_setTubeButtonColor(t, ep);	
+						form.iFrame.dispose();
+					}
+				};
+				form.okButton.addActionListener(selectCable);
+			}
+		});
+		
+		JMenuItem menuItem_1 = new JMenuItem("Удалить кабель");
+		popupMenu.add(menuItem_1);
+		menuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
+				final ElementView ep = (ElementView)pm.getInvoker();
+				final Tube t = (Tube) ep.getElement();
+				final FormTubesCables form = new FormTubesCables(iSys,t);
+				
+				form.okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (form.cableList.getSelectedIndex() == -1) {form.util_newError("Кабель не выбран!"); return;}
+						iFrame.dispose();
+						Cable cable = (Cable)form.cableList.getSelectedValue();
+						if (cable != null)
+							if (t.removeCable(cable)) {
+								iSys.rw.addLogMessage("Кабель " + cable.toString()+ " удален из канала " + t.toString() + " участка канализации " + iSys.duc.getElement(t.getDuct()));
+								util_setTubeButtonColor(t, ep);
+							}
+					}
+				});
+			}
+		});
+		
+		return popupMenu;
+		
+	}
 	
 	public Pair addPairToPath(Path path, Pair p) {
 		
@@ -482,6 +547,25 @@ public abstract class Form {
 		}
 		if (p.getStatus().equals(2)) infoArea.append("Состояние: повреждена\r\n");	
 	}
+	/**
+	 * Выводит подробные данные о кабельном канале
+	 * @param t - канал
+	 * @param infoArea - текстовое поле для вывода данных
+	 */
+	public void viewTubeInfo(Tube t,  JTextArea infoArea) {
+		infoArea.setText("");
+		infoArea.append("Участок канализации: " + iSys.duc.getElement(t.getDuct()).toString() + "\r\n");
+		infoArea.append("Канал №: " + t.getNumber().toString() + "\r\n");
+		
+		if (t.cablesCount() == 0) {
+			infoArea.append("Состояние: свободен");
+			return;
+		}
+		infoArea.append("Состояние: используется:\r\n");
+		
+		Iterator<Integer> i = t.getCables().iterator();
+		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)iSys.cc.getElement(i.next())).toLongString()+"\r\n");
+	}
 	
 	protected void util_setListItems (final JList List, Collection<?> Collection) {
 		
@@ -534,6 +618,21 @@ public abstract class Form {
 		if (pair.getStatus() == 0) { button.setBackground((new Color(0,200,0))); return; }
 		if (pair.getStatus() == 1) { button.setBackground((new Color(0,0,200))); return; }
 		if (pair.getStatus() == 2) { button.setBackground((new Color(250,0,0))); return; }
+	}
+	/**
+	 * Устанавливает цвет графического элемента канала канализации в зависимости от загруженности кабелями
+	 * @param tube - канал
+	 * @param button - графический элемент
+	 */
+	public void util_setTubeButtonColor(Tube tube, ElementView button) {
+		
+		if (tube.cablesCount() == 0)  { button.setBackground(new Color(0, 200, 0)); return; }
+		if (tube.cablesCount() == 1) { button.setBackground(new Color(204, 204, 255)); return; }
+		if (tube.cablesCount() == 2) { button.setBackground(new Color(153, 153, 255)); return; }
+		if (tube.cablesCount() == 3) { button.setBackground(new Color(102, 102, 255)); return; }
+		if (tube.cablesCount() > 3) { button.setBackground(new Color(51, 51, 255)); return; }
+		if (tube.cablesCount() > 5) { button.setBackground(new Color(0, 0, 255)); return; }
+
 	}
 	/**
 	 * Отображает паспорт элемента в браузере
@@ -614,6 +713,27 @@ public abstract class Form {
 					((JMenuItem)popup.getSubElements()[1]).setEnabled(true);
 					((JMenuItem)popup.getSubElements()[2]).setEnabled(true);
 				}
+			}
+		});
+	}
+	/**
+	 * Добавляет всплывающее меню для канала канализации
+	 * @param popup - всплывающее меню
+	 */
+	public static void addPopupToTube(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
 	}

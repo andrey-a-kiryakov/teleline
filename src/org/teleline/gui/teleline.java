@@ -1426,7 +1426,8 @@ public class teleline {
 				final JTable cableTable = GUI.newTable(iFrame, 10, 30, 520, 525);
 				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
-				
+				final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(cableTable.getModel());
+				cableTable.setRowSorter(sorter);
 			//	GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
 				
 				Iterator<StructuredElement> i = sys.cc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
@@ -1543,6 +1544,10 @@ public class teleline {
 				/*
 				 * ---------------------------------------------------------
 				 */
+				ArrayList<SortKey> keys=new ArrayList<SortKey>();
+		        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
+		        sorter.setSortKeys(keys);
+		        sorter.setSortsOnUpdates(true);
 				iFrame.setVisible(true);	
 			}
 		});
@@ -1555,103 +1560,7 @@ public class teleline {
 		JMenuItem menuItem_17 = new JMenuItem("Колодец");
 		menuItem_17.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog iFrame = GUI.newDialog("Редактировать колодец", 585, 600);
-				
-		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
-				
-				GUI.newLabel("Список колодцев:", iFrame, 10, 10, 420, 14);
-				final JList manholeList = GUI.newList(iFrame, 10, 30, 420, 525);
-				
-		//		GUI.netsComboBoxLinked(netsComboBox, manholeList, sys.mc);
-				GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement())));
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
-				JButton editManholeButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
-				JButton viewManholeButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
-				JButton passportManholeButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
-				JButton createManholeButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
-				JButton deleteManholeButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
-				
-				refreshButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) { 
-						GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement())));
-					}
-				});
-				/*
-				 * Событие кнопки редактирования колодца
-				 */
-				ActionListener editManhole = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
-						GUI.formManhole((Manhole)manholeList.getSelectedValue());
-				//		GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));	
-					}
-				};
-				editManholeButton.addActionListener(editManhole);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра колодца
-				 */
-				ActionListener viewManhole = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
-						GUI.viewManhole((Manhole)manholeList.getSelectedValue(), sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/);
-					}
-				};
-				viewManholeButton.addActionListener(viewManhole);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания колодца
-				 */
-				ActionListener createManhole = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-				//		if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						GUI.formManhole(null);
-				//		GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)netsComboBox.getSelectedItem())));
-					}
-				};
-				createManholeButton.addActionListener(createManhole);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления колодца
-				 */
-				ActionListener deleteManhole = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить колодец: " + manholeList.getSelectedValue().toString()+" и все участки канализации проходящие через него?");
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeManhole((Manhole)manholeList.getSelectedValue());
-							GUI.newInfo(iFrame, "Колодец и участки канализации, проходящие через него, удалены");
-							GUI.setListItems(manholeList, sys.mc.sortByIdUp(sys.mc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
-						}		
-					}
-				};
-				deleteManholeButton.addActionListener(deleteManhole);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра паспорта колодца
-				 */
-				ActionListener passportManhole = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (manholeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Колодец не выбран!"); return; }
-						GUI.formViewPassport(sys.rw.createManholePassport((Manhole)manholeList.getSelectedValue()));
-					}		
-				};
-				passportManholeButton.addActionListener(passportManhole);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				
-				iFrame.setVisible(true);
+				new FormManholes(sys, sys.mc.getElements());
 			}
 		});
 		menuChange.add(menuItem_17);
@@ -1709,7 +1618,7 @@ public class teleline {
 				ActionListener viewDuct = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						GUI.viewDuct((Duct)ductList.getSelectedValue(), sys.nc.getOnlyElement().getId()/*((Net)netsComboBox.getSelectedItem()).getId()*/);
+						new FormViewDuct(sys,(Duct)ductList.getSelectedValue());
 					}
 				};
 				viewDuctButton.addActionListener(viewDuct);

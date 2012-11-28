@@ -6,7 +6,7 @@ package org.teleline.model;
 *@author Кирьяков Андрей
 */
 public class Manhole extends StructuredElement {
-	private String adress="";
+	private String adress = "";
 	private Integer construction = 0;
 	private Integer form = 0;
 	private String date = "";
