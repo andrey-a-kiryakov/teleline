@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -27,9 +28,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SortOrder;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.io.File;
 import javax.swing.JList;
@@ -792,7 +797,7 @@ public class teleline {
 		menu_2.add(menuItem_5);
 		
 		JMenuItem menuItem_9 = new JMenuItem("Кабель");
-		menuItem_9.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {GUI.formCable(null);}});
+		menuItem_9.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormCable(sys, null);}});
 		menuCreate.add(menuItem_9);
 		
 		JSeparator separator_3 = new JSeparator();
@@ -1038,6 +1043,13 @@ public class teleline {
 				final JTable subscriberList = GUI.newTable(iFrame, 10, 30, 520, 375);
 				final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 				tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
+				
+				subscriberList.getColumnModel().getColumn(1).setMaxWidth(70);
+				subscriberList.getColumnModel().getColumn(1).setPreferredWidth(70);
+				final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(subscriberList.getModel());
+				subscriberList.setRowSorter(sorter);
+				
+				
 				
 				JButton refreshButton = GUI.newButton("Обновить", iFrame, 540, 30, 125, 26);
 				JButton editSubscriberButton = GUI.newButton("Редактировать", iFrame, 540, 105, 125, 26);
@@ -1389,7 +1401,11 @@ public class teleline {
 				/*
 				 * ------------------------------------------------ 
 				 */
-				
+				ArrayList<SortKey> keys=new ArrayList<SortKey>();
+		        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
+		        sorter.setSortKeys(keys);
+		        sorter.setSortsOnUpdates(true);
+		        
 				iFrame.setVisible(true);
 			}
 		});
@@ -1447,7 +1463,7 @@ public class teleline {
 						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
 						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
 						Cable cable = (Cable)tableModel.getValueAt(selectedIndex, 0);
-						GUI.formCable(cable);
+						new FormCable(sys, cable);
 						GUI.updateCableInTable(cableTable, cable, selectedIndex);
 					}
 				};
@@ -1475,8 +1491,8 @@ public class teleline {
 				ActionListener createCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						Cable cable = GUI.formCable(null);
-						if (cable != null) GUI.addCableToTable(cableTable, cable);
+						new FormCable(sys, null);
+						//if (cable != null) GUI.addCableToTable(cableTable, cable);
 					}
 				};
 				createCableButton.addActionListener(createCable);
@@ -1634,6 +1650,7 @@ public class teleline {
 				/*
 				 * ---------------------------------------------------------
 				 */
+				
 				iFrame.setVisible(true);
 			}
 		});

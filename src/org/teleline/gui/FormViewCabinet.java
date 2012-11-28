@@ -155,7 +155,7 @@ public class FormViewCabinet extends Form {
 				Box box =  (Box)iSys.bc.getInPlace((Integer)place, cabinet.getId());
 				if (box != null) {
 					button.setText(box.toString());
-					button.setToolTipText("Бокс: "+ box.toString());
+					button.setToolTipText("Бокс: "+ box.toString() + " ("+box.getCapacity()+"х2)");
 					button.setElement(box);
 					if (box.getType() == 0) button.setBackground(new Color(200, 0, 200));
 					if (box.getType() == 1) button.setBackground(new Color(0, 200, 200));
