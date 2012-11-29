@@ -114,27 +114,27 @@ public class gui {
 	 * @param table - таблица
 	 * @param damage - повреждение
 	 */
-	public void addDamageToTable(JTable table, Damage damage){
+/*	public void addDamageToTable(JTable table, Damage damage){
 		
 		Vector<Object> v = new Vector<Object>();
 		v.add(damage);
 		v.add(damage.getOpenDate());
 		v.add(damage.getCloseDate());
 		((DefaultTableModel) table.getModel()).addRow(v);
-	}
+	}*/
 	/**
 	 * Обновляет строчку с повреждением в таблице
 	 * @param table - таблица
 	 * @param damage - повреждение
 	 * @param index - позиция обновляемой строки в таблице
 	 */
-	public void updateDamageInTable(JTable table, Damage damage, Integer index) {
+/*	public void updateDamageInTable(JTable table, Damage damage, Integer index) {
 		
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setValueAt(damage, index, 0);
 		tableModel.setValueAt(damage.getOpenDate(), index, 1);
 		tableModel.setValueAt(damage.getCloseDate(), index, 2);
-	}
+	}*/
 	
 	/**
 	 * Очищает таблицу
@@ -232,53 +232,6 @@ public class gui {
 		
 		return comboBox;
 	}
-	
-	/**
-	 * Создает и добавляет в форму выпадающий список колодцев и кроссов
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @return выпадающий список
-	 */
-	public JComboBox manholeDFrameComboBox(Integer netId/*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
-		
-		JComboBox comboBox = new JComboBox();
-	/*	if (NetsComboBox.getSelectedIndex() > -1) {
-			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-		}*/
-		if (netId > -1) {
-			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(netId)));
-			setComboBoxItems(comboBox, sys.dfc.sortByIdUp(sys.dfc.getInNet(netId)));
-		}
-		comboBox.setBounds(x, y, w, h);
-		iFrame.getContentPane().add(comboBox);
-		
-		return comboBox;
-	}
-	/**
-	 * Создает и добавляет в форму выпадающий список колодцев, шкафов и зданий
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @return выпадающий список
-	 */
-	public JComboBox manholeCabinetBuildingComboBox(Integer netId/*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
-		
-		JComboBox comboBox = new JComboBox();
-	/*	if (NetsComboBox.getSelectedIndex() > -1) {
-			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-			setComboBoxItems(comboBox, sys.cbc.sortByIdUp(sys.cbc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-			setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(((Net)NetsComboBox.getSelectedItem()).getId())));
-			
-		}*/
-		if (netId > -1) {
-			setComboBoxItems(comboBox, sys.mc.sortByIdUp(sys.mc.getInNet(netId)));
-			setComboBoxItems(comboBox, sys.cbc.sortByIdUp(sys.cbc.getInNet(netId)));
-			setComboBoxItems(comboBox, sys.buc.sortByIdUp(sys.buc.getInNet(netId)));
-		}
-		comboBox.setBounds(x, y, w, h);
-		iFrame.getContentPane().add(comboBox);
-		
-		return comboBox;
-	}
-	
 	public JComboBox dboxComboBox(Integer netId /*JComboBox NetsComboBox*/, JDialog iFrame, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
@@ -677,203 +630,6 @@ public class gui {
 		return v.get(0);
 	}
 	/**
-	 * Создает и выводит на экран форму создания/редактирования элемента "Кабельная канализация"
-	 * @param duct - элемент "Кабельная канализация", если null - выводится форма создания нового элемента
-	 */
-	public void formDuct(final Duct duct){
-		
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight =  430, iFrameMaxHeight =  430;
-
-		final JDialog iFrame = newDialog("Создать канализацию", iFrameMinWidth, iFrameMinHeight);
-		
-	//	newLabel("Добавить в сеть:", iFrame, 20, 15, 360, 25);
-	//	final JComboBox netsComboBox = newNetsComboBox(iFrame, 20, 40, 360, 25);
-		
-		newLabel("От:", iFrame, 20, 75, 360, 25);
-		final JComboBox fromComboBox = manholeDFrameComboBox(sys.nc.getOnlyElement().getId()/*netsComboBox*/, iFrame, 20, 100, 360, 25);
-		final JComboBox fromSideComboBox = new JComboBox();
-		fromSideComboBox.addItem("Спереди");
-		fromSideComboBox.addItem("Справа");
-		fromSideComboBox.addItem("Сзади");
-		fromSideComboBox.addItem("Слева");
-		iFrame.getContentPane().add(fromSideComboBox);
-		fromSideComboBox.setBounds(20, 135, 360, 25);
-		
-		newLabel("До:", iFrame, 20, 170, 360, 25);
-		final JComboBox toComboBox = manholeCabinetBuildingComboBox(sys.nc.getOnlyElement().getId()/*netsComboBox*/, iFrame, 20, 195, 360, 25);
-		final JComboBox toSideComboBox = new JComboBox();
-		toSideComboBox.addItem("Спереди");
-		toSideComboBox.addItem("Справа");
-		toSideComboBox.addItem("Сзади");
-		toSideComboBox.addItem("Слева");
-		iFrame.getContentPane().add(toSideComboBox);
-		toSideComboBox.setBounds(20, 230, 360, 25);
-		
-	//	netsManholeDFrameComboLinked(netsComboBox,fromComboBox);
-	//	netsManholeCabinetBuildingComboLinked(netsComboBox,toComboBox);
-		
-		newLabel("Каналов в канализации (1-99):", iFrame, 20, 265, 360, 25);
-		final JTextField capacityText = newTextField(iFrame, 20, 290, 360, 25);
-		
-		/*
-		 * Дополнительные параметры канализации
-		 */
-		newLabel("Длина, м (1-9999):", iFrame, 420, 15, 360, 25);
-		final JTextField ductLenght = newTextField(iFrame, 420, 40, 360, 25);
-		ductLenght.setText("1");
-		
-		newLabel("Диаметр канала, мм (1-999):", iFrame, 420, 75, 360, 25);
-		final JTextField tubeDiametr = newTextField(iFrame, 420, 100, 360, 25);
-		tubeDiametr.setText("100");
-		
-		newLabel("Материал трубопровода (до 150 сим.):", iFrame, 420, 135, 360, 25);
-		final JTextField tubeMaterual = newTextField(iFrame, 420, 160, 360, 25);
-		
-		newLabel("Дата прокладки (ДД.ММ.ГГГГ):", iFrame, 420, 195, 360, 25);
-		final JTextField ductDate = newTextField(iFrame, 420, 220, 360, 25);
-		ductDate.setText("01.01.2012");
-		
-		newLabel("Cпособ изготовления (до 150 сим.):", iFrame, 420, 255, 360, 25);
-		final JTextField manufacturingМethod = newTextField(iFrame, 420, 280, 360, 25);
-		
-		
-		
-		JButton damageButton = newButton("Повреждения", iFrame, 420, 340, 120, 25);
-		damageButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				tableDamageList(sys.dmc.getDamages(duct), duct);
-			}
-		});
-		damageButton.setEnabled(false);
-		
-		if (duct != null) {
-			ductLenght.setText(duct.getLenght().toString());
-			tubeDiametr.setText(duct.getTubeDiametr().toString());
-			tubeMaterual.setText(duct.getTubeMaterial());
-			ductDate.setText(duct.getDate());
-			manufacturingМethod.setText(duct.getМanufacturingМethod());
-			damageButton.setEnabled(true);
-		}
-		/*
-		 * ------------------------------
-		 */
-		if (duct != null) {
-			iFrame.setTitle("Редактировать канализацию");
-			
-		//	netsComboBox.setSelectedItem(sys.nc.getElement(duct.getNet())); netsComboBox.setEnabled(false);
-			
-			AbstractElement from = sys.mc.getElement(duct.getFrom());
-			if (from == null) from = sys.dfc.getElement(duct.getFrom());
-			
-			AbstractElement to = sys.mc.getElement(duct.getTo());
-			if (to == null) to = sys.cbc.getElement(duct.getTo());
-			if (to == null) to = sys.buc.getElement(duct.getTo());
-			
-			
-			fromComboBox.setSelectedItem(from);
-			toComboBox.setSelectedItem(to);
-			
-			fromSideComboBox.setSelectedIndex(duct.getFromSide());
-			toSideComboBox.setSelectedIndex(duct.getToSide());
-			
-			capacityText.setText(((Integer)sys.tuc.getDuctsTubes(duct).size()).toString()); capacityText.setEnabled(false);
-		}
-        
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 340, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-		//		if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
-				if (fromComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрано начало канализации!"); return; }
-				if (toComboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбран конец канализации!"); return; }
-				if (!sys.v.validateDuctCapacity(capacityText.getText())) { newError(iFrame, "Неверный формат емкости канализации!"); return; }
-				if (!sys.v.validateDuctLenght(ductLenght.getText())) { newError(iFrame, "Неверный формат длины канализации!"); return; }
-				if (!sys.v.validateTubeDiametr(tubeDiametr.getText())) { newError(iFrame, "Неверный формат диаметра канала!"); return; }
-				if (!sys.v.validateDate(ductDate.getText())) { newError(iFrame, "Неверный формат даты!"); return; }
-				if (!sys.v.validateOtherParametr(tubeMaterual.getText())) { newError(iFrame, "Неверный формат материала трубопровода!"); return; }
-				if (!sys.v.validateOtherParametr(manufacturingМethod.getText())) { newError(iFrame, "Неверный формат способа изготовления!"); return; }
-				
-		//		Net selectedNet = (Net)netsComboBox.getSelectedItem();
-				Integer capacity = sys.rw.valueOf(capacityText.getText());
-				StructuredElement elementFrom = (StructuredElement)fromComboBox.getSelectedItem();
-				StructuredElement elementTo = (StructuredElement)toComboBox.getSelectedItem();
-				Integer fromSide = fromSideComboBox.getSelectedIndex();
-				Integer toSide = toSideComboBox.getSelectedIndex();
-				
-			//	Duct d1 = duc.hasDuct(elementFrom, fromSide);
-			//	Duct d2 = duc.hasDuct(elementTo, toSide);
-				
-				if (elementFrom.getId().equals(elementTo.getId())) { newError(iFrame, "Выберите разные элементы От и До!"); return; }
-
-				if (duct != null) {
-					
-			//		if (d1 != null && !duct.getId().equals(d1.getId())) { newError(iFrame, "К элементу От " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
-			//		if (d2 != null && !duct.getId().equals(d2.getId())) { newError(iFrame, "К элементу До " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
-					
-				/*	
-					Cabinet b = cbc.elementInNet(cabinetNumber, selectedNet.getId());
-					if (b != null && !cabinet.getId().equals(b.getId())) {newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети"); return;}
-				*/	
-					String old = duct.toString();
-					duct
-						.setFromSide(fromSide)
-						.setToSide(toSide)
-						.setLenght(sys.rw.valueOf(ductLenght.getText()))
-						.setTubeDiametr(sys.rw.valueOf(tubeDiametr.getText()))
-						.setDate(ductDate.getText())
-						.setTubeMaterial(tubeMaterual.getText())
-						.setМanufacturingМethod(manufacturingМethod.getText())
-						.setFrom(elementFrom.getId())
-						.setTo(elementTo.getId());
-					sys.rw.addLogMessage("Участок канализации изменен: " + old + " => " + duct.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-				/*	
-					if (cbc.elementInNet(cabinetNumber, selectedNet.getId()) != null) {
-						newError(iFrame, "Шкаф с номером "+cabinetNumber+" уже сущесвует в этой сети");
-						return;
-					}
-				*/	
-				//	if (d1 != null) { newError(iFrame, "К элементу От  " + elementFrom.toString() + " с выбранной стороны уже примыкает участок канализации " + d1.toString()); return; }
-				//	if (d2 != null) { newError(iFrame, "К элементу До  " + elementTo.toString() + " с выбранной стороны уже примыкает участок канализации " + d2.toString()); return; }
-					
-					Duct newDuct = new Duct(sys.dfc, sys.cbc, sys.mc, sys.buc); 
-					newDuct
-						.setFromSide(fromSide)
-						.setToSide(toSide)
-						.setLenght(sys.rw.valueOf(ductLenght.getText()))
-						.setTubeDiametr(sys.rw.valueOf(tubeDiametr.getText()))
-						.setDate(ductDate.getText())
-						.setTubeMaterial(tubeMaterual.getText())
-						.setМanufacturingМethod(manufacturingМethod.getText())
-						.setFrom(elementFrom.getId())
-						.setTo(elementTo.getId())
-						//.attachToNet(selectedNet);
-						.attachToNet((Net)sys.nc.getOnlyElement());
-					sys.duc.addElement(newDuct);
-					String mes = "Создан участок канализации: "+ newDuct.toString()+ ", добавлен в сеть: "+ sys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
-					sys.rw.addLogMessage(mes);
-					
-					for (int i = 0; i < capacity; i++) {
-						Tube tube = new Tube();
-						tube.setNumber(i);
-						tube.setDuct(newDuct);
-						sys.tuc.addElement(tube);
-						sys.rw.addLogMessage("Создан канал №" + tube.getNumber().toString() + "в канализации " + newDuct.toString());
-					}
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();			
-			}
-		});
-		
-		newMoreButton(iFrame, iFrameMinWidth, iFrameMaxWidth, iFrameMinHeight, iFrameMaxHeight, 320, 340, 60, 25);
-
-		iFrame.setVisible(true);
-				
-	}
-
-	/**
 	 * Создает и выводит на экран форму поиска абонента
 	 * @param netId - id сети
 	 * @return выбранного среди найденых абонента или null, если ничего не выбрано
@@ -932,76 +688,6 @@ public class gui {
 		final FormPairPaths form = new FormPairPaths(sys,p);
 		return form;
 		
-	}
-	/**
-	 * Создает и выводит на экран форму создания/редактирования повреждения
-	 * @param damage - повреждение для редактирования, если null - отображается форма создания нового повреждения
-	 * @return повреждение
-	 */
-	public Damage formDamage(final Damage damage) {
-		final Vector<Damage> v = new Vector<Damage>(); v.add(null);
-		
-		final JDialog iFrame = newDialog("Создать повреждение", 410, 445);
-		
-		newLabel("Дата обнаружения (ДД.ММ.ГГГГ):", iFrame,  20, 15, 360, 25);
-		final JTextField openDate = newTextField(iFrame, 20, 40, 360, 25);
-		
-		newLabel("Дата устранения (ДД.ММ.ГГГГ):", iFrame, 20, 75, 360, 14);
-		final JTextField closeDate = newTextField(iFrame, 20, 100, 360, 25);
-		
-		newLabel("Характер повреждения (до 300 символов):", iFrame, 20, 135, 360, 14);
-		final JTextArea name = newTextArea(iFrame, 20, 160, 360, 75);
-		name.setEditable(true);
-		
-		newLabel("Работы по устранению (до 300 символов):", iFrame, 20, 250, 360, 14);
-		final JTextArea description = newTextArea(iFrame, 20, 275, 360, 75);
-		description.setEditable(true);
-		
-		if (damage != null){ 
-			iFrame.setTitle("Редактировать повреждение");
-			openDate.setText(damage.getOpenDate());
-			closeDate.setText(damage.getCloseDate());
-			name.setText(damage.getName());
-			description.setText(damage.getDescription());
-		}
-		
-		JButton saveButton = newButton("Сохранить", iFrame, 20, 370, 110, 25);
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				if (!sys.v.validateDate(openDate.getText())) { newError(iFrame, "Неверный формат даты обнаружения!");return;}
-				if (!sys.v.validateDate(closeDate.getText())) { newError(iFrame, "Неверный формат даты устранения!");return;}	
-				if (!sys.v.validateLongParametr(name.getText())) { newError(iFrame, "Неверный формат характера повреждения!");return;}
-				if (!sys.v.validateLongParametr(description.getText())) { newError(iFrame, "Неверный формат описания повреждения!");return;}
-				
-				if (damage != null) {
-					
-					damage.setName(name.getText());
-					damage.setOpenDate(openDate.getText());
-					damage.setCloseDate(closeDate.getText());
-					damage.setDescription(description.getText());
-					v.set(0, damage);
-					sys.rw.addLogMessage("Повреждение изменено:"  + damage.toString());
-					newInfo(iFrame, "Изменения сохранены");
-				}
-				else {
-					Damage newDamage = new Damage(); 
-					newDamage.setName(name.getText());
-					newDamage.setOpenDate(openDate.getText());
-					newDamage.setCloseDate(closeDate.getText());
-					newDamage.setDescription(description.getText());
-					sys.dmc.addElement(newDamage);
-					v.set(0, newDamage);
-					String mes = "Создано повреждение: "+ newDamage.toString();
-					sys.rw.addLogMessage(mes);
-					newInfo(iFrame, mes);
-				}
-				iFrame.dispose();
-			}
-		});
-		iFrame.setVisible(true);
-		
-		return v.get(0);
 	}
 	/**
 	 * Создает и выводит на экран форму создания набора участков канализации
@@ -1075,86 +761,6 @@ public class gui {
 		
 		iFrame.setVisible(true);
 		return d;
-	}
-	
-	public JDialog tableDamageList(Collection<Damage> damageCollection, final AbstractElement owner) {
-		
-		final JDialog iFrame = newDialog("Список повреждений", 685, 600);
-		iFrame.setResizable(true);
-		
-		final JTable damageTable = newTable(iFrame, 10, 10, 520, 560);
-		final DefaultTableModel tableModel = (DefaultTableModel) damageTable.getModel();
-		tableModel.setColumnIdentifiers(new String[]{"Характер повреждения","Дата устранения","Дата обнаружения"});
-		
-		
-		JButton editButton = newButton("Редактировать", iFrame, 540, 10, 125, 26);
-		
-		JButton createButton = newButton("Добавить", iFrame, 540, 80, 125, 26);
-		JButton deleteButton = newButton("Удалить", iFrame, 540, 120, 125, 26);
-		
-		Iterator<Damage> i = damageCollection.iterator();
-		while (i.hasNext()) {
-			addDamageToTable(damageTable, i.next());
-		}
-		/*
-		 * Событие кнопки редактирования повреждения
-		 */
-		ActionListener editDamage = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				if (damageTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Повреждение не выбрано!"); return; }
-				int selectedIndex = damageTable.getRowSorter().convertRowIndexToModel(damageTable.getSelectionModel().getMinSelectionIndex());
-				Damage damage = (Damage)tableModel.getValueAt(selectedIndex, 0);
-				formDamage(damage);
-				updateDamageInTable(damageTable, damage, selectedIndex);
-			}
-		};
-		editButton.addActionListener(editDamage);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		/*
-		 * Событие кнопки создания повреждения
-		 */
-		ActionListener createCable = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Damage damage = formDamage(null);
-				if (damage != null) {
-					damage.attachTo(owner);
-					addDamageToTable(damageTable, damage);
-				}
-			}
-		};
-		createButton.addActionListener(createCable);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		/*
-		 * Событие кнопки удаления повреждения
-		 */
-		ActionListener deleteDamage = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				if (damageTable.getSelectionModel().isSelectionEmpty()){ newError(iFrame, "Повреждение не выбрано!"); return; }
-				int selectedIndex = damageTable.getRowSorter().convertRowIndexToModel(damageTable.getSelectionModel().getMinSelectionIndex());
-				Damage damage = (Damage)tableModel.getValueAt( selectedIndex, 0);
-				
-				int n = newDialog(iFrame, "Удалить повреждение: " + damage.toString()+" ?");
-				if (n == JOptionPane.YES_OPTION) {
-					sys.dmc.removeElement(damage);
-					String mes = "Повреждение " + damage.toString() + " удалено";
-					sys.rw.addLogMessage(mes);
-					((DefaultTableModel) damageTable.getModel()).removeRow(selectedIndex);
-					newInfo(iFrame, mes);
-				}	
-			}
-		};
-		deleteButton.addActionListener(deleteDamage);
-		/*
-		 * ---------------------------------------------------------
-		 */
-		iFrame.setVisible(true);
-		return iFrame;
 	}
 	/**
 	 * Отображает паспорт элемента в браузере

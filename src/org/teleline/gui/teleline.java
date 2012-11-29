@@ -808,7 +808,7 @@ public class teleline {
 		menuCreate.add(menuItem_10);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Канализацию");
-		mntmNewMenuItem_4.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { GUI.formDuct(null);}});
+		mntmNewMenuItem_4.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { new FormDuct(sys, null);}});
 		menuCreate.add(mntmNewMenuItem_4);
 		
 		JMenuItem menuItem_19 = new JMenuItem("Здание");
@@ -963,6 +963,18 @@ public class teleline {
 				new FormCabinets(sys,sys.cbc.getElements());	
 			}
 		});
+		/**
+		 * Редактирование элементов "КРТ"
+		 */
+		JMenuItem editDBoxMenuItem = new JMenuItem("Распределительную коробку (КРТ)");
+		menuChange.add(editDBoxMenuItem);
+		editDBoxMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				new FormDBoxes(sys, sys.dbc.getElements());	
+			}
+		});
+		
 		JSeparator separator_5 = new JSeparator();
 		menuChange.add(separator_5);
 		/**
@@ -1543,7 +1555,7 @@ public class teleline {
 				editDuctButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						GUI.formDuct((Duct)ductList.getSelectedValue());
+						new FormDuct(sys,(Duct)ductList.getSelectedValue());
 				//		GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
 					}
 				});
@@ -1569,7 +1581,7 @@ public class teleline {
 				ActionListener createCable = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						GUI.formDuct(null);
+						new FormDuct(sys, null);
 					//	GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));
 					}
 				};
@@ -1706,10 +1718,9 @@ public class teleline {
 		JMenu mnNewMenu_2 = new JMenu("Отчеты");
 		menuBar.add(mnNewMenu_2);
 		
-		JMenuItem menuItem_fullDBoxesList = new JMenuItem("Полный список КРТ");
+		JMenuItem menuItem_fullDBoxesList = new JMenuItem("Статистика");
 		menuItem_fullDBoxesList.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {
 			
-			new FormDBoxes(sys, sys.dbc.getElements());
 			}});
 		mnNewMenu_2.add(menuItem_fullDBoxesList);			
 	}

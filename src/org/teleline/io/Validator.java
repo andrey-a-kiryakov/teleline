@@ -96,4 +96,6 @@ public class Validator {
 	 * Проверяет дату
 	 */
 	public boolean validateDate(String s) { return Pattern.compile("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{4}$|^$").matcher(s).matches(); }
+	public boolean validateDateRequired(String s) { return Pattern.compile("^[0-3][0-9]\\.[0-1][0-9]\\.[0-9]{4}$").matcher(s).matches(); }
+	
 }
