@@ -1718,9 +1718,9 @@ public class teleline {
 		JMenu mnNewMenu_2 = new JMenu("Отчеты");
 		menuBar.add(mnNewMenu_2);
 		
-		JMenuItem menuItem_fullDBoxesList = new JMenuItem("Статистика");
+		JMenuItem menuItem_fullDBoxesList = new JMenuItem("Общая статистика");
 		menuItem_fullDBoxesList.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {
-			
+			new FormStatisticCommon(sys);
 			}});
 		mnNewMenu_2.add(menuItem_fullDBoxesList);			
 	}
