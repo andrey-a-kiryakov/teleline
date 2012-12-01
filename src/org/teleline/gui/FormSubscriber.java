@@ -20,15 +20,15 @@ public class FormSubscriber extends Form {
 
 	public FormSubscriber(final Sys iSys, final Subscriber sub) {
 		super(iSys);
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 280, iFrameMaxHeight = 280;
+		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 220, iFrameMaxHeight = 280;
 		
 		createDialog("Создать абонента", iFrameMinWidth, iFrameMinHeight);
 		
-		addLabel("Имя абонента (1-50 символов):", 20, 75, 360, 25);
-		final JTextField name = addTextField(20, 100, 360, 25);
+		addLabel("Имя абонента (1-50 символов):", 20, 15, 360, 25);
+		final JTextField name = addTextField(20, 40, 360, 25);
 		
-		addLabel("Телефонный номер (3-7 цифр):", 20, 135, 360, 25);
-		final JTextField phoneNumber = addTextField(20, 160, 360, 25);
+		addLabel("Телефонный номер (3-7 цифр):", 20, 75, 360, 25);
+		final JTextField phoneNumber = addTextField(20, 100, 360, 25);
 
 		/*
 		 * Дополнительные параметры абонента
@@ -53,7 +53,7 @@ public class FormSubscriber extends Form {
 		/*
 		 * ------------------------------
 		 */
-        JButton saveButton = addButton("Сохранить", 20, 200, 110, 25);
+        JButton saveButton = addButton("Сохранить", 20, 140, 110, 25);
         saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Net selectedNet = (Net)iSys.nc.getOnlyElement();
@@ -106,7 +106,7 @@ public class FormSubscriber extends Form {
 				iFrame.dispose();
 			}
 		});
-		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 200, 60, 25);
+		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 140, 60, 25);
 		iFrame.setVisible(true);
 	}
 }

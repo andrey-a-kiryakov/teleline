@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -382,7 +381,6 @@ public class gui {
             	
             }
         };
-     //   NetsComboBox.addActionListener(actionListener);
         FromComboBox.addActionListener(actionListener);
         ToComboBox.addActionListener(actionListener);
         
@@ -1066,122 +1064,6 @@ public class gui {
 	
 		iFrame.setVisible(true);
 	}
-
-	
-	public void viewCable(final Cable element, final Integer netId, final JTextField textFieldForSelectResult) {
-		
-		//final Vector<Pair>  returnedPair = new Vector<Pair>(); returnedPair.add(null);
-		
-		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
-		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
-		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
-		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
-		
-		final JDialog iFrame = newDialog("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 100);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(element.toString());
-		panel.setBackground(new Color(200, 200, 200));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
-		
-		final JTextArea infoArea = newTextArea(iFrame, 20, 40 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = newLabel(element.toShortString(), iFrame, 20, 10, panelWidth, 30);
-		head.setFont(new Font("Dialog", Font.BOLD, 16));
-		head.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		/*
-		 * Событие нажатие на кнопку пары
-		 */
-		ActionListener pairClick = new ActionListener() { 
-			public void actionPerformed(ActionEvent e) {
-				Pair p = (Pair)((ElementView)e.getSource()).getElement();
-				viewPairInfo(p, infoArea);
-		}};
-		/*
-		 * --------------------------------
-		 */
-		/*
-		 * Событие нажатия на кнопку пустого места
-		 */
-		ActionListener placeClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (textFieldForSelectResult != null) {
-					Pair p = (Pair)((ElementView)e.getSource()).getElement();
-					//returnedPair.set(0, p);
-					textFieldForSelectResult.setText(p.getFromNumber().toString());
-					iFrame.dispose();
-				}
-			}};
-		/*
-		 * ---------------------------------
-		 */
-		//хеш всех созданых кнопок для пар
-		HashMap<Pair, ElementView> elementViewHash = new HashMap<Pair, ElementView>();
-		JPopupMenu popupMenu = popupMenuForPair(iFrame, netId, elementViewHash);
-		
-		for (int ln = 0; ln < inLine; ln++) {
-			JLabel l = new JLabel(((Integer)ln).toString());
-			l.setFont(new Font("Dialog", Font.BOLD, 10));
-			if (ln > 4) {
-				l.setBounds(groupDevision + labelPlaceLeft + marginX + ln*(W + marginX), marginY, W, H);
-			}
-			else {
-				l.setBounds(labelPlaceLeft + marginX + ln*(W + marginX), marginY, 20, H);
-			}
-			l.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(l);
-		}
-		
-		int x = 0, y = 0;
-		for (int place = 0; place < element.getCapacity(); place++) {
-			
-			if ( x > inLine - 1)  { x = 0; y++; }
-			
-				if (x == 0) {
-					JLabel l = new JLabel(((Integer)place).toString());
-					l.setFont(new Font("Dialog", Font.BOLD, 10));
-					l.setBounds(marginX, labelPlaceTop + marginY + y*(H + marginY), 30, H);
-					l.setHorizontalAlignment(SwingConstants.RIGHT);
-					panel.add(l);
-				}
-				ElementView button = new ElementView();
-				if (x > 4) {
-					button.setBounds(groupDevision + labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				else {
-					button.setBounds(labelPlaceLeft + marginX + x*(W + marginX), labelPlaceTop + marginY + y*(H + marginY), W, H);
-				}
-				panel.add(button);
-				Pair pairForEmptyPlace = new Pair(sys.fc,sys.bc,sys.dbc,sys.cc);
-				pairForEmptyPlace.setFromNumber(place);
-				button.setElement(pairForEmptyPlace);
-			
-				Pair pair = sys.pc.getInPlace((Cable)element, (Integer)place);
-				
-				if (pair != null) {
-					button.setToolTipText("Пара: "+ pair.toString());
-					button.setElement(pair);
-					if (pair.getStatus() == 0) button.setBackground(new Color(0, 200, 0));
-					if (pair.getStatus() == 1) button.setBackground(new Color(0, 0, 200));
-					if (pair.getStatus() == 2) button.setBackground(new Color(250, 0, 0));
-					button.addActionListener(pairClick);
-					addPopupToPair(button, popupMenu);
-					elementViewHash.put(pair, button);
-				}
-				else {
-					button.setBackground(new Color(230, 230, 230));
-					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
-					button.addActionListener(placeClick);
-				}
-
-			x++;
-			
-		}
-	
-		iFrame.setVisible(true);
-	//	return returnedPair.get(0);
-	}
 	
 	/**
 	 * Выводит подробные данные о паре
@@ -1246,179 +1128,6 @@ public class gui {
 		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)sys.cc.getElement(i.next())).toLongString()+"\r\n");
 	}
 	
-	/**
-	 * Всплывающее меню для пары
-	 * @param iFrame - окно
-	 * @param netId - id сети
-	 * @param elementViewHash - хеш всех созданых кнопок для пар
-	 * @return JPopupMenu объект всплывающего меню
-	 */
-	private JPopupMenu popupMenuForPair (final JDialog iFrame, final Integer netId, final HashMap<Pair, ElementView> elementViewHash){
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-
-		JMenuItem menuItem = new JMenuItem("Закрепить за абонентом");
-		popupMenu.add(menuItem);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				final ElementView ep = (ElementView)pm.getInvoker();
-				final Pair p = (Pair) ep.getElement();
-				final FormSubscriberSearch form = formSearchSubscriber();
-				
-				ActionListener selectSubscriber = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (form.subscriberList.getSelectedIndex() == -1) {newError(form.iFrame,"Абонент не выбран!"); return;}
-						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
-						
-						final FormSubscriberPaths formPath = new FormSubscriberPaths(sys,sub);
-						
-						ActionListener selectPath = new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								if (formPath.pathList.getSelectedIndex() == -1) {newError(formPath.iFrame,"Включение не выбрано!"); return;}
-								Path path = (Path)formPath.pathList.getSelectedValue();
-								
-								Pair oldPair = addPairToPath(path,p,iFrame);
-								setPairButtonColor(p, ep);
-								if (oldPair != null) {
-									ElementView oldPairButton = elementViewHash.get(oldPair);
-									if (oldPairButton != null)
-										setPairButtonColor(oldPair, oldPairButton);
-								}
-								formPath.iFrame.dispose();	
-							}
-						};
-						formPath.okButton.addActionListener(selectPath);
-	
-						form.iFrame.dispose();	
-					}
-				};
-				form.okButton.addActionListener(selectSubscriber);
-			}
-		});
-		
-		JMenuItem menuItem_1 = new JMenuItem("Отметить как поврежденная");
-		popupMenu.add(menuItem_1);
-		menuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Pair p = (Pair) ep.getElement();
-				p.setStatus(2);
-				sys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на поврежденная");
-				setPairButtonColor(p, ep);
-			}
-		});
-		
-		JMenuItem menuItem_2 = new JMenuItem("Отметить как исправная");
-		popupMenu.add(menuItem_2);
-		menuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Pair p = (Pair) ep.getElement();
-				p.setStatus(0);
-				sys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на исправная");
-				setPairButtonColor(p, ep);
-				
-			}
-		});
-				
-		JMenuItem menuItem_3 = new JMenuItem("Освободить");
-		popupMenu.add(menuItem_3);
-		menuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				final ElementView ep = (ElementView)pm.getInvoker();
-				final Pair p = (Pair) ep.getElement();
-				final FormPairPaths form =  formPairPaths(p);
-				
-				ActionListener selectPath = new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					if (form.pathList.getSelectedIndex() == -1) {newError(iFrame,"Включение не выбрано!"); return;}
-					Path path = (Path)form.pathList.getSelectedValue();
-					
-					if (path.removePair(p)) {
-						sys.rw.addLogMessage("Пара "+ p.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sys.sc.getElement(path.getSubscriber()).toString());
-
-						if (sys.phc.isPairUsed(p) == null)  {
-							p.setStatus(0);
-							sys.rw.addLogMessage("Пара "+ p.toString()+" освобождена ");
-							setPairButtonColor(p, ep);
-						}
-					}				
-					form.iFrame.dispose();	
-					}
-				};
-				form.okButton.addActionListener(selectPath);			
-			}
-		});
-		
-		JMenuItem menuItem_4 = new JMenuItem("Карточка абонента");
-		popupMenu.add(menuItem_4);
-		menuItem_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				Pair p = (Pair) ep.getElement();
-				final FormPairSubscribers form = new FormPairSubscribers(sys, p);
-				
-				ActionListener selectSubscriber = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (form.subscriberList.getSelectedIndex() == -1) {newError(iFrame,"Абонент не выбран!"); return;}
-						Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
-						if (sub != null) formViewPassport(sys.rw.createSubscriberPassport(sub));
-						form.iFrame.dispose();	
-					}
-				};
-				form.okButton.addActionListener(selectSubscriber);
-			}
-		});
-		
-		return popupMenu;
-		
-	}
-	
-	private static void addPopupToPair(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-				//popup.setElement((ElementView)e.getSource());
-				Pair p = (Pair)((ElementView)popup.getInvoker()).getElement();
-				((JMenuItem)popup.getSubElements()[0]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[1]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[2]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[3]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[4]).setEnabled(false);
-				
-				if (p.getStatus() == 0) {
-					((JMenuItem)popup.getSubElements()[0]).setEnabled(true);
-					((JMenuItem)popup.getSubElements()[1]).setEnabled(true);
-				}
-				if (p.getStatus() == 1) {
-					((JMenuItem)popup.getSubElements()[0]).setEnabled(true);
-					((JMenuItem)popup.getSubElements()[3]).setEnabled(true);
-					((JMenuItem)popup.getSubElements()[4]).setEnabled(true);
-				}
-				if (p.getStatus() == 2) {
-					((JMenuItem)popup.getSubElements()[2]).setEnabled(true);
-					
-				}
-				
-			}
-		});
-	}
-	
 	private static void addPopupToConnectedPointElement(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -1446,17 +1155,6 @@ public class gui {
 				}
 			}
 		});
-	}
-	/**
-	 * Устанавливает цвет графического элемента пары
-	 * @param pair - пара
-	 * @param button - графический элемент
-	 */
-	private void setPairButtonColor (Pair pair, ElementView button) {
-		
-		if (pair.getStatus() == 0) { button.setBackground((new Color(0,200,0))); return; }
-		if (pair.getStatus() == 1) { button.setBackground((new Color(0,0,200))); return; }
-		if (pair.getStatus() == 2) { button.setBackground((new Color(250,0,0))); return; }
 	}
 	
 }

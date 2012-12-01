@@ -37,9 +37,11 @@ import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
 import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
+import org.teleline.model.DFramе;
 import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.Path;
+import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Sys;
 import org.teleline.model.Tube;
@@ -170,6 +172,95 @@ public abstract class Form {
 		
 		return textArea;
 	}
+	
+	public JComboBox frameComboBox(JComboBox OwnersComboBox, int x, int y, int w, int h){
+		
+		JComboBox comboBox = new JComboBox();
+		
+		if (OwnersComboBox.getSelectedIndex() > -1) {
+			util_setComboBoxItems(comboBox, iSys.fc.getInOwner(((DFramе)OwnersComboBox.getSelectedItem()).getId()));
+		}
+		comboBox.setBounds(x, y, w, h);
+		iFrame.getContentPane().add(comboBox);
+		
+		return comboBox;
+	}
+	
+	public JComboBox cableComboBox(JComboBox FromComboBox, JComboBox ToComboBox, Integer Type, int x, int y, int w, int h){
+		
+		JComboBox comboBox = new JComboBox();
+		if (Type < 2) {
+			if (FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
+				util_setComboBoxItems(comboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));
+			}
+		}
+		
+		if (Type >= 2) {
+			if (FromComboBox.getSelectedIndex() > -1) {
+				util_setComboBoxItems(comboBox, iSys.cc.sortByIdUp(iSys.cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
+			}
+		}
+		
+		comboBox.setBounds(x, y, w, h);
+		iFrame.getContentPane().add(comboBox);
+		
+		return comboBox;
+	}
+	/**
+	 * Связывает выпадающий список кроссов с выпадающим списком громполос
+	 * @param dframeComboBox - список кроссов
+	 * @param LinkedComboBox - список громполос
+	 */
+	public void dframeComboBoxLinked(final JComboBox dframeComboBox, final JComboBox LinkedComboBox) {
+		
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	
+            	LinkedComboBox.removeAllItems();
+            	if (dframeComboBox.getSelectedIndex() > -1)
+            	util_setComboBoxItems(LinkedComboBox, iSys.fc.sortByIdUp(iSys.fc.getInOwner(((DFramе)dframeComboBox.getSelectedItem()).getId())));
+            
+            }
+        };
+       
+        LinkedComboBox.removeAllItems();
+    	if (dframeComboBox.getSelectedIndex() > -1)
+    	util_setComboBoxItems(LinkedComboBox, iSys.fc.sortByIdUp(iSys.fc.getInOwner(((DFramе)dframeComboBox.getSelectedItem()).getId())));
+        
+    	dframeComboBox.addActionListener(actionListener);
+        
+	}
+	/**
+	 * Связывает выпадающий список сетей и родителей с выпадающим списком кабелей. 
+	 * Кабели сортируются по id. 
+	 * @param NetsComboBox - выпадающий список сетей
+	 * @param LinkedComboBox - связанный выпадающий список
+	 * @param Type - тип кабелей
+	 */
+	public void netsCableComboLinked(final Integer netId/*final JComboBox NetsComboBox*/, final JComboBox FromComboBox, final JComboBox ToComboBox, final JComboBox LinkedComboBox, final Integer Type) {
+		
+		ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	LinkedComboBox.removeAllItems();
+            	if (Type < 2)
+            		if (netId > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
+            			
+            			util_setComboBoxItems(LinkedComboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));               
+            		}
+            	
+            	if (Type >= 2) {
+        			if (netId > -1 && FromComboBox.getSelectedIndex() > -1) {
+        				util_setComboBoxItems(LinkedComboBox, iSys.cc.sortByIdUp(iSys.cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
+        			}
+        		}
+            	
+            }
+        };
+        FromComboBox.addActionListener(actionListener);
+        ToComboBox.addActionListener(actionListener);
+        
+	}
+
 	
 	@SuppressWarnings("serial")
 	public JTable addTable(int x, int y, int w, int h) {

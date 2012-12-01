@@ -383,6 +383,10 @@ public class FormSubscribers extends Form {
 		v.add(subscriber.getAdress());
 		((DefaultTableModel) subscriberList.getModel()).addRow(v);
 	}
+	/**
+	 * Добавляет пару в таблицу отображения пар
+	 * @param pair - пара
+	 */
 	private void addPairToTable(Pair pair) {
 		
 		Vector<AbstractElement> b = pair.getOwners();
