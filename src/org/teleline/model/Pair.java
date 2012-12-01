@@ -1,5 +1,7 @@
 package org.teleline.model;
 
+import java.util.Vector;
+
 /**
 *Класс элементов "Pair" (Кабельная пара)
 *
@@ -132,9 +134,41 @@ public class Pair extends AbstractElement {
 		this.status = Status;
 		return this;
 	}
+	/**
+	 * Возвращает статус пары
+	 */
 	public Integer getStatus() {
 		return this.status;
 	}		
+	/**
+	 * Возвращает вектор из 2 элементов(ГП,бокс,коробка): откуда и куда приходит пара
+	 * @return Вектор элементов
+	 */
+	public Vector<AbstractElement> getOwners(){
+		Vector<AbstractElement> v = new Vector<AbstractElement>();
+		Integer type = ((Cable)cc.getElement(this.getCable())).getType();
+		
+		switch (type) {
+		case 0: 
+			v.add(fc.getElement(this.getElementFrom()));
+			v.add(bc.getElement(this.getElementTo()));
+			break;
+		case 1: 
+			v.add(bc.getElement(this.getElementFrom()));
+			v.add(bc.getElement(this.getElementTo())); 
+			break;
+		case 2: 
+			v.add(bc.getElement(this.getElementFrom()));
+			v.add(dbc.getElement(this.getElementTo())); 
+			break;
+		case 3: 
+			v.add(fc.getElement(this.getElementFrom()));
+			v.add(dbc.getElement(this.getElementTo())); 
+			break;
+		}
+		
+		return v;
+	}
 	/**
 	 * Строковое представление "Пары"
 	 */

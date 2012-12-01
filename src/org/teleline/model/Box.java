@@ -30,7 +30,7 @@ public class Box extends ConnectedPointElement {
 	}
 	/**
 	 * Возвращает 0 - если элемент громполоса, 1 - бокс
-	 * Перегружается в громполосе и боксе
+	 * Перегружается в громполосе и боксе  и коробке
 	 */
 	public Integer whoIsIt () {
 		return 1;

@@ -80,6 +80,11 @@ public class DBox extends StructuredElement{
 	public String getPlase() {
 		return this.plase;
 	}
+	
+	public Integer whoIsIt () {
+		return 2;
+	}
+	
 	/**
 	 * Строковое представление элемента
 	 */

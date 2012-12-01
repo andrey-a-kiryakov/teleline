@@ -23,6 +23,10 @@ public abstract class AbstractElement {
 		return this.id;
 	}
 	
+	public Integer whoIsIt () {
+		return -1;
+	}
+	
 	public String toString() {
 		return "";
 	}

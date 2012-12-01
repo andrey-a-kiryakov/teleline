@@ -1,6 +1,5 @@
 package org.teleline.gui;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,9 +19,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.JScrollPane;
 
 import org.teleline.model.AbstractElement;
+import org.teleline.model.Box;
+import org.teleline.model.DBox;
+import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.StructuredElement;
@@ -32,6 +33,7 @@ import org.teleline.model.Sys;
 public class FormSubscribers extends Form {
 	
 	public JTable subscriberList;
+	public JTable pairList;
 	
 	public FormSubscribers(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
@@ -72,7 +74,12 @@ public class FormSubscribers extends Form {
 			JButton deletePathButton = addButton("Удалить", 540, 500, 125, 26);
 			
 			addLabel("Занимаемые пары:", 10, 545, 520, 14);
-			final JList pairList = addList(10, 565, 520, 90);
+			//final JList pairList = addList(10, 565, 520, 90);
+			
+			pairList = addTable(10, 565, 520, 90);
+			final DefaultTableModel pairTableModel = (DefaultTableModel) pairList.getModel();
+			pairTableModel.setColumnIdentifiers(new String[]{"Пара", "От","До"});
+			
 			JButton addPairButton = addButton("Добавить", 540, 565, 125, 26);
 			JButton deletePairButton = addButton("Удалить", 540, 595, 125, 26);
 			
@@ -205,8 +212,15 @@ public class FormSubscribers extends Form {
 			 */
 			ListSelectionListener pathSelect = new ListSelectionListener(){
 				public void valueChanged(ListSelectionEvent e) {
-					if (pathList.getSelectedIndex() != -1)
-					util_setListItems(pairList, ((Path)pathList.getSelectedValue()).getUsedPairs());
+					if (pathList.getSelectedIndex() != -1) {
+						util_clearTable(pairList);
+						Iterator<Pair> i = ((Path)pathList.getSelectedValue()).getUsedPairs().iterator();
+						while(i.hasNext()){
+							addPairToTable(i.next());
+						}
+					}
+					
+						//util_setListItems(pairList, ((Path)pathList.getSelectedValue()).getUsedPairs());
 				}
 			};
 			pathList.addListSelectionListener(pathSelect);
@@ -294,7 +308,12 @@ public class FormSubscribers extends Form {
 							
 							if ( addPairToPath(path, (Pair)form.selectedPairList.getSelectedValue()) != null) {
 								form.iFrame.dispose();
-								util_setListItems(pairList, path.getUsedPairs());
+								util_clearTable(pairList);
+								Iterator<Pair> i = path.getUsedPairs().iterator();
+								while(i.hasNext()){
+									addPairToTable(i.next());
+								}
+								//util_setListItems(pairList, path.getUsedPairs());
 							}
 						}
 			        });
@@ -312,9 +331,11 @@ public class FormSubscribers extends Form {
 				public void actionPerformed(ActionEvent arg0) {
 					
 					if (pathList.getSelectedIndex() == -1) { util_newError("Включение не выбрано!"); return; }
-					if (pairList.getSelectedIndex() == -1) { util_newError("Пара не выбрана!"); return; }
+					if (pairList.getSelectionModel().isSelectionEmpty()/*pairList.getSelectedIndex() == -1*/) { util_newError("Пара не выбрана!"); return; }
 					
-					Pair delPair = (Pair)pairList.getSelectedValue();
+					int selectedPairIndex = pairList.getRowSorter().convertRowIndexToModel(pairList.getSelectionModel().getMinSelectionIndex());
+					//Pair delPair = (Pair)pairList.getSelectedValue();
+					Pair delPair = (Pair)pairList.getValueAt(selectedPairIndex, 0);
 					Path path = (Path)pathList.getSelectedValue();
 					
 					if (util_newDialog("Удалить пару: " + delPair.toString() +  " из включения: "+ path.toString()) == JOptionPane.YES_OPTION)
@@ -323,7 +344,10 @@ public class FormSubscribers extends Form {
 						String mes = "Пара:" + delPair.toString()+ ", удалена из включения:" + path.toString();
 						iSys.rw.addLogMessage(mes);
 						util_newInfo(mes);
-						((DefaultListModel)pairList.getModel()).removeElement(delPair);
+						//((DefaultListModel)pairList.getModel()).removeElement(delPair);
+						util_clearTable(pairList);
+						Iterator<Pair> i = path.getUsedPairs().iterator();
+						while(i.hasNext()){ addPairToTable(i.next());}
 						
 						if (iSys.phc.isPairUsed(delPair) == null)  {
 							delPair.setStatus(0);
@@ -358,6 +382,40 @@ public class FormSubscribers extends Form {
 		v.add(subscriber.getPhoneNumber());
 		v.add(subscriber.getAdress());
 		((DefaultTableModel) subscriberList.getModel()).addRow(v);
+	}
+	private void addPairToTable(Pair pair) {
+		
+		Vector<AbstractElement> b = pair.getOwners();
+		Vector<Object> v = new Vector<Object>();
+		v.add(pair);
+		
+		switch (b.get(0).whoIsIt()) {
+		
+			case 0:
+				v.add(iSys.dfc.getElement(((Frame)b.get(0)).getOwnerId()));
+			break;
+			case 1:
+				v.add(iSys.cbc.getElement(((Box)b.get(0)).getOwnerId()));
+			break;
+			case 2:
+				v.add(iSys.buc.getElement(((DBox)b.get(0)).getBuilding()));
+			break;
+		}
+	
+		switch (b.get(1).whoIsIt()) {
+			
+			case 0:
+				v.add(iSys.dfc.getElement(((Frame)b.get(1)).getOwnerId()));
+			break;
+			case 1:
+				v.add(iSys.cbc.getElement(((Box)b.get(1)).getOwnerId()));
+			break;
+			case 2:
+				v.add(iSys.buc.getElement(((DBox)b.get(1)).getBuilding()));
+			break;
+		}
+		
+		((DefaultTableModel) pairList.getModel()).addRow(v);
 	}
 
 	/**
