@@ -186,12 +186,12 @@ public abstract class Form {
 		return comboBox;
 	}
 	
-	public JComboBox cableComboBox(JComboBox FromComboBox, JComboBox ToComboBox, Integer Type, int x, int y, int w, int h){
+	public JComboBox cableComboBox(JComboBox FromComboBox, StructuredElement toElement, Integer Type, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
 		if (Type < 2) {
-			if (FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
-				util_setComboBoxItems(comboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));
+			if (FromComboBox.getSelectedIndex() > -1 && toElement != null) {
+				util_setComboBoxItems(comboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), toElement.getId())));
 			}
 		}
 		
@@ -231,33 +231,32 @@ public abstract class Form {
         
 	}
 	/**
-	 * Связывает выпадающий список сетей и родителей с выпадающим списком кабелей. 
+	 * Заполняет выпадающий список кабелей элементами. 
 	 * Кабели сортируются по id. 
-	 * @param NetsComboBox - выпадающий список сетей
-	 * @param LinkedComboBox - связанный выпадающий список
+	 * @param cableComboBox - выпадающий список кабелей
 	 * @param Type - тип кабелей
 	 */
-	public void netsCableComboLinked(final Integer netId/*final JComboBox NetsComboBox*/, final JComboBox FromComboBox, final JComboBox ToComboBox, final JComboBox LinkedComboBox, final Integer Type) {
+	public void setCableComboBoxItems(final StructuredElement fromElement, final StructuredElement toElement, final JComboBox cableComboBox, final Integer Type) {
 		
-		ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	LinkedComboBox.removeAllItems();
+		//ActionListener actionListener = new ActionListener() {
+         //   public void actionPerformed(ActionEvent e) {
+            	cableComboBox.removeAllItems();
             	if (Type < 2)
-            		if (netId > -1 && FromComboBox.getSelectedIndex() > -1 && ToComboBox.getSelectedIndex() > -1) {
+            		if (fromElement != null && toElement != null) {
             			
-            			util_setComboBoxItems(LinkedComboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, ((StructuredElement)FromComboBox.getSelectedItem()).getId(), ((StructuredElement)ToComboBox.getSelectedItem()).getId())));               
+            			util_setComboBoxItems(cableComboBox, iSys.cc.sortByIdUp(iSys.cc.getInOwners(Type, fromElement.getId(), toElement.getId())));               
             		}
             	
             	if (Type >= 2) {
-        			if (netId > -1 && FromComboBox.getSelectedIndex() > -1) {
-        				util_setComboBoxItems(LinkedComboBox, iSys.cc.sortByIdUp(iSys.cc.getDCableOut((StructuredElement)FromComboBox.getSelectedItem())));
+        			if (fromElement != null) {
+        				util_setComboBoxItems(cableComboBox, iSys.cc.sortByIdUp(iSys.cc.getDCableOut(fromElement)));
         			}
         		}
             	
-            }
-        };
-        FromComboBox.addActionListener(actionListener);
-        ToComboBox.addActionListener(actionListener);
+           // }
+        //};
+       // FromComboBox.addActionListener(actionListener);
+        //toElement.addActionListener(actionListener);
         
 	}
 
