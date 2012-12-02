@@ -19,7 +19,7 @@ import org.teleline.model.Sys;
 
 public class FormViewCable extends Form {
 
-	public FormViewCable(Sys iSys, final Cable element, final Integer netId, final JTextField textFieldForSelectResult) {
+	public FormViewCable(Sys iSys, final Cable element, final JTextField textFieldForSelectResult) {
 		super(iSys);
 		
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;

@@ -35,6 +35,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
+import org.teleline.model.Cabinet;
 import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DFramе;
@@ -186,6 +187,18 @@ public abstract class Form {
 		return comboBox;
 	}
 	
+	public JComboBox boxComboBox(JComboBox OwnersComboBox, Integer Type,int x, int y, int w, int h){
+		
+		JComboBox comboBox = new JComboBox();
+		if (OwnersComboBox.getSelectedIndex() > -1) {
+			util_setComboBoxItems(comboBox, iSys.bc.getInOwnerByTypeUniversal(((Cabinet)OwnersComboBox.getSelectedItem()).getId(), Type));
+		}
+		comboBox.setBounds(x, y, w, h);
+		iFrame.getContentPane().add(comboBox);
+		
+		return comboBox;
+	}
+	
 	public JComboBox cableComboBox(JComboBox FromComboBox, StructuredElement toElement, Integer Type, int x, int y, int w, int h){
 		
 		JComboBox comboBox = new JComboBox();
@@ -228,6 +241,30 @@ public abstract class Form {
     	util_setComboBoxItems(LinkedComboBox, iSys.fc.sortByIdUp(iSys.fc.getInOwner(((DFramе)dframeComboBox.getSelectedItem()).getId())));
         
     	dframeComboBox.addActionListener(actionListener);
+        
+	}
+	/**
+	 * Связывает список шкафов с выпадающим списком боксов
+	 * @param cabinetComboBox - список шкафов
+	 * @param LinkedComboBox - список боксов
+	 * @param Type - тип отображаемых боксов
+	 */
+	public void cabinetComboBoxLinked(final JComboBox cabinetComboBox, final JComboBox LinkedComboBox, final Integer Type) {
+		
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	
+            	LinkedComboBox.removeAllItems();
+            	if (cabinetComboBox.getSelectedIndex() > -1)
+            		util_setComboBoxItems(LinkedComboBox, iSys.bc.sortByIdUp(iSys.bc.getInOwnerByTypeUniversal(((Cabinet)cabinetComboBox.getSelectedItem()).getId(), Type)));
+            }
+        };
+        
+        LinkedComboBox.removeAllItems();
+        if (cabinetComboBox.getSelectedIndex() > -1)
+        	util_setComboBoxItems(LinkedComboBox, iSys.bc.sortByIdUp(iSys.bc.getInOwnerByTypeUniversal(((Cabinet)cabinetComboBox.getSelectedItem()).getId(), Type)));
+    	
+    	cabinetComboBox.addActionListener(actionListener);
         
 	}
 	/**

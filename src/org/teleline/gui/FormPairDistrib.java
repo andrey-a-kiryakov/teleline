@@ -7,28 +7,27 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import org.teleline.model.Box;
+import org.teleline.model.Cabinet;
 import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DBox;
-import org.teleline.model.DFramе;
-import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Sys;
 import org.teleline.model.Wrapper;
 
-public class FormPairDirect extends Form {
+public class FormPairDistrib extends Form {
 
-	public FormPairDirect(final Sys iSys) {
+	public FormPairDistrib(final Sys iSys) {
 		super(iSys);
-		
-		createDialog("Создать пары прямого питания", 410, 450);
+		createDialog("Создать распределительные пары", 410, 450);
 			
-			addLabel("От кросса/громполосы:", 20, 15, 360, 25);
-			final JComboBox dframeComboBox = addComboBox(20, 40, 360, 25);
-			util_setComboBoxItems(dframeComboBox, iSys.dfc.sortByIdUp(iSys.dfc.getElements()));
-			final JComboBox frameComboBox = frameComboBox(dframeComboBox, 20, 75, 360, 25);
-			dframeComboBoxLinked(dframeComboBox, frameComboBox);
+			addLabel("От шкафа/бокса:", 20, 15, 360, 25);
+			final JComboBox cabinetComboBox = addComboBox(20, 40, 360, 25);
+			util_setComboBoxItems(cabinetComboBox, iSys.cbc.sortByIdUp(iSys.cbc.getElements()));
+			final JComboBox boxComboBox = boxComboBox(cabinetComboBox, 2, 20, 75, 360, 25);
+			cabinetComboBoxLinked(cabinetComboBox, boxComboBox,2);
 			
 			addLabel("До коробки:", 20, 110, 360, 25);
 			final JTextField dboxTo = addTextField(20, 135, 260, 25);
@@ -56,11 +55,11 @@ public class FormPairDirect extends Form {
 			
 			addLabel("Добавить в кабель:", 20, 170, 360, 25);
 			final JComboBox cableComboBox = addComboBox(20, 195, 360, 25);
-			setCableComboBoxItems((StructuredElement)dframeComboBox.getSelectedItem(),(StructuredElement)dboxWrapper.getElement(), cableComboBox, 3);
+			setCableComboBoxItems((StructuredElement)cabinetComboBox.getSelectedItem(),(StructuredElement)dboxWrapper.getElement(), cableComboBox, 2);
 			
-			dframeComboBox.addActionListener(new ActionListener() {
+			cabinetComboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					setCableComboBoxItems((StructuredElement)dframeComboBox.getSelectedItem(),(StructuredElement)dboxWrapper.getElement(), cableComboBox, 3);
+					setCableComboBoxItems((StructuredElement)cabinetComboBox.getSelectedItem(),(StructuredElement)dboxWrapper.getElement(), cableComboBox, 2);
 				}
 			});
 			
@@ -70,17 +69,17 @@ public class FormPairDirect extends Form {
 			comboBox5.addItem((Integer)10);
 			comboBox5.setSelectedIndex(0);
 			
-			addLabel("ГП заполнять с:", 20, 290, 360, 25);
-			final JTextField dframeFrom = addTextField(150, 290, 130, 25);
-			dframeFrom.setText("0");
-			dframeFrom.setEditable(false);
+			addLabel("Бокс заполнять с:", 20, 290, 360, 25);
+			final JTextField boxFrom = addTextField(150, 290, 130, 25);
+			boxFrom.setText("0");
+			boxFrom.setEditable(false);
 			JButton selectFrom = addButton("Выбрать", 290, 290, 90, 25);
 			
 			selectFrom.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if (dframeComboBox.getSelectedIndex() == -1) { util_newError("Не выбран кросс!"); return; }
-					if (frameComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана громполоса!"); return; }
-					new FormViewConnectedPointElement(iSys, (ConnectedPointElement)frameComboBox.getSelectedItem(), dframeFrom, null);
+					if (cabinetComboBox.getSelectedIndex() == -1) { util_newError("Не выбран шкаф!"); return; }
+					if (boxComboBox.getSelectedIndex() == -1) { util_newError("Не выбран бокс!"); return; }
+					new FormViewConnectedPointElement(iSys, (ConnectedPointElement)boxComboBox.getSelectedItem(), boxFrom, null);
 				}
 			});
 			
@@ -101,22 +100,22 @@ public class FormPairDirect extends Form {
 		    saveButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
-					if (dframeComboBox.getSelectedIndex() == -1) { util_newError("Не выбран кросс!"); return; }
-					if (frameComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана громполоса!"); return; }
+					if (cabinetComboBox.getSelectedIndex() == -1) { util_newError("Не выбран шкаф!"); return; }
+					if (boxComboBox.getSelectedIndex() == -1) { util_newError("Не выбрана бокс!"); return; }
 					if (dboxWrapper.getElement() == null)	{ util_newError("Не выбрана коробка!"); return; }
 					if (cableComboBox.getSelectedIndex() == -1)	{ util_newError("Не выбран кабель!"); return; }
 					
-					DFramе selectedDFrame = (DFramе)dframeComboBox.getSelectedItem();
-					Frame selectedFrame = (Frame)frameComboBox.getSelectedItem();
+					Cabinet selectedCabinet = (Cabinet)cabinetComboBox.getSelectedItem();
+					Box selectedBox = (Box)boxComboBox.getSelectedItem();
 					DBox selectedDBox = (DBox)dboxWrapper.getElement();
 					Cable selectedCable = (Cable)cableComboBox.getSelectedItem();
 					Integer pairCount = (Integer)comboBox5.getSelectedItem();
-					Integer fromFrame = iSys.rw.valueOf(dframeFrom.getText());
+					Integer fromBox = iSys.rw.valueOf(boxFrom.getText());
 					Integer fromCable = iSys.rw.valueOf(cableFrom.getText());
 					
 					
-					for (Integer i = fromFrame; i < fromFrame + pairCount; i++)
-						if (iSys.pc.getInPlace(selectedFrame, i) != null)  { util_newError("В громполосе в заданном диапазоне уже существуют кабельные пары!"); return; }
+					for (Integer i = fromBox; i < fromBox + pairCount; i++)
+						if (iSys.pc.getInPlace(selectedBox, i) != null)  { util_newError("В боксе в заданном диапазоне уже существуют кабельные пары!"); return; }
 					
 					for (Integer i = 0; i < 0 + pairCount; i++)
 						if (iSys.pc.getInPlace(selectedDBox, i) != null)  { util_newError("В КРТ в заданном диапазоне уже существуют кабельные пары!"); return; }				
@@ -129,19 +128,19 @@ public class FormPairDirect extends Form {
 						Pair newPair = new Pair(iSys.fc,iSys.bc,iSys.dbc,iSys.cc);
 						
 						newPair
-							.attachToElementFrom(selectedFrame)
+							.attachToElementFrom(selectedBox)
 							.attachToElementTo(selectedDBox.getId())
 							.attachToCable(selectedCable)
 							.setNumberInCable(fromCable + i)
-							.setFromNumber(fromFrame + i)
+							.setFromNumber(fromBox + i)
 							.setToNumber(0 + i);
 						
 						iSys.pc.addElement(newPair);
-						String mes = "Создана кабельная пара прямого питания: "+ newPair.toString()+ ", присоединена к кроссу: "+selectedDFrame.toString()+", громполосе: "+ selectedFrame.toString() + ", присоединена к коробке: " + selectedDBox.toString();
+						String mes = "Создана распределительная пара: "+ newPair.toString()+ ", присоединена к шкафу: "+selectedCabinet.toString()+", боксу: "+ selectedBox.toString() + ", присоединена к коробке: " + selectedDBox.toString();
 						iSys.rw.addLogMessage(mes);
 						
 					}
-					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к кроссу: "+selectedDFrame.toString()+", громполосе: "+ selectedFrame.toString() + ", присоединены к коробке: " + selectedDBox.toString();
+					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к шкафу: "+selectedCabinet.toString()+", боксу: "+ selectedBox.toString() + ", присоединены к коробке: " + selectedDBox.toString();
 					util_newInfo(mes);
 					iFrame.dispose();
 				
