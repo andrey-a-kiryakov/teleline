@@ -1,12 +1,8 @@
 package org.teleline.gui;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -21,17 +17,13 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -938,133 +930,6 @@ public class gui {
 	
 	public void newError (Component parent, String mes) {JOptionPane.showMessageDialog(parent, mes, "Ошибка", JOptionPane.ERROR_MESSAGE);}
 	
-	public void viewDFrame(final DFramе dframe) {
-		
-		int W = 80, H = 100, marginX = 20, marginY = 20, inLine = 10;
-		int lines = (int) Math.ceil ((double)dframe.getPlacesCount().intValue() / (double)inLine);
-		int panelWidth = W * inLine + marginX * (inLine + 1);
-		int panelHeight = H * lines + marginY * (lines + 1);
-		
-		final JDialog iFrame = newDialog("Просмотр кросса", panelWidth + 40 + 10, panelHeight + 100);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(dframe.toString());
-		panel.setBackground(new Color(0, 128, 128));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
-		
-		JLabel head = newLabel(dframe.toString(), iFrame, 20, 10, panelWidth, 30);
-		head.setFont(new Font("Dialog", Font.BOLD, 16));
-		head.setHorizontalAlignment(SwingConstants.CENTER);
-		int x = 0, y = 0;
-	
-		JButton refreshButton = newButton("Обновить", iFrame, 20,10,90,26);
-		refreshButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				iFrame.dispose();
-				viewDFrame(dframe);			
-			}
-		});
-		
-		ActionListener frameClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				new FormViewConnectedPointElement(sys, (Frame)((ElementView)e.getSource()).getElement(), null, null );			
-			}
-		};
-		
-		ActionListener placeClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-						
-			}
-		};
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-
-		JMenuItem menuItem = new JMenuItem("Добавить");
-		popupMenu.add(menuItem);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			//	JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-			//	ElementView ep = (ElementView)pm.getInvoker();
-			//	ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				new FormFrame(sys, null, dframe);
-				/*if (formFrame(null, dframe) != null ) {
-					iFrame.dispose();
-					viewDFrame(dframe);
-				}*/
-			}	
-		});
-		
-	
-		JMenuItem menuItem_1 = new JMenuItem("Редактировать");
-		popupMenu.add(menuItem_1);
-		menuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				
-				new FormFrame(sys,(Frame)p, dframe);
-				/*
-				if (formFrame((Frame)p, dframe) != null ) {
-					iFrame.dispose();
-					viewDFrame(dframe);
-				}*/
-				
-			}
-		});
-		
-		JMenuItem menuItem_2 = new JMenuItem("Удалить");
-		popupMenu.add(menuItem_2);
-		menuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
-				ElementView ep = (ElementView)pm.getInvoker();
-				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();	
-				
-				if (newDialog(iFrame, "Удалить громполосу " + p.toString()+" и все пары в ней?") == JOptionPane.YES_OPTION) {
-					sys.removeFrame((Frame)p);
-					iFrame.dispose();
-					viewDFrame(dframe);
-				}
-			}
-		});
-		
-		for (int place = 0; place < dframe.getPlacesCount(); place++) {
-			
-			if ( x > inLine - 1)  { x = 0; y++; }
-				
-				ElementView button = new ElementView();
-				button.setBounds(marginX + x*(W + marginX), marginY + y*(H + marginY), W, H);
-				panel.add(button);
-				button.setElement(null);
-				
-				addPopupToConnectedPointElement(button, popupMenu);
-	
-				Frame frame =  (Frame)sys.fc.getInPlace((Integer)place, dframe.getId());
-				if (frame != null) {
-					button.setText(frame.toString());
-					button.setToolTipText("Громполоса: "+ frame.toString());
-					button.setElement(frame);
-					button.setBackground(new Color(200, 0, 200));
-					button.addActionListener(frameClick);
-					button.setForeground(new Color(0, 0, 0));
-				}
-				else {
-					button.setBackground(new Color(230, 230, 230));
-					button.setForeground(new Color(160, 160, 160));
-					
-					button.setToolTipText("Незанятое место №" + ((Integer)place).toString());
-					button.addActionListener(placeClick);
-					button.setText(((Integer)place).toString());
-				}
-			x++;
-		}
-	
-		iFrame.setVisible(true);
-	}
-	
 	/**
 	 * Выводит подробные данные о паре
 	 * @param p - пара
@@ -1126,35 +991,6 @@ public class gui {
 		
 		Iterator<Integer> i = t.getCables().iterator();
 		while (i.hasNext()) infoArea.append("Кабель: "+((Cable)sys.cc.getElement(i.next())).toLongString()+"\r\n");
-	}
-	
-	private static void addPopupToConnectedPointElement(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-				//popup.setElement((ElementView)e.getSource());
-				ConnectedPointElement p = (ConnectedPointElement)((ElementView)popup.getInvoker()).getElement();
-				((JMenuItem)popup.getSubElements()[0]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[1]).setEnabled(false);
-				((JMenuItem)popup.getSubElements()[2]).setEnabled(false);
-				
-				if (p == null) { ((JMenuItem)popup.getSubElements()[0]).setEnabled(true); }
-				else {
-					((JMenuItem)popup.getSubElements()[1]).setEnabled(true);
-					((JMenuItem)popup.getSubElements()[2]).setEnabled(true);
-				}
-			}
-		});
 	}
 	
 }

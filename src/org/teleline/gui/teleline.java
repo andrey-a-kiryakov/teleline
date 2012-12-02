@@ -775,7 +775,7 @@ public class teleline {
 							GUI.newError(iFrame, "Кросс не выбран!");
 							return;
 						}
-						GUI.viewDFrame((DFramе)dframeList.getSelectedValue());
+						new FormViewDFrame(sys,(DFramе)dframeList.getSelectedValue());
 					}
 				};
 				viewDFrameButton.addActionListener(viewDFrame);
