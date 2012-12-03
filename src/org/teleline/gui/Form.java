@@ -275,9 +275,7 @@ public abstract class Form {
 	 */
 	public void setCableComboBoxItems(final StructuredElement fromElement, final StructuredElement toElement, final JComboBox cableComboBox, final Integer Type) {
 		
-		//ActionListener actionListener = new ActionListener() {
-         //   public void actionPerformed(ActionEvent e) {
-            	cableComboBox.removeAllItems();
+		cableComboBox.removeAllItems();
             	if (Type < 2)
             		if (fromElement != null && toElement != null) {
             			
@@ -289,12 +287,7 @@ public abstract class Form {
         				util_setComboBoxItems(cableComboBox, iSys.cc.sortByIdUp(iSys.cc.getDCableOut(fromElement)));
         			}
         		}
-            	
-           // }
-        //};
-       // FromComboBox.addActionListener(actionListener);
-        //toElement.addActionListener(actionListener);
-        
+            
 	}
 
 	
