@@ -72,9 +72,6 @@ public class teleline {
 	public teleline() {
 		
 		sys = new Sys();
-		Net net = new Net();
-		net.setName("Новая сеть");
-		sys.nc.addElement(net);
 		GUI = new gui(sys,frmTeleline);
 
 		initialize();
@@ -147,15 +144,7 @@ public class teleline {
 				chooser.setFileFilter(new ExtFileFilter("xml", "*.xml Файлы XML"));
 				if (chooser.showDialog(frmTeleline, null) == JFileChooser.APPROVE_OPTION) {
 					
-					sys.rw.deleteNotSavedLog();
-					sys.nc.removeAllElements(); sys.dfc.removeAllElements();
-					sys.cbc.removeAllElements(); sys.dbc.removeAllElements();
-					sys.mc.removeAllElements(); sys.fc.removeAllElements();
-					sys.bc.removeAllElements(); sys.cc.removeAllElements();
-					sys.pc.removeAllElements(); sys.sc.removeAllElements();
-					sys.phc.removeAllElements(); sys.duc.removeAllElements();
-					sys.tuc.removeAllElements(); sys.buc.removeAllElements();
-					sys.dmc.removeAllElements();
+					sys.clear();
 					
 					if (sys.rw.read(chooser.getSelectedFile())) {
 						GUI.newInfo(frmTeleline, "Файл \"" + chooser.getSelectedFile().getName() + "\" прочитан");

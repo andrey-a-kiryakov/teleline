@@ -9,7 +9,7 @@ import org.teleline.io.Validator;
 
 public class Sys {
 	
-	public Sys(/*NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc */) {
+	public Sys() {
 		
 		ig = new IdGenerator();
 		nc = new NetCollection(ig);
@@ -27,25 +27,13 @@ public class Sys {
 		phc = new PathCollection(ig);
 		sc = new SubscriberCollection(ig);
 		dmc = new DamageCollection(ig);
-/*		
-		this.nc = nc;
-		this.dfc = dfc;
-		this.cbc = cbc;
-		this.dbc = dbc;
-		this.mc = mc;
-		this.duc = duc;
-		this.buc = buc;
-		this.tuc = tuc;
-		this.fc = fc;
-		this.bc = bc;
-		this.cc = cc;
-		this.pc = pc;
-		this.phc = phc;
-		this.sc = sc;
-		this.dmc = dmc;
-*/		
+		
 		this.v = new Validator();
 		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc);
+		
+		Net net = new Net();
+		net.setName("Новая сеть");
+		nc.addElement(net);
 	}
 	
 	public IdGenerator ig;
@@ -318,6 +306,29 @@ public class Sys {
 		}
 		if (phc.removeElement(path))
 			rw.addLogMessage("Удален: Включение " + path.toString() + " у абонента: "+ sc.getElement(path.getSubscriber()).toString());
+	}
+	
+	public void clear(){
+		
+		rw.deleteNotSavedLog();
+		nc.removeAllElements(); 
+		dfc.removeAllElements();
+		cbc.removeAllElements(); 
+		dbc.removeAllElements();
+		mc.removeAllElements(); 
+		fc.removeAllElements();
+		bc.removeAllElements(); 
+		cc.removeAllElements();
+		pc.removeAllElements(); 
+		sc.removeAllElements();
+		phc.removeAllElements(); 
+		duc.removeAllElements();
+		tuc.removeAllElements(); 
+		buc.removeAllElements();
+		dmc.removeAllElements();
+		
+		ig.setIdIndex(0);
+		
 	}
 	
 	
