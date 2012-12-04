@@ -57,7 +57,6 @@ public class FormDFrames extends FormAbstractElements {
 		new FormViewDFrame(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
 	}
 	
-	
 	private void addDFrameToTable(DFramе dframe) {
 		
 		Vector<Object> v = new Vector<Object>();

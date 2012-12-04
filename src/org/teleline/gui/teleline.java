@@ -597,74 +597,7 @@ public class teleline {
 		JMenuItem menuItem_20 = new JMenuItem("Здание");
 		menuItem_20.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog iFrame = GUI.newDialog("Здания", 585, 600);
-				
-		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
-				
-				GUI.newLabel("Список зданий:", iFrame, 10, 10, 420, 14);
-				final JList buildingList = GUI.newList(iFrame, 10, 30, 420, 525);
-				
-				//GUI.netsComboBoxLinked(netsComboBox, buildingList, sys.buc);
-				
-				GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement())));
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
-				JButton editBuildingButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
-				JButton createBuildingButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
-				JButton deleteBuildingButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
-				
-				refreshButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) { 
-						GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement())));
-					}
-				});
-				/*
-				 * Событие кнопки редактирования здания
-				 */
-				editBuildingButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (buildingList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Здание не выбрано!"); return; }
-						new FormBuilding(sys, (Building)buildingList.getSelectedValue());
-					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));	
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания здания
-				 */
-				createBuildingButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						new FormBuilding(sys, null);
-					//	GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)netsComboBox.getSelectedItem())));
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления здания
-				 */
-				ActionListener deleteBuilding = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (buildingList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Здание не выбрано!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить здание?: " + buildingList.getSelectedValue().toString());
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeBuilding((Building)buildingList.getSelectedValue());
-							GUI.newInfo(iFrame, "Здание удалено");
-							GUI.setListItems(buildingList, sys.buc.sortByIdUp(sys.buc.getInNet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/)));	
-						}		
-					}
-				};
-				deleteBuildingButton.addActionListener(deleteBuilding);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				
-				iFrame.setVisible(true);
+				new FormBuildings(sys, sys.buc.getElements());
 			}
 		});
 		menuChange.add(menuItem_20);
