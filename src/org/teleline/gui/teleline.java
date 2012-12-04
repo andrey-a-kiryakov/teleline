@@ -478,6 +478,7 @@ public class teleline {
 		JMenuItem menuItem_18 = new JMenuItem("Канализацию");
 		menuItem_18.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				new FormDucts(sys,sys.duc.getElements());
 				final JDialog iFrame = GUI.newDialog("Редактировать канализацию", 585, 600);
 				
 		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
@@ -587,7 +588,7 @@ public class teleline {
 				 * ---------------------------------------------------------
 				 */
 				
-				iFrame.setVisible(true);
+			//	iFrame.setVisible(true);
 			}
 		});
 		menuChange.add(menuItem_18);
@@ -595,11 +596,7 @@ public class teleline {
 		 * Редактирование элементов "Здание"
 		 */
 		JMenuItem menuItem_20 = new JMenuItem("Здание");
-		menuItem_20.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new FormBuildings(sys, sys.buc.getElements());
-			}
-		});
+		menuItem_20.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormBuildings(sys, sys.buc.getElements());}});
 		menuChange.add(menuItem_20);
 		
 		JSeparator separator_8 = new JSeparator();
