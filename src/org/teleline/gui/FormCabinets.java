@@ -29,7 +29,6 @@ public class FormCabinets extends Form {
 	
 	public FormCabinets(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
 		
 		createDialog("Шкафы", 785, 600);
 		

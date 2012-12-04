@@ -281,116 +281,7 @@ public class teleline {
 		 */
 		JMenuItem menuItem_12 = new JMenuItem("Кросс");
 		menuChange.add(menuItem_12);
-		menuItem_12.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				final JDialog iFrame = GUI.newDialog("Редактировать кросс", 585, 600);
-				
-			//	GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-			//	final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
-				
-				GUI.newLabel("Список кроссов:", iFrame, 10, 10, 420, 14);
-				final JList dframeList = GUI.newList(iFrame, 10, 30, 420, 530);
-				
-				GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
-			
-			//	GUI.netsComboBoxLinked(netsComboBox, dframeList, sys.dfc);
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
-				JButton editDFrameButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
-				JButton viewDFrameButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
-				JButton passportDFrameButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
-				JButton createDFrameButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
-				JButton deleteDFrameButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
-				
-				refreshButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
-					}
-				});
-				/*
-				 * Событие кнопки редактирования кросса
-				 */
-				ActionListener editDFrame = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (dframeList.getSelectedIndex() == -1) { 
-							GUI.newError(iFrame, "Кросс не выбран!"); 
-							return; 
-						}
-						
-						new FormDFrame(sys, (DFramе)dframeList.getSelectedValue());
-					}
-				};
-				editDFrameButton.addActionListener(editDFrame);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра кросса
-				 */
-				ActionListener viewDFrame = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (dframeList.getSelectedIndex() == -1) {
-							GUI.newError(iFrame, "Кросс не выбран!");
-							return;
-						}
-						new FormViewDFrame(sys,(DFramе)dframeList.getSelectedValue());
-					}
-				};
-				viewDFrameButton.addActionListener(viewDFrame);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания кросса
-				 */
-				ActionListener createDFrame = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						new FormDFrame(sys, null);
-					}
-				};
-				createDFrameButton.addActionListener(createDFrame);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления кросса
-				 */
-				ActionListener deleteCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (dframeList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кросс не выбран!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить " + dframeList.getSelectedValue().toString()+" и все его содержимое?");
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeDFrame((DFramе)dframeList.getSelectedValue());
-							GUI.newInfo(iFrame, "Кросс и все его содержимое удалены");
-							//GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)netsComboBox.getSelectedItem())));
-							GUI.setListItems(dframeList, sys.dfc.sortByNumberUp(sys.dfc.getInNet((Net)sys.nc.getOnlyElement())));
-						}		
-					}
-				};
-				deleteDFrameButton.addActionListener(deleteCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра паспорта кросса
-				 */
-				ActionListener passportCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (dframeList.getSelectedIndex() == -1) {
-							GUI.newError(iFrame, "Кросс не выбран!");
-							return;
-						}
-						GUI.formViewPassport(sys.rw.createDFramePassport((DFramе)dframeList.getSelectedValue()));
-					}		
-				};
-				passportDFrameButton.addActionListener(passportCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				iFrame.setVisible(true);	
-			}
-		});
+		menuItem_12.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormDFrames(sys, sys.dfc.getElements());}});
 		/**
 		 * Редактирование элементов "Шкаф"
 		 */
@@ -680,7 +571,7 @@ public class teleline {
 				ActionListener passportDuct = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-					//	if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
+						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
 						Duct duct = (Duct)ductList.getSelectedValue();
 						Building building = (Building)sys.buc.getElement(duct.getTo());
 						//Manhole manhole = (Manhole)mc.getElement(duct.getTo());
