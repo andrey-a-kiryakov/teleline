@@ -2,9 +2,10 @@ package org.teleline.gui;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 
 import javax.swing.JOptionPane;
+
+import org.teleline.io.Writer;
 
 
 public class telelineListener implements WindowListener {
@@ -21,15 +22,17 @@ public class telelineListener implements WindowListener {
 		 if (win.sys.rw.isSaved() == false){ 
 			
 			 if (win.GUI.newDialog(e.getComponent(), "Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
+				 Writer writer = new Writer(win.sys);
+					writer.start();
 				 
-				 File file = win.sys.rw.save();
+				/* File file = win.sys.rw.save();
 				 if (file != null) {
 					 win.GUI.newInfo(e.getComponent(), "Файл успешно сохранен");
 					 win.frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
 					}
 					else {
 						win.GUI.newError(e.getComponent(), "Ошибка при сохранении файла");
-					}
+					}*/
 			 }
 		 
 		 }

@@ -14,12 +14,9 @@ import java.util.Vector;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import org.teleline.gui.FormProgressBar;
 import org.teleline.model.*;
 
 public class RW {
@@ -69,6 +66,32 @@ public class RW {
 			return (Integer)0;
 		}
 	}
+	
+	public Integer valueOf(Attribute attribute) {
+		
+		if (attribute == null) {
+			writeError("Отсутствует аттрибут");
+			return 0;
+		}
+		else {
+			return valueOf(attribute.getValue());
+		}
+	}
+	
+	public String textOf(Element element) {
+		
+		if (element == null) {
+			writeError("Отсутствует элемент");
+			return "";
+		}
+		else {
+			if (element.getValue().length() > 150)
+				return element.getValue().substring(0, 149);
+			
+			return element.getValue();
+		}
+	}
+	
 	public void checkFolders () {
 		
 		File file = new File(dTmpFolder);
@@ -141,7 +164,6 @@ public class RW {
 		try {
 			File f = new File(file);
 			if (f.exists()) f.delete();
-			//System.out.println(f.toString());
 		}
 		catch (SecurityException e) {
 			writeError(e.toString());
