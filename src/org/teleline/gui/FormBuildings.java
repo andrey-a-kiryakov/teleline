@@ -28,8 +28,6 @@ public class FormBuildings extends FormAbstractElements {
 	}
 	
 	public void refresh() {
-		
-		util_clearTable(table);
 		Iterator<AbstractElement> i = iSys.buc.getIterator();
 		while (i.hasNext()) {addBuildingToTable((Building)i.next());}	
 	}

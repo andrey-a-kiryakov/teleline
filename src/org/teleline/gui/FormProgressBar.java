@@ -19,12 +19,12 @@ public class FormProgressBar extends Form {
 	
 	public FormProgressBar(Sys iSys) {
 		super(iSys);
-		createDialog("Ход выполнения операции", 500, 120);
-		okButton = addButton("OK", 375, 50, 110, 25);
-		label = addLabel("", 15, 50, 300, 25);
+		createDialog("Ход выполнения операции", 600, 120);
+		okButton = addButton("OK", 475, 50, 110, 25);
+		label = addLabel("", 15, 50, 400, 25);
 		label.setFont(new Font("Dialog", Font.PLAIN, 10));
 		progressBar = new JProgressBar();
-		progressBar.setBounds(15, 10, 470, 25);
+		progressBar.setBounds(15, 10, 570, 25);
 		progressBar.setStringPainted(true);
 		progressBar.setMinimum(0);
 		progressBar.setMaximum(100);

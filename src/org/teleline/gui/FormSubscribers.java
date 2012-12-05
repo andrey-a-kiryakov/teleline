@@ -428,12 +428,12 @@ public class FormSubscribers extends Form {
 	 * @param subscriber - абонент
 	 * @param index - позиция обновляемой строки в таблице
 	 */
-	private void updateSubscriberInTable(Subscriber subscriber, Integer index) {
+/*	private void updateSubscriberInTable(Subscriber subscriber, Integer index) {
 		
 		DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 		tableModel.setValueAt(subscriber, index, 0);
 		tableModel.setValueAt(subscriber.getPhoneNumber(), index, 1);
 		tableModel.setValueAt(subscriber.getAdress(), index, 2);
-	}
+	}*/
 	
 }

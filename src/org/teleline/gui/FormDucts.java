@@ -28,8 +28,6 @@ public class FormDucts extends FormAbstractElements {
 	}
 	
 	public void refresh() {
-		
-		util_clearTable(table);
 		Iterator<AbstractElement> i = iSys.duc.getIterator();
 		while (i.hasNext()) {addDuctToTable((Duct)i.next());}	
 	}

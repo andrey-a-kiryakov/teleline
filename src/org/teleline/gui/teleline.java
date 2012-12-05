@@ -3,7 +3,6 @@ package org.teleline.gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
@@ -17,25 +16,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
-import javax.swing.SortOrder;
-import javax.swing.RowSorter.SortKey;
 
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import java.io.File;
 
-import javax.swing.JList;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
@@ -129,16 +116,6 @@ public class teleline {
 					if (GUI.newDialog(frmTeleline, "Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();
-						
-					/*	File file = sys.rw.save();
-						if (file != null) {
-							GUI.newInfo(frmTeleline, "Файл сохранен");
-							frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
-							return;
-						}
-						else {
-							GUI.newError(frmTeleline, "Ошибка при сохранении файла");
-						}*/
 					}					
 				}
 				 
@@ -152,16 +129,6 @@ public class teleline {
 					sys.clear();
 					Reader reader = new Reader(sys, chooser.getSelectedFile());
 					reader.start();
-				/*	
-					if (sys.rw.read(chooser.getSelectedFile())) {
-						GUI.newInfo(frmTeleline, "Файл \"" + chooser.getSelectedFile().getName() + "\" прочитан");
-						frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + chooser.getSelectedFile().getName());
-						
-					}
-					else {
-						GUI.newError(frmTeleline, "Ошибка при чтении файла");
-					}
-				*/
 				}
 			}
 		});
@@ -173,15 +140,6 @@ public class teleline {
 			public void actionPerformed(ActionEvent e) {
 				Writer writer = new Writer(sys);
 				writer.start();
-				
-				/*File file = sys.rw.save();
-				if (file != null) {
-					GUI.newInfo(frmTeleline, "Файл сохранен");
-					frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
-				}
-				else {
-					GUI.newError(frmTeleline, "Ошибка при сохранении файла");
-				}*/
 			}
 		});
 		menuFile.add(mntmNewMenuItem_1);
@@ -280,11 +238,7 @@ public class teleline {
 		 * Редактирование элементов "Сеть"
 		 */
 		JMenuItem menuItem_14 = new JMenuItem("Сеть");
-		menuItem_14.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new FormNet(sys, (Net)sys.nc.getOnlyElement());
-				}
-			});
+		menuItem_14.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormNet(sys, (Net)sys.nc.getOnlyElement());}});
 		menuChange.add(menuItem_14);
 		
 		JSeparator separator_6 = new JSeparator();
@@ -300,23 +254,13 @@ public class teleline {
 		 */
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Шкаф");
 		menuChange.add(mntmNewMenuItem_3);
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				new FormCabinets(sys,sys.cbc.getElements());	
-			}
-		});
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormCabinets(sys,sys.cbc.getElements());}});
 		/**
 		 * Редактирование элементов "КРТ"
 		 */
 		JMenuItem editDBoxMenuItem = new JMenuItem("Распределительную коробку (КРТ)");
 		menuChange.add(editDBoxMenuItem);
-		editDBoxMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				new FormDBoxes(sys, sys.dbc.getElements());	
-			}
-		});
+		editDBoxMenuItem.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormDBoxes(sys, sys.dbc.getElements());	}});
 		
 		JSeparator separator_5 = new JSeparator();
 		menuChange.add(separator_5);
@@ -324,154 +268,13 @@ public class teleline {
 		 * Редактирование элементов "Абонент"
 		 */
 		JMenuItem menuItem_11 = new JMenuItem("Абонента");
-		menuItem_11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				new FormSubscribers(sys,sys.sc.getElements());
-			}
-		});
+		menuItem_11.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormSubscribers(sys,sys.sc.getElements());}});
 		/**
 		 * Редактирование элементов Кабель
 		 */
 		JMenuItem menuItem_16 = new JMenuItem("Кабель");
 		menuChange.add(menuItem_16);
-		menuItem_16.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				final JDialog iFrame = GUI.newDialog("Редактировать кабель", 685, 600);
-				
-		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 520, 14);
-		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 520, 25);
-				
-				GUI.newLabel("Список кабелей:", iFrame, 10, 10, 520, 14);
-				final JTable cableTable = GUI.newTable(iFrame, 10, 30, 520, 525);
-				final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();
-				tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
-				final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(cableTable.getModel());
-				cableTable.setRowSorter(sorter);
-			//	GUI.linkNetsComboBoxCableTable(netsComboBox, cableTable);
-				
-				Iterator<StructuredElement> i = sys.cc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
-	    		while (i.hasNext()) {
-	    			GUI.addCableToTable(cableTable, (Cable)i.next());
-	    		}
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 540, 30, 125, 26);
-				JButton editCableButton = GUI.newButton("Редактировать", iFrame, 540, 105, 125, 26);
-				JButton viewCableButton = GUI.newButton("Смотреть", iFrame, 540, 145, 125, 26);
-				JButton passportCableButton = GUI.newButton("Паспорт", iFrame, 540, 185, 125, 26);
-				JButton createCableButton = GUI.newButton("Добавить", iFrame, 540, 255, 125, 26);
-				JButton deleteCableButton = GUI.newButton("Удалить", iFrame, 540, 295, 125, 26);
-				/*
-				 * Событие кнопки обновления списка кабелей
-				 */
-				refreshButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						GUI.clearTable(cableTable);
-						Iterator<StructuredElement> i = sys.cc.getInNet(sys.nc.getOnlyElement().getId()).iterator();
-			    		while (i.hasNext()) {
-			    			GUI.addCableToTable(cableTable, (Cable)i.next());
-			    		}
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки редактирования кабеля
-				 */
-				ActionListener editCable = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						Cable cable = (Cable)tableModel.getValueAt(selectedIndex, 0);
-						new FormCable(sys, cable);
-						GUI.updateCableInTable(cableTable, cable, selectedIndex);
-					}
-				};
-				editCableButton.addActionListener(editCable);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра кабеля
-				 */
-				ActionListener viewCable = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						new FormViewCable(sys,(Cable)tableModel.getValueAt( selectedIndex, 0), null);
-					}
-				};
-				viewCableButton.addActionListener(viewCable);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания кабеля
-				 */
-				ActionListener createCable = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						new FormCable(sys, null);
-						//if (cable != null) GUI.addCableToTable(cableTable, cable);
-					}
-				};
-				createCableButton.addActionListener(createCable);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления кабеля
-				 */
-				ActionListener deleteCable = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						
-						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
-						
-						int n = GUI.newDialog(iFrame, "Удалить кабель: " + cable.toString()+" и все содержащиеся в нем пары?");
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeCable(cable);
-							GUI.newInfo(iFrame, "Кабель "+cable.toString()+" и все содержащиеся в нем пары удалены");
-							((DefaultTableModel) cableTable.getModel()).removeRow(selectedIndex);	
-						}
-						
-						
-					}
-				};
-				deleteCableButton.addActionListener(deleteCable);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра паспорта кабеля
-				 */
-				ActionListener passportCabinet = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						//if (cableList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						if (cableTable.getSelectionModel().isSelectionEmpty()){ GUI.newError(iFrame, "Кабель не выбран!"); return; }
-						int selectedIndex = cableTable.getRowSorter().convertRowIndexToModel(cableTable.getSelectionModel().getMinSelectionIndex());
-						Cable cable = (Cable)tableModel.getValueAt( selectedIndex, 0);
-						//Cable cable = (Cable)cableList.getSelectedValue();
-						if (cable.getType() == 2) {GUI.newError(iFrame, "Паспорт для распределительного кабеля создается в составе паспорта шкафа."); return;}
-						if (cable.getType() == 0) {GUI.formViewPassport(sys.rw.createМCablePassport(cable)); return;}
-						if (cable.getType() == 1) {GUI.formViewPassport(sys.rw.createIcCablePassport(cable)); return;}
-						if (cable.getType() == 3) {return;}
-					}		
-				};
-				passportCableButton.addActionListener(passportCabinet);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				ArrayList<SortKey> keys=new ArrayList<SortKey>();
-		        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
-		        sorter.setSortKeys(keys);
-		        sorter.setSortsOnUpdates(true);
-				iFrame.setVisible(true);	
-			}
-		});
+		menuItem_16.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormCables(sys,sys.cc.getElements());}});
 		
 		JSeparator separator_7 = new JSeparator();
 		menuChange.add(separator_7);
@@ -479,131 +282,13 @@ public class teleline {
 		 * Редактирование элементов "Колодец"
 		 */
 		JMenuItem menuItem_17 = new JMenuItem("Колодец");
-		menuItem_17.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new FormManholes(sys, sys.mc.getElements());
-			}
-		});
+		menuItem_17.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormManholes(sys, sys.mc.getElements());}});
 		menuChange.add(menuItem_17);
 		/**
 		 * Редактирование элементов "Канализация"
 		 */
 		JMenuItem menuItem_18 = new JMenuItem("Канализацию");
-		menuItem_18.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new FormDucts(sys,sys.duc.getElements());
-				final JDialog iFrame = GUI.newDialog("Редактировать канализацию", 585, 600);
-				
-		//		GUI.newLabel("Сеть:", iFrame, 10, 10, 420, 14);
-		//		final JComboBox netsComboBox = GUI.newNetsComboBox(iFrame, 10, 30, 420, 25);
-				
-				GUI.newLabel("Список участков канализации:", iFrame, 10, 10, 420, 14);
-				final JList ductList = GUI.newList(iFrame, 10, 30, 420, 525);
-				
-		//		GUI.netsComboBoxLinked(netsComboBox, ductList, sys.duc);
-				
-				GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)sys.nc.getOnlyElement())));
-				
-				JButton refreshButton = GUI.newButton("Обновить", iFrame, 440, 30, 125, 26);
-				JButton editDuctButton = GUI.newButton("Редактировать", iFrame, 440, 105, 125, 26);
-				JButton viewDuctButton = GUI.newButton("Смотреть", iFrame, 440, 145, 125, 26);
-				JButton passportDuctButton = GUI.newButton("Паспорт", iFrame, 440, 185, 125, 26);
-				JButton createDuctButton = GUI.newButton("Добавить", iFrame, 440, 255, 125, 26);
-				JButton deleteDuctButton = GUI.newButton("Удалить", iFrame, 440, 295, 125, 26);
-				/*
-				 * Событие кнопки обновления списка участков канализации
-				 */
-				refreshButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)sys.nc.getOnlyElement())));
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки редактирования канализации
-				 */
-				editDuctButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						new FormDuct(sys,(Duct)ductList.getSelectedValue());
-				//		GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
-					}
-				});
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра канализации
-				 */
-				ActionListener viewDuct = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						new FormViewDuct(sys,(Duct)ductList.getSelectedValue());
-					}
-				};
-				viewDuctButton.addActionListener(viewDuct);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки создания канализации
-				 */
-				ActionListener createCable = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						new FormDuct(sys, null);
-					//	GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));
-					}
-				};
-				createDuctButton.addActionListener(createCable);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки удаления канализации
-				 */
-				ActionListener deleteDuct = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						int n = GUI.newDialog(iFrame, "Удалить участок канализации: " + ductList.getSelectedValue().toString());
-						if (n == JOptionPane.YES_OPTION) {
-							sys.removeDuct((Duct)ductList.getSelectedValue());
-							GUI.newInfo(iFrame, "Участок канализации удален.");
-						//	GUI.setListItems(ductList, sys.duc.sortByIdUp(sys.duc.getInNet((Net)netsComboBox.getSelectedItem())));	
-						}		
-					}
-				};
-				deleteDuctButton.addActionListener(deleteDuct);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				/*
-				 * Событие кнопки просмотра паспорта канализации
-				 */
-				ActionListener passportDuct = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-					//	if (netsComboBox.getSelectedIndex() == -1) { GUI.newError(iFrame, "Сеть не выбрана"); return; }
-						if (ductList.getSelectedIndex() == -1) { GUI.newError(iFrame, "Участок канализации не выбран!"); return; }
-						Duct duct = (Duct)ductList.getSelectedValue();
-						Building building = (Building)sys.buc.getElement(duct.getTo());
-						//Manhole manhole = (Manhole)mc.getElement(duct.getTo());
-						if (building != null)  { GUI.formViewPassport(sys.rw.createCableglandPassport(duct)); return;}
-						Vector<Duct> v = GUI.formCreateDuctsSet((Net)sys.nc.getOnlyElement()/*(Net)netsComboBox.getSelectedItem()*/);
-						if (v.size() >0) {
-							GUI.formViewPassport(sys.rw.createDuctPassport(v));
-						}
-					}		
-				};
-				passportDuctButton.addActionListener(passportDuct);
-				/*
-				 * ---------------------------------------------------------
-				 */
-				
-			//	iFrame.setVisible(true);
-			}
-		});
+		menuItem_18.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormDucts(sys,sys.duc.getElements());}});
 		menuChange.add(menuItem_18);
 		/**
 		 * Редактирование элементов "Здание"

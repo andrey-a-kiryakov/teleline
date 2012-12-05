@@ -57,6 +57,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		 */
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				util_clearTable(table);
 				refresh();
 			}
 		});
