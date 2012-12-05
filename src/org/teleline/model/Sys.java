@@ -29,7 +29,7 @@ public class Sys {
 		dmc = new DamageCollection(ig);
 		
 		this.v = new Validator();
-		rw = new RW(ig,nc,dfc,cbc,dbc,mc,duc,buc,tuc,fc,bc,cc,pc,phc,sc,dmc);
+		rw = new RW(this);
 		
 		Net net = new Net();
 		net.setName("Новая сеть");
@@ -329,6 +329,25 @@ public class Sys {
 		
 		ig.setIdIndex(0);
 		
+	}
+	
+	public Integer getSize(){
+		return 
+				nc.getSize() 
+				+ dfc.getSize() 
+				+ cbc.getSize() 
+				+ dbc.getSize() 
+				+ mc.getSize() 
+				+ duc.getSize() 
+				+ buc.getSize() 
+				+ tuc.getSize() 
+				+ fc.getSize() 
+				+ bc.getSize() 
+				+ cc.getSize() 
+				+ pc.getSize() 
+				+ phc.getSize() 
+				+ sc.getSize() 
+				+ dmc.getSize(); 
 	}
 	
 	

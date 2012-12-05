@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
+import org.teleline.io.Reader;
 import org.teleline.model.*;
 
 import javax.swing.JMenuBar;
@@ -143,7 +144,9 @@ public class teleline {
 				if (chooser.showDialog(frmTeleline, null) == JFileChooser.APPROVE_OPTION) {
 					
 					sys.clear();
-					
+					Reader reader = new Reader(sys, chooser.getSelectedFile());
+					reader.start();
+				/*	
 					if (sys.rw.read(chooser.getSelectedFile())) {
 						GUI.newInfo(frmTeleline, "Файл \"" + chooser.getSelectedFile().getName() + "\" прочитан");
 						frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + chooser.getSelectedFile().getName());
@@ -152,6 +155,7 @@ public class teleline {
 					else {
 						GUI.newError(frmTeleline, "Ошибка при чтении файла");
 					}
+				*/
 				}
 			}
 		});

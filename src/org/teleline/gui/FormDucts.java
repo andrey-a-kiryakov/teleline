@@ -7,15 +7,11 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Building;
-import org.teleline.model.DFramе;
 import org.teleline.model.Duct;
-import org.teleline.model.Net;
 import org.teleline.model.Sys;
-import org.teleline.model.Wrapper;
+
 
 public class FormDucts extends FormAbstractElements {
 

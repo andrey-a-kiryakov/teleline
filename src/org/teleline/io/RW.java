@@ -19,6 +19,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import org.teleline.gui.FormProgressBar;
 import org.teleline.model.*;
 
 public class RW {
@@ -33,40 +34,9 @@ public class RW {
 	private static String fErrorsLog = dLogsFolder +"/errors.log";
 	private static String fRawPassport = dTmpFolder + "/rawpass.html";
 	
-	public IdGenerator ig;
-	private NetCollection nc;
-	private DFrameCollection dfc;
-	private CabinetCollection cbc; 
-	private DBoxCollection dbc;
-	private ManholeCollection mc;
-	private DuctCollection duc;
-	private BuildingCollection buc;
-	private TubeCollection tuc;
-	private FrameCollection fc;
-	private BoxCollection bc;
-	private CableCollection cc;
-	private PairCollection pc;
-	private PathCollection phc;
-	private SubscriberCollection sc;
-	private DamageCollection dmc;
-	
-	public RW(IdGenerator ig, NetCollection nc, DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, ManholeCollection mc, DuctCollection duc, BuildingCollection buc, TubeCollection tuc, FrameCollection fc, BoxCollection bc, CableCollection cc, PairCollection pc, PathCollection phc, SubscriberCollection sc, DamageCollection dmc ) {
-		this.ig = ig;
-		this.nc = nc;
-		this.dfc = dfc;
-		this.cbc = cbc;
-		this.dbc = dbc;
-		this.mc = mc;
-		this.duc = duc;
-		this.buc = buc;
-		this.tuc = tuc;
-		this.fc = fc;
-		this.bc = bc;
-		this.cc = cc;
-		this.pc = pc;
-		this.phc = phc;
-		this.sc = sc;
-		this.dmc = dmc;
+	protected Sys sys;	
+	public RW(Sys sys) {
+		this.sys = sys;
 	}
 	
 	public void writeLog () {
@@ -126,13 +96,15 @@ public class RW {
 		
 		try {	 
 			Element system = new Element("system");
-			system.setAttribute(new Attribute ("idIndex", ig.getId().toString()));
+			system.setAttribute(new Attribute ("idIndex", sys.ig.getId().toString()));
+			system.setAttribute(new Attribute ("size", sys.getSize().toString()));
+			
 			Document document = new Document(system);
 			
 			/*
 			 * Записываем элементы "Сеть"
 			 */	
-			Iterator<AbstractElement> i = nc.getIterator(); 
+			Iterator<AbstractElement> i = sys.nc.getIterator(); 
 			
 			while (i.hasNext())  {
 			
@@ -149,7 +121,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Кросс"
 			 */
-			i = dfc.getIterator();
+			i = sys.dfc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -168,7 +140,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Шкаф"
 			 */
-			i = cbc.getIterator();
+			i = sys.cbc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -195,7 +167,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Коробка"
 			 */
-			i = dbc.getIterator();
+			i = sys.dbc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -214,7 +186,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Колодец"
 			 */
-			i = mc.getIterator();
+			i = sys.mc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -238,7 +210,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Кабельная канализация"
 			 */
-			i = duc.getIterator();
+			i = sys.duc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -269,7 +241,7 @@ public class RW {
 			/*
 			 * Записываем элементы канал в канализации
 			 */
-			i = tuc.getIterator();
+			i = sys.tuc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -294,7 +266,7 @@ public class RW {
 			/*
 			 * Записываем элементы здание
 			 */
-			i = buc.getIterator();
+			i = sys.buc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -314,7 +286,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Громполоса"
 			 */
-			i = fc.getIterator();
+			i = sys.fc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -334,7 +306,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Бокс"
 			 */
-			i = bc.getIterator();
+			i = sys.bc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -355,7 +327,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Кабель"
 			 */
-			i = cc.getIterator();
+			i = sys.cc.getIterator();
 			
 			while(i.hasNext()) {
 				
@@ -383,7 +355,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Пара"
 			 */
-			i = pc.getIterator();
+			i = sys.pc.getIterator();
 				
 			while(i.hasNext()) {
 				
@@ -406,7 +378,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Включение"
 			 */
-			i = phc.getIterator();
+			i = sys.phc.getIterator();
 					
 			while(i.hasNext()) {
 				
@@ -438,7 +410,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Абонент"
 			 */
-			i = sc.getIterator();
+			i = sys.sc.getIterator();
 				
 			while(i.hasNext()) {
 					
@@ -458,7 +430,7 @@ public class RW {
 			/*
 			 * Записываем элементы "Повреждения"
 			 */
-			i = dmc.getIterator();
+			i = sys.dmc.getIterator();
 				
 			while (i.hasNext()) {
 					
@@ -481,9 +453,9 @@ public class RW {
 	 		xmlOutput.setFormat(Format.getCompactFormat());
 	 		
 			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
-			String fileName = fSave +((Net)nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
+			String fileName = fSave +((Net)sys.nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
 			
-			addLogMessage("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
+			addLogMessage("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			writeLog();
 			
 			xmlOutput.output(document, new FileOutputStream(fileName));
@@ -496,7 +468,7 @@ public class RW {
 			return file;
 		  } 
 		catch (IOException io) {
-			writeError("Количество элементов перед сохранением: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
+			writeError("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			writeError("Ошибка сохранения файла системы: " + io.toString());
 			return null;
 		  }
@@ -507,12 +479,15 @@ public class RW {
 			
 		try {
 			
+			FormProgressBar form = new FormProgressBar(sys);
+			
 			SAXBuilder builder = new SAXBuilder();
 			//File xmlFile = new File(file);
 			
 			Document document = (Document) builder.build(xmlFile);
 			Element system = document.getRootElement();
-			ig.setIdIndex(system.getAttribute("idIndex").getIntValue());
+			sys.ig.setIdIndex(system.getAttribute("idIndex").getIntValue());
+			Integer size = system.getAttribute("size").getIntValue();
 			
 			Integer netId = 1;
 			Element n = null;
@@ -530,9 +505,10 @@ public class RW {
 				net.setId(netId); 
 				net.setName(n.getChildText("name"));
 				
-				nc.putElement(net);
+				sys.nc.putElement(net);
 			}
 			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/**
 			 * Считываем элементы "Кросс"
 			 */
@@ -548,8 +524,9 @@ public class RW {
 				dframe.setName(n.getChildText("name"));
 				dframe.setPlacesCount(this.valueOf(n.getChildText("places")));
 				
-				dfc.putElement(dframe);	
+				sys.dfc.putElement(dframe);
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/**
 			 * Считываем элементы "Шкаф"
@@ -575,8 +552,9 @@ public class RW {
 				cabinet.setSetup(this.valueOf(n.getChildText("s")));
 				cabinet.setArea(this.valueOf(n.getChildText("r")));
 				
-				cbc.putElement(cabinet);
+				sys.cbc.putElement(cabinet);
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/**
 			 * Считываем элементы "Коробка"
@@ -586,7 +564,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				DBox dbox = new DBox(dfc,cbc,fc,bc,pc,cc,buc);
+				DBox dbox = new DBox(sys.dfc,sys.cbc,sys.fc,sys.bc,sys.pc,sys.cc,sys.buc);
 				
 				dbox.setId(n.getAttribute("i").getIntValue()); 
 				//dbox.attachToNet(n.getAttribute("ni").getIntValue());
@@ -596,9 +574,9 @@ public class RW {
 				dbox.setBuilding(this.valueOf(n.getChildText("b")));
 				dbox.setPlase(n.getChildText("p"));
 				
-				dbc.putElement(dbox);	
+				sys.dbc.putElement(dbox);
 			}
-			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/**
 			 * Считываем элементы "Колодец"
 			 */
@@ -622,9 +600,9 @@ public class RW {
 				manhole.setConstruction(this.valueOf(n.getChildText("c")));
 				manhole.setForm(this.valueOf(n.getChildText("f")));
 				
-				mc.putElement(manhole);
-				
+				sys.mc.putElement(manhole);
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Кабельная канализация"
 			 */
@@ -632,7 +610,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element) i.next();
 			
-				Duct duct = new Duct(dfc, cbc, mc, buc);
+				Duct duct = new Duct(sys.dfc, sys.cbc, sys.mc, sys.buc);
 				duct.setId(n.getAttribute("i").getIntValue());
 				duct.setFrom(n.getAttribute("f").getIntValue());
 				duct.setTo(n.getAttribute("t").getIntValue());
@@ -648,9 +626,9 @@ public class RW {
 				duct.setDate(n.getChildText("d"));
 				duct.setМanufacturingМethod(n.getChildText("mm"));
 				
-				duc.putElement(duct);
-				
+				sys.duc.putElement(duct);	
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Канал в канализации"
 			 */
@@ -677,9 +655,9 @@ public class RW {
 						tube.addCable(this.valueOf(p.getValue()));
 					}
 				}
-				tuc.putElement(tube);
+				sys.tuc.putElement(tube);
 			}
-			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Здание"
 			 */
@@ -697,10 +675,10 @@ public class RW {
 				building.setName(n.getChildText("m"));
 				building.setStreet(n.getChildText("s"));
 								
-				buc.putElement(building);
+				sys.buc.putElement(building);
 				
 			}
-			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Громполоса"
 			 */
@@ -717,9 +695,9 @@ public class RW {
 				frame.setCapacity(this.valueOf(n.getChildText("c")));
 				frame.setPlaceNumber(this.valueOf(n.getChildText("p")));
 								
-				fc.putElement(frame);
-				
-			}			
+				sys.fc.putElement(frame);
+			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/*
 			 * Считываем элементы "Бокс"
@@ -740,9 +718,9 @@ public class RW {
 				box.setType(this.valueOf(n.getChildText("t")));
 				box.setPlaceNumber(this.valueOf(n.getChildText("p")));
 								
-				bc.putElement(box);
-				
-			}	
+				sys.bc.putElement(box);
+			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/*
 			 * Считываем элементы "Кабель"
@@ -752,7 +730,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Cable cable = new Cable(dfc,cbc,/*dbc,fc,bc,*/pc);
+				Cable cable = new Cable(sys.dfc,sys.cbc,/*dbc,fc,bc,*/sys.pc);
 				
 				cable.setId(n.getAttribute("i").getIntValue()); 
 				cable.setFrom(n.getAttribute("f").getIntValue());
@@ -772,8 +750,9 @@ public class RW {
 				cable.setYear(n.getChildText("y"));
 				cable.setStatus(this.valueOf(n.getChildText("s")));
 				
-				cc.putElement(cable);
+				sys.cc.putElement(cable);
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/*
 			 * Считываем элементы "Пара"
@@ -783,7 +762,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Pair pair = new Pair(fc,bc,dbc,cc);
+				Pair pair = new Pair(sys.fc,sys.bc,sys.dbc,sys.cc);
 				
 				pair.setId(n.getAttribute("i").getIntValue()); 
 				pair.attachToCable(n.getAttribute("c").getIntValue()); 
@@ -795,8 +774,9 @@ public class RW {
 				pair.setToNumber(this.valueOf(n.getChildText("t")));
 				pair.setStatus(this.valueOf(n.getChildText("s")));
 				
-				pc.putElement(pair);	
+				sys.pc.putElement(pair);
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			
 			/*
 			 * Считываем элементы "Включение"
@@ -805,7 +785,7 @@ public class RW {
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Path path = new Path(sc,pc);
+				Path path = new Path(sys.sc,sys.pc);
 				
 				path.setId(n.getAttribute("i").getIntValue());
 				
@@ -831,10 +811,9 @@ public class RW {
 					}
 				}
 				
-				phc.putElement(path);
-				
+				sys.phc.putElement(path);
 			}
-			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Абонент"
 			 */
@@ -854,10 +833,11 @@ public class RW {
 				subscriber.setAdress(n.getChildText("a"));
 				subscriber.setEquipment(n.getChildText("e")); 
 				
-				sc.putElement(subscriber);
+				sys.sc.putElement(subscriber);
+				
 				
 			}
-			
+			form.progressBar.setValue(sys.getSize() * 100 / size);
 			/*
 			 * Считываем элементы "Повреждение"
 			 */
@@ -875,12 +855,14 @@ public class RW {
 				damage.setOpenDate(n.getChildText("o"));
 				damage.setCloseDate(n.getChildText("c"));
 				
-				dmc.putElement(damage);
+				sys.dmc.putElement(damage);
 				
 			}
+			form.progressBar.setValue(sys.getSize() * 100 / size);
+			form.util_newInfo(sys.getSize().toString() + "  " +size.toString());
 			
 			addLogMessage("Файл открыт: "+ xmlFile.getName() + "("+ xmlFile.length() + " байт)");
-			addLogMessage("Количество элементов после открытия файла: nc:"+ nc.getSize()+"; dfc:"+dfc.getSize()+"; cbc:"+cbc.getSize()+"; dbc:"+dbc.getSize()+"; mc:"+mc.getSize()+"; duc:"+duc.getSize()+"; buc:"+buc.getSize()+"; tuc:"+tuc.getSize()+"; fc:"+fc.getSize()+"; bc:"+bc.getSize()+"; cc:"+cc.getSize()+"; pc:"+pc.getSize()+"; phc:"+phc.getSize()+"; sc:"+sc.getSize()+"; dmc:"+dmc.getSize());
+			addLogMessage("Количество элементов после открытия файла: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			writeLog();
 			
 			return true;
@@ -1021,10 +1003,10 @@ public class RW {
 			/*
 			 * Заполняем таблицу с кабелями
 			 */
-			Vector<AbstractElement> mcable = cc.sortByIdUp(cc.getMCable(cab));
-			Vector<AbstractElement> icablein = cc.sortByIdUp(cc.getICableIn(cab));
-			Vector<AbstractElement> icableout = cc.sortByIdUp(cc.getICableOut(cab));
-			Vector<AbstractElement> dcableout = cc.sortByIdUp(cc.getDCableOut(cab));
+			Vector<AbstractElement> mcable = sys.cc.sortByIdUp(sys.cc.getMCable(cab));
+			Vector<AbstractElement> icablein = sys.cc.sortByIdUp(sys.cc.getICableIn(cab));
+			Vector<AbstractElement> icableout = sys.cc.sortByIdUp(sys.cc.getICableOut(cab));
+			Vector<AbstractElement> dcableout = sys.cc.sortByIdUp(sys.cc.getDCableOut(cab));
 			
 			int max = mcable.size();
 			if (max < icablein.size()) max = icablein.size();
@@ -1059,7 +1041,7 @@ public class RW {
 			
 			for (int i = 0; i < cab.getPlacesCount(); i++) {
 				
-				Box box = (Box)bc.getInPlace(i, cab.getId());
+				Box box = (Box)sys.bc.getInPlace(i, cab.getId());
 				
 				if (x > 2) x = 0;
 				
@@ -1095,11 +1077,11 @@ public class RW {
 					
 						HashSet<Cable> h = new HashSet<Cable>();
 						for (int k = 0; k < 10; k++) {
-							Pair p = pc.getInPlace(box, n * 10 + k);
+							Pair p = sys.pc.getInPlace(box, n * 10 + k);
 						
 							if (p != null) {
 								Integer cableId = p.getCable();
-								Cable c = (Cable)cc.getElement(cableId);
+								Cable c = (Cable)sys.cc.getElement(cableId);
 								if (!h.contains(c)) h.add(c);
 							}
 						}
@@ -1136,7 +1118,7 @@ public class RW {
 				tr.addContent(new Element("td").addContent(cable.getWireDiametr().toString()));
 				tr.addContent(new Element("td").addContent(cable.getLenght().toString()));
 				
-				Iterator<AbstractElement> pairIterator = pc.sortByIdUp(pc.getInCable(cable, 2)).iterator();
+				Iterator<AbstractElement> pairIterator = sys.pc.sortByIdUp(sys.pc.getInCable(cable, 2)).iterator();
 				String s = "";
 				while (pairIterator.hasNext()) {
 					s = s  + ((Pair)pairIterator.next()).getNumberInCable() + ",";
@@ -1206,7 +1188,7 @@ public class RW {
 			
 			for (int i = 0; i < dframe.getPlacesCount(); i++) {
 				
-				Frame frame = (Frame)fc.getInPlace(i, dframe.getId());
+				Frame frame = (Frame)sys.fc.getInPlace(i, dframe.getId());
 				
 				if (x > 6) x = 0;
 				
@@ -1246,18 +1228,18 @@ public class RW {
 						HashSet<StructuredElement> ch = new HashSet<StructuredElement>();
 						
 						for (int k = 0; k < 10; k++) {
-							Pair p = pc.getInPlace(frame, n * 10 + k);
+							Pair p = sys.pc.getInPlace(frame, n * 10 + k);
 						
 							if (p != null) {
 								Integer cableId = p.getCable();
-								Cable c = (Cable)cc.getElement(cableId);
+								Cable c = (Cable)sys.cc.getElement(cableId);
 								StructuredElement se;
 								if (c.getType().equals(0)) {
-									 se = (StructuredElement) cbc.getElement(c.getTo());
+									 se = (StructuredElement) sys.cbc.getElement(c.getTo());
 									 if (!ch.contains(se)) ch.add(se);
 								}
 								if (c.getType().equals(3)) {
-									 se = (StructuredElement) dbc.getElement(c.getTo());
+									 se = (StructuredElement) sys.dbc.getElement(c.getTo());
 									 if (!ch.contains(se)) ch.add(se);
 								}
 								
@@ -1347,7 +1329,7 @@ public class RW {
 			
 			Element newTr = new Element("tr");;
 			
-			Iterator<Path> pt = phc.getSubscriberPaths(sub).iterator();
+			Iterator<Path> pt = sys.phc.getSubscriberPaths(sub).iterator();
 			while (pt.hasNext()) {
 				
 				Path path = pt.next();
@@ -1356,8 +1338,8 @@ public class RW {
 				if (path.isdrPair()) {
 				
 					
-						Pair p = (Pair)pc.getElement(path.getdrPair());
-						Frame f = (Frame)fc.getElement(p.getElementFrom());
+						Pair p = (Pair)sys.pc.getElement(path.getdrPair());
+						Frame f = (Frame)sys.fc.getElement(p.getElementFrom());
 				
 						newTr.addContent(new Element("td").addContent(f.toString()));
 						newTr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
@@ -1369,11 +1351,11 @@ public class RW {
 				}
 				if (path.ismPair()) {	
 				
-					Pair p = (Pair)pc.getElement(path.getmPair());
-					Frame f = (Frame)fc.getElement(p.getElementFrom());
-					Box b = (Box)bc.getElement(p.getElementTo());
-					Cabinet cb = (Cabinet)cbc.getElement(b.getOwnerId());
-					Cable c = (Cable)cc.getElement(p.getCable());
+					Pair p = (Pair)sys.pc.getElement(path.getmPair());
+					Frame f = (Frame)sys.fc.getElement(p.getElementFrom());
+					Box b = (Box)sys.bc.getElement(p.getElementTo());
+					Cabinet cb = (Cabinet)sys.cbc.getElement(b.getOwnerId());
+					Cable c = (Cable)sys.cc.getElement(p.getCable());
 						
 					newTr.addContent(new Element("td").addContent(f.toString()));
 					newTr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
@@ -1392,14 +1374,14 @@ public class RW {
 			
 		
 			for (int i = 0; i < path.geticPair().size(); i++) {
-				Pair p = (Pair)pc.getElement(path.geticPair().get(i));
-				Cable c = (Cable)cc.getElement(p.getCable());
+				Pair p = (Pair)sys.pc.getElement(path.geticPair().get(i));
+				Cable c = (Cable)sys.cc.getElement(p.getCable());
 				
-				Box bto = (Box)bc.getElement(p.getElementTo());
-				Box bfrom = (Box)bc.getElement(p.getElementFrom());
+				Box bto = (Box)sys.bc.getElement(p.getElementTo());
+				Box bfrom = (Box)sys.bc.getElement(p.getElementFrom());
 				
 				//Cabinet cbfrom = (Cabinet)cbc.getElement(bfrom.getOwnerId());
-				Cabinet cbto = (Cabinet)cbc.getElement(bto.getOwnerId());
+				Cabinet cbto = (Cabinet)sys.cbc.getElement(bto.getOwnerId());
 				
 				newTr.addContent(new Element("td").addContent(bfrom.toString()+"-"+p.getFromNumber()));
 				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
@@ -1419,10 +1401,10 @@ public class RW {
 			
 			if ( path.ismPair() && ((path.isicPair() && path.isdbPair()) || (!path.isicPair() && path.isdbPair()))) { //есть/нет передача, есть распределение
 				
-					Pair p = (Pair)pc.getElement(path.getdbPair());
-					Box b = (Box)bc.getElement(p.getElementFrom());
+					Pair p = (Pair)sys.pc.getElement(path.getdbPair());
+					Box b = (Box)sys.bc.getElement(p.getElementFrom());
 						
-					Cable c = (Cable)cc.getElement(p.getCable());
+					Cable c = (Cable)sys.cc.getElement(p.getCable());
 					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getFromNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 						
@@ -1445,10 +1427,10 @@ public class RW {
 			if (!path.ismPair() && !path.isicPair() && path.isdbPair()) { //только распределение
 				
 				
-					Pair p = (Pair)pc.getElement(path.getdbPair());
-					Box b = (Box)bc.getElement(p.getElementFrom());
-					Cabinet cb = (Cabinet)cbc.getElement(b.getOwnerId());	
-					Cable c = (Cable)cc.getElement(p.getCable());
+					Pair p = (Pair)sys.pc.getElement(path.getdbPair());
+					Box b = (Box)sys.bc.getElement(p.getElementFrom());
+					Cabinet cb = (Cabinet)sys.cbc.getElement(b.getOwnerId());	
+					Cable c = (Cable)sys.cc.getElement(p.getCable());
 				
 					newTr = new Element("tr");
 					newTr.addContent(new Element("td").addContent(" "));
@@ -1529,7 +1511,7 @@ public class RW {
 	 */
 	public String createМCablePassport(Cable cable) {
 		
-		Cabinet cab = (Cabinet)cbc.getElement(cable.getTo());
+		Cabinet cab = (Cabinet)sys.cbc.getElement(cable.getTo());
 		try {	 
 			
 			Element html = new Element("html");
@@ -1587,7 +1569,7 @@ public class RW {
 			
 			
 			//генерируем ячейку с поврежденными парами
-			Iterator<AbstractElement> pairIterator = pc.sortByIdUp(pc.getInCable(cable, 2)).iterator();
+			Iterator<AbstractElement> pairIterator = sys.pc.sortByIdUp(sys.pc.getInCable(cable, 2)).iterator();
 			String s = "";
 			while (pairIterator.hasNext()) {
 				s = s  + ((Pair)pairIterator.next()).getNumberInCable() + ",";
@@ -1595,12 +1577,12 @@ public class RW {
 			cablesTableTr3.addContent(new Element("td").addContent(s));
 			
 			//генерируем строки с учасками канализации
-			Iterator<?> i = tuc.sortByIdUp(tuc.getTubesByCable(cable)).iterator();
+			Iterator<?> i = sys.tuc.sortByIdUp(sys.tuc.getTubesByCable(cable)).iterator();
 			while (i.hasNext()){
 				
-				Duct d = (Duct)duc.getElement(((Tube)i.next()).getDuct());
-				Manhole m1 = (Manhole)mc.getElement(d.getFrom());
-				Manhole m2 = (Manhole)mc.getElement(d.getTo());
+				Duct d = (Duct)sys.duc.getElement(((Tube)i.next()).getDuct());
+				Manhole m1 = (Manhole)sys.mc.getElement(d.getFrom());
+				Manhole m2 = (Manhole)sys.mc.getElement(d.getTo());
 				
 				if (m1 != null && m2 != null) {
 					Element tr = new Element("tr"); cablesTable.addContent(tr);
@@ -1653,21 +1635,21 @@ public class RW {
 				tr.addContent(new Element("td").addContent(n.toString()));
 				Element td3 = new Element("td"); tr.addContent(td3);
 				
-				Pair p = pc.getInPlace(cable, n);
+				Pair p = sys.pc.getInPlace(cable, n);
 				if (p != null) {
 					
-					Iterator<Path> pi = phc.getPairsPath(p).iterator();
+					Iterator<Path> pi = sys.phc.getPairsPath(p).iterator();
 					
 					while (pi.hasNext()) {
 						Path path = pi.next();
-						td1.addContent(((Subscriber)sc.getElement(path.getSubscriber())).toString() +", " + path.getName()).addContent(new Element("br"));
+						td1.addContent(((Subscriber)sys.sc.getElement(path.getSubscriber())).toString() +", " + path.getName()).addContent(new Element("br"));
 												
 						if (path.isicPair()) {
 							Iterator <Integer> m = path.geticPair().iterator();
 							
 							while(m.hasNext()) {
-								Pair icPair = (Pair)pc.getElement(m.next());
-								Cable dcable = (Cable)cc.getElement(icPair.getCable());
+								Pair icPair = (Pair)sys.pc.getElement(m.next());
+								Cable dcable = (Cable)sys.cc.getElement(icPair.getCable());
 								if (dcable.getFrom().equals(cab.getId()) || dcable.getTo().equals(cab.getId()))
 									td3.addContent(icPair.toString()).addContent(new Element("br"));
 								
@@ -1675,8 +1657,8 @@ public class RW {
 						}
 						
 						if (path.isdbPair()) {
-							Pair dbPair = (Pair)pc.getElement(path.getdbPair());
-							Cable dcable = (Cable)cc.getElement(dbPair.getCable());
+							Pair dbPair = (Pair)sys.pc.getElement(path.getdbPair());
+							Cable dcable = (Cable)sys.cc.getElement(dbPair.getCable());
 							if (dcable.getFrom().equals(cab.getId()))
 								td3.addContent(dbPair.toString()).addContent(new Element("br"));
 						}
@@ -1716,7 +1698,7 @@ public class RW {
 	 */
 	public String createIcCablePassport(Cable cable) {
 		
-		Cabinet cab = (Cabinet)cbc.getElement(cable.getTo());
+		Cabinet cab = (Cabinet)sys.cbc.getElement(cable.getTo());
 		try {	 
 			
 			Element html = new Element("html");
@@ -1759,29 +1741,29 @@ public class RW {
 				tr.addContent(new Element("td").addContent(n.toString()));
 				Element td3 = new Element("td"); tr.addContent(td3);
 			
-				Pair p = pc.getInPlace(cable, n);
+				Pair p = sys.pc.getInPlace(cable, n);
 				if (p != null) {
 				
-					Iterator<Path> pi = phc.getPairsPath(p).iterator();
+					Iterator<Path> pi = sys.phc.getPairsPath(p).iterator();
 				
 					while (pi.hasNext()) {
 						Path path = pi.next();
-						td1.addContent(((Subscriber)sc.getElement(path.getSubscriber())).toString() +", " + path.getName()).addContent(new Element("br"));
+						td1.addContent(((Subscriber)sys.sc.getElement(path.getSubscriber())).toString() +", " + path.getName()).addContent(new Element("br"));
 											
 						if (path.isicPair()) {
 							Iterator <Integer> m = path.geticPair().iterator();
 						
 							while(m.hasNext()) {
-								Pair icPair = (Pair)pc.getElement(m.next());
-								Cable dcable = (Cable)cc.getElement(icPair.getCable());
+								Pair icPair = (Pair)sys.pc.getElement(m.next());
+								Cable dcable = (Cable)sys.cc.getElement(icPair.getCable());
 								if (!dcable.getId().equals(cable.getId()) &&  (dcable.getFrom().equals(cab.getId()) || dcable.getTo().equals(cab.getId())))
 									td3.addContent(icPair.toString()).addContent(new Element("br"));
 							}
 						}
 					
 						if (path.isdbPair()) {
-							Pair dbPair = (Pair)pc.getElement(path.getdbPair());
-							Cable dcable = (Cable)cc.getElement(dbPair.getCable());
+							Pair dbPair = (Pair)sys.pc.getElement(path.getdbPair());
+							Cable dcable = (Cable)sys.cc.getElement(dbPair.getCable());
 							if (dcable.getFrom().equals(cab.getId()))
 								td3.addContent(dbPair.toString()).addContent(new Element("br"));
 						}
@@ -1895,7 +1877,7 @@ public class RW {
 				 * Заполняем таблицу повреждений
 				 */
 				Integer z = 1;
-				Iterator <Damage> d = dmc.getDamages(duct).iterator();
+				Iterator <Damage> d = sys.dmc.getDamages(duct).iterator();
 				while (d.hasNext()) {
 					Damage damage = d.next();
 					Element techTableTr = new Element("tr"); techTable.addContent(techTableTr);
@@ -1910,10 +1892,10 @@ public class RW {
 				/*
 				 * -----------------------------
 				 */
-				HashSet<Tube> h = tuc.getDuctsTubes(duct);
-				AbstractElement from = mc.getElement(duct.getFrom());
-				AbstractElement to = mc.getElement(duct.getTo());
-				AbstractElement tob = buc.getElement(duct.getTo());
+				HashSet<Tube> h = sys.tuc.getDuctsTubes(duct);
+				AbstractElement from = sys.mc.getElement(duct.getFrom());
+				AbstractElement to = sys.mc.getElement(duct.getTo());
+				AbstractElement tob = sys.buc.getElement(duct.getTo());
 				
 				if (n.equals(1)) if (from != null) fromto.addContent("От: " + ((Manhole)from).getAdress()).addContent(new Element("br"));
 		
@@ -2020,17 +2002,17 @@ public class RW {
 			cablesTableTr1.addContent(new Element("th").addContent("№ канала уходящего"));
 			cablesTableTr1.addContent(new Element("th").addContent("Расстояние до следующего колодца, м"));
 			
-			HashSet<Duct> ductInSet = duc.getInDuct(man);
-			HashSet<Duct> ductOutSet = duc.getOutDuct(man);
+			HashSet<Duct> ductInSet = sys.duc.getInDuct(man);
+			HashSet<Duct> ductOutSet = sys.duc.getOutDuct(man);
 			
 			Iterator <Duct> d = ductInSet.iterator();
 			while (d.hasNext()) {
 				Duct duct = d.next();
-				HashSet<Tube> tubeSet = tuc.getDuctsTubes(duct);
+				HashSet<Tube> tubeSet = sys.tuc.getDuctsTubes(duct);
 				Iterator<Tube> t = tubeSet.iterator();
 				while (t.hasNext()) {
 					Tube tube = t.next();
-					Vector<Cable> cableSet = cc.getTubesCables(tube);
+					Vector<Cable> cableSet = sys.cc.getTubesCables(tube);
 					Iterator<Cable> c = cableSet.iterator();
 					while (c.hasNext()) {
 						Cable cable = c.next();
@@ -2044,7 +2026,7 @@ public class RW {
 						Iterator<Duct> o = ductOutSet.iterator();
 						while (o.hasNext()) {
 							Duct od = o.next();
-							outTube = tuc.getTubeBuCableDuct(cable, od);
+							outTube = sys.tuc.getTubeBuCableDuct(cable, od);
 							if (outTube != null) {
 								outDuct = od;
 								break;
@@ -2111,7 +2093,7 @@ public class RW {
 			Element frameTd = new Element("td").setAttribute("class","frame-td"); frameTr.addContent(frameTd);
 			
 			frameTd.addContent(new Element("h2").addContent("ПАСПОРТ КАБЕЛЬНОГО ВВОДА"));
-			Building building = (Building)buc.getElement(duct.getTo());
+			Building building = (Building)sys.buc.getElement(duct.getTo());
 			frameTd.addContent(new Element("h4").addContent("Адрес: " + building.toString()));
 			frameTd.addContent(new Element("h4").addContent("Способ изготовления ввода: " + duct.getМanufacturingМethod()));
 			
@@ -2124,16 +2106,16 @@ public class RW {
 			cablesTableTr1.addContent(new Element("th").addContent("Диаметр жил"));
 			cablesTableTr1.addContent(new Element("th").addContent("№ шкафа"));
 			
-			HashSet<DBox> hdbox= dbc.getInBuilding(building);
+			HashSet<DBox> hdbox= sys.dbc.getInBuilding(building);
 			
-			Iterator <AbstractElement> i = tuc.sortByIdUp(tuc.getDuctsTubes(duct)).iterator();
+			Iterator <AbstractElement> i = sys.tuc.sortByIdUp(sys.tuc.getDuctsTubes(duct)).iterator();
 			while (i.hasNext()) {
 				
 				Tube tube = (Tube)i.next();
 				
 				Iterator <Integer> k = tube.getCables().iterator();
 				while (k.hasNext()) {
-					Cable cable = (Cable)cc.getElement(k.next());
+					Cable cable = (Cable)sys.cc.getElement(k.next());
 					
 					if (cable != null) {
 						
@@ -2144,7 +2126,7 @@ public class RW {
 						Iterator <DBox> d = hdbox.iterator();
 						while (d.hasNext()) {
 							DBox db = (DBox)d.next();
-							Pair p = pc.getInPlace(db, 0);
+							Pair p = sys.pc.getInPlace(db, 0);
 							
 							if (cable.getId().equals(p.getCable())) dbox = db;
 						}
@@ -2156,7 +2138,7 @@ public class RW {
 						cablesTableTr.addContent(new Element("td").addContent(cable.getLenght().toString()));
 						cablesTableTr.addContent(new Element("td").addContent(cable.getWireDiametr().toString()));
 						
-						Cabinet cab = (Cabinet)cbc.getElement(cable.getFrom());
+						Cabinet cab = (Cabinet)sys.cbc.getElement(cable.getFrom());
 						if (cab != null) { cablesTableTr.addContent(new Element("td").addContent(cab.toString()));}
 						else { cablesTableTr.addContent(new Element("td").addContent("-")); }
 					}
@@ -2222,11 +2204,11 @@ public class RW {
 			
 			while (i.hasNext()) {
 				DBox dbox = i.next();
-				Building build = (Building)buc.getElement(dbox.getBuilding());
-				Pair p = pc.getInPlace(dbox, 0);
+				Building build = (Building)sys.buc.getElement(dbox.getBuilding());
+				Pair p = sys.pc.getInPlace(dbox, 0);
 				
 				Cable cable = null;
-				if (p != null)  cable = (Cable)cc.getElement(p.getCable());
+				if (p != null)  cable = (Cable)sys.cc.getElement(p.getCable());
 				
 				Element cablesTableTr = new Element("tr"); cablesTable.addContent(cablesTableTr);
 				cablesTableTr.addContent(new Element("td").addContent(dbox.toString()));
