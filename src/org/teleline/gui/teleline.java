@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
 import org.teleline.io.Reader;
+import org.teleline.io.Writer;
 import org.teleline.model.*;
 
 import javax.swing.JMenuBar;
@@ -33,6 +34,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import java.io.File;
+
 import javax.swing.JList;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
@@ -124,7 +126,10 @@ public class teleline {
 				
 				if (sys.rw.isSaved() == false) {
 					if (GUI.newDialog(frmTeleline, "Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
-						File file = sys.rw.save();
+						Writer writer = new Writer(sys);
+						writer.start();
+						
+					/*	File file = sys.rw.save();
 						if (file != null) {
 							GUI.newInfo(frmTeleline, "Файл сохранен");
 							frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
@@ -132,7 +137,7 @@ public class teleline {
 						}
 						else {
 							GUI.newError(frmTeleline, "Ошибка при сохранении файла");
-						}
+						}*/
 					}					
 				}
 				 
@@ -165,14 +170,17 @@ public class teleline {
 		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File file = sys.rw.save();
+				Writer writer = new Writer(sys);
+				writer.start();
+				
+				/*File file = sys.rw.save();
 				if (file != null) {
 					GUI.newInfo(frmTeleline, "Файл сохранен");
 					frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
 				}
 				else {
 					GUI.newError(frmTeleline, "Ошибка при сохранении файла");
-				}
+				}*/
 			}
 		});
 		menuFile.add(mntmNewMenuItem_1);

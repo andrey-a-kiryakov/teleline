@@ -40,11 +40,9 @@ public class Reader extends RW implements Runnable{
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
+		FormProgressBar form = new FormProgressBar(sys);
+		form.iFrame.setTitle(form.iFrame.getTitle() + " - чтение файла");
 		try {
-			
-			FormProgressBar form = new FormProgressBar(sys);
-			form.iFrame.setTitle(form.iFrame.getTitle() + " - чтение файла");
-			
 			SAXBuilder builder = new SAXBuilder();
 			//File xmlFile = new File(file);
 			
@@ -436,8 +434,6 @@ public class Reader extends RW implements Runnable{
 			}
 			form.progressBar.setValue(sys.getSize() * 100 / size);
 			t.sleep(10);
-		//	form.util_newInfo(sys.getSize().toString() + "  " +size.toString());
-			
 			addLogMessage("Файл открыт: "+ xmlFile.getName() + "("+ xmlFile.length() + " байт)");
 			addLogMessage("Количество элементов после открытия файла: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			writeLog();
@@ -446,18 +442,17 @@ public class Reader extends RW implements Runnable{
 			//return true;
 			
 		  } catch (IOException io) {
-			//System.out.println(io.getMessage());
 			writeError("Ошибка чтения файла: " + io.toString()); 
+			form.label.setText("Ошибка при чтении файла");
 			//return false;
 		  } 
 			catch (JDOMException jdomex) {
-			//System.out.println(jdomex.getMessage());
 			writeError("Ошибка парсинга XML файла:" + jdomex.toString());
+			form.label.setText("Ошибка при чтении файла");
 			//return false;
 		  } catch (InterruptedException e) {
-			
 			  writeError("Ошибка потока чтения:" + e.toString());
-		
+			  form.label.setText("Ошибка при чтении файла");
 			}
 		stop();
 		
