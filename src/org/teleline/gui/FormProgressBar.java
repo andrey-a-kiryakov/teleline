@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.WindowConstants;
 
 import org.teleline.model.Sys;
 
@@ -29,6 +30,8 @@ public class FormProgressBar extends Form {
 		progressBar.setMaximum(100);
 		//progressBar.setValue(30);
 		iFrame.getContentPane().add(progressBar);
+		iFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		okButton.setEnabled(false);
 		//iFrame.setModal(true);
 		
 		okButton.addActionListener(new ActionListener() {

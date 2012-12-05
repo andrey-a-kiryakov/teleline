@@ -58,6 +58,7 @@ public class teleline {
 					teleline window = new teleline();
 					WindowListener winListener = new telelineListener(window);
 					window.frmTeleline.addWindowListener(winListener);
+					window.frmTeleline.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					
 					window.frmTeleline.setVisible(true);
 				} catch (Exception e) {

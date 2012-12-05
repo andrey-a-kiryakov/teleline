@@ -22,24 +22,15 @@ public class telelineListener implements WindowListener {
 		 if (win.sys.rw.isSaved() == false){ 
 			
 			 if (win.GUI.newDialog(e.getComponent(), "Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
-				 Writer writer = new Writer(win.sys);
-					writer.start();
 				 
-				/* File file = win.sys.rw.save();
-				 if (file != null) {
-					 win.GUI.newInfo(e.getComponent(), "Файл успешно сохранен");
-					 win.frmTeleline.setTitle("teleLine - Система технического учета ЛКХ - " + file.getName());
-					}
-					else {
-						win.GUI.newError(e.getComponent(), "Ошибка при сохранении файла");
-					}*/
+				 Writer writer = new Writer(win.sys);
+				 writer.start();
 			 }
-		 
 		 }
 		 win.sys.rw.deleteNotSavedLog();
 		 win.sys.rw.addLogMessage("== Программа закрыта ==");
 	     win.sys.rw.writeLog();
-		 		 
+		 win.frmTeleline.dispose();
     }
 
 	public void windowClosed(WindowEvent e) {
