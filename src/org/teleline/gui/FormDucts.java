@@ -46,7 +46,7 @@ public class FormDucts extends FormAbstractElements {
 				for (int i = 0; i < form.setListModel.getSize(); i++) 
 					d.add((Duct)form.setListModel.getElementAt(i));
 				}
-				//form.iFrame.dispose();
+				//form.close();
 				if (d.size() > 0) {
 				util_viewPassport(iSys.rw.createDuctPassport(d));
 				}	

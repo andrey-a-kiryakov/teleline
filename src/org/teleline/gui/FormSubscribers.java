@@ -103,7 +103,7 @@ public class FormSubscribers extends Form {
 									break;
 								}
 							}
-							form.iFrame.dispose();
+							form.close();
 						}
 					});
 				
@@ -307,7 +307,7 @@ public class FormSubscribers extends Form {
 							
 							
 							if ( addPairToPath(path, (Pair)form.selectedPairList.getSelectedValue()) != null) {
-								form.iFrame.dispose();
+								form.close();
 								util_clearTable(pairList);
 								Iterator<Pair> i = path.getUsedPairs().iterator();
 								while(i.hasNext()){

@@ -11,7 +11,7 @@ import java.util.Vector;
  *@author Кирьяков Андрей
  */
 public abstract class AbstractCollection {
-	private HashSet<AbstractElement> elements = new HashSet<AbstractElement>();
+	private HashSet<AbstractElement> elements;
 	private IdGenerator generator;
 	
 	/**
@@ -20,6 +20,7 @@ public abstract class AbstractCollection {
 	public AbstractCollection(IdGenerator gen) {
 		
 		this.generator = gen;
+		elements = new HashSet<AbstractElement>();
 	}
 	/**
 	 * Добавляет новый элемент в коллекцию, индекс назначается автоматически

@@ -3,7 +3,7 @@ package org.teleline.model;
 
 import java.util.Iterator;
 
-import org.teleline.gui.gui;
+import org.teleline.gui.ManagerForms;
 import org.teleline.io.RW;
 import org.teleline.io.Validator;
 
@@ -28,8 +28,9 @@ public class Sys {
 		sc = new SubscriberCollection(ig);
 		dmc = new DamageCollection(ig);
 		
-		this.v = new Validator();
+		v = new Validator();
 		rw = new RW(this);
+		mng = new ManagerForms();
 		
 		Net net = new Net();
 		net.setName("Новая сеть");
@@ -37,9 +38,10 @@ public class Sys {
 	}
 	
 	public IdGenerator ig;
-	public gui GUI;
+	//public gui GUI;
 	public RW rw;
 	public Validator v;
+	public ManagerForms mng;
 	
 	public NetCollection nc;
 	public DFrameCollection dfc;

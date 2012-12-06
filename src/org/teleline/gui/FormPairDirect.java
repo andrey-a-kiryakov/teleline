@@ -47,7 +47,7 @@ public class FormPairDirect extends Form {
 							int selectedIndex = form.table.getRowSorter().convertRowIndexToModel(form.table.getSelectionModel().getMinSelectionIndex());
 							dboxWrapper.setElement((DBox)form.table.getModel().getValueAt(selectedIndex, 0));
 							dboxTo.setText(dboxWrapper.getElement().toString());
-							form.iFrame.dispose();
+							form.close();
 						}
 						
 					});

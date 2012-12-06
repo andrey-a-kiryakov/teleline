@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
@@ -55,11 +57,16 @@ public abstract class Form {
 	public Form(Sys iSys) {
 		
 		this.iSys = iSys;
+		
 	}
 	
 	protected JDialog createDialog (String title, int width, int height) {
 		
 		iFrame = new JDialog();
+		iSys.mng.add(iFrame);
+		FormListener listener = new FormListener(iSys, iFrame);
+		iFrame.addWindowListener(listener);
+		//iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		iFrame.setSize(width, height);
 		iFrame.setLocationRelativeTo(iFrame);
 		iFrame.setTitle(title);
@@ -68,8 +75,9 @@ public abstract class Form {
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
 	}
-	public void setSys(Sys iSys) {
-		this.iSys = iSys;
+	
+	public void close() {
+		iSys.mng.close(iFrame);
 	}
 	/**
 	 * Добавляет список к форме
@@ -347,12 +355,12 @@ public abstract class Form {
 									if (oldPairButton != null)
 										util_setPairButtonColor(oldPair, oldPairButton);
 								}
-								formPath.iFrame.dispose();	
+								formPath.close();	
 							}
 						};
 						formPath.okButton.addActionListener(selectPath);
 	
-						form.iFrame.dispose();	
+						form.close();	
 					}
 				};
 				form.okButton.addActionListener(selectSubscriber);
@@ -409,7 +417,7 @@ public abstract class Form {
 							util_setPairButtonColor(p, ep);
 						}
 					}				
-					form.iFrame.dispose();	
+					form.close();	
 					}
 				};
 				form.okButton.addActionListener(selectPath);			
@@ -460,7 +468,7 @@ public abstract class Form {
 						t.addCable(cable);
 						iSys.rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + iSys.duc.getElement(t.getDuct()));
 						util_setTubeButtonColor(t, ep);	
-						form.iFrame.dispose();
+						form.close();
 					}
 				};
 				form.okButton.addActionListener(selectCable);
