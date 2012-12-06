@@ -5,6 +5,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
+import org.teleline.gui.Form;
 import org.teleline.io.Writer;
 
 
@@ -22,7 +23,7 @@ public class telelineListener implements WindowListener {
 		 
 		 if (win.sys.rw.isSaved() == false){ 
 			
-			 if (win.GUI.newDialog(e.getComponent(), "Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
+			 if (Form.util_newDialog("Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
 				 
 				 Writer writer = new Writer(win.sys);
 				 writer.start();

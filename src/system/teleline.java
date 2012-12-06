@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
 import org.teleline.gui.ExtFileFilter;
+import org.teleline.gui.Form;
 import org.teleline.gui.FormBox;
 import org.teleline.gui.FormBuilding;
 import org.teleline.gui.FormBuildings;
@@ -31,7 +32,6 @@ import org.teleline.gui.FormPairMagAndInt;
 import org.teleline.gui.FormStatisticCommon;
 import org.teleline.gui.FormSubscriber;
 import org.teleline.gui.FormSubscribers;
-import org.teleline.gui.gui;
 import org.teleline.io.Reader;
 import org.teleline.io.Writer;
 import org.teleline.model.*;
@@ -55,7 +55,6 @@ import java.awt.event.InputEvent;
 public class teleline {
 	
 	JFrame frmTeleline;
-	public gui GUI;	
 	public Sys sys;
 	
 	/**
@@ -86,7 +85,6 @@ public class teleline {
 	public teleline() {
 		
 		sys = new Sys();
-		GUI = new gui(sys,frmTeleline);
 		initialize();
 	}
 
@@ -137,7 +135,7 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (sys.rw.isSaved() == false) {
-					if (GUI.newDialog(frmTeleline, "Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
+					if (Form.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();
 					}					

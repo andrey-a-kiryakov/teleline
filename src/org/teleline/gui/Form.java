@@ -730,11 +730,11 @@ public abstract class Form {
 	
 	public void util_newError (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Ошибка", JOptionPane.ERROR_MESSAGE);}
 	
-	public int util_newDialog(String mes) {
+	public static int util_newDialog(String mes) {
 		
 		Object[] options = {"Да", "Нет"};
 		
-		return JOptionPane.showOptionDialog(iFrame,
+		return JOptionPane.showOptionDialog(/*iFrame*/null,
 				mes,
 				"Подтверждение операции",
 				JOptionPane.YES_NO_OPTION,
