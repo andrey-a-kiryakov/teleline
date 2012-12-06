@@ -396,60 +396,67 @@ public class RW {
 			Element head = new Element("head");
 			Element meta = new Element("meta").setAttribute("http-equiv","content-type").setAttribute("content", "text/html;charset=utf-8");
 			head.addContent(meta);
-			meta = new Element("meta").setAttribute("title","Паспорт кросса " + dframe.getName());
+			meta = new Element("meta").setAttribute("title","Паспорт кросса: " + dframe.getName());
 			head.addContent(meta);
 			Element body = new Element("body");
 			Element style = new Element("style").setAttribute("type","text/css")
-					.addContent(".empty{color: #cccccc} table{border-collapse: collapse}  .frame-table{border-style:none; width:1200px} .frame-tr, .frame-td, .big-table-tr, .big-table-td {border-style:none}  .boxes-table{margin:0 10px 10px 0} td, th{border: 1px solid black; background-color:#eeeeee; font-size:10pt; padding:1px} td{background-color:#ffffff} ");
+					.addContent(
+							".empty{border: 0px solid black; margin:5px;} " +
+							"table{border-collapse: collapse}  " +
+							".big-table-tr, .big-table-td {border-style:none}  " +
+							".boxes-table{margin:5px;} " +
+							"td, th{vertical-align: top; border: 1px solid black; background-color:#eeeeee; font-size:10pt; padding:2px} " +
+							"td{background-color:#ffffff} ");
 			head.addContent(style);
 			
 			html.addContent(head); html.addContent(body);
+			body.addContent(new Element("h2").addContent("Паспорт кросса: " + dframe.getName()));
+	
+			Element bigtable = new Element("table").setAttribute("class","big-table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); 
 			
-			Element frameTable = new Element("table").setAttribute("class","frame-table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); body.addContent(frameTable);
-			Element frameTr = new Element("tr").setAttribute("class","frame-tr"); frameTable.addContent(frameTr);
-			Element frameTd = new Element("td").setAttribute("class","frame-td"); frameTr.addContent(frameTd);
-			
-			Element element = new Element("h2"); element.addContent("Паспорт кросса " + dframe.getName());
-			frameTd.addContent(element);
-
-			Element bigtable = new Element("table").setAttribute("class","big-table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(bigtable);
-			
+			body.addContent(bigtable);
 			int x = 0; Element newtr = new Element("tr").setAttribute("class","big-table-tr");
 			
 			for (int i = 0; i < dframe.getPlacesCount(); i++) {
 				
 				Frame frame = (Frame)sys.fc.getInPlace(i, dframe.getId());
 				
-				if (x > 6) x = 0;
+				if (x > 5) x = 0;
 				
 				if (x == 0)  { newtr =  new Element("tr"); bigtable.addContent(newtr); }
 					
 				Element newtd = new Element("td").setAttribute("class","big-table-td"); newtr.addContent(newtd);
+				
 				if (frame == null) {
-					Element boxtable = new Element("table").setAttribute("class", "boxes-table").setAttribute("width", "120").setAttribute("cellpadding", "2").setAttribute("cellspacing", "1"); newtd.addContent(boxtable);
-					Element tr = new Element("tr"); boxtable.addContent(tr);
-					tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
-					tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
-					tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
+					Element div = new Element("div").setAttribute("class", "empty").addContent("Незанятое место №"+((Integer)i).toString());
+					newtd.addContent(div);
+				//	Element boxtable = new Element("table").setAttribute("class", "boxes-table").setAttribute("width", "100%").setAttribute("cellpadding", "2").setAttribute("cellspacing", "1"); 
+				//	newtd.addContent(boxtable);
+				//	Element tr = new Element("tr"); boxtable.addContent(tr);
+				//	tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
+				//	tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
+				//	tr.addContent(new Element("th").setAttribute("class", "empty").addContent("пусто"));
 					
-					for (int n = 0; n < 15; n++) {
+				//	for (int n = 0; n < 15; n++) {
 						
-						Element tr11 = new Element("tr"); boxtable.addContent(tr11);
-						tr11.addContent(new Element("td").setAttribute("class", "empty").addContent("пусто"));
-						tr11.addContent(new Element("td").setAttribute("class", "empty").addContent(((Integer)(n*10)).toString()+"-"+((Integer)(n*10+9)).toString()));
-						tr11.addContent(new Element("td").setAttribute("class", "empty").addContent("пусто"));
-					}
+				//		Element tr11 = new Element("tr").setAttribute("class", "empty");
+				//		boxtable.addContent(tr11);
+				//		tr11.addContent(new Element("td").setAttribute("class", "empty").addContent("пусто"));
+				//		tr11.addContent(new Element("td").setAttribute("class", "empty").addContent(((Integer)(n*10)).toString()+"-"+((Integer)(n*10+9)).toString()));
+				//		tr11.addContent(new Element("td").setAttribute("class", "empty").addContent("пусто"));
+				//	}
 				}
 				else {
 				
-					Element boxtable = new Element("table").setAttribute("class", "boxes-table").setAttribute("width", "120").setAttribute("cellpadding", "2").setAttribute("cellspacing", "1"); newtd.addContent(boxtable);
+					Element boxtable = new Element("table").setAttribute("class", "boxes-table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); 
+					newtd.addContent(boxtable);
 					Element tr = new Element("tr"); boxtable.addContent(tr);
 					tr.addContent(new Element("th").addContent("Шк"));
 					tr.addContent(new Element("th").addContent(frame.toString()));
 					tr.addContent(new Element("th").addContent("М"));
 					
 				
-					for (int n = 0; n < 15; n++) {
+					for (int n = 0; n < frame.getCapacity()/10; n++) {
 					
 						Element tr11 = new Element("tr"); boxtable.addContent(tr11);
 						
@@ -493,7 +500,13 @@ public class RW {
 				}
 				x++;
 			}
-
+			
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
+			body.addContent(new Element("h4").addContent("Cоставил: инженер _________________________   \"____\"___________201___г. "));
+			body.addContent(new Element("h4").addContent("Ответственный за технический учет линейных сооружений: __________________________ "));
+			body.addContent(new Element("h4").addContent(" _________________________________________________________________________________"));
+			body.addContent(new Element("h4").addContent("\"____\"___________201___г."));
+			
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getCompactFormat().setEncoding("UTF-8").setOmitDeclaration(true).setIndent("  "));
 	 		
