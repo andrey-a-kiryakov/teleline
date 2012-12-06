@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 
 import org.teleline.model.Cabinet;
 import org.teleline.model.Net;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormCabinet extends Form {
 

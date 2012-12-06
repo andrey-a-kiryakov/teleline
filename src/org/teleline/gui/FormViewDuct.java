@@ -12,8 +12,9 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import org.teleline.model.Duct;
-import org.teleline.model.Sys;
 import org.teleline.model.Tube;
+
+import system.Sys;
 
 public class FormViewDuct extends Form {
 

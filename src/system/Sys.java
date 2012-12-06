@@ -1,4 +1,4 @@
-package org.teleline.model;
+package system;
 
 
 import java.util.Iterator;
@@ -6,6 +6,39 @@ import java.util.Iterator;
 import org.teleline.gui.ManagerForms;
 import org.teleline.io.RW;
 import org.teleline.io.Validator;
+import org.teleline.model.AbstractElement;
+import org.teleline.model.Box;
+import org.teleline.model.BoxCollection;
+import org.teleline.model.Building;
+import org.teleline.model.BuildingCollection;
+import org.teleline.model.Cabinet;
+import org.teleline.model.CabinetCollection;
+import org.teleline.model.Cable;
+import org.teleline.model.CableCollection;
+import org.teleline.model.ConnectedPointElement;
+import org.teleline.model.DBox;
+import org.teleline.model.DBoxCollection;
+import org.teleline.model.DFrameCollection;
+import org.teleline.model.DFramе;
+import org.teleline.model.DamageCollection;
+import org.teleline.model.Duct;
+import org.teleline.model.DuctCollection;
+import org.teleline.model.Frame;
+import org.teleline.model.FrameCollection;
+import org.teleline.model.IdGenerator;
+import org.teleline.model.Manhole;
+import org.teleline.model.ManholeCollection;
+import org.teleline.model.Net;
+import org.teleline.model.NetCollection;
+import org.teleline.model.Pair;
+import org.teleline.model.PairCollection;
+import org.teleline.model.Path;
+import org.teleline.model.PathCollection;
+import org.teleline.model.StructuredElement;
+import org.teleline.model.Subscriber;
+import org.teleline.model.SubscriberCollection;
+import org.teleline.model.Tube;
+import org.teleline.model.TubeCollection;
 
 public class Sys {
 	

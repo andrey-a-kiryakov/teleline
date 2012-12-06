@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -46,8 +45,9 @@ import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
-import org.teleline.model.Sys;
 import org.teleline.model.Tube;
+
+import system.Sys;
 
 public abstract class Form {
 	
@@ -64,9 +64,9 @@ public abstract class Form {
 		
 		iFrame = new JDialog();
 		iSys.mng.add(iFrame);
-		FormListener listener = new FormListener(iSys, iFrame);
-		iFrame.addWindowListener(listener);
-		//iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//FormListener listener = 
+		iFrame.addWindowListener(new FormListener(this));
+		iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		iFrame.setSize(width, height);
 		iFrame.setLocationRelativeTo(iFrame);
 		iFrame.setTitle(title);
@@ -75,7 +75,9 @@ public abstract class Form {
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
 	}
-	
+	/**
+	 * Закрывает форму через менеджер форм.
+	 */
 	public void close() {
 		iSys.mng.close(iFrame);
 	}

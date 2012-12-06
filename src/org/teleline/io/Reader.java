@@ -23,8 +23,9 @@ import org.teleline.model.Net;
 import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.Subscriber;
-import org.teleline.model.Sys;
 import org.teleline.model.Tube;
+
+import system.Sys;
 
 public class Reader extends RW implements Runnable{
 	

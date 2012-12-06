@@ -4,7 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 
 import org.teleline.model.Pair;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormPairPaths extends Form {
 	public JList pathList;

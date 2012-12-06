@@ -16,7 +16,8 @@ import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DFramе;
 import org.teleline.model.Frame;
 import org.teleline.model.StructuredElement;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormFrame extends Form {
 

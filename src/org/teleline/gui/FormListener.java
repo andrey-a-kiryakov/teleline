@@ -3,25 +3,19 @@ package org.teleline.gui;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.JDialog;
-
-import org.teleline.model.Sys;
-
-
 public class FormListener implements WindowListener {
 	
-	private JDialog dialog;
-	private Sys sys;
+	private Form form;
 	
-	public FormListener (Sys sys, JDialog dialog){
+	public FormListener (Form form){
 		
-		this.dialog = dialog;
+		this.form = form;
 		
 	}
 	
 	public void windowClosing(WindowEvent e) {
 		 
-	//	sys.mng.remove(dialog);
+		form.close();
 		
     }
 

@@ -14,7 +14,8 @@ import javax.swing.JTextField;
 import org.teleline.model.Building;
 import org.teleline.model.DBox;
 import org.teleline.model.Net;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormDBox extends Form {
 

@@ -11,7 +11,8 @@ import javax.swing.JList;
 import org.teleline.model.Cabinet;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DFramе;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormAddPair extends Form {
 	

@@ -18,7 +18,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Duct;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormDuctsSet extends Form {
 	

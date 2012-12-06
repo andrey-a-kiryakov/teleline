@@ -3,7 +3,8 @@ package org.teleline.gui;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.teleline.model.*;
+
+import system.Sys;
 
 public class gui {
 	public Sys sys;

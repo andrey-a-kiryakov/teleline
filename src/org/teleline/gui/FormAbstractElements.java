@@ -15,7 +15,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.teleline.model.AbstractElement;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormAbstractElements extends Form implements InterfaceFormAbstractElements{
 	

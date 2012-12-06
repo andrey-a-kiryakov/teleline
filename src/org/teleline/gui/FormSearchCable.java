@@ -9,7 +9,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.Cable;
 import org.teleline.model.StructuredElement;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormSearchCable extends Form {
 	

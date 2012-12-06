@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Cabinet;
 
-import org.teleline.model.Sys;
+import system.Sys;
 
 public class FormCabinets extends FormAbstractElements {
 	

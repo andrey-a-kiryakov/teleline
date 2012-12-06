@@ -21,7 +21,8 @@ import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DFramе;
 import org.teleline.model.Frame;
 import org.teleline.model.Pair;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormViewDFrame extends Form {
 

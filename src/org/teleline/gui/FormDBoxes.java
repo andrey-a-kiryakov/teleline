@@ -19,7 +19,8 @@ import javax.swing.table.TableRowSorter;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.DBox;
 import org.teleline.model.Pair;
-import org.teleline.model.Sys;
+
+import system.Sys;
 public class FormDBoxes extends Form {
 	
 	final public JTable table;

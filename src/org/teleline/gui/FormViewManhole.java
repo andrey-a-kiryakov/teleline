@@ -13,7 +13,8 @@ import javax.swing.SwingConstants;
 
 import org.teleline.model.Duct;
 import org.teleline.model.Manhole;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormViewManhole extends Form {
 

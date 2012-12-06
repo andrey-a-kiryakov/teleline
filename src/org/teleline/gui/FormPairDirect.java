@@ -14,8 +14,9 @@ import org.teleline.model.DFramе;
 import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
-import org.teleline.model.Sys;
 import org.teleline.model.Wrapper;
+
+import system.Sys;
 
 public class FormPairDirect extends Form {
 

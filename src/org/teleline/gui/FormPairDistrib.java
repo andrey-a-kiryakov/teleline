@@ -14,8 +14,9 @@ import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DBox;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
-import org.teleline.model.Sys;
 import org.teleline.model.Wrapper;
+
+import system.Sys;
 
 public class FormPairDistrib extends Form {
 

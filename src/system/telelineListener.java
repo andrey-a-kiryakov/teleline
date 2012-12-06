@@ -1,4 +1,4 @@
-package org.teleline.gui;
+package system;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 
 import org.teleline.io.Writer;
+
 
 
 public class telelineListener implements WindowListener {
@@ -27,8 +28,9 @@ public class telelineListener implements WindowListener {
 				 writer.start();
 			 }
 		 }
-		 win.sys.mng.closeAll();
+		 
 		 System.out.println(win.sys.mng.getSize());
+		 win.sys.mng.closeAll();
 		 
 		 win.sys.rw.deleteNotSavedLog();
 		 win.sys.rw.addLogMessage("== Программа закрыта ==");

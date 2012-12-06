@@ -1,4 +1,4 @@
-package org.teleline.gui;
+package system;
 
 import java.awt.EventQueue;
 
@@ -7,6 +7,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
+import org.teleline.gui.ExtFileFilter;
+import org.teleline.gui.FormBox;
+import org.teleline.gui.FormBuilding;
+import org.teleline.gui.FormBuildings;
+import org.teleline.gui.FormCabinet;
+import org.teleline.gui.FormCabinets;
+import org.teleline.gui.FormCable;
+import org.teleline.gui.FormCables;
+import org.teleline.gui.FormDBox;
+import org.teleline.gui.FormDBoxes;
+import org.teleline.gui.FormDFrame;
+import org.teleline.gui.FormDFrames;
+import org.teleline.gui.FormDuct;
+import org.teleline.gui.FormDucts;
+import org.teleline.gui.FormFrame;
+import org.teleline.gui.FormManhole;
+import org.teleline.gui.FormManholes;
+import org.teleline.gui.FormNet;
+import org.teleline.gui.FormPairDirect;
+import org.teleline.gui.FormPairDistrib;
+import org.teleline.gui.FormPairMagAndInt;
+import org.teleline.gui.FormStatisticCommon;
+import org.teleline.gui.FormSubscriber;
+import org.teleline.gui.FormSubscribers;
+import org.teleline.gui.gui;
 import org.teleline.io.Reader;
 import org.teleline.io.Writer;
 import org.teleline.model.*;

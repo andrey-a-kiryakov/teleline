@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
 
-import org.teleline.model.Sys;
+import system.Sys;
 
 public class FormProgressBar extends Form {
 	

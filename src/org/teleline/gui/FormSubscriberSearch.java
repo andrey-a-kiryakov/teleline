@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTextField;
 
-import org.teleline.model.Sys;
+import system.Sys;
 /**
 *Класс элементов Форма для формы поиска абонента по номеру и телефону
 *

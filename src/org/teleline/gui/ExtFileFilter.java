@@ -2,11 +2,12 @@ package org.teleline.gui;
 
 import java.io.File;
 
-class ExtFileFilter extends javax.swing.filechooser.FileFilter {
+public class ExtFileFilter extends javax.swing.filechooser.FileFilter {
 
 	String ext;
 	String description;
-	ExtFileFilter(String ext, String descr) {
+	
+	public ExtFileFilter(String ext, String descr) {
 		this.ext = ext;
 		description = descr;
 	}

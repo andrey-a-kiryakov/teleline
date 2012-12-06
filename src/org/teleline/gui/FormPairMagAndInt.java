@@ -14,7 +14,8 @@ import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
-import org.teleline.model.Sys;
+
+import system.Sys;
 
 public class FormPairMagAndInt extends Form {
 
