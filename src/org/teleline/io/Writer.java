@@ -458,17 +458,21 @@ public class Writer extends RW implements Runnable{
 			//return file;
 			form.label.setText("Файл " + fileName + " сохранен");
 		  } 
-		catch (IOException io) {
-			//writeError("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
-			writeError("Ошибка сохранения файла: " + io.toString());
-			form.label.setText("Ошибка при сохранении файла");
-			// null;
-		  } 
-		catch (InterruptedException e) {
-			writeError("Ошибка сохранения файла: " + e.toString());
-			form.label.setText("Ошибка при сохранении файла");
-		}
+			catch (IOException io) {
+				//writeError("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
+				writeError("Ошибка сохранения файла: " + io.toString());
+				form.label.setText("Ошибка при сохранении файла");
+			} 
+			catch (InterruptedException e) {
+				writeError("Ошибка сохранения файла: " + e.toString());
+				form.label.setText("Ошибка при сохранении файла");
+			}
+			catch(Exception e) {
+				writeError("Ошибка сохранения файла (без уточнения):" + e.toString());
+				form.label.setText("Ошибка при сохранении файла");
+			}
 		stop();
+		form.okButton.setEnabled(true);
 		
 	}
 	

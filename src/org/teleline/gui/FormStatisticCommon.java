@@ -1,40 +1,93 @@
 package org.teleline.gui;
 
+import java.util.Vector;
+
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
+
 import org.teleline.model.Sys;
 
 
 public class FormStatisticCommon extends Form {
 	
-	private JTextArea info;
+	//private JTextArea info;
+	private JTable table;
+	private DefaultTableModel tableModel;
 	
 	public FormStatisticCommon(Sys iSys) {
 		super(iSys);
 		
 		createDialog("Общая статистика", 500, 600);
+		table = addTable(10,10,480,560);
+		tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setColumnIdentifiers(new String[]{"Параметр","Значение"});
 		
-		info = addTextArea(10,10,480,560);
+		//info = addTextArea(10,10,480,560);
 		getStatistic();
 		iFrame.setVisible(true);
 	}
 	
 	private void getStatistic() {
 		
-		info.append("Сеть: " + iSys.nc.getOnlyElement().toString()+"\r\n" );
-		info.append("Кроссов: " + iSys.dfc.getSize() + "\r\n");
-		info.append("Шкафов: " + iSys.cbc.getSize() + "\r\n");
-		info.append("КРТ: " + iSys.dbc.getSize() + "\r\n");
-		info.append("Зданий: " + iSys.buc.getSize() + "\r\n");
-		info.append("Колодцев: " + iSys.mc.getSize() + "\r\n");
-		info.append("Участков канализации: " + iSys.duc.getSize() + "\r\n");
-		info.append("Каналов канализации: " + iSys.tuc.getSize() + "\r\n");
-		info.append("Кабелей : " + iSys.cc.getSize() + "\r\n");
-		info.append("Громполоc: " + iSys.fc.getSize() + "\r\n");
-		info.append("Боксов: " + iSys.bc.getSize() + "\r\n");
-		info.append("Включений: " + iSys.phc.getSize() + "\r\n");
-		info.append("Пар: " + iSys.pc.getSize() + "\r\n");
-		info.append("Абонентов: " + iSys.sc.getSize() + "\r\n");
-		info.append("Повреждений: " + iSys.dmc.getSize() + "\r\n");
+		Vector<Object> v = new Vector<Object>();
+		v.add("Сеть"); v.add(iSys.nc.getOnlyElement().toString());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Кроссов"); v.add(iSys.dfc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Шкафов"); v.add(iSys.cbc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("КРТ"); v.add(iSys.dbc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Зданий"); v.add(iSys.buc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Колодцев"); v.add(iSys.mc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Участков канализации"); v.add(iSys.duc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Каналов канализации"); v.add(iSys.tuc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Кабелей"); v.add(iSys.cc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Громполоc"); v.add(iSys.fc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Боксов"); v.add(iSys.bc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Включений"); v.add(iSys.phc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Пар"); v.add(iSys.pc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Абонентов"); v.add(iSys.sc.getSize());
+		tableModel.addRow(v);
+		
+		v = new Vector<Object>();
+		v.add("Повреждений"); v.add(iSys.dmc.getSize());
+		tableModel.addRow(v);	
 	}
-	
 }

@@ -438,21 +438,25 @@ public class Reader extends RW implements Runnable{
 			addLogMessage("Количество элементов после открытия файла: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			writeLog();
 			form.label.setText("Файл \"" + xmlFile.getName() + "\" прочитан");
-		  } catch (IOException io) {
-			writeError("Ошибка чтения файла: " + io.toString()); 
-			form.label.setText("Ошибка при чтении файла");
+		  } 
+			catch (IOException io) {
+				writeError("Ошибка чтения файла: " + io.toString()); 
+				form.label.setText("Ошибка при чтении файла");
 		  } 
 			catch (JDOMException jdomex) {
-			writeError("Ошибка парсинга XML файла:" + jdomex.toString());
-			form.label.setText("Ошибка при чтении файла");
-		  } catch (InterruptedException e) {
-			  writeError("Ошибка потока чтения:" + e.toString());
-			  form.label.setText("Ошибка при чтении файла");
-		  } catch(Exception e) {
-			  writeError("Ошибка чтения (без уточнения):" + e.toString());
-			  form.label.setText("Ошибка при чтении файла");
+				writeError("Ошибка парсинга XML файла:" + jdomex.toString());
+				form.label.setText("Ошибка при чтении файла");
+		  } 
+			catch (InterruptedException e) {
+				writeError("Ошибка потока чтения:" + e.toString());
+				form.label.setText("Ошибка при чтении файла");
+		  } 
+			catch(Exception e) {
+				writeError("Ошибка чтения (без уточнения):" + e.toString());
+				form.label.setText("Ошибка при чтении файла");
 		  }
 		stop();
+		form.okButton.setEnabled(true);
 		
 	}
 	public void start(){
