@@ -19,8 +19,8 @@ public class FormBuildings extends FormAbstractElements {
 		tableLabel.setText("Список зданий");
 		tableModel.setColumnIdentifiers(new String[]{"Здание"});
 		enableSort();
-		Iterator<AbstractElement> i = collection.iterator();
 		errMsg = "Здание не выбрано!";
+		Iterator<AbstractElement> i = collection.iterator();
 		while (i.hasNext()) {addBuildingToTable((Building)i.next());}
 		passportButton.setEnabled(false);
 		viewButton.setEnabled(false);

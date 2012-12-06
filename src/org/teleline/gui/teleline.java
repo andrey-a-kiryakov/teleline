@@ -62,7 +62,6 @@ public class teleline {
 		
 		sys = new Sys();
 		GUI = new gui(sys,frmTeleline);
-
 		initialize();
 	}
 

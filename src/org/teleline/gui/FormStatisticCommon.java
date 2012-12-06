@@ -3,7 +3,6 @@ package org.teleline.gui;
 import java.util.Vector;
 
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.Sys;
@@ -11,7 +10,6 @@ import org.teleline.model.Sys;
 
 public class FormStatisticCommon extends Form {
 	
-	//private JTextArea info;
 	private JTable table;
 	private DefaultTableModel tableModel;
 	
@@ -23,7 +21,6 @@ public class FormStatisticCommon extends Form {
 		tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Параметр","Значение"});
 		
-		//info = addTextArea(10,10,480,560);
 		getStatistic();
 		iFrame.setVisible(true);
 	}
