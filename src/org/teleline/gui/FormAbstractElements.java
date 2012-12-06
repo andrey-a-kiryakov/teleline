@@ -21,8 +21,8 @@ import system.Sys;
 public class FormAbstractElements extends Form implements InterfaceFormAbstractElements{
 	
 	final public JTable table;
-	DefaultTableModel tableModel;
-	TableRowSorter<TableModel> sorter;
+	protected DefaultTableModel tableModel;
+	protected TableRowSorter<TableModel> sorter;
 	
 	public JLabel tableLabel;
 	public JButton refreshButton;
@@ -34,6 +34,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	
 	protected Integer selectedIndex;
 	protected String errMsg = "";
+	protected boolean passportCheck = true;
 	
 	public FormAbstractElements(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
@@ -70,8 +71,11 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		 */
 		passportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (table.getSelectionModel().isSelectionEmpty()){ util_newError(errMsg); return; }
-				selectedIndex = table.getRowSorter().convertRowIndexToModel(table.getSelectionModel().getMinSelectionIndex());
+				
+				if (passportCheck) {
+					if (table.getSelectionModel().isSelectionEmpty()){ util_newError(errMsg); return; }
+					selectedIndex = table.getRowSorter().convertRowIndexToModel(table.getSelectionModel().getMinSelectionIndex());
+				}
 				passport();
 			}
 		});
