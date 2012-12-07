@@ -301,7 +301,7 @@ public class Reader extends RW implements Runnable{
 			
 			while(i.hasNext()) { n = (Element)i.next();
 				
-				Cable cable = new Cable(sys.dfc,sys.cbc,/*dbc,fc,bc,*/sys.pc);
+				Cable cable = new Cable(sys.dfc,sys.cbc,sys.dbc,/*fc,bc,*/sys.pc);
 				
 				cable.setId(valueOf(n.getAttribute("i"))); 
 				cable.setFrom(valueOf(n.getAttribute("f")));

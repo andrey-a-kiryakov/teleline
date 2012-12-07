@@ -1,5 +1,8 @@
 package org.teleline.model;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 /**
 *Класс элементов "Cable" (Кабель)
 *
@@ -16,7 +19,7 @@ public class Cable extends LinkedElement {
 	
 	private DFrameCollection dfc;
 	private CabinetCollection cbc;
-//	private DBoxCollection dbc;
+	private DBoxCollection dbc;
 //	private FrameCollection fc;
 //	private BoxCollection bc;
 	private PairCollection pc;
@@ -24,11 +27,11 @@ public class Cable extends LinkedElement {
 	/**
 	 * Конструктор
 	 */
-	public Cable(DFrameCollection dfc, CabinetCollection cbc, /*DBoxCollection dbc, FrameCollection fc, BoxCollection bc,*/ PairCollection pc) {
+	public Cable(DFrameCollection dfc, CabinetCollection cbc, DBoxCollection dbc, /*FrameCollection fc, BoxCollection bc,*/ PairCollection pc) {
 	//	this.capacity = 100; //ёмкость по умолчанию
 		this.dfc = dfc;
 		this.cbc = cbc;
-	//	this.dbc = dbc;
+		this.dbc = dbc;
 	//	this.fc = fc;
 	//	this.bc = bc;
 		this.pc = pc;
@@ -166,6 +169,27 @@ public class Cable extends LinkedElement {
 		
 		return null;
 	}
+	
+	/**
+	 * Возвращает вектор КРТ, в которые приходит кабель, либо null, если не приходит ни в одну коробку 
+	 * @return
+	 */
+	public Vector<DBox> getToDBoxes() {
+		
+		if (this.type < 2) return null;
+		
+		Vector<DBox> v = new Vector<DBox>();
+		Iterator<Pair> i = pc.getInCable(this).iterator();
+		while(i.hasNext()) {
+			DBox dbox = (DBox)dbc.getElement(i.next().getElementTo());
+			if (!v.contains(dbox)) v.add(dbox);
+		}
+		
+		if (v.size() > 0) return v;
+		
+		return null;
+	}
+	
 	/**
 	 * Стандартное строковое представление элемента
 	 */

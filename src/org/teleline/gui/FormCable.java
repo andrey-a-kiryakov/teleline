@@ -252,7 +252,7 @@ public class FormCable extends Form {
 						}
 					
 					
-					Cable newCable = new Cable(iSys.dfc,iSys.cbc,/*iSys.dbc,iSys.fc,iSys.bc,*/iSys.pc); 
+					Cable newCable = new Cable(iSys.dfc,iSys.cbc, iSys.dbc,/*iSys.fc,iSys.bc,*/iSys.pc); 
 					newCable.attachToNet((Net)iSys.nc.getOnlyElement());
 						
 					newCable

@@ -17,7 +17,15 @@ public class FormCables extends FormAbstractElements {
 		super(iSys, collection);
 		iFrame.setTitle("Редактировать кабель");
 		tableLabel.setText("Список кабелей");
-		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость","Длина"});
+		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость"});
+		table.getColumnModel().getColumn(0).setMaxWidth(70);
+		table.getColumnModel().getColumn(0).setPreferredWidth(70);
+		table.getColumnModel().getColumn(1).setMaxWidth(70);
+		table.getColumnModel().getColumn(1).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setMaxWidth(75);
+		table.getColumnModel().getColumn(3).setPreferredWidth(75);
+		table.getColumnModel().getColumn(4).setMaxWidth(90);
+		table.getColumnModel().getColumn(4).setPreferredWidth(90);
 		enableSort();
 		errMsg = "Кабель не выбран!";
 		Iterator<AbstractElement> i = collection.iterator();
@@ -66,10 +74,15 @@ public class FormCables extends FormAbstractElements {
 		Vector<Object> v = new Vector<Object>();
 		v.add(cable);
 		v.add(cable.getFromElement());
-		v.add(cable.getToElement());
+		if (cable.getType() < 2)  {
+			v.add(cable.getToElement());
+		}
+		else {
+			v.add(cable.getToDBoxes());
+		}
 		v.add(cable.getCapacity());
 		v.add(cable.getUsedCapacity());
-		v.add(cable.getLenght());
+	//	v.add(cable.getLenght());
 		tableModel.addRow(v);
 	}
 	
