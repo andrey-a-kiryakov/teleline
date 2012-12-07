@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -28,19 +29,28 @@ public class FormViewCable extends Form {
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 100);
+		createDialog("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 140);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(element.toString());
 		panel.setBackground(new Color(200, 200, 200));
-		panel.setBounds(20, 50, panelWidth, panelHeight);
+		panel.setBounds(20, 90, panelWidth, panelHeight);
 		iFrame.getContentPane().add(panel);
 		
-		final JTextArea infoArea = addTextArea(20, 40 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = addLabel(element.toShortString(), 20, 10, panelWidth, 30);
+		final JTextArea infoArea = addTextArea(20, 80 + panelHeight + 20, panelWidth, infoListHeght);
+		JLabel head = addLabel(element.toShortString(), 20, 45, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		JButton elementsButton = addButton("Элементы", 20,10,90,26);
+		elementsButton.setFont(new Font("Dialog", Font.BOLD, 10));
+		elementsButton.setToolTipText("Открывает просмотр элементов, из которого выходит и в которые приходит кабель");
+		elementsButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
 		/*
 		 * Событие нажатие на кнопку пары
 		 */
