@@ -116,15 +116,18 @@ public class FormPairDirect extends Form {
 					Integer fromCable = iSys.rw.valueOf(cableFrom.getText());
 					
 					
-					for (Integer i = fromFrame; i < fromFrame + pairCount; i++)
+					for (Integer i = fromFrame; i < fromFrame + pairCount; i++) {
 						if (iSys.pc.getInPlace(selectedFrame, i) != null)  { util_newError("В громполосе в заданном диапазоне уже существуют кабельные пары!"); return; }
-					
-					for (Integer i = 0; i < 0 + pairCount; i++)
-						if (iSys.pc.getInPlace(selectedDBox, i) != null)  { util_newError("В КРТ в заданном диапазоне уже существуют кабельные пары!"); return; }				
-					
-					for (Integer i = fromCable; i < fromCable + pairCount; i++)
+						if (i > selectedFrame.getCapacity()) { util_newError("Пары не умещаются в громполосе в заданном диапазоне!"); return; }
+					}
+					for (Integer i = 0; i < 0 + pairCount; i++) {
+						if (iSys.pc.getInPlace(selectedDBox, i) != null)  { util_newError("В КРТ в заданном диапазоне уже существуют кабельные пары!"); return; }
+						if (i > selectedDBox.getCapacity()) { util_newError("Пары не умещаются в КРТ в заданном диапазоне!"); return; }
+					}
+					for (Integer i = fromCable; i < fromCable + pairCount; i++) {
 						if (iSys.pc.getInPlace(selectedCable, i) != null)  { util_newError("В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
-					
+						if (i > selectedCable.getCapacity()) { util_newError("Пары не умещаются в кабеле в заданном диапазоне!"); return; }
+					}
 					for (int i = 0; i < pairCount; i++) {
 						
 						Pair newPair = new Pair(iSys.fc,iSys.bc,iSys.dbc,iSys.cc);

@@ -478,7 +478,8 @@ public class RW {
 									 if (!ch.contains(se)) ch.add(se);
 								}
 								if (c.getType().equals(3)) {
-									 se = (StructuredElement) sys.dbc.getElement(c.getTo());
+								//	 se = (StructuredElement) sys.dbc.getElement(c.getTo());
+									 se = (StructuredElement) sys.dbc.getElement(p.getElementTo());
 									 if (!ch.contains(se)) ch.add(se);
 								}
 								
@@ -508,6 +509,90 @@ public class RW {
 			body.addContent(new Element("h4").addContent("Ответственный за технический учет линейных сооружений: __________________________ "));
 			body.addContent(new Element("h4").addContent(" _________________________________________________________________________________"));
 			body.addContent(new Element("h4").addContent("\"____\"___________201___г."));
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
+			
+			/*
+			 * Создаем таблицу пар прямого питания
+			 */
+			body.addContent(new Element("h2").addContent("Журнал кабелей прямого питания"));
+			Element cablesTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); 
+			body.addContent(cablesTable);
+			
+			Element cablesTableTr1 = new Element("tr"); cablesTable.addContent(cablesTableTr1);
+			
+			cablesTableTr1.addContent(new Element("th").addContent("Кабель"));
+			cablesTableTr1.addContent(new Element("th").addContent("Марка и емкость"));
+			cablesTableTr1.addContent(new Element("th").addContent("№ ГП"));
+			cablesTableTr1.addContent(new Element("th").addContent("Пара ГП"));
+			cablesTableTr1.addContent(new Element("th").addContent("КРТ"));
+			cablesTableTr1.addContent(new Element("th").addContent("Пара КРТ"));
+			cablesTableTr1.addContent(new Element("th").addContent("Адрес КРТ"));
+			cablesTableTr1.addContent(new Element("th").addContent("Абонент"));
+			cablesTableTr1.addContent(new Element("th").addContent("Дата включения"));
+			
+			Vector<AbstractElement> dcableout = sys.cc.sortByIdUp(sys.cc.getDCableOut(dframe));
+			
+			Iterator <AbstractElement> c = dcableout.iterator();
+			while (c.hasNext()) {
+				
+				Cable cable = (Cable)c.next();
+				
+				for (int i = 0; i < cable.getCapacity(); i++) {
+					Element tr = new Element("tr"); cablesTable.addContent(tr);
+					tr.addContent(new Element("td").addContent(cable.toString()));
+					tr.addContent(new Element("td").addContent(cable.getLabel() + "x" + cable.getCapacity()));
+					
+					Pair p = sys.pc.getInPlace(cable, i);
+					Frame frame = (Frame)sys.fc.getElement(p.getElementFrom());
+					tr.addContent(new Element("td").addContent(frame.toString()));
+					tr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
+					
+					DBox dbox = (DBox)sys.dbc.getElement(p.getElementTo());
+					if (dbox!= null) {
+						tr.addContent(new Element("td").addContent(dbox.toString()));
+						tr.addContent(new Element("td").addContent(p.getToNumber().toString()));
+						Building build = (Building)sys.buc.getElement(dbox.getBuilding());
+						tr.addContent(new Element("td").addContent(build.toString()));
+						
+					}
+					else {
+						tr.addContent(new Element("td").addContent(""));
+						tr.addContent(new Element("td").addContent(""));
+						tr.addContent(new Element("td").addContent(""));
+					}
+					
+					
+					Vector <Subscriber> vSub = new Vector<Subscriber>();
+					Vector <String> vDate = new Vector<String>();
+					
+					Iterator<Path> pi = sys.phc.getPairsPath(p).iterator();
+					while (pi.hasNext()) {
+						Subscriber sub = (Subscriber)sys.sc.getElement(pi.next().getSubscriber());
+						if (!vSub.contains(sub)) { 
+							vSub.add(sub);
+							vDate.add(sub.getDate());
+						}
+					}
+					String s = vSub.toString(), a = vDate.toString();
+					tr.addContent(new Element("td").addContent(s.substring(1, s.length()-1)));
+					tr.addContent(new Element("td").addContent(a.substring(1, a.length()-1)));
+				}
+				
+				//Пустая строка, отделяющая кабели в таблице
+				Element tr = new Element("tr"); cablesTable.addContent(tr);
+				for (int i = 0; i < 9; i++) {
+					tr.addContent(new Element("td").addContent(new Element("br")));
+				}
+			}
+			
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
+			body.addContent(new Element("h4").addContent("Cоставил: инженер _________________________   \"____\"___________201___г. "));
+			body.addContent(new Element("h4").addContent("Ответственный за технический учет линейных сооружений: __________________________ "));
+			body.addContent(new Element("h4").addContent(" _________________________________________________________________________________"));
+			body.addContent(new Element("h4").addContent("\"____\"___________201___г."));
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
+			body.addContent(new Element("br")); body.addContent(new Element("br"));
 			
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(Format.getCompactFormat().setEncoding("UTF-8").setOmitDeclaration(true).setIndent("  "));

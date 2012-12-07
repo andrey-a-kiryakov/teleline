@@ -170,20 +170,29 @@ public class FormPairMagAndInt extends Form {
 					
 					String s3 = "В громполосе в заданном диапазоне уже существуют кабельные пары!";
 					String s4 = "В боксе в заданном диапазоне уже существуют кабельные пары!";
+					String s31 = "Пары не умещаются в громполосе в заданном диапазоне!";
+					String s41 = "Пары не умещаются в боксе в заданном диапазоне!";
+					
+					
 									
 					if (type == 1) {
 						s3 = "В боксе №1 в заданном диапазоне уже существуют кабельные пары!";
 						s4 = "В боксе №2 в заданном диапазоне уже существуют кабельные пары!";
+						s31 = "Пары не умещаются в боксе №1 в заданном диапазоне!";
+						s41 = "Пары не умещаются в боксе №2 в заданном диапазоне!";
 					}
-					for (Integer i = fromElement; i < fromElement + pairCount; i++)
+					for (Integer i = fromElement; i < fromElement + pairCount; i++) {
 						if (iSys.pc.getInPlace(selectedFromConnectedPointElement, i) != null)  { util_newError(s3); return; }
-					
-					for (Integer i = fromBox; i < fromBox + pairCount; i++)
+						if (i > selectedFromConnectedPointElement.getCapacity()) { util_newError(s31); return; }
+					}
+					for (Integer i = fromBox; i < fromBox + pairCount; i++) {
 						if (iSys.pc.getInPlace(selectedBox, i) != null)  { util_newError(s4); return; }	
-					
-					for (Integer i = fromCable; i < fromCable + pairCount; i++)
+						if (i > selectedBox.getCapacity()) { util_newError(s41); return; }
+					}
+					for (Integer i = fromCable; i < fromCable + pairCount; i++) {
 						if (iSys.pc.getInPlace(selectedCable, i) != null)  { util_newError("В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
-					
+						if (i > selectedCable.getCapacity()) { util_newError("Пары не умещаются в кабеле в заданном диапазоне!"); return; }
+					}
 					//Integer inCableFirst = selectedCable.connect(pairCount);
 											
 					for (int i = 0; i < pairCount; i++) {
