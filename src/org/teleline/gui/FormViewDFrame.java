@@ -88,6 +88,21 @@ public class FormViewDFrame extends Form {
 			}
 		});
 		
+		JButton cableButton = addButton("Кабели", 220,10,90,26);
+		cableButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				HashSet<AbstractElement> cables = new HashSet<AbstractElement>();
+				
+				Iterator<Cable> i = iSys.cc.getCables(dframe).iterator();
+				while(i.hasNext()) cables.add(i.next());
+				
+				FormCables fb = new FormCables(iSys, cables);
+				fb.iFrame.setTitle("Кабели кросса "+ dframe.toString());
+				fb.refreshButton.setEnabled(false);
+			}
+		});
+		
 		ActionListener frameClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

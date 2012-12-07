@@ -188,8 +188,8 @@ public class CableCollection extends StructuredElementCollection {
 	
 	/**
 	 * Возвращает коллекцию кабелей в данном элементе
-	 * @param owner - структурный эжлемент
-	 * @return вектор элементов Кабель
+	 * @param owner - структурный элемент
+	 * @return HashSet элементов Кабель
 	 */
 	public HashSet<Cable> getCables(StructuredElement owner) {
 		

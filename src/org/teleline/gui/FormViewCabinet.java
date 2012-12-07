@@ -89,6 +89,22 @@ public class FormViewCabinet extends Form {
 			}
 		});
 		
+		JButton cableButton = addButton("Кабели", 220,10,90,26);
+		cableButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				HashSet<AbstractElement> cables = new HashSet<AbstractElement>();
+				
+				Iterator<Cable> i = iSys.cc.getCables(cabinet).iterator();
+				while(i.hasNext()) cables.add(i.next());
+				
+				FormCables fb = new FormCables(iSys, cables);
+				fb.iFrame.setTitle("Кабели шкафа "+ cabinet.toString());
+				fb.refreshButton.setEnabled(false);
+			}
+		});
+			
+		
 		ActionListener boxClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
