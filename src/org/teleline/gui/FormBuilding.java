@@ -13,8 +13,8 @@ import javax.swing.JTextField;
 
 import org.teleline.model.Building;
 import org.teleline.model.Net;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormBuilding extends Form {
 

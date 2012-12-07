@@ -46,8 +46,8 @@ import org.teleline.model.Path;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Tube;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public abstract class Form {
 	

@@ -9,8 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.DBox;
 import org.teleline.model.Pair;
+import org.teleline.system.Sys;
 
-import system.Sys;
 public class FormDBoxes extends FormAbstractElements {
 	
 	public FormDBoxes(final Sys iSys, Collection<AbstractElement> collection) {

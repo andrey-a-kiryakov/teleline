@@ -4,8 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 
 import org.teleline.model.Subscriber;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 /**
  * Класс формы выбора включения абонента. Создаются все элементы формы и форма отображается.

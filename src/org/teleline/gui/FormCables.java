@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Cable;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormCables extends FormAbstractElements {
 

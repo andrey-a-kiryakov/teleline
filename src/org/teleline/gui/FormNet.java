@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import org.teleline.model.Net;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormNet extends Form {
 

@@ -5,7 +5,8 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import system.Sys;
+import org.teleline.system.Sys;
+
 
 
 public class FormStatisticCommon extends Form {

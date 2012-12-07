@@ -13,8 +13,8 @@ import javax.swing.SwingConstants;
 
 import org.teleline.model.Duct;
 import org.teleline.model.Tube;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormViewDuct extends Form {
 

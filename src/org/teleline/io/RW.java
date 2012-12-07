@@ -18,8 +18,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import org.teleline.model.*;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class RW {
 	private static String dTmpFolder = "tmp";
@@ -515,7 +515,7 @@ public class RW {
 			/*
 			 * Создаем таблицу пар прямого питания
 			 */
-			body.addContent(new Element("h2").addContent("Журнал кабелей прямого питания"));
+			body.addContent(new Element("h2").addContent("Журнал пар прямого питания"));
 			Element cablesTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); 
 			body.addContent(cablesTable);
 			
@@ -535,15 +535,17 @@ public class RW {
 			
 			Iterator <AbstractElement> c = dcableout.iterator();
 			while (c.hasNext()) {
-				
+
 				Cable cable = (Cable)c.next();
 				
 				for (int i = 0; i < cable.getCapacity(); i++) {
+					
+					Pair p = sys.pc.getInPlace(cable, i);
+					if (p != null) {
 					Element tr = new Element("tr"); cablesTable.addContent(tr);
 					tr.addContent(new Element("td").addContent(cable.toString()));
 					tr.addContent(new Element("td").addContent(cable.getLabel() + "x" + cable.getCapacity()));
 					
-					Pair p = sys.pc.getInPlace(cable, i);
 					Frame frame = (Frame)sys.fc.getElement(p.getElementFrom());
 					tr.addContent(new Element("td").addContent(frame.toString()));
 					tr.addContent(new Element("td").addContent(p.getFromNumber().toString()));
@@ -578,7 +580,7 @@ public class RW {
 					tr.addContent(new Element("td").addContent(s.substring(1, s.length()-1)));
 					tr.addContent(new Element("td").addContent(a.substring(1, a.length()-1)));
 				}
-				
+				}
 				//Пустая строка, отделяющая кабели в таблице
 				Element tr = new Element("tr"); cablesTable.addContent(tr);
 				for (int i = 0; i < 9; i++) {

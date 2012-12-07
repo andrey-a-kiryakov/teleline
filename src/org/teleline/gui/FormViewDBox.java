@@ -13,8 +13,8 @@ import javax.swing.SwingConstants;
 
 import org.teleline.model.DBox;
 import org.teleline.model.Pair;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormViewDBox extends Form {
 	

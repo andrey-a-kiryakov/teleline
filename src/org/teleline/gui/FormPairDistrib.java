@@ -15,8 +15,8 @@ import org.teleline.model.DBox;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Wrapper;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormPairDistrib extends Form {
 

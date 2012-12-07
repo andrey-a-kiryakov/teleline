@@ -13,8 +13,8 @@ import javax.swing.JTextField;
 
 import org.teleline.model.Path;
 import org.teleline.model.Subscriber;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormPath extends Form {
 

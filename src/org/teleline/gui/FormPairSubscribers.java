@@ -15,8 +15,8 @@ import org.teleline.model.Path;
 import org.teleline.model.PathCollection;
 import org.teleline.model.Subscriber;
 import org.teleline.model.SubscriberCollection;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormPairSubscribers extends Form {
 	

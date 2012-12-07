@@ -28,8 +28,8 @@ import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormSubscribers extends Form {
 	

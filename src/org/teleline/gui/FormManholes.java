@@ -18,8 +18,8 @@ import javax.swing.table.TableRowSorter;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Manhole;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormManholes extends Form {
 	

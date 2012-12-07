@@ -21,8 +21,8 @@ import org.teleline.model.Cabinet;
 import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.Pair;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormViewCabinet extends Form {
 

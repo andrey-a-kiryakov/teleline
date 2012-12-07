@@ -8,8 +8,8 @@ package org.teleline.gui;
 import javax.swing.JButton;
 import javax.swing.JList;
 import org.teleline.model.Tube;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 
 public class FormTubesCables extends Form {

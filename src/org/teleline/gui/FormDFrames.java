@@ -9,8 +9,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.DFramе;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormDFrames extends FormAbstractElements {
 

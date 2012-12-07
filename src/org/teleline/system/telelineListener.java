@@ -1,4 +1,4 @@
-package system;
+package org.teleline.system;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

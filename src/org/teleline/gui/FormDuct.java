@@ -16,8 +16,8 @@ import org.teleline.model.Duct;
 import org.teleline.model.Net;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Tube;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormDuct extends Form {
 

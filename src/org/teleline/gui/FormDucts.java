@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Building;
 import org.teleline.model.Duct;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 
 public class FormDucts extends FormAbstractElements {

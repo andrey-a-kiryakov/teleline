@@ -14,8 +14,8 @@ import javax.swing.JTextField;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Damage;
+import org.teleline.system.Sys;
 
-import system.Sys;
 
 public class FormDamage extends Form {
 
