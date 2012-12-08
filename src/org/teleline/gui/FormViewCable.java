@@ -5,40 +5,46 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.teleline.model.Cabinet;
 import org.teleline.model.Cable;
+import org.teleline.model.DBox;
+import org.teleline.model.DFramе;
 import org.teleline.model.Pair;
 import org.teleline.system.Sys;
 
 
 public class FormViewCable extends Form {
 
-	public FormViewCable(Sys iSys, final Cable element, final JTextField textFieldForSelectResult) {
+	public FormViewCable(final Sys iSys, final Cable cable, final JTextField textFieldForSelectResult) {
 		super(iSys);
 		
 		int W = 18, H = 18, marginX = 8, marginY = 8, inLine = 10, labelPlaceLeft = 50, labelPlaceTop = 20, groupDevision = 14, infoListHeght = 200;
-		int lines = (int) Math.ceil ((double)element.getCapacity().intValue() / (double)inLine);
+		int lines = (int) Math.ceil ((double)cable.getCapacity().intValue() / (double)inLine);
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
 		createDialog("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 140);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setToolTipText(element.toString());
+		panel.setToolTipText(cable.toString());
 		panel.setBackground(new Color(200, 200, 200));
 		panel.setBounds(20, 90, panelWidth, panelHeight);
 		iFrame.getContentPane().add(panel);
 		
 		final JTextArea infoArea = addTextArea(20, 80 + panelHeight + 20, panelWidth, infoListHeght);
-		JLabel head = addLabel(element.toShortString(), 20, 45, panelWidth, 30);
+		JLabel head = addLabel(cable.toShortString(), 20, 45, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -48,7 +54,46 @@ public class FormViewCable extends Form {
 		elementsButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				switch (cable.getType().intValue()) {
+				case 0: 
+					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
+					new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+					return;
+				case 1: 
+					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
+					return;
+				case 2: 
+					Vector<DBox> v = cable.getToDBoxes();
+					if (v != null) {
+						if(v.size() > 2) {
+							if (util_newDialog("Будет открыто " + ((Integer)(v.size() + 1)).toString() +" окон, продолжить") == JOptionPane.YES_OPTION) {
+								new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+								Iterator<DBox> i = v.iterator();
+								while(i.hasNext()) new FormViewDBox(iSys, i.next());
+							}
+						}
+					}
+					else {
+						new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+					}
+					return;
+				case 3: 
+					Vector<DBox> b = cable.getToDBoxes();
+					if (b != null) {
+						if(b.size() > 2) {
+							if (util_newDialog("Будет открыто " + ((Integer)(b.size() + 1)).toString() +" окон, продолжить") == JOptionPane.YES_OPTION) {
+								new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+								Iterator<DBox> i = b.iterator();
+								while(i.hasNext()) new FormViewDBox(iSys, i.next());
+							}
+						}
+					}
+					else {
+						new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+					}
+					return;
+				}
 			}
 		});
 		/*
@@ -95,7 +140,7 @@ public class FormViewCable extends Form {
 		}
 		
 		int x = 0, y = 0;
-		for (int place = 0; place < element.getCapacity(); place++) {
+		for (int place = 0; place < cable.getCapacity(); place++) {
 			
 			if ( x > inLine - 1)  { x = 0; y++; }
 			
@@ -118,7 +163,7 @@ public class FormViewCable extends Form {
 				pairForEmptyPlace.setFromNumber(place);
 				button.setElement(pairForEmptyPlace);
 			
-				Pair pair = iSys.pc.getInPlace((Cable)element, (Integer)place);
+				Pair pair = iSys.pc.getInPlace((Cable)cable, (Integer)place);
 				
 				if (pair != null) {
 					button.setToolTipText("Пара: "+ pair.toString());
