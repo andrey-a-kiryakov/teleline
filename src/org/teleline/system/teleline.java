@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 
 import org.teleline.gui.ExtFileFilter;
 import org.teleline.gui.Form;
+import org.teleline.gui.FormAbout;
 import org.teleline.gui.FormBox;
 import org.teleline.gui.FormBuilding;
 import org.teleline.gui.FormBuildings;
@@ -70,8 +71,8 @@ public class teleline {
 					WindowListener winListener = new telelineListener(window);
 					window.frmTeleline.addWindowListener(winListener);
 					window.frmTeleline.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-					
 					window.frmTeleline.setVisible(true);
+					//System.out.println(System.getProperty("java.version"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -326,8 +327,16 @@ public class teleline {
 		JMenu mnNewMenu_2 = new JMenu("Отчеты");
 		menuBar.add(mnNewMenu_2);
 		
-		JMenuItem menuItem_fullDBoxesList = new JMenuItem("Общая статистика");
-		menuItem_fullDBoxesList.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormStatisticCommon(sys);}});
-		mnNewMenu_2.add(menuItem_fullDBoxesList);			
+		JMenuItem menuItem_commonStatistic = new JMenuItem("Общая статистика");
+		menuItem_commonStatistic.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormStatisticCommon(sys);}});
+		mnNewMenu_2.add(menuItem_commonStatistic);
+		
+		JSeparator separator_9 = new JSeparator();
+		mnNewMenu_2.add(separator_9);
+		
+		JMenuItem menuItem_about = new JMenuItem("О программе");
+		menuItem_about.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormAbout(sys);}});
+		mnNewMenu_2.add(menuItem_about);
+
 	}
 }

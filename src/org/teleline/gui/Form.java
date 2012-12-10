@@ -17,7 +17,6 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -51,7 +50,8 @@ import org.teleline.system.Sys;
 
 public abstract class Form {
 	
-	public JDialog  iFrame;
+	//public JDialog  iFrame;
+	public JFrame  iFrame;
 	public Sys iSys;
 	
 	public Form(Sys iSys) {
@@ -60,9 +60,11 @@ public abstract class Form {
 		
 	}
 	
-	protected JDialog createDialog (String title, int width, int height) {
+	protected JFrame/*JDialog*/ createDialog (String title, int width, int height) {
 		
-		iFrame = new JDialog();
+		//iFrame = new JDialog();
+		iFrame = new JFrame();
+		
 		iSys.mng.add(iFrame);
 		//FormListener listener = 
 		iFrame.addWindowListener(new FormListener(this));

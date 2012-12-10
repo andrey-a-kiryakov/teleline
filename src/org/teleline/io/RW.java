@@ -717,7 +717,7 @@ public class RW {
 				
 				newTr.addContent(new Element("td").addContent(bfrom.toString()+"-"+p.getFromNumber()));
 				newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
-				newTr.addContent(new Element("td").addContent(" ")); //рамка перехода
+				newTr.addContent(new Element("td").addContent(path.getTransit())); //рамка перехода
 				newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 				table.addContent(newTr);
 				
@@ -740,7 +740,7 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getFromNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
 						
-					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(path.getTransit())); //рамка перехода
 					newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 					table.addContent(newTr);
 				
@@ -750,7 +750,7 @@ public class RW {
 				
 				newTr.addContent(new Element("td").addContent(" "));
 				newTr.addContent(new Element("td").addContent(" "));
-				newTr.addContent(new Element("td").addContent(" "));
+				newTr.addContent(new Element("td").addContent(path.getTransit()));
 				newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 				table.addContent(newTr);
 			}
@@ -772,7 +772,7 @@ public class RW {
 					newTr.addContent(new Element("td").addContent(" "));
 					newTr.addContent(new Element("td").addContent(b.toString()+"-"+p.getFromNumber()));
 					newTr.addContent(new Element("td").addContent(c.toShortString()+"-"+p.getNumberInCable().toString()));
-					newTr.addContent(new Element("td").addContent(" "));
+					newTr.addContent(new Element("td").addContent(path.getTransit()));
 					newTr.addContent(new Element("td").addContent(path.getName())); //примечание
 					table.addContent(newTr);	
 			}

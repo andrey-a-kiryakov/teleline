@@ -35,6 +35,7 @@ public class FormSubscribers extends Form {
 	
 	public JTable subscriberList;
 	public JTable pairList;
+	final JList pathList;
 	
 	public FormSubscribers(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
@@ -69,7 +70,7 @@ public class FormSubscribers extends Form {
 	    		}
 			
 			addLabel("Список включений:", 10, 420, 520, 14);
-			final JList pathList = addList(10, 440, 520, 90);
+			pathList = addList(10, 440, 520, 90);
 			JButton addPathButton = addButton("Добавить", 540, 440, 125, 26);
 			JButton editPathButton = addButton("Редактировать", 540, 470, 125, 26);		
 			JButton deletePathButton = addButton("Удалить", 540, 500, 125, 26);
@@ -219,8 +220,11 @@ public class FormSubscribers extends Form {
 						while(i.hasNext()){
 							addPairToTable(i.next());
 						}
+	
+						Vector<Object> v = new Vector<Object>();
+						v.add("Рамка перехода"); v.add(((Path)pathList.getSelectedValue()).getTransit());
+						((DefaultTableModel) pairList.getModel()).addRow(v);	
 					}
-					
 						//util_setListItems(pairList, ((Path)pathList.getSelectedValue()).getUsedPairs());
 				}
 			};
@@ -419,8 +423,8 @@ public class FormSubscribers extends Form {
 				v.add(iSys.buc.getElement(((DBox)b.get(1)).getBuilding()));
 			break;
 		}
-		
 		((DefaultTableModel) pairList.getModel()).addRow(v);
+		
 	}
 
 	/**
