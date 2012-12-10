@@ -14,7 +14,6 @@ public class BoxCollection extends ConnectedPointElementCollection {
  	
 	public BoxCollection(IdGenerator gen) {
 		super(gen);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -6,6 +6,7 @@ package org.teleline.model;
 *@author Кирьяков Андрей
 */
 public class Cabinet extends StructuredElement {
+	
 	private Integer cabinetClass = 1; //класс шкафа 1 или 2
 	private String adress = "";
 	private String place = "";
@@ -13,8 +14,6 @@ public class Cabinet extends StructuredElement {
 	private String date = "";
 	private Integer setup = 0; //0 - без шкафной коробки, 1 - со шкафной коробкой
 	private Integer area = 0; //0 - уличный, 1 - в помещении
-	
-	
 	
 	/**
 	 * Конструктор

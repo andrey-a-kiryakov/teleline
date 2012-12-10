@@ -15,7 +15,6 @@ public class PairCollection extends AbstractCollection {
     
 	public PairCollection(IdGenerator gen) {
 		super(gen);
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Возвращает коллекцию элементов "Пара" исходящих или приходящих в данный элемент
@@ -116,27 +115,7 @@ public class PairCollection extends AbstractCollection {
 			if ( (pairt.getFromNumber().equals(placeNumber) && pairt.getElementFrom().equals(ownerId)) || (pairt.getToNumber().equals(placeNumber) && pairt.getElementTo().equals(ownerId))) return pairt;
 		}
 		return null;
-	}
-	/**
-	 * Возвращает коллекцию элементов "Пара" данного состояния, исходящих или приходящих в данный элемент
-	 * @param id элемента, в котором присутвуют пары
-	 * @param Status - статус пары
-	 * @return
-	 */
-/*	public HashSet<Pair> getInOwnerByStatus(ConnectedPointElement Owner, Integer Status){
-		HashSet<Pair> elementSet = new HashSet<Pair>();
-		Integer OwnerId = Owner.getId();
-		
-		Iterator<?> i = this.elements().iterator();
-		
-		while (i.hasNext()) {
-			Pair element = (Pair)i.next();
-			if ( (element.getStatus().equals(Status)) && (element.getElementFrom().equals(OwnerId) || (element.getElementTo().equals(OwnerId)) )   ) {elementSet.add(element);}
-		}
-		
-		return elementSet;
-	}*/
-		
+	}	
 	/**
 	 * Сортирует коллекцию элементов "Пара" по исходящему номеру
 	 * @param набор неотсортированных элементов

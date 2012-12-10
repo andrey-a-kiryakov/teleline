@@ -15,7 +15,7 @@ public class CableCollection extends StructuredElementCollection {
     
 	public CableCollection(IdGenerator gen) {
 		super(gen);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	/**
@@ -25,7 +25,6 @@ public class CableCollection extends StructuredElementCollection {
 	 * @param number - номер кабеля
 	 * @param type - тип кабеля
 	 */
-	
 	public Cable getInOwner(Integer ownerId, Integer number, Integer type){
 		
 		Iterator<?> i = this.elements().iterator();
@@ -36,9 +35,9 @@ public class CableCollection extends StructuredElementCollection {
 		}
 		return null;	
 	}
+	
 	/**
 	 * Возвращает коллекцию элементов "Кабель" определнного типа и принадлежащих данной сети и данным родителям
-	 * @param NetId - id сети
 	 * @param Type - тип кабеля
 	 * @param From - id элемента, из которого выходит кабель
 	 * @param To - id элемента, в который приходит кабель
@@ -112,26 +111,7 @@ public class CableCollection extends StructuredElementCollection {
 		}
 		
 		return elementSet;
-	}
-	
-	/**
-	 * Возвращает кабель приходящий в данную коробку
-	 */
-	/*public Cable getDCableIn(DBox dbox){
-		
-		//HashSet<Cable> elementSet = new HashSet<Cable>();
-		Integer ownerToId = dbox.getId();
-		Pair p = pc.getInPlace(this, 0);
-		Iterator<?> i = this.elements().iterator();
-		
-		while (i.hasNext()) {
-			Cable element = (Cable)i.next();
-			if ( element.getTo().equals(ownerToId) ) {return element;}
-		}
-		
-		return null;
-	}*/
-	
+	}	
 	/**
 	 * Возвращает коллекцию распределительных/прямого питания кабелей, выходящих из данного элемента
 	 */
@@ -148,28 +128,6 @@ public class CableCollection extends StructuredElementCollection {
 		}
 		
 		return elementSet;
-	}
-	
-	/**
-	 * Ищет кабели, строковые представления которых начинаются с заданной последовательности символов
-	 * Регистр символов не учитывается
-	 * @param snumber - последовательность симаолов
-	 * @param NetId - id сети
-	 * @return коллекция элементов
-	 */
-	public HashSet<StructuredElement> searchBySNumber (String snumber, Integer NetId){
-		
-		HashSet<StructuredElement> h = new HashSet<StructuredElement>();
-		
-		Iterator<?> i = this.elements().iterator();
-		
-		while (i.hasNext()) {
-			StructuredElement element = (StructuredElement)i.next();
-			if (element.getNet().equals(NetId) && element.toString().toLowerCase().indexOf(snumber) == 0) h.add(element);
-		}
-		
-		return h;
-		
 	}
 	/**
 	 * Возвращает коллекцию кабелей, проходящих черезе данный канал в канализации
