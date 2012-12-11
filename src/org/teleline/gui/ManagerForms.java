@@ -2,32 +2,31 @@ package org.teleline.gui;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 public class ManagerForms {
 	
-	private HashSet</*JDialog*/JFrame> elements;
+	private HashSet<JFrame> elements;
 	
 	public ManagerForms() {
-		elements = new HashSet<JFrame/*JDialog*/>();
+		elements = new HashSet<JFrame>();
 	}
 	
-	public void add(/*JDialog*/JFrame dialog) {
+	public void add(JFrame dialog) {
 		elements.add(dialog);
 	}
 	
-	public void remove(/*JDialog*/JFrame dialog) {
+	public void remove(JFrame dialog) {
 		elements.remove(dialog);
 	}
 	
-	public void close(/*JDialog*/JFrame dialog) {
+	public void close(JFrame dialog) {
 		elements.remove(dialog);
 		dialog.dispose();
 	}
 	
 	public void closeAll() {
-		Iterator<JFrame/*JDialog*/> i = elements.iterator();
+		Iterator<JFrame> i = elements.iterator();
 		while(i.hasNext()) {
 			i.next().dispose();
 		}

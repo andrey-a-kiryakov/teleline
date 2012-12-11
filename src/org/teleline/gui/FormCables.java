@@ -1,9 +1,13 @@
 package org.teleline.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.teleline.model.AbstractElement;
@@ -12,9 +16,12 @@ import org.teleline.system.Sys;
 
 
 public class FormCables extends FormAbstractElements {
-
-	public FormCables(Sys iSys, Collection<AbstractElement> collection) {
+	
+	public JComboBox cableTypeComboBox;
+	
+	public FormCables(Sys iSys, final Collection<AbstractElement> collection) {
 		super(iSys, collection);
+		
 		iFrame.setTitle("Редактировать кабель");
 		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость"});
 		table.getColumnModel().getColumn(0).setMaxWidth(70);
@@ -25,6 +32,35 @@ public class FormCables extends FormAbstractElements {
 		table.getColumnModel().getColumn(3).setPreferredWidth(75);
 		table.getColumnModel().getColumn(4).setMaxWidth(90);
 		table.getColumnModel().getColumn(4).setPreferredWidth(90);
+		
+		
+		buttonPanel.add(new JLabel("Тип кабеля"), "cell 0 6");
+		cableTypeComboBox = new JComboBox();
+		buttonPanel.add(cableTypeComboBox, "cell 0 7");
+		cableTypeComboBox.addItem("Все");
+		cableTypeComboBox.addItem("Магистр.");
+		cableTypeComboBox.addItem("Межшкаф.");
+		cableTypeComboBox.addItem("Распред.");
+		cableTypeComboBox.addItem("ПП.");
+		cableTypeComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				util_clearTable(table);
+				
+				if (cableTypeComboBox.getSelectedIndex() == 0) {
+					Iterator<AbstractElement> i = collection.iterator();
+					while (i.hasNext()) {addCableToTable((Cable)i.next());}
+				}
+				
+				if (cableTypeComboBox.getSelectedIndex() > 0) {
+					Iterator<AbstractElement> i = collection.iterator();
+					while (i.hasNext()) {
+						Cable cable = (Cable)i.next();
+						if (cable.getType().equals(cableTypeComboBox.getSelectedIndex() - 1))
+						addCableToTable(cable);}
+				}
+			}
+		});
+		
 		enableSort();
 		errMsg = "Кабель не выбран!";
 		Iterator<AbstractElement> i = collection.iterator();
@@ -32,9 +68,10 @@ public class FormCables extends FormAbstractElements {
 		iFrame.setVisible(true);
 	}
 	
+	
 	public void refresh() {
-		Iterator<AbstractElement> i = iSys.cc.getIterator();
-		while (i.hasNext()) {addCableToTable((Cable)i.next());}
+//		Iterator<AbstractElement> i = iSys.cc.getIterator();
+//		while (i.hasNext()) {addCableToTable((Cable)i.next());}
 	}
 	
 	public void create() {
@@ -68,7 +105,7 @@ public class FormCables extends FormAbstractElements {
 		}
 	}
 	
-	private void addCableToTable(Cable cable) {
+	void addCableToTable(Cable cable) {
 		
 		Vector<Object> v = new Vector<Object>();
 		v.add(cable);

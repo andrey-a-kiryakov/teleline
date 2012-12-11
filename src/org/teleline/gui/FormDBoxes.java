@@ -13,6 +13,7 @@ import org.teleline.system.Sys;
 
 public class FormDBoxes extends FormAbstractElements {
 	
+
 	public FormDBoxes(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys, collection);
 		

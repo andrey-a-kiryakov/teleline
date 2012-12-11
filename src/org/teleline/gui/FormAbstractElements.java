@@ -23,11 +23,13 @@ import org.teleline.system.Sys;
 
 public class FormAbstractElements extends Form implements InterfaceFormAbstractElements{
 	
+	protected Collection<AbstractElement> collection;
+	
 	final public JTable table;
 	protected DefaultTableModel tableModel;
 	protected TableRowSorter<TableModel> sorter;
 	
-	public JButton refreshButton;
+	//public JButton refreshButton;
 	public JButton editButton;
 	public JButton viewButton;
 	public JButton passportButton;
@@ -37,41 +39,45 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	protected Integer selectedIndex;
 	protected String errMsg = "";
 	protected boolean passportCheck = true;
+	protected MigLayout rightPanelLayout;
+	protected JPanel buttonPanel;
 	
 	public FormAbstractElements(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
+		this.collection = collection;
 		createDialog("", 785, 600);
 		iFrame.setResizable(true);
 		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		JPanel panel_1 = new JPanel();
 		iFrame.getContentPane().add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		JPanel panel = new JPanel();
-		panel_1.add(panel, BorderLayout.EAST);
+		buttonPanel = new JPanel();
+		panel_1.add(buttonPanel, BorderLayout.EAST);
 		table = addTable(panel_1,BorderLayout.CENTER);
 		tableModel = (DefaultTableModel) table.getModel();
 		sorter = new TableRowSorter<TableModel>(table.getModel());
 
-		refreshButton = new JButton("Обновить");
+	//	refreshButton = new JButton("Обновить");
 		editButton = new JButton("Редактировать");
 		viewButton = new JButton("Смотреть");
 		passportButton = new JButton("Паспорт");
 		createButton = new JButton("Добавить");
 		deleteButton = new JButton("Удалить");
 		
-		panel.setLayout(new MigLayout("", "[110px,fill]", "[70px,top][30px][30px][70px,top][30px][30px]"));
-		panel.add(refreshButton, "cell 0 0");
-		panel.add(editButton, "cell 0 1");
-		panel.add(viewButton, "cell 0 2");
-		panel.add(passportButton, "cell 0 3,");
-		panel.add(createButton, "cell 0 4");
-		panel.add(deleteButton, "cell 0 5");
+		rightPanelLayout = new MigLayout("", "[110px,fill]", "[30px][30px][70px,top][30px][70px,top][]"); 
+		buttonPanel.setLayout(rightPanelLayout);
+	//	buttonPanel.add(refreshButton, "cell 0 0");
+		buttonPanel.add(editButton, "cell 0 0");
+		buttonPanel.add(viewButton, "cell 0 1");
+		buttonPanel.add(passportButton, "cell 0 2,");
+		buttonPanel.add(createButton, "cell 0 3");
+		buttonPanel.add(deleteButton, "cell 0 4");
         sorter.setSortsOnUpdates(true);
 		
 		/*
 		 * Событие кнопки обновления
 		 */
-		refreshButton.addActionListener(new ActionListener() {
+/*		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				util_clearTable(table);
 				refresh();
@@ -156,6 +162,10 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
         sorter.setSortKeys(keys);
         table.setRowSorter(sorter);
 	}
+	
+	public void setCollection(Collection<AbstractElement> collection) {
+		this.collection = collection;
+	}	
 	
 	@Override
 	public void refresh() {

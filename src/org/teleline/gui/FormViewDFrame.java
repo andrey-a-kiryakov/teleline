@@ -84,7 +84,7 @@ public class FormViewDFrame extends Form {
 				
 				FormDBoxes fb = new FormDBoxes(iSys, dboxes);
 				fb.iFrame.setTitle("Коробки кросса: "+ dframe.toString());
-				fb.refreshButton.setEnabled(false);
+			//	fb.refreshButton.setEnabled(false);
 			}
 		});
 		
@@ -99,7 +99,7 @@ public class FormViewDFrame extends Form {
 				
 				FormCables fb = new FormCables(iSys, cables);
 				fb.iFrame.setTitle("Кабели кросса "+ dframe.toString());
-				fb.refreshButton.setEnabled(false);
+			//	fb.refreshButton.setEnabled(false);
 			}
 		});
 		

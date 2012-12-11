@@ -85,7 +85,7 @@ public class FormViewCabinet extends Form {
 				
 				FormDBoxes fb = new FormDBoxes(iSys, dboxes);
 				fb.iFrame.setTitle("Коробки шкафа "+ cabinet.toString());
-				fb.refreshButton.setEnabled(false);
+			//	fb.refreshButton.setEnabled(false);
 			}
 		});
 		
@@ -94,13 +94,13 @@ public class FormViewCabinet extends Form {
 			public void actionPerformed(ActionEvent e) {
 				
 				HashSet<AbstractElement> cables = new HashSet<AbstractElement>();
-				
 				Iterator<Cable> i = iSys.cc.getCables(cabinet).iterator();
 				while(i.hasNext()) cables.add(i.next());
 				
-				FormCables fb = new FormCables(iSys, cables);
+				final FormCables fb = new FormCables(iSys, cables);
 				fb.iFrame.setTitle("Кабели шкафа "+ cabinet.toString());
-				fb.refreshButton.setEnabled(false);
+				
+				//fb.refreshButton.setEnabled(false);
 			}
 		});
 			
