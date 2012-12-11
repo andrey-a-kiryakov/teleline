@@ -268,6 +268,8 @@ public class FormSubscribers extends Form {
 					if (util_newDialog("Удалить абонента: "+ subscriber.toString()+ " ? Все занимаемые пары будут освобождены.") == JOptionPane.YES_OPTION) {
 						iSys.removeSubscriber(subscriber);
 						((DefaultTableModel) subscriberList.getModel()).removeRow(selectedIndex);
+						util_clearTable(pairList);
+						
 					}
 				}
 			};
@@ -342,7 +344,7 @@ public class FormSubscribers extends Form {
 					if (util_newDialog("Удалить включение?") == JOptionPane.YES_OPTION) {
 						Path path = (Path)pathList.getSelectedValue();
 						iSys.removePath(path);
-						((DefaultListModel)pairList.getModel()).clear();
+						util_clearTable(pairList);
 						((DefaultListModel)pathList.getModel()).removeElement(path);		
 					}
 				}

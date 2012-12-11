@@ -54,6 +54,13 @@ public class FormPairMagAndInt extends Form {
 					
 				}
 			});
+			
+			toStructuredElementComboBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 0);
+					
+				}
+			});
 		}
 		
 		if (type == 1) {
@@ -67,6 +74,13 @@ public class FormPairMagAndInt extends Form {
 			setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 1);
 			
 			fromStructuredElementComboBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 1);
+					
+				}
+			});
+			
+			toStructuredElementComboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 1);
 					
