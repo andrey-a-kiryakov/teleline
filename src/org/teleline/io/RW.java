@@ -130,7 +130,7 @@ public class RW {
 	
 	public void addLogMessage(String message) {
 		
-		SimpleDateFormat DF = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss:SSS");
+		SimpleDateFormat DF = new SimpleDateFormat("MM.dd HH:mm:ss");
 		
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(fNonSavedLog, true));	
@@ -138,7 +138,6 @@ public class RW {
 			pw.close();
 		} 
 		catch (IOException e) {
-			//System.out.println(e.getMessage());
 			writeError(e.toString());
 		}
 	}

@@ -196,6 +196,7 @@ public class FormSubscribers extends Form {
 						int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
 						Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
 						util_setListItems(pathList, iSys.phc.sortByIdUp(iSys.phc.getSubscriberPaths(subscriber)));
+						util_clearTable(pairList);
 					}
 				}
 			};
@@ -247,9 +248,7 @@ public class FormSubscribers extends Form {
 			 */
 			ActionListener createSubscriber = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-				//	if (netsComboBox.getSelectedIndex() == -1) { newError(iFrame, "Сеть не выбрана"); return; }
 					new FormSubscriber(iSys, null);
-					//if (subscriber != null) addSubscriberToTable(subscriberList, subscriber);	
 				}
 			};
 			createSubscriberButton.addActionListener(createSubscriber);
@@ -293,7 +292,6 @@ public class FormSubscribers extends Form {
 						v.add("Рамка перехода"); v.add(((Path)pathList.getSelectedValue()).getTransit());
 						((DefaultTableModel) pairList.getModel()).addRow(v);	
 					}
-						//util_setListItems(pairList, ((Path)pathList.getSelectedValue()).getUsedPairs());
 				}
 			};
 			pathList.addListSelectionListener(pathSelect);
@@ -312,7 +310,6 @@ public class FormSubscribers extends Form {
 					new FormPath(iSys, subscriber, null);
 					}
 			});
-		//	addPathButton.addActionListener(createPath);
 			/*
 			 * ---------------------------------------------------------
 			 */
