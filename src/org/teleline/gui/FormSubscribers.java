@@ -1,5 +1,7 @@
 package org.teleline.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -9,16 +11,21 @@ import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.SortOrder;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
@@ -37,54 +44,113 @@ public class FormSubscribers extends Form {
 	public JTable pairList;
 	final JList pathList;
 	
+	public JButton refreshButton;
+	public JButton editSubscriberButton;
+	public JButton passportSubscriberButton;
+	public JButton createSubscriberButton;
+	public JButton deletSubscribereButton;
+	public JButton findButton;
+	
+	public JButton addPathButton; 
+	public JButton editPathButton;		
+	public JButton deletePathButton;
+	
+	public JButton addPairButton;
+	public JButton deletePairButton;
+	
+	
 	public FormSubscribers(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
 		createDialog("Редактировать абонента", 685, 700);
-			
-			addLabel("Список абонентов:", 10, 10, 520, 14);
-			subscriberList = addTable(10, 30, 520, 375);
-			final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
-			tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
-			
-			subscriberList.getColumnModel().getColumn(1).setMaxWidth(70);
-			subscriberList.getColumnModel().getColumn(1).setPreferredWidth(70);
-			final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(subscriberList.getModel());
-			subscriberList.setRowSorter(sorter);
-			
-			ArrayList<SortKey> keys=new ArrayList<SortKey>();
-	        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
-	        sorter.setSortKeys(keys);
-	        sorter.setSortsOnUpdates(true);
+		iFrame.setResizable(true);
+		iFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-			JButton refreshButton = addButton("Обновить", 540, 30, 125, 26);
-			JButton editSubscriberButton = addButton("Редактировать", 540, 105, 125, 26);
-			JButton passportSubscriberButton = addButton("Карточка", 540, 135, 125, 26);
-			JButton createSubscriberButton = addButton("Добавить", 540, 215, 125, 26);
-			JButton deletSubscribereButton = addButton("Удалить", 540, 245, 125, 26);
-			
-			JButton findButton = addButton("Найти", 540, 375, 125, 26);
-					
-				Iterator<StructuredElement> i = iSys.sc.getInNet(iSys.nc.getOnlyElement().getId()).iterator();
-	    		while (i.hasNext()) {
-	    			addSubscriberToTable((Subscriber)i.next());	
-	    		}
-			
-			addLabel("Список включений:", 10, 420, 520, 14);
-			pathList = addList(10, 440, 520, 90);
-			JButton addPathButton = addButton("Добавить", 540, 440, 125, 26);
-			JButton editPathButton = addButton("Редактировать", 540, 470, 125, 26);		
-			JButton deletePathButton = addButton("Удалить", 540, 500, 125, 26);
-			
-			addLabel("Занимаемые пары:", 10, 545, 520, 14);
-			//final JList pairList = addList(10, 565, 520, 90);
-			
-			pairList = addTable(10, 565, 520, 90);
-			final DefaultTableModel pairTableModel = (DefaultTableModel) pairList.getModel();
+		JPanel panel_2 = new JPanel();
+		iFrame.getContentPane().add(panel_2, BorderLayout.CENTER);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		panel_2.add(panel_3, BorderLayout.SOUTH);
+		panel_3.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_4 = new JPanel();
+		panel_3.add(panel_4, BorderLayout.EAST);
+		panel_4.setLayout(new MigLayout("", "[110px,fill]", "[][][]"));
+		
+		JButton addPathButton = new JButton("Добавить");
+		panel_4.add(addPathButton, "cell 0 0");
+		JButton editPathButton = new JButton("Редактировать");
+		panel_4.add(editPathButton, "cell 0 1");
+		JButton deletePathButton = new JButton("Удалить");
+		panel_4.add(deletePathButton, "cell 0 2");
+		
+		JLabel lblNewLabel_1 = new JLabel("Включения абонента");
+		panel_3.add(lblNewLabel_1, BorderLayout.NORTH);
+		
+		pathList = addList(panel_3,BorderLayout.CENTER);	
+		JPanel panel_5 = new JPanel();
+		panel_2.add(panel_5, BorderLayout.CENTER);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_6 = new JPanel();
+		panel_5.add(panel_6, BorderLayout.EAST);
+		panel_6.setLayout(new MigLayout("", "[110px,fill]", "[70px,top][][70px,top][][90px,top][]"));
+		
+		JButton refreshButton = new JButton("Обновить");
+		panel_6.add(refreshButton, "cell 0 0");
+		JButton editSubscriberButton = new JButton("Редактировать");
+		panel_6.add(editSubscriberButton, "cell 0 1");
+		JButton passportSubscriberButton = new JButton("Карточка");
+		panel_6.add(passportSubscriberButton, "cell 0 2");
+		JButton createSubscriberButton = new JButton("Создать");
+		panel_6.add(createSubscriberButton, "cell 0 3");
+		JButton deletSubscribereButton = new JButton("Удалить");
+		panel_6.add(deletSubscribereButton, "cell 0 4");
+		JButton findButton = new JButton("Найти");
+		panel_6.add(findButton, "cell 0 5");
+		
+		
+		subscriberList = addTable(panel_5, BorderLayout.CENTER);
+		final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
+		tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон","Адрес"});
+		subscriberList.getColumnModel().getColumn(1).setMaxWidth(70);
+		subscriberList.getColumnModel().getColumn(1).setPreferredWidth(70);
+		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(subscriberList.getModel());
+		subscriberList.setRowSorter(sorter);
+
+		ArrayList<SortKey> keys=new ArrayList<SortKey>();
+        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
+        sorter.setSortKeys(keys);
+        sorter.setSortsOnUpdates(true);
+		JPanel panel = new JPanel();
+		iFrame.getContentPane().add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		pairList = addTable(panel, BorderLayout.CENTER);
+		pairList.setPreferredScrollableViewportSize( new Dimension(
+				pairList.getPreferredScrollableViewportSize().width,
+				5 * pairList.getRowHeight()
+		));		
+		final DefaultTableModel pairTableModel = (DefaultTableModel) pairList.getModel();
 			pairTableModel.setColumnIdentifiers(new String[]{"Пара", "От","До"});
-			
-			JButton addPairButton = addButton("Добавить", 540, 565, 125, 26);
-			JButton deletePairButton = addButton("Удалить", 540, 595, 125, 26);
-			
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.EAST);
+		panel_1.setLayout(new MigLayout("", "[120px,fill]", "[][]"));
+				
+		JButton addPairButton = new JButton("Добавить");
+		panel_1.add(addPairButton, "cell 0 0");
+		JButton deletePairButton = new JButton("Удалить");
+		panel_1.add(deletePairButton, "cell 0 1");				
+		JLabel lblNewLabel = new JLabel("Пары включения");
+		panel.add(lblNewLabel, BorderLayout.NORTH);
+				
+		Iterator<StructuredElement> i = iSys.sc.getInNet(iSys.nc.getOnlyElement().getId()).iterator();
+	    	while (i.hasNext()) {
+	    		addSubscriberToTable((Subscriber)i.next());	
+	    }
+					
 			findButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					final FormSubscriberSearch form = new FormSubscriberSearch(iSys);
@@ -235,26 +301,23 @@ public class FormSubscribers extends Form {
 			/*
 			 * Событие кнопки добавления включения
 			 */
-			ActionListener createPath = new ActionListener() {
+			addPathButton.addActionListener( new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (subscriberList.getSelectionModel().isSelectionEmpty()){ util_newError("Абонент не выбран!"); return; }
 					int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
 					Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
 					
 					new FormPath(iSys, subscriber, null);
-				/*	if ( path != null) { 
-							((DefaultListModel)pathList.getModel()).addElement(path);
-					}*/
-				}
-			};
-			addPathButton.addActionListener(createPath);
+					}
+			});
+		//	addPathButton.addActionListener(createPath);
 			/*
 			 * ---------------------------------------------------------
 			 */
 			/*
 			 * Событие кнопки редактирования включения
 			 */
-			ActionListener editPath = new ActionListener() {
+			editPathButton.addActionListener( new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (subscriberList.getSelectionModel().isSelectionEmpty()){util_newError("Абонент не выбран!"); return; }
 					int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
@@ -263,23 +326,17 @@ public class FormSubscribers extends Form {
 					if (pathList.getSelectedIndex() == -1) {util_newError("Включение не выбрано!"); return; }
 					new FormPath(iSys, subscriber, (Path)pathList.getSelectedValue());
 						
-					//util_setListItems(pathList, iSys.phc.sortByIdUp(iSys.phc.getSubscriberPaths(subscriber)));
-						
 				}
-			};
-			editPathButton.addActionListener(editPath);
+			});
 			/*
 			 * ---------------------------------------------------------
 			 */
 			/*
 			 * Событие кнопки удаления включения
 			 */
-			ActionListener deletePath = new ActionListener() {
+			deletePathButton.addActionListener( new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					//if (subscriberList.getSelectedIndex() == -1) { newError(iFrame, "Абонент не выбран!"); return; }
 					if (subscriberList.getSelectionModel().isSelectionEmpty()){util_newError("Абонент не выбран!"); return; }
-					//int selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
-					//Subscriber subscriber = (Subscriber)tableModel.getValueAt(selectedIndex, 0);
 					
 					if (pathList.getSelectedIndex() == -1) {util_newError("Включение не выбрано!"); return; }
 					if (util_newDialog("Удалить включение?") == JOptionPane.YES_OPTION) {
@@ -289,8 +346,7 @@ public class FormSubscribers extends Form {
 						((DefaultListModel)pathList.getModel()).removeElement(path);		
 					}
 				}
-			};
-			deletePathButton.addActionListener(deletePath);
+			});
 			/*
 			 * ---------------------------------------------------------
 			 */
@@ -318,7 +374,6 @@ public class FormSubscribers extends Form {
 								while(i.hasNext()){
 									addPairToTable(i.next());
 								}
-								//util_setListItems(pairList, path.getUsedPairs());
 							}
 						}
 			        });
@@ -336,10 +391,9 @@ public class FormSubscribers extends Form {
 				public void actionPerformed(ActionEvent arg0) {
 					
 					if (pathList.getSelectedIndex() == -1) { util_newError("Включение не выбрано!"); return; }
-					if (pairList.getSelectionModel().isSelectionEmpty()/*pairList.getSelectedIndex() == -1*/) { util_newError("Пара не выбрана!"); return; }
+					if (pairList.getSelectionModel().isSelectionEmpty()) { util_newError("Пара не выбрана!"); return; }
 					
 					int selectedPairIndex = pairList.getRowSorter().convertRowIndexToModel(pairList.getSelectionModel().getMinSelectionIndex());
-					//Pair delPair = (Pair)pairList.getSelectedValue();
 					Pair delPair = (Pair)pairList.getValueAt(selectedPairIndex, 0);
 					Path path = (Path)pathList.getSelectedValue();
 					
@@ -349,7 +403,6 @@ public class FormSubscribers extends Form {
 						String mes = "Пара:" + delPair.toString()+ ", удалена из включения:" + path.toString();
 						iSys.rw.addLogMessage(mes);
 						util_newInfo(mes);
-						//((DefaultListModel)pairList.getModel()).removeElement(delPair);
 						util_clearTable(pairList);
 						Iterator<Pair> i = path.getUsedPairs().iterator();
 						while(i.hasNext()){ addPairToTable(i.next());}

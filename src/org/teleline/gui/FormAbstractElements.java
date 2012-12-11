@@ -48,7 +48,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		panel_1.setLayout(new BorderLayout(0, 0));
 		JPanel panel = new JPanel();
 		panel_1.add(panel, BorderLayout.EAST);
-		table = addTable(panel_1);
+		table = addTable(panel_1,BorderLayout.CENTER);
 		tableModel = (DefaultTableModel) table.getModel();
 		sorter = new TableRowSorter<TableModel>(table.getModel());
 

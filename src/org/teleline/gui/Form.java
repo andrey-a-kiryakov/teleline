@@ -102,6 +102,22 @@ public abstract class Form {
 				
 		return list;
 	}
+	
+	public JList addList( JPanel panel, String position) {
+		
+		JScrollPane scrollPane = new JScrollPane();
+		//scrollPane.setBounds(x, y, w, h);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JList list = new JList();
+		list.setModel(new DefaultListModel());
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(list);
+		panel.add(scrollPane,position);
+		//iFrame.getContentPane().add(scrollPane);
+				
+		return list;
+	}
 	/**
 	 * Добавляет кнопку к форме
 	 * @return кнопка
@@ -323,7 +339,7 @@ public abstract class Form {
 	}
 	
 	@SuppressWarnings("serial")
-	public JTable addTable(JPanel panel) {
+	public JTable addTable(JPanel panel, String position) {
 		
 		JScrollPane scrollPane = new JScrollPane();
 	//	scrollPane.setBounds(x, y, w, h);
@@ -336,7 +352,9 @@ public abstract class Form {
 		table.getSelectionModel().setSelectionMode(0);
 		scrollPane.setViewportView(table);
 		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
-		panel.add(scrollPane);
+		panel.add(scrollPane,position);
+	//	panel.add(table,position);
+		
 		//iFrame.getContentPane().add(scrollPane);
 		return table;
 	}
