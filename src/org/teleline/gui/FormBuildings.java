@@ -17,7 +17,6 @@ public class FormBuildings extends FormAbstractElements {
 	public FormBuildings(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys, collection);
 		iFrame.setTitle("Редактировать здание");
-		tableLabel.setText("Список зданий");
 		tableModel.setColumnIdentifiers(new String[]{"Здание"});
 		enableSort();
 		errMsg = "Здание не выбрано!";

@@ -17,7 +17,7 @@ public class FormDBoxes extends FormAbstractElements {
 		super(iSys, collection);
 		
 		iFrame.setTitle("Редактировать КРТ");
-		tableLabel.setText("Список коробок");
+	//	tableLabel.setText("Список коробок");
 		tableModel.setColumnIdentifiers(new String[]{"Коробка", "Кабель", "Адрес"});
 		table.getColumnModel().getColumn(0).setMaxWidth(100);
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
@@ -63,8 +63,6 @@ public class FormDBoxes extends FormAbstractElements {
 				((DefaultTableModel) table.getModel()).removeRow(selectedIndex);	
 			}	
 	}
-	
-	
 	
 	private void addDBoxToTable(DBox dbox) {
 		

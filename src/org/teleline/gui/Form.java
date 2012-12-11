@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -318,6 +319,25 @@ public abstract class Form {
 		scrollPane.setViewportView(table);
 		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
 		iFrame.getContentPane().add(scrollPane);
+		return table;
+	}
+	
+	@SuppressWarnings("serial")
+	public JTable addTable(JPanel panel) {
+		
+		JScrollPane scrollPane = new JScrollPane();
+	//	scrollPane.setBounds(x, y, w, h);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JTable table = new JTable(new DefaultTableModel()){
+			public boolean isCellEditable(int arg0, int arg1) {return false; }
+		};
+		table.setRowHeight(20);
+		table.getSelectionModel().setSelectionMode(0);
+		scrollPane.setViewportView(table);
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
+		panel.add(scrollPane);
+		//iFrame.getContentPane().add(scrollPane);
 		return table;
 	}
 	/**

@@ -20,7 +20,6 @@ public class FormCabinets extends FormAbstractElements {
 		super(iSys, collection);
 		
 		iFrame.setTitle("Редактировать шкаф");
-		tableLabel.setText("Список шкафов");
 		tableModel.setColumnIdentifiers(new String[]{"Шкаф", "Класс", "Мест", "Адрес"});
 		table.getColumnModel().getColumn(0).setMaxWidth(100);
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);

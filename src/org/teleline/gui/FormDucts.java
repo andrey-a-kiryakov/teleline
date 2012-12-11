@@ -19,7 +19,6 @@ public class FormDucts extends FormAbstractElements {
 	public FormDucts(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys, collection);
 		iFrame.setTitle("Редактировать канализацию");
-		tableLabel.setText("Список участков канализации");
 		tableModel.setColumnIdentifiers(new String[]{"Участок", "Каналов","Длина"});
 		enableSort();
 		Iterator<AbstractElement> i = collection.iterator();

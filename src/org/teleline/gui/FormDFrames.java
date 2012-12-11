@@ -18,7 +18,6 @@ public class FormDFrames extends FormAbstractElements {
 		super(iSys, collection);
 		
 		iFrame.setTitle("Редактировать кросс");
-		tableLabel.setText("Список кроссов");
 		tableModel.setColumnIdentifiers(new String[]{"Кросс", "Громполос"});
 		enableSort();
 		Iterator<AbstractElement> i = collection.iterator();

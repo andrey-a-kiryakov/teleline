@@ -16,7 +16,6 @@ public class FormCables extends FormAbstractElements {
 	public FormCables(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys, collection);
 		iFrame.setTitle("Редактировать кабель");
-		tableLabel.setText("Список кабелей");
 		tableModel.setColumnIdentifiers(new String[]{"Кабель","От","До","Емкость","Исп.емкость"});
 		table.getColumnModel().getColumn(0).setMaxWidth(70);
 		table.getColumnModel().getColumn(0).setPreferredWidth(70);

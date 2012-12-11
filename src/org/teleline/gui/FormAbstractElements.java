@@ -1,18 +1,21 @@
 package org.teleline.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SortOrder;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.system.Sys;
@@ -24,7 +27,6 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	protected DefaultTableModel tableModel;
 	protected TableRowSorter<TableModel> sorter;
 	
-	public JLabel tableLabel;
 	public JButton refreshButton;
 	public JButton editButton;
 	public JButton viewButton;
@@ -39,19 +41,31 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	public FormAbstractElements(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
 		createDialog("", 785, 600);
-		
-		tableLabel = addLabel("Список шкафов:", 10, 10, 520, 14);
-		table = addTable(10, 30, 620, 525);
+		iFrame.setResizable(true);
+		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
+		JPanel panel_1 = new JPanel();
+		iFrame.getContentPane().add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel panel = new JPanel();
+		panel_1.add(panel, BorderLayout.EAST);
+		table = addTable(panel_1);
 		tableModel = (DefaultTableModel) table.getModel();
-
-		refreshButton = addButton("Обновить", 640, 30, 125, 26);
-		editButton = addButton("Редактировать", 640, 105, 125, 26);
-		viewButton = addButton("Смотреть", 640, 145, 125, 26);
-		passportButton = addButton("Паспорт", 640, 185, 125, 26);
-		createButton = addButton("Добавить", 640, 255, 125, 26);
-		deleteButton = addButton("Удалить", 640, 295, 125, 26);
 		sorter = new TableRowSorter<TableModel>(table.getModel());
+
+		refreshButton = new JButton("Обновить");
+		editButton = new JButton("Редактировать");
+		viewButton = new JButton("Смотреть");
+		passportButton = new JButton("Паспорт");
+		createButton = new JButton("Добавить");
+		deleteButton = new JButton("Удалить");
 		
+		panel.setLayout(new MigLayout("", "[110px,fill]", "[70px,top][30px][30px][70px,top][30px][30px]"));
+		panel.add(refreshButton, "cell 0 0");
+		panel.add(editButton, "cell 0 1");
+		panel.add(viewButton, "cell 0 2");
+		panel.add(passportButton, "cell 0 3,");
+		panel.add(createButton, "cell 0 4");
+		panel.add(deleteButton, "cell 0 5");
         sorter.setSortsOnUpdates(true);
 		
 		/*
