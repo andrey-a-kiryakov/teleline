@@ -11,7 +11,6 @@ import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -63,7 +62,6 @@ public class FormSubscribers extends Form {
 		super(iSys);
 		createDialog("Редактировать абонента", 685, 700);
 		iFrame.setResizable(true);
-		iFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_2 = new JPanel();
