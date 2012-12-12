@@ -58,7 +58,8 @@ public class FormDFrame extends Form {
 					newDFrame.setPlacesCount((Integer)placesBox.getSelectedItem());
 					iSys.dfc.addElement(newDFrame);
 					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)iSys.nc.getOnlyElement()).toString();
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
+					//iSys.rw.addLogMessage(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

@@ -2,11 +2,11 @@ package org.teleline.io;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -35,13 +35,12 @@ import org.teleline.system.Sys;
 public class Writer extends RW implements Runnable{
 
 	private volatile Thread t;
-	//private File xmlFile;
+	
+	private static Logger log = Logger.getLogger("Writer");
 	
 	public Writer(Sys sys) {
 		super(sys);
-		t = new Thread(this);
-	//	this.xmlFile = xmlFile;
-			
+		t = new Thread(this);			
 	}
 
 	@SuppressWarnings("static-access")
@@ -443,8 +442,7 @@ public class Writer extends RW implements Runnable{
 			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
 			String fileName = fSave +((Net)sys.nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
 			
-			addLogMessage("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
-			writeLog();
+			log.debug("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			
 			xmlOutput.output(document, new FileOutputStream(fileName));
 			
@@ -453,28 +451,15 @@ public class Writer extends RW implements Runnable{
 			
 			File file = new File(fileName);
 			
-			
-			addLogMessage("Файл сохранен: "+ fileName + "(" + file.length() + " байт)");
-			writeLog();
-			//return file;
+			log.info("Файл сохранен: "+ fileName + "(" + file.length() + " байт)");
 			form.label.setText("Файл " + fileName + " сохранен");
 		  } 
-			catch (IOException io) {
-				//writeError("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
-				writeError("Ошибка сохранения файла: " + io.toString());
-				form.label.setText("Ошибка при сохранении файла");
-			} 
-			catch (InterruptedException e) {
-				writeError("Ошибка сохранения файла: " + e.toString());
-				form.label.setText("Ошибка при сохранении файла");
-			}
 			catch(Exception e) {
-				writeError("Ошибка сохранения файла (без уточнения):" + e.toString());
+				log.error("Ошибка сохранения файла: " + e.toString());
 				form.label.setText("Ошибка при сохранении файла");
 			}
 		stop();
 		form.okButton.setEnabled(true);
-		
 	}
 	
 	public void start(){

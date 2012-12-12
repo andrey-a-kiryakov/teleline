@@ -34,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.log4j.Logger;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
 import org.teleline.model.Cabinet;
@@ -51,7 +52,7 @@ import org.teleline.system.Sys;
 
 public abstract class Form {
 	
-	//public JDialog  iFrame;
+	protected static Logger log = Logger.getLogger("gui");
 	public JFrame  iFrame;
 	public Sys iSys;
 	
@@ -61,20 +62,16 @@ public abstract class Form {
 		
 	}
 	
-	protected JFrame/*JDialog*/ createDialog (String title, int width, int height) {
+	protected JFrame createDialog (String title, int width, int height) {
 		
-		//iFrame = new JDialog();
 		iFrame = new JFrame();
-		
 		iSys.mng.add(iFrame);
-		//FormListener listener = 
 		iFrame.addWindowListener(new FormListener(this));
 		iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		iFrame.setSize(width, height);
 		iFrame.setLocationRelativeTo(iFrame);
 		iFrame.setTitle(title);
 		iFrame.setResizable(false);
-	//	frame.setModal(true);
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
 	}
