@@ -39,7 +39,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	protected Integer selectedIndex;
 	protected String errMsg = "";
 	protected boolean passportCheck = true;
-	protected MigLayout rightPanelLayout;
+	protected MigLayout buttonPanelLayout;
 	protected JPanel buttonPanel;
 	
 	public FormAbstractElements(Sys iSys, Collection<AbstractElement> collection) {
@@ -64,8 +64,8 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		createButton = new JButton("Добавить");
 		deleteButton = new JButton("Удалить");
 		
-		rightPanelLayout = new MigLayout("", "[110px,fill]", "[30px][30px][70px,top][30px][70px,top][]"); 
-		buttonPanel.setLayout(rightPanelLayout);
+		buttonPanelLayout = new MigLayout("", "[110px,fill]", "[30px][30px][70px,top][30px][70px,top][]"); 
+		buttonPanel.setLayout(buttonPanelLayout);
 	//	buttonPanel.add(refreshButton, "cell 0 0");
 		buttonPanel.add(editButton, "cell 0 0");
 		buttonPanel.add(viewButton, "cell 0 1");

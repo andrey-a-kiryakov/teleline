@@ -40,7 +40,8 @@ public class FormPairDistrib extends Form {
 			selectToBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					final FormDBoxes form = new FormDBoxes(iSys, iSys.dbc.getElements());
-					JButton selectButton = form.addButton("Выбрать", 640, 375, 125, 26);
+					JButton selectButton = new JButton("Выбрать");
+					form.buttonPanel.add(selectButton, "cell 0 5");
 					selectButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							if (form.table.getSelectionModel().isSelectionEmpty()){ form.util_newError("Коробка не выбрана!"); return; }

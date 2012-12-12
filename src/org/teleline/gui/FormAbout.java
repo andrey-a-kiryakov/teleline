@@ -11,5 +11,4 @@ public class FormAbout extends Form {
 		addLabel("Версия 1.0.4", 20, 40, 100, 25);
 		iFrame.setVisible(true);
 	}
-	
 }

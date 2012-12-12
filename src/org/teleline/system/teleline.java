@@ -95,9 +95,9 @@ public class teleline {
 	private void initialize() {
 		frmTeleline = new JFrame();
 		
-		frmTeleline.setResizable(false);
+		frmTeleline.setResizable(true);
 		frmTeleline.setTitle("teleLine - Система технического учета ЛКХ");
-		frmTeleline.setBounds(0, 0, 700, 300);
+		frmTeleline.setBounds(0, 0, 700, 400);
 		frmTeleline.setLocationRelativeTo(null);
 		frmTeleline.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
