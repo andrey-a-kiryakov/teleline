@@ -61,7 +61,7 @@ public class FormDamage extends Form {
 					damage.setOpenDate(openDate.getText());
 					damage.setCloseDate(closeDate.getText());
 					damage.setDescription(description.getText());
-					iSys.rw.addLogMessage("Повреждение изменено:"  + damage.toString());
+					log.info("Повреждение изменено:{}", damage);
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -73,7 +73,7 @@ public class FormDamage extends Form {
 					newDamage.attachTo(owner);
 					iSys.dmc.addElement(newDamage);
 					String mes = "Создано повреждение: "+ newDamage.toString();
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

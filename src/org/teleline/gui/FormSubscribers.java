@@ -398,7 +398,7 @@ public class FormSubscribers extends Form {
 					if (path.removePair(delPair)) {
 						
 						String mes = "Пара:" + delPair.toString()+ ", удалена из включения:" + path.toString();
-						iSys.rw.addLogMessage(mes);
+						log.info(mes);
 						util_newInfo(mes);
 						util_clearTable(pairList);
 						Iterator<Pair> i = path.getUsedPairs().iterator();
@@ -406,7 +406,7 @@ public class FormSubscribers extends Form {
 						
 						if (iSys.phc.isPairUsed(delPair) == null)  {
 							delPair.setStatus(0);
-							iSys.rw.addLogMessage("Пара "+ delPair.toString()+" освобождена ");
+							log.info("Пара {} освобождена", delPair);
 						}
 					}
 					else {

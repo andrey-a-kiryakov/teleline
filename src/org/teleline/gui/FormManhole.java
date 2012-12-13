@@ -94,7 +94,7 @@ public class FormManhole extends Form {
 						.setConstruction(manholeConstruction.getSelectedIndex())
 						.setForm(manholeForm.getSelectedIndex())
 						.setSNumber(manholeNumber);
-					iSys.rw.addLogMessage("Колодец изменен: " + old + " => " + man.toString());
+					log.info("Колодец изменен: {} => {}", old, man);
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -115,7 +115,7 @@ public class FormManhole extends Form {
 						.setSNumber(manholeNumber);	
 					iSys.mc.addElement(newManhole);
 					String mes = "Создан колодец: "+ newManhole.toString()+ ", добавлен в сеть: "+ iSys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

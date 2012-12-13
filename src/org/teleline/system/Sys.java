@@ -3,6 +3,8 @@ package org.teleline.system;
 
 import java.util.Iterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teleline.gui.ManagerForms;
 import org.teleline.io.RW;
 import org.teleline.io.Validator;
@@ -41,6 +43,8 @@ import org.teleline.model.Tube;
 import org.teleline.model.TubeCollection;
 
 public class Sys {
+	
+	public static final Logger log = LoggerFactory.getLogger("sys");
 	
 	public Sys() {
 		
@@ -109,14 +113,14 @@ public class Sys {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					log.info("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
 				}
 			}
 			if (pc.removeElement(pair))
-				rw.addLogMessage("Удалена: Пара " + pair.toString());
+				log.info("Удалена: Пара {}", pair);
 		}
 		if(bc.removeElement(box))
-			rw.addLogMessage("Удален: Бокс " + box.toString());
+			log.info("Удален: Бокс {}", box);
 	}
 	/**
 	 * Удаляет КРТ и все пары в ней. Также пары удаляются из всех включений
@@ -135,14 +139,14 @@ public class Sys {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					log.info("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
 				}
 			}
 			if (pc.removeElement(pair))
-				rw.addLogMessage("Удалена: Пара " + pair.toString());
+				log.info("Удалена: Пара {}", pair);
 		}
 		if (dbc.removeElement(dbox))
-			rw.addLogMessage("Удалена: КРТ " + dbox.toString());
+			log.info("Удалена: КРТ {}", dbox);
 	}
 	/**
 	 * Удаляет участок канализации. Удаляются все каналы в канализации. Кабели проходящии по данному участку не удаляются.
@@ -153,7 +157,7 @@ public class Sys {
 		Iterator<Tube> i = tuc.getDuctsTubes(duct).iterator();
 		while (i.hasNext()) removeTube(i.next());
 		if (duc.removeElement(duct))
-			rw.addLogMessage("Удален: Участок кабельной канализации " + duct.toString());
+			log.info("Удален: Участок кабельной канализации " + duct.toString());
 	}
 	/**
 	 * Удаляет канал в канализации. Кабели, проходящие по каналу не удалаются
@@ -162,7 +166,7 @@ public class Sys {
 	public void removeTube(Tube tube) {
 		
 		if (tuc.removeElement(tube))
-			rw.addLogMessage("Удален: Канал " + tube.toString() + " в канализации "+ duc.getElement(tube.getDuct()));
+			log.info("Удален: Канал " + tube.toString() + " в канализации "+ duc.getElement(tube.getDuct()));
 	}
 	/**
 	 * Удаляет шкаф и все боксы в нем, подходяшие участки канализаци и кабели
@@ -180,7 +184,7 @@ public class Sys {
 		while (c.hasNext()) removeCable(c.next());
 		
 		if (cbc.removeElement(element))
-			rw.addLogMessage("Удален: Шкаф " + element.toString());
+			log.info("Удален: Шкаф {}", element);
 	}
 	
 	/**
@@ -199,7 +203,7 @@ public class Sys {
 		while (c.hasNext()) removeCable(c.next());
 		
 		if (dfc.removeElement(element))
-			rw.addLogMessage("Удален: Кросс " + element.toString());
+			log.info("Удален: Кросс {}", element);
 	}
 	/**
 	 * Удаляет громполосу и все пары в ней. Также пары удаляются из занятых пар у абонентов
@@ -218,15 +222,15 @@ public class Sys {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					log.info("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
 				}
 			}
 			
 			if (pc.removeElement(pair))
-				rw.addLogMessage("Удалена: Пара " + pair.toString());
+				log.info("Удалена: Пара {}", pair);
 		}
 		if (fc.removeElement(frame))
-			rw.addLogMessage("Удален: Громполоса " + frame.toString());
+			log.info("Удален: Громполоса {}", frame);
 	}	
 	/**
 	 * Удаляет кабель и все пары в нем. Кабель удаляется из всех каналов канализации. Также пары удаляются из всех включений.
@@ -245,11 +249,11 @@ public class Sys {
 				path = (Path) ph.next();
 				if (path.isPairUsed(pair)) {
 					path.removePair(pair);
-					rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+					log.info("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
 				}
 			}
 			if (pc.removeElement(pair))
-				rw.addLogMessage("Удалена: Пара " + pair.toString());
+				log.info("Удалена: Пара {}", pair);
 		}
 		
 		Iterator <Tube> t = tuc.getTubesByCable(cable).iterator();
@@ -258,7 +262,7 @@ public class Sys {
 		}
 		
 		if (cc.removeElement(cable))
-			rw.addLogMessage("Удален: Кабель " + cable.toString());
+			log.info("Удален: Кабель {}", cable);
 	}
 	/**
 	 * Удаляет колодец. Все участки кабельной канализации проходящие через колодец - удаляются
@@ -268,7 +272,7 @@ public class Sys {
 		
 		Iterator<Duct> i = duc.getDucts(man).iterator();
 		while (i.hasNext()) removeDuct(i.next());
-		if (mc.removeElement(man)) rw.addLogMessage("Удален: Колодец " + man.toString());
+		if (mc.removeElement(man)) log.info("Удален: Колодец {}", man);
 	}
 	/**
 	 * Удаляет здание. Удаляется также участок канализации, подходящий к зданию.
@@ -279,7 +283,7 @@ public class Sys {
 		Iterator<Duct> i = duc.getDucts(building).iterator();
 		while (i.hasNext()) removeDuct(i.next());
 		
-		if (buc.removeElement(building)) rw.addLogMessage("Удален: Здание " + building.toString());
+		if (buc.removeElement(building)) log.info("Удален: Здание {}", building);
 	}
 	/**
 	 * Удаляет сеть и все элементы в ней
@@ -309,7 +313,7 @@ public class Sys {
 		while (i.hasNext()) removeSubscriber((Subscriber)i.next());
 		
 		if (nc.removeElement(net))
-			rw.addLogMessage("Удалена: Сеть " + net.toString());
+			log.info("Удалена: Сеть {}", net);
 	}
 	/**
 	 * Удаляет абонента. Удаляются также все включения данного абонента
@@ -319,7 +323,7 @@ public class Sys {
 		
 		Iterator <Path> p = phc.getSubscriberPaths(sub).iterator();
 		while (p.hasNext()) removePath(p.next());
-		if (sc.removeElement(sub)) rw.addLogMessage("Удален: Абонент " + sub.toString());
+		if (sc.removeElement(sub)) log.info("Удален: Абонент {}",sub);
 	}
 	/**
 	 * Удаляет включение. Пара освобождается, если больше не задействована ни в одном включении
@@ -332,20 +336,20 @@ public class Sys {
 		
 		while (p.hasNext()){
 			Pair pair = p.next();
-			rw.addLogMessage("Пара "+ pair.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + sc.getElement(path.getSubscriber()).toString());
+			log.info("Пара {} удалена из включения: {} у абонента: {}", pair, path, sc.getElement(path.getSubscriber()) );
 			
 			if (phc.isPairUsed(pair) == null)  {
 				pair.setStatus(0);
-				rw.addLogMessage("Пара "+ pair.toString()+" освобождена ");
+				log.info("Пара {} освобождена",pair );
 			}	
 		}
 		if (phc.removeElement(path))
-			rw.addLogMessage("Удален: Включение " + path.toString() + " у абонента: "+ sc.getElement(path.getSubscriber()).toString());
+			log.info("Удален: Включение {} у абонента: {}", path, sc.getElement(path.getSubscriber()) );
 	}
 	
 	public void clear(){
 		
-		rw.deleteNotSavedLog();
+	//	rw.deleteNotSavedLog();
 		nc.removeAllElements(); 
 		dfc.removeAllElements();
 		cbc.removeAllElements(); 

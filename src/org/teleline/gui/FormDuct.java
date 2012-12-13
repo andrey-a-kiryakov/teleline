@@ -158,7 +158,7 @@ public class FormDuct extends Form {
 						.setМanufacturingМethod(manufacturingМethod.getText())
 						.setFrom(elementFrom.getId())
 						.setTo(elementTo.getId());
-					iSys.rw.addLogMessage("Участок канализации изменен: " + old + " => " + duct.toString());
+					log.info("Участок канализации изменен: {} => {}", old, duct);
 					util_newInfo( "Изменения сохранены");
 				}
 				else {		
@@ -176,14 +176,14 @@ public class FormDuct extends Form {
 						.attachToNet((Net)iSys.nc.getOnlyElement());
 					iSys.duc.addElement(newDuct);
 					String mes = "Создан участок канализации: "+ newDuct.toString()+ ", добавлен в сеть: "+ iSys.nc.getOnlyElement().toString()/*selectedNet.toString()*/;
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					
 					for (int i = 0; i < capacity; i++) {
 						Tube tube = new Tube();
 						tube.setNumber(i);
 						tube.setDuct(newDuct);
 						iSys.tuc.addElement(tube);
-						iSys.rw.addLogMessage("Создан канал №" + tube.getNumber().toString() + "в канализации " + newDuct.toString());
+						log.info("Создан канал №{} в канализации {}",tube.getNumber(),newDuct );
 					}
 					util_newInfo(mes);
 				}

@@ -52,7 +52,7 @@ public class FormBuilding extends Form {
 						building.setName(name.getText());
 						building.setSNumber(number.getText());
 						building.setStreet(street.getText());
-						iSys.rw.addLogMessage("Здание изменено:" + oldBuilding.toString() +" => " + building.toString());
+						log.info("Здание изменено: {} => {}",oldBuilding,building);
 						util_newInfo("Изменения сохранены");
 					}
 					else {
@@ -63,7 +63,7 @@ public class FormBuilding extends Form {
 						newBuilding.attachToNet((Net)iSys.nc.getOnlyElement());
 						iSys.buc.addElement(newBuilding);
 						String mes = "Создано здание: "+ newBuilding.toString();
-						iSys.rw.addLogMessage(mes);
+						log.info(mes);
 						util_newInfo(mes);
 					}
 					iFrame.dispose();

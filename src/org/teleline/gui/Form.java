@@ -34,7 +34,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
 import org.teleline.model.Cabinet;
@@ -52,7 +54,7 @@ import org.teleline.system.Sys;
 
 public abstract class Form {
 	
-	protected static Logger log = Logger.getLogger("gui");
+	protected static final Logger log = LoggerFactory.getLogger("sys");
 	public JFrame  iFrame;
 	public Sys iSys;
 	
@@ -414,7 +416,7 @@ public abstract class Form {
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(2);
-				iSys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на поврежденная");
+				log.info("Пара {}:, изменен статус на поврежденная", p);
 				util_setPairButtonColor(p, ep);
 			}
 		});
@@ -427,7 +429,7 @@ public abstract class Form {
 				ElementView ep = (ElementView)pm.getInvoker();
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(0);
-				iSys.rw.addLogMessage("Пара "+ p.toString()+", изменен статус на исправная");
+				log.info("Пара {}:, изменен статус на исправная", p);
 				util_setPairButtonColor(p, ep);
 				
 			}
@@ -448,11 +450,10 @@ public abstract class Form {
 					Path path = (Path)form.pathList.getSelectedValue();
 					
 					if (path.removePair(p)) {
-						iSys.rw.addLogMessage("Пара "+ p.toString()+" удалена из включения: "+ path.toString()+ " у абонента: " + iSys.sc.getElement(path.getSubscriber()).toString());
-
+						log.info("Пара {} удалена из включения: {} у абонента: {}", p, path, iSys.sc.getElement(path.getSubscriber()));
 						if (iSys.phc.isPairUsed(p) == null)  {
 							p.setStatus(0);
-							iSys.rw.addLogMessage("Пара "+ p.toString()+" освобождена ");
+							log.info("Пара {} освобождена", p);
 							util_setPairButtonColor(p, ep);
 						}
 					}				
@@ -505,7 +506,7 @@ public abstract class Form {
 						if (t.containsCable(cable)) { form.util_newError("Кабель уже содержиться в канале"); return; }
 						
 						t.addCable(cable);
-						iSys.rw.addLogMessage("Кабель " + cable.toString()+ " добавлен в канал " + t.toString() + " участка канализации " + iSys.duc.getElement(t.getDuct()));
+						log.info("Кабель {} добавлен в канал {} участка канализации {}", cable, t, iSys.duc.getElement(t.getDuct()));
 						util_setTubeButtonColor(t, ep);	
 						form.close();
 					}
@@ -530,7 +531,7 @@ public abstract class Form {
 						Cable cable = (Cable)form.cableList.getSelectedValue();
 						if (cable != null)
 							if (t.removeCable(cable)) {
-								iSys.rw.addLogMessage("Кабель " + cable.toString()+ " удален из канала " + t.toString() + " участка канализации " + iSys.duc.getElement(t.getDuct()));
+								log.info("Кабель {} удален из канала {} участка канализации {}" , cable, t, iSys.duc.getElement(t.getDuct()));
 								util_setTubeButtonColor(t, ep);
 							}
 					}
@@ -567,16 +568,16 @@ public abstract class Form {
 				if (oldPair != null) {
 					if (iSys.phc.isPairUsed(oldPair) == null)  {
 						oldPair.setStatus(0);
-						iSys.rw.addLogMessage("Пара "+ oldPair.toString()+" освобождена ");
+						log.info("Пара {} освобождена", oldPair);
 					}
 					else {
-						iSys.rw.addLogMessage("Пара "+ oldPair.toString()+"удалена из включения " + path.toString());
+						log.info("Пара {} удалена из включения {}", oldPair, path);
 					}
 					
 					returnedPair = oldPair;
 				}
 				String mes = "Пара "+ p.toString()+" занята включением: " + path.toString();
-				iSys.rw.addLogMessage(mes);
+				log.info(mes);
 				util_newInfo(mes);
 				return returnedPair;
 		
@@ -599,7 +600,7 @@ public abstract class Form {
 				path.addicPair(p);
 				p.setStatus(1);
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
-				iSys.rw.addLogMessage(mes);
+				log.info(mes);
 				util_newInfo(mes);
 				return p;
 		}
@@ -624,16 +625,16 @@ public abstract class Form {
 				if (oldPair != null) {
 					if (iSys.phc.isPairUsed(oldPair) == null)  {
 						oldPair.setStatus(0);
-						iSys.rw.addLogMessage("Пара "+ oldPair.toString()+" освобождена ");
+						log.info("Пара {} освобождена ", oldPair);
 					}
 					else {
-						iSys.rw.addLogMessage("Пара "+ oldPair.toString()+" удалена из включения " + path.toString());
+						log.info("Пара {} удалена из включения {}",oldPair, path);
 					}
 					returnedPair = oldPair;
 				}
 				
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
-				iSys.rw.addLogMessage(mes);
+				log.info(mes);
 				util_newInfo(mes);
 				return returnedPair;
 		}
@@ -657,16 +658,15 @@ public abstract class Form {
 				
 				if (iSys.phc.isPairUsed(oldPair) == null)  {
 					oldPair.setStatus(0);
-					iSys.rw.addLogMessage("Пара "+ oldPair.toString()+" освобождена ");
+					log.info("Пара {} освобождена", oldPair);
 				}
 				else {
-					iSys.rw.addLogMessage("Пара "+ oldPair.toString()+" удалена из включения " + path.toString());
+					log.info("Пара {} удалена из включения {}",oldPair,path);
 				}
 				returnedPair = oldPair;
 			}
-				
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
-				iSys.rw.addLogMessage(mes);
+				log.info(mes);
 				util_newInfo(mes);
 				
 				return returnedPair;
@@ -813,7 +813,7 @@ public abstract class Form {
 			File page = new File(fileName);
 		    java.awt.Desktop.getDesktop().browse(page.toURI()); 
 		} catch (IOException ex) {
-			iSys.rw.writeError(ex.toString());
+			log.error(ex.toString());
 		}
 	}
 	public boolean util_scrollTable(JTable jTable, int rowIndex) {

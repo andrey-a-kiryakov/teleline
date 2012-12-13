@@ -8,7 +8,7 @@ public class FormAbout extends Form {
 		super(iSys);
 		createDialog("О программе", 300, 130);
 		addLabel("Teleline", 20, 20, 100, 25);
-		addLabel("Версия 1.1.0", 20, 40, 100, 25);
+		addLabel("Версия 1.1.1", 20, 40, 100, 25);
 		iFrame.setVisible(true);
 	}
 }

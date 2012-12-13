@@ -100,7 +100,7 @@ public class FormDamages extends Form {
 				if (n == JOptionPane.YES_OPTION) {
 					iSys.dmc.removeElement(damage);
 					String mes = "Повреждение " + damage.toString() + " удалено";
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					((DefaultTableModel) damageTable.getModel()).removeRow(selectedIndex);
 					util_newInfo(mes);
 				}	

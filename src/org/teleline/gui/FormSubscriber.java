@@ -78,7 +78,7 @@ public class FormSubscriber extends Form {
 						.setDate(subscriberDate.getText())
 						.setAdress(subscriberAdress.getText())
 						.setEquipment(subscriberEquipment.getText());
-					iSys.rw.addLogMessage("Абонент изменен: " + oldSub + " => " + sub.toString());
+					log.info("Абонент изменен: {} => {}",oldSub,sub );
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -101,7 +101,7 @@ public class FormSubscriber extends Form {
 					iSys.phc.addElement(newPath);
 					
 					String mes = "Создан абонент: "+ newSubscriber.toString()+ ", добавлен в сеть: "+ selectedNet.toString();
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

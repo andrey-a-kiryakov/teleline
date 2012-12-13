@@ -48,7 +48,7 @@ public class FormDFrame extends Form {
 					if (dframe != null) {
 					String oldDFrame = dframe.toString();
 					dframe.setName(textField.getText());
-					iSys.rw.addLogMessage("Кросс изменен: " + oldDFrame + " => " + dframe.toString());
+					log.info("Кросс изменен: {} => {}", oldDFrame, dframe);
 					util_newInfo("Изменения сохранены");
 				}
 				else {

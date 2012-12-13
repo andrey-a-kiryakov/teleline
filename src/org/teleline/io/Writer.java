@@ -6,12 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.teleline.gui.FormProgressBar;
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Box;
@@ -36,7 +37,7 @@ public class Writer extends RW implements Runnable{
 
 	private volatile Thread t;
 	
-	private static Logger log = Logger.getLogger("Writer");
+	private static final Logger log = LoggerFactory.getLogger("Writer");
 	
 	public Writer(Sys sys) {
 		super(sys);
@@ -451,11 +452,11 @@ public class Writer extends RW implements Runnable{
 			
 			File file = new File(fileName);
 			
-			log.info("Файл сохранен: "+ fileName + "(" + file.length() + " байт)");
+			log.info("Файл сохранен: {}({} байт)",fileName,file.length());
 			form.label.setText("Файл " + fileName + " сохранен");
 		  } 
 			catch(Exception e) {
-				log.error("Ошибка сохранения файла: " + e.toString());
+				log.error("Ошибка сохранения файла: ", e);
 				form.label.setText("Ошибка при сохранении файла");
 			}
 		stop();

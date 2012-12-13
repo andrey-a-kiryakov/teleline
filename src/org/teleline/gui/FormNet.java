@@ -34,7 +34,7 @@ public class FormNet extends Form {
 				if (net != null) {
 					Net oldNet =  net;
 					net.setName(name.getText());
-					iSys.rw.addLogMessage("Сеть изменена:" + oldNet.toString() +" => " + net.toString());
+					log.info("Сеть изменена: {} => {}",oldNet,net );
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -42,7 +42,7 @@ public class FormNet extends Form {
 					newNet.setName(name.getText()); 
 					iSys.nc.addElement(newNet);
 					String mes = "Создана сеть: "+ newNet.toString();
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

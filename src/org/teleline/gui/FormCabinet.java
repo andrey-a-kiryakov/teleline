@@ -125,7 +125,7 @@ public class FormCabinet extends Form {
 						.setSetup(cabinetSetup.getSelectedIndex())
 						.setArea(cabinetArea.getSelectedIndex())
 						.setSNumber(cabinetNumber);
-					iSys.rw.addLogMessage("Шкаф изменен: " + old + " => " + cabinet.toString());
+					log.info("Шкаф изменен: {} => {}",old,cabinet );
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -150,7 +150,7 @@ public class FormCabinet extends Form {
 						newCabinet.setCabinetClass(iSys.rw.valueOf(cabinetClass.getText()));
 						iSys.cbc.addElement(newCabinet);
 					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ ((Net)iSys.nc.getOnlyElement()).toString();
-					iSys.rw.addLogMessage(mes);
+					log.info(mes);
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

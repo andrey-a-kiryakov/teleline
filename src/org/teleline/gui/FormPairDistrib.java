@@ -143,7 +143,7 @@ public class FormPairDistrib extends Form {
 						
 						iSys.pc.addElement(newPair);
 						String mes = "Создана распределительная пара: "+ newPair.toString()+ ", присоединена к шкафу: "+selectedCabinet.toString()+", боксу: "+ selectedBox.toString() + ", присоединена к коробке: " + selectedDBox.toString();
-						iSys.rw.addLogMessage(mes);
+						log.info(mes);
 						
 					}
 					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к шкафу: "+selectedCabinet.toString()+", боксу: "+ selectedBox.toString() + ", присоединены к коробке: " + selectedDBox.toString();

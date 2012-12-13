@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.teleline.gui.FormProgressBar;
 import org.teleline.model.Box;
 import org.teleline.model.Building;
@@ -33,7 +34,7 @@ public class Reader extends RW implements Runnable{
 	private volatile Thread t;
 	private File xmlFile;
 	
-	private static Logger log = Logger.getLogger("Reader");
+	private static final Logger log = LoggerFactory.getLogger("Reader");
 	
 	public Reader(Sys sys, File xmlFile) {
 		super(sys);
@@ -438,31 +439,24 @@ public class Reader extends RW implements Runnable{
 			}
 			form.progressBar.setValue((sys.getSize() +1) * 100 / size);
 			t.sleep(10);
-			//addLogMessage("Файл открыт: "+ xmlFile.getName() + "("+ xmlFile.length() + " байт)");
-			log.info("Файл открыт: "+ xmlFile.getName() + "("+ xmlFile.length() + " байт)");
-			//addLogMessage("Количество элементов после открытия файла: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
+			log.info("Файл открыт: {}({} байт)", xmlFile.getName(), xmlFile.length());
 			log.debug("Количество элементов после открытия файла: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
-			//writeLog();
 			form.label.setText("Файл \"" + xmlFile.getName() + "\" прочитан");
 		  } 
-			catch (IOException io) {
-				//writeError("Ошибка чтения файла: " + io.toString()); 
-				log.error("Ошибка чтения файла: " + io.toString());
+			catch (IOException io) { 
+				log.error("Ошибка чтения файла: ", io);
 				form.label.setText("Ошибка при чтении файла");
 		  } 
 			catch (JDOMException jdomex) {
-				//writeError("Ошибка парсинга XML файла:" + jdomex.toString());
-				log.error("Ошибка парсинга XML файла:" + jdomex.toString());
+				log.error("Ошибка парсинга XML файла: ", jdomex);
 				form.label.setText("Ошибка при чтении файла");
 		  } 
 			catch (InterruptedException e) {
-				//writeError("Ошибка потока чтения:" + e.toString());
-				log.error("Ошибка потока:" + e.toString());
+				log.error("Ошибка потока: ", e);
 				form.label.setText("Ошибка при чтении файла");
 		  } 
 			catch(Exception e) {
-				//writeError("Ошибка чтения (без уточнения):" + e.toString());
-				log.error("Ошибка чтения (без уточнения):" + e.toString());
+				log.error("Ошибка чтения (без уточнения): ", e);
 				form.label.setText("Ошибка при чтении файла");
 		  }
 		stop();

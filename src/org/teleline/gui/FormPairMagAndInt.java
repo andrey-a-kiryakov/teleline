@@ -227,7 +227,7 @@ public class FormPairMagAndInt extends Form {
 						if (type == 1) {
 							mes = "Создана передаточная кабельная пара: "+ newPair.toString()+ ", присоединена к шкафу: "+selectedFromStructuredElement.toString()+", боксу: "+ selectedFromConnectedPointElement.toString() + ", присоединена к шкафу: "+selectedCabinet.toString()+", боксу: " + selectedBox.toString();
 						}
-						iSys.rw.addLogMessage(mes);
+						log.info(mes);
 						
 					}
 					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к кроссу: "+selectedFromStructuredElement.toString()+", громполосе: "+ selectedFromConnectedPointElement.toString() + ", присоединены к шкафу: "+selectedCabinet.toString()+", боксу: " + selectedBox.toString();

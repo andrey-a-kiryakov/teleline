@@ -1,13 +1,8 @@
 package org.teleline.io;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
@@ -18,27 +13,32 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teleline.model.*;
 import org.teleline.system.Sys;
 
 
 public class RW {
+	
+	private static final Logger log = LoggerFactory.getLogger("RW");
+	
 	private static String dTmpFolder = "tmp";
 	private static String dLogsFolder = "logs";
 	private static String dSavesFolder = "saves";
 	private static String dPassportsFolder = "saves";
 	
 	protected static String fSave = dSavesFolder + "/tlsave_";
-	private static String fLog = dLogsFolder + "/teleline.log";
+//	private static String fLog = dLogsFolder + "/teleline.log";
 	private static String fNonSavedLog = dTmpFolder + "/teleline.$$$";
-	private static String fErrorsLog = dLogsFolder +"/errors.log";
+//	private static String fErrorsLog = dLogsFolder +"/errors.log";
 	private static String fRawPassport = dTmpFolder + "/rawpass.html";
 	
 	protected Sys sys;	
 	public RW(Sys sys) {
 		this.sys = sys;
 	}
-	
+/*	
 	public void writeLog () {
 		
 		try {
@@ -58,14 +58,14 @@ public class RW {
 			writeError(e.toString());
 		}				
 	}
-
+*/
 	public Integer valueOf(String string) {
 		
 		try {
 			return Integer.valueOf(string);
 		} 
 		catch (NumberFormatException io) {
-			writeError("Ошибка преобразования строки в число: " + io.toString());
+			log.error("Ошибка преобразования строки в число: ", io);
 			return (Integer)0;
 		}
 	}
@@ -73,7 +73,7 @@ public class RW {
 	public Integer valueOf(Attribute attribute) {
 		
 		if (attribute == null) {
-			writeError("Отсутствует аттрибут");
+			log.error("Отсутствует аттрибут");
 			return 0;
 		}
 		else {
@@ -84,7 +84,7 @@ public class RW {
 	public String textOf(Element element) {
 		
 		if (element == null) {
-			writeError("Отсутствует элемент");
+			log.error("Отсутствует элемент");
 			return "";
 		}
 		else {
@@ -114,7 +114,7 @@ public class RW {
 		file = new File(dPassportsFolder); if (!file.exists()) file.mkdir();		
 	}
 	
-	public void writeError(String message) {
+	/*public void writeError(String message) {
 		
 		SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
 		
@@ -127,9 +127,9 @@ public class RW {
 			//System.out.println(e.getMessage());
 			writeError(e.toString());
 		}
-	}
+	}*/
 	
-	public void addLogMessage(String message) {
+/*	public void addLogMessage(String message) {
 		
 		SimpleDateFormat DF = new SimpleDateFormat("MM.dd HH:mm:ss");
 		
@@ -142,7 +142,7 @@ public class RW {
 			writeError(e.toString());
 		}
 	}
-	
+*/	
 	public boolean isSaved() {
 		
 		 File f = new File(fNonSavedLog);
@@ -150,7 +150,7 @@ public class RW {
 		 
 	}
 	
-	public void deleteNotSavedLog (){
+/*	public void deleteNotSavedLog (){
 		
 		try {
 			File f = new File(fNonSavedLog);
@@ -160,8 +160,8 @@ public class RW {
 			writeError(e.toString());
 		}
 	}
-	
-	public void deleteFile (String file){
+*/	
+/*	public void deleteFile (String file){
 		
 		try {
 			File f = new File(file);
@@ -170,7 +170,7 @@ public class RW {
 		catch (SecurityException e) {
 			writeError(e.toString());
 		}
-	}
+	}*/
 	/**
 	 * Создает и сохраняет в файл пасспорт шкафа
 	 * @return имя файла
@@ -380,7 +380,7 @@ public class RW {
 		  } 
 		
 		catch (IOException io) {
-			writeError(io.toString());
+			log.error(io.toString());
 			return null;
 		  }
 				
@@ -607,8 +607,7 @@ public class RW {
 		  } 
 		
 		catch (IOException io) {
-			//System.out.println(io.getMessage());
-			writeError(io.toString());
+			log.error(io.toString());
 			return null;
 		  }
 		
@@ -832,7 +831,7 @@ public class RW {
 		  } 
 		
 		catch (IOException io) {
-			writeError(io.toString());
+			log.error("Ошибка сохранения файла карточки абонента: ", io);
 			return null;
 		  }
 	}
@@ -1020,7 +1019,7 @@ public class RW {
 		  } 
 		
 		catch (IOException io) {
-			writeError(io.toString());
+			log.error("Ошибка сохранения файла паспорта магистрального кабеля: ", io);
 			return null;
 		  }
 	}
@@ -1127,7 +1126,7 @@ public class RW {
 	  } 
 	
 	catch (IOException io) {
-		writeError(io.toString());
+		log.error("Ошибка сохранения паспорта межшкафного кабеля: ", io);
 		return null;
 	  }
 		
@@ -1290,7 +1289,7 @@ public class RW {
 	 		return fRawPassport;
 		}
 		catch(IOException io) {
-			writeError(io.toString());
+			log.error("Ошибка сохранения фала паспорта канализации:", io);
 			return null;
 		}
 	}
@@ -1396,7 +1395,7 @@ public class RW {
 	 		return fRawPassport;
 		}
 		catch(IOException io) {
-			writeError(io.toString());
+			log.error(io.toString());
 			return null;
 		}
 	}
@@ -1493,7 +1492,7 @@ public class RW {
 	 		return fRawPassport;
 		}
 		catch(IOException io) {
-			writeError(io.toString());
+			log.error(io.toString());
 			return null;
 		}
 	}
@@ -1571,7 +1570,7 @@ public class RW {
 	 		return fRawPassport;
 		}
 		catch(IOException io) {
-			writeError(io.toString());
+			log.error(io.toString());
 			return null;
 		}
 	}

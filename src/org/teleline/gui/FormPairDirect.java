@@ -143,7 +143,7 @@ public class FormPairDirect extends Form {
 						
 						iSys.pc.addElement(newPair);
 						String mes = "Создана кабельная пара прямого питания: "+ newPair.toString()+ ", присоединена к кроссу: "+selectedDFrame.toString()+", громполосе: "+ selectedFrame.toString() + ", присоединена к коробке: " + selectedDBox.toString();
-						iSys.rw.addLogMessage(mes);
+						log.info(mes);
 						
 					}
 					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к кроссу: "+selectedDFrame.toString()+", громполосе: "+ selectedFrame.toString() + ", присоединены к коробке: " + selectedDBox.toString();

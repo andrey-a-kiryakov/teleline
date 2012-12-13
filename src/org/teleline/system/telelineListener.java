@@ -33,9 +33,9 @@ public class telelineListener implements WindowListener {
 		 System.out.println(win.sys.mng.getSize());
 		 win.sys.mng.closeAll();
 		 
-		 win.sys.rw.deleteNotSavedLog();
-		 win.sys.rw.addLogMessage("== Программа закрыта ==");
-	     win.sys.rw.writeLog();
+		// win.sys.rw.deleteNotSavedLog();
+		 Sys.log.info("== Программа закрыта ==");
+	    // win.sys.rw.writeLog();
 		 win.frmTeleline.dispose();
     }
 
@@ -57,8 +57,8 @@ public class telelineListener implements WindowListener {
 
 	public void windowOpened(WindowEvent e) {
        win.sys.rw.checkFolders();
-       win.sys.rw.addLogMessage("== Программа запущена ==");
-       win.sys.rw.writeLog();
+       Sys.log.info("== Программа запущена ==");
+     //  win.sys.rw.writeLog();
     }
 
 	public void windowActivated(WindowEvent e) {
