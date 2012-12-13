@@ -228,6 +228,7 @@ public class FormPairMagAndInt extends Form {
 							mes = "Создана передаточная кабельная пара: "+ newPair.toString()+ ", присоединена к шкафу: "+selectedFromStructuredElement.toString()+", боксу: "+ selectedFromConnectedPointElement.toString() + ", присоединена к шкафу: "+selectedCabinet.toString()+", боксу: " + selectedBox.toString();
 						}
 						log.info(mes);
+						iSys.changes = true;
 						
 					}
 					String mes = "Создано " + pairCount.toString() + " кабельных пар, присоединены к кроссу: "+selectedFromStructuredElement.toString()+", громполосе: "+ selectedFromConnectedPointElement.toString() + ", присоединены к шкафу: "+selectedCabinet.toString()+", боксу: " + selectedBox.toString();

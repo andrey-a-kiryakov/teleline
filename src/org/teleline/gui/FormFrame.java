@@ -118,6 +118,7 @@ public class FormFrame extends Form {
 					frame.setPlaceNumber((Integer)placesComboBox.getSelectedItem());
 					
 					log.info("Громполоса изменена: {} => {}", old, frame);
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -134,6 +135,7 @@ public class FormFrame extends Form {
 					String mes = "Создана громполоса: "+ newFrame.toString()+ ", добавлена в кросс: "+ selectedDFrame.toString();
 					util_newInfo(mes);
 					log.info(mes);
+					iSys.changes = true;
 					
 				}
 				iFrame.dispose();

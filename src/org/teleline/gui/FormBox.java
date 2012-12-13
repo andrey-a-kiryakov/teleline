@@ -137,6 +137,7 @@ public class FormBox extends Form {
     				
     				box.setNumber(boxNumber);
     				log.info("Бокс изменен: {} => {}",old,box);
+    				iSys.changes = true;
     				util_newInfo("Изменения сохранены");
     				
     			}
@@ -156,6 +157,7 @@ public class FormBox extends Form {
     				iSys.bc.addElement(newBox);
     				String mes = "Создан "+(String)comboBox1.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
     				log.info(mes);
+    				iSys.changes = true;
     				util_newInfo(mes);
     			}
     			iFrame.dispose();

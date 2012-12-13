@@ -231,6 +231,7 @@ public class FormCable extends Form {
 						.setStatus(cableStatus.getSelectedIndex());
 					
 					log.info("Кабель изменен: {}", cable);
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 					
 				}
@@ -272,6 +273,7 @@ public class FormCable extends Form {
 					String mes = "Создан "+(String)typeComboBox.getSelectedItem()+" кабель: "+ newCable.toString()+ ", присоединён к сети: "+ iSys.nc.getOnlyElement().toString();
 					util_newInfo(mes);
 					log.info(mes);
+					iSys.changes = true;
 				}
 				iFrame.dispose();
 			}

@@ -49,6 +49,7 @@ public class FormDFrame extends Form {
 					String oldDFrame = dframe.toString();
 					dframe.setName(textField.getText());
 					log.info("Кросс изменен: {} => {}", oldDFrame, dframe);
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -59,7 +60,7 @@ public class FormDFrame extends Form {
 					iSys.dfc.addElement(newDFrame);
 					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)iSys.nc.getOnlyElement()).toString();
 					log.info(mes);
-					//iSys.rw.addLogMessage(mes);
+					iSys.changes = true;
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

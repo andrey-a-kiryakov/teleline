@@ -60,6 +60,7 @@ public class FormDBox extends Form {
 						.setBuilding((Building)buildingsComboBox.getSelectedItem())
 						.setPlase(plase.getText());
 					log.info("Коробка изменена: {} => {}" ,old, dbox);
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -72,6 +73,7 @@ public class FormDBox extends Form {
 					iSys.dbc.addElement(newDBox);
 					String mes = "Создана коробка: "+ newDBox.toString()+ ", присоединена к сети: "+ iSys.nc.getOnlyElement().toString();
 					log.info(mes);
+					iSys.changes = true;
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

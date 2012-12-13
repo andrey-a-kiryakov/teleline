@@ -45,6 +45,7 @@ public class FormPath extends Form {
 					path.setName(textField.getText());
 					path.setTransit(transitText.getText());
 					log.info("Включение изменено: {} => {}", oldPath, path);
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -55,6 +56,7 @@ public class FormPath extends Form {
 					iSys.phc.addElement(newPath);
 					String mes = "Создано включение: "+ newPath.toString() + ", для абонента " + sub.toString();
 					log.info(mes);
+					iSys.changes = true;
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

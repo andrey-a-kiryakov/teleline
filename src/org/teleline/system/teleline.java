@@ -135,7 +135,7 @@ public class teleline {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if (sys.rw.isSaved() == false) {
+				if (sys.changes == true) {
 					if (Form.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();

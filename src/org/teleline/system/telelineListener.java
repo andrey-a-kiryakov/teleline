@@ -21,7 +21,7 @@ public class telelineListener implements WindowListener {
 	}
 	public void windowClosing(WindowEvent e) {
 		 
-		 if (win.sys.rw.isSaved() == false){ 
+		 if (win.sys.changes == true){ 
 			
 			 if (Form.util_newDialog("Сохранить изменения в файле?") ==  JOptionPane.YES_OPTION) {
 				 
@@ -30,12 +30,9 @@ public class telelineListener implements WindowListener {
 			 }
 		 }
 		 
-		 System.out.println(win.sys.mng.getSize());
 		 win.sys.mng.closeAll();
-		 
-		// win.sys.rw.deleteNotSavedLog();
-		 Sys.log.info("== Программа закрыта ==");
-	    // win.sys.rw.writeLog();
+		 Sys.log_app.info("== Программа закрыта ==");
+		 win.sys.rw.deleteNotSavedLog();
 		 win.frmTeleline.dispose();
     }
 
@@ -57,7 +54,7 @@ public class telelineListener implements WindowListener {
 
 	public void windowOpened(WindowEvent e) {
        win.sys.rw.checkFolders();
-       Sys.log.info("== Программа запущена ==");
+       Sys.log_app.info("== Программа запущена ==");
      //  win.sys.rw.writeLog();
     }
 

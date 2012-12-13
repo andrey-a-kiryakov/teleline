@@ -79,6 +79,7 @@ public class FormSubscriber extends Form {
 						.setAdress(subscriberAdress.getText())
 						.setEquipment(subscriberEquipment.getText());
 					log.info("Абонент изменен: {} => {}",oldSub,sub );
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -102,6 +103,7 @@ public class FormSubscriber extends Form {
 					
 					String mes = "Создан абонент: "+ newSubscriber.toString()+ ", добавлен в сеть: "+ selectedNet.toString();
 					log.info(mes);
+					iSys.changes = true;
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

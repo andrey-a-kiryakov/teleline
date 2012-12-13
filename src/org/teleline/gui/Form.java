@@ -417,6 +417,7 @@ public abstract class Form {
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(2);
 				log.info("Пара {}:, изменен статус на поврежденная", p);
+				iSys.changes = true;
 				util_setPairButtonColor(p, ep);
 			}
 		});
@@ -430,6 +431,7 @@ public abstract class Form {
 				Pair p = (Pair) ep.getElement();
 				p.setStatus(0);
 				log.info("Пара {}:, изменен статус на исправная", p);
+				iSys.changes = true;
 				util_setPairButtonColor(p, ep);
 				
 			}
@@ -451,9 +453,11 @@ public abstract class Form {
 					
 					if (path.removePair(p)) {
 						log.info("Пара {} удалена из включения: {} у абонента: {}", p, path, iSys.sc.getElement(path.getSubscriber()));
+						iSys.changes = true;
 						if (iSys.phc.isPairUsed(p) == null)  {
 							p.setStatus(0);
 							log.info("Пара {} освобождена", p);
+							iSys.changes = true;
 							util_setPairButtonColor(p, ep);
 						}
 					}				
@@ -507,6 +511,7 @@ public abstract class Form {
 						
 						t.addCable(cable);
 						log.info("Кабель {} добавлен в канал {} участка канализации {}", cable, t, iSys.duc.getElement(t.getDuct()));
+						iSys.changes = true;
 						util_setTubeButtonColor(t, ep);	
 						form.close();
 					}
@@ -532,6 +537,7 @@ public abstract class Form {
 						if (cable != null)
 							if (t.removeCable(cable)) {
 								log.info("Кабель {} удален из канала {} участка канализации {}" , cable, t, iSys.duc.getElement(t.getDuct()));
+								iSys.changes = true;
 								util_setTubeButtonColor(t, ep);
 							}
 					}
@@ -569,15 +575,18 @@ public abstract class Form {
 					if (iSys.phc.isPairUsed(oldPair) == null)  {
 						oldPair.setStatus(0);
 						log.info("Пара {} освобождена", oldPair);
+						iSys.changes = true;
 					}
 					else {
 						log.info("Пара {} удалена из включения {}", oldPair, path);
+						iSys.changes = true;
 					}
 					
 					returnedPair = oldPair;
 				}
 				String mes = "Пара "+ p.toString()+" занята включением: " + path.toString();
 				log.info(mes);
+				iSys.changes = true;
 				util_newInfo(mes);
 				return returnedPair;
 		
@@ -601,6 +610,7 @@ public abstract class Form {
 				p.setStatus(1);
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
 				log.info(mes);
+				iSys.changes = true;
 				util_newInfo(mes);
 				return p;
 		}
@@ -626,15 +636,18 @@ public abstract class Form {
 					if (iSys.phc.isPairUsed(oldPair) == null)  {
 						oldPair.setStatus(0);
 						log.info("Пара {} освобождена ", oldPair);
+						iSys.changes = true;
 					}
 					else {
 						log.info("Пара {} удалена из включения {}",oldPair, path);
+						iSys.changes = true;
 					}
 					returnedPair = oldPair;
 				}
 				
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
 				log.info(mes);
+				iSys.changes = true;
 				util_newInfo(mes);
 				return returnedPair;
 		}
@@ -659,14 +672,17 @@ public abstract class Form {
 				if (iSys.phc.isPairUsed(oldPair) == null)  {
 					oldPair.setStatus(0);
 					log.info("Пара {} освобождена", oldPair);
+					iSys.changes = true;
 				}
 				else {
 					log.info("Пара {} удалена из включения {}",oldPair,path);
+					iSys.changes = true;
 				}
 				returnedPair = oldPair;
 			}
 				String mes = "Кабельная пара "+ p.toString()+" занята включением: " + path.toString();
 				log.info(mes);
+				iSys.changes = true;
 				util_newInfo(mes);
 				
 				return returnedPair;
@@ -709,7 +725,8 @@ public abstract class Form {
 			Iterator<Path> i = iSys.phc.getPairsPath(p).iterator();
 			while (i.hasNext()) {
 				Path path = i.next();
-				infoArea.append("Абонент: " + iSys.sc.getElement(path.getSubscriber())+"\r\n");
+				Subscriber sub = (Subscriber) iSys.sc.getElement(path.getSubscriber());
+				infoArea.append("Абонент: " + sub + "(№ "+sub.getPhoneNumber()+")"+"\r\n");
 				infoArea.append("Включение: " + path.toString() + "\r\n");
 			}
 			

@@ -101,6 +101,7 @@ public class FormDamages extends Form {
 					iSys.dmc.removeElement(damage);
 					String mes = "Повреждение " + damage.toString() + " удалено";
 					log.info(mes);
+					iSys.changes = true;
 					((DefaultTableModel) damageTable.getModel()).removeRow(selectedIndex);
 					util_newInfo(mes);
 				}	

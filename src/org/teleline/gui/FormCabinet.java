@@ -126,6 +126,7 @@ public class FormCabinet extends Form {
 						.setArea(cabinetArea.getSelectedIndex())
 						.setSNumber(cabinetNumber);
 					log.info("Шкаф изменен: {} => {}",old,cabinet );
+					iSys.changes = true;
 					util_newInfo("Изменения сохранены");
 				}
 				else {
@@ -151,6 +152,7 @@ public class FormCabinet extends Form {
 						iSys.cbc.addElement(newCabinet);
 					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ ((Net)iSys.nc.getOnlyElement()).toString();
 					log.info(mes);
+					iSys.changes = true;
 					util_newInfo(mes);
 				}
 				iFrame.dispose();

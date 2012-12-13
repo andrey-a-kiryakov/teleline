@@ -21,6 +21,7 @@ import org.teleline.system.Sys;
 
 public class RW {
 	
+	
 	private static final Logger log = LoggerFactory.getLogger("RW");
 	
 	private static String dTmpFolder = "tmp";
@@ -30,12 +31,14 @@ public class RW {
 	
 	protected static String fSave = dSavesFolder + "/tlsave_";
 //	private static String fLog = dLogsFolder + "/teleline.log";
-	private static String fNonSavedLog = dTmpFolder + "/teleline.$$$";
+	private static String fNonSavedLog = dTmpFolder + "/log.$$$";
 //	private static String fErrorsLog = dLogsFolder +"/errors.log";
 	private static String fRawPassport = dTmpFolder + "/rawpass.html";
 	
 	protected Sys sys;	
+	
 	public RW(Sys sys) {
+		
 		this.sys = sys;
 	}
 /*	
@@ -150,27 +153,27 @@ public class RW {
 		 
 	}
 	
-/*	public void deleteNotSavedLog (){
+	public void deleteNotSavedLog (){
 		
 		try {
 			File f = new File(fNonSavedLog);
 			if (f.exists()) f.delete();
 		}
 		catch (SecurityException e) {
-			writeError(e.toString());
+			log.error(e.toString());
 		}
 	}
-*/	
-/*	public void deleteFile (String file){
+	
+	public void deleteFile (String file){
 		
 		try {
 			File f = new File(file);
 			if (f.exists()) f.delete();
 		}
 		catch (SecurityException e) {
-			writeError(e.toString());
+			log.error(e.toString());
 		}
-	}*/
+	}
 	/**
 	 * Создает и сохраняет в файл пасспорт шкафа
 	 * @return имя файла
