@@ -19,7 +19,7 @@ public class Path extends AbstractElement {
 	private Integer mPair = 0; // магистральная пара
 	private Integer drPair = 0; //пара прямого питания
 	private Integer dbPair = 0; // распределительная пара
-	private Vector<Integer> icPair = new Vector<Integer>(); //массив занимаемых межшкафных пар
+	private Vector<Integer> icPair = new Vector<Integer>(); //массив id занимаемых межшкафных пар
 	
 	private PairCollection pc;
 	private SubscriberCollection sc;
@@ -154,7 +154,7 @@ public class Path extends AbstractElement {
 		return false;
 	}
 	/**
-	 * Врзвращает коллекцию занимаемых межшкафных пар
+	 * Врзвращает массив id занимаемых межшкафных пар
 	 */
 	public Vector<Integer> geticPair() {
 		return this.icPair;

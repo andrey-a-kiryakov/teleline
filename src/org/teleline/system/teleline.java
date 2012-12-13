@@ -27,6 +27,7 @@ import org.teleline.gui.FormFrame;
 import org.teleline.gui.FormManhole;
 import org.teleline.gui.FormManholes;
 import org.teleline.gui.FormNet;
+import org.teleline.gui.FormOptimizer;
 import org.teleline.gui.FormPairDirect;
 import org.teleline.gui.FormPairDistrib;
 import org.teleline.gui.FormPairMagAndInt;
@@ -337,6 +338,11 @@ public class teleline {
 		JMenuItem menuItem_about = new JMenuItem("О программе");
 		menuItem_about.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormAbout(sys);}});
 		mnNewMenu_2.add(menuItem_about);
+		
+		JMenuItem menuItem_optim = new JMenuItem("Оптимизация");
+		menuItem_optim.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormOptimizer(sys);}});
+		mnNewMenu_2.add(menuItem_optim);
+		
 
 	}
 }

@@ -7,8 +7,6 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.system.Sys;
 
-
-
 public class FormStatisticCommon extends Form {
 	
 	private JTable table;
