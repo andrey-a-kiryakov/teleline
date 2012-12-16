@@ -30,9 +30,7 @@ public class RW {
 	private static String dPassportsFolder = "saves";
 	
 	protected static String fSave = dSavesFolder + "/tlsave_";
-//	private static String fLog = dLogsFolder + "/teleline.log";
 	private static String fNonSavedLog = dTmpFolder + "/log.$$$";
-//	private static String fErrorsLog = dLogsFolder +"/errors.log";
 	private static String fRawPassport = dTmpFolder + "/rawpass.html";
 	
 	protected Sys sys;	
@@ -41,27 +39,7 @@ public class RW {
 		
 		this.sys = sys;
 	}
-/*	
-	public void writeLog () {
-		
-		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream(fLog, true));
-			File readFile = new File (fNonSavedLog);
-			BufferedReader reader = new BufferedReader(new FileReader(readFile));
-		
-			String line;
-			
-			while ((line = reader.readLine()) != null) pw.println(line);
-				
-			pw.close();
-			reader.close();
-			readFile.delete();
-		}
-		catch (IOException e) {
-			writeError(e.toString());
-		}				
-	}
-*/
+
 	public Integer valueOf(String string) {
 		
 		try {
@@ -1027,12 +1005,11 @@ public class RW {
 		  }
 	}
 	/**
-	 * Создает и сохраняет в файл паспорт межшкафного кабеля
+	 * Создает и сохраняет в файл лист нагрузки кабеля
 	 * @return имя файла
 	 */
-	public String createIcCablePassport(Cable cable) {
+	public String createСableLoadList(Cable cable) {
 		
-		Cabinet cab = (Cabinet)sys.cbc.getElement(cable.getTo());
 		try {	 
 			
 			Element html = new Element("html");
@@ -1041,7 +1018,9 @@ public class RW {
 			Element head = new Element("head");
 			Element meta = new Element("meta").setAttribute("http-equiv","content-type").setAttribute("content", "text/html;charset=utf-8");
 			head.addContent(meta);
-			meta = new Element("meta").setAttribute("title","Лист нагрузки межшкафного кабеля " + cable.toString());
+			
+			meta = new Element("meta").setAttribute("title","Лист нагрузки кабеля " + cable.toString());
+			
 			head.addContent(meta);
 			Element body = new Element("body");
 			Element style = new Element("style").setAttribute("type","text/css")
@@ -1054,20 +1033,30 @@ public class RW {
 			Element frameTr = new Element("tr").setAttribute("class","frame-tr"); frameTable.addContent(frameTr);
 			Element frameTd = new Element("td").setAttribute("class","frame-td"); frameTr.addContent(frameTd);
 			
-			frameTd.addContent(new Element("h2").addContent("ЛИСТ НАГРУЗКИ МЕЖШКАФНОГО КАБЕЛЯ"));
-			frameTd.addContent(new Element("h4").addContent("Шкаф № " + cab.toString()));
-			frameTd.addContent(new Element("h4").addContent("Кабель № " + cable.getNumber().toString()));
+			frameTd.addContent(new Element("h2").addContent("ЛИСТ НАГРУЗКИ КАБЕЛЯ"));
+			frameTd.addContent(new Element("h4").addContent("Тип кабеля: " + cable.getMnenonicType()));
+			frameTd.addContent(new Element("h4").addContent("Кабель: " + cable.toString()));
+			if (cable.getType() == 1) {
+				frameTd.addContent(new Element("h4").addContent("Участок : " + cable.getFromElement().toString() + " - " + cable.getToElement().toString()));
+			}
+			else {
+				frameTd.addContent(new Element("h4").addContent("Выходит из: " + cable.getFromElement().toString()));
+			}
 			frameTd.addContent(new Element("br")); frameTd.addContent(new Element("br"));
+			
+			Element loadTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(loadTable);
+			Element loadTableTr1 = new Element("tr"); loadTable.addContent(loadTableTr1);
 			
 			/*
 			 * Создаем таблицу нагрузки межшкафного кабеля
 			 */
-			Element loadTable = new Element("table").setAttribute("cellpadding", "0").setAttribute("cellspacing", "0"); frameTd.addContent(loadTable);
-			Element loadTableTr1 = new Element("tr"); loadTable.addContent(loadTableTr1);
-			loadTableTr1.addContent(new Element("th").addContent("Абонент"));
-			loadTableTr1.addContent(new Element("th").addContent("Распределение"));
-			loadTableTr1.addContent(new Element("th").addContent("Распределение"));
+			if (cable.getType() == 1){
+				
+				loadTableTr1.addContent(new Element("th").addContent("Абонент"));
+				loadTableTr1.addContent(new Element("th").addContent("Пара"));
+				loadTableTr1.addContent(new Element("th").addContent("Распределение"));
 		
+			Cabinet cab = (Cabinet)sys.cbc.getElement(cable.getTo());
 			for (Integer n = 0; n < cable.getCapacity(); n++) {
 			
 				Element tr = new Element("tr"); loadTable.addContent(tr);
@@ -1107,9 +1096,42 @@ public class RW {
 				}
 			
 			}
+		}
 		/*
 		 * ---------------------------------------------------------------
 		 */
+		/*
+		 * Создаем таблицу нагрузки кабеля прямого питания
+		 */
+		if (cable.getType() == 2 || cable.getType() == 3 ) {
+			loadTableTr1.addContent(new Element("th").addContent("Абонент"));
+			loadTableTr1.addContent(new Element("th").addContent("Пара"));
+			loadTableTr1.addContent(new Element("th").addContent("Участок"));
+			
+			for (Integer n = 0; n < cable.getCapacity(); n++) {
+				
+				Element tr = new Element("tr"); loadTable.addContent(tr);
+				Element td1 = new Element("td"); tr.addContent(td1);
+				tr.addContent(new Element("td").addContent(n.toString()));
+				Element td3 = new Element("td"); tr.addContent(td3);
+				
+				Pair p = sys.pc.getInPlace(cable, n);
+				if (p != null) {
+					Iterator<Path> pi = sys.phc.getPairsPath(p).iterator();
+
+					while (pi.hasNext()) {
+						Path path = pi.next();
+						td1.addContent(((Subscriber)sys.sc.getElement(path.getSubscriber())).toString() +", " + path.getName()).addContent(new Element("br"));
+					}
+					td3.addContent(p.toString());
+					
+				}
+			}
+			
+		}
+		/*
+		* ---------------------------------------------------------------
+		*/
 		
 		frameTd.addContent(new Element("br")); frameTd.addContent(new Element("br"));
 		

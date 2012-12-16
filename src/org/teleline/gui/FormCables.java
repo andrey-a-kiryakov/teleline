@@ -82,13 +82,9 @@ public class FormCables extends FormAbstractElements {
 		new FormCable(iSys, (Cable)tableModel.getValueAt(selectedIndex, 0));
 	}
 	public void passport() {
-		
 		Cable cable = (Cable)tableModel.getValueAt(selectedIndex, 0);
-		if (cable.getType() == 2) {util_newError("Паспорт для распределительного кабеля создается в составе паспорта шкафа."); return;}
+		if (cable.getType() > 0) {util_viewPassport(iSys.rw.createСableLoadList(cable)); return;}
 		if (cable.getType() == 0) {util_viewPassport(iSys.rw.createМCablePassport(cable)); return;}
-		if (cable.getType() == 1) {util_viewPassport(iSys.rw.createIcCablePassport(cable)); return;}
-		if (cable.getType() == 3) {return;}
-		
 	}
 	public void view() {
 		new FormViewCable(iSys,(Cable)tableModel.getValueAt(selectedIndex, 0),null);

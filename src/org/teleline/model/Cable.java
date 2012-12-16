@@ -109,14 +109,6 @@ public class Cable extends LinkedElement {
 		return "Бывший в эксплуатации";
 	}
 	/**
-	 * Проверяет, можно ли добавить в кабель данное количество "Пар"
-	 * * @param количество добавляемых "Пар"
-	 */
-/*	public boolean isConnect (Integer pairCount) {
-		if ((this.capacity - this.pc.getInCable(this).size()) >= pairCount) return true;
-		return false;
-	}*/
-	/**
 	 * Устанавливает марку кабеля
 	 */
 	public Cable setLabel (String newLabel) {
@@ -135,6 +127,18 @@ public class Cable extends LinkedElement {
 	public Cable setType(Integer newType){
 		this.type = newType;
 		return this;
+	}
+	/**
+	 * Возвращает мнемоническое представление типа кабеля
+	 */
+	public String getMnenonicType () {
+		
+		switch (this.type.intValue()) { 
+			case 1: return "межшкафной";
+			case 2: return "распределительный";
+			case 3: return "прямого питания";
+		}
+		return "магистральный";
 	}
 	/**
 	 * Возвращает тип кабеля
