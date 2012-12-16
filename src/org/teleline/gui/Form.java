@@ -780,7 +780,7 @@ public abstract class Form {
 		
 	}
 	
-	public void util_newInfo (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Операция выполнена успешно", JOptionPane.INFORMATION_MESSAGE);}
+	public void util_newInfo (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Информация", JOptionPane.INFORMATION_MESSAGE);}
 	
 	public void util_newError (String mes) {JOptionPane.showMessageDialog(iFrame, mes, "Ошибка", JOptionPane.ERROR_MESSAGE);}
 	

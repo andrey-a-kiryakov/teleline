@@ -168,6 +168,25 @@ public class teleline {
 		});
 		menuFile.add(mntmNewMenuItem_1);
 		
+		JMenuItem newProjectItem = new JMenuItem("Новая сеть");
+		newProjectItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		newProjectItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (sys.changes == true) {
+					if (Form.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
+						Writer writer = new Writer(sys);
+						writer.start();
+					}
+					sys.clear();
+					
+					Net net = new Net();
+					net.setName("Новая сеть");
+					sys.nc.addElement(net);
+				}
+			}
+		});
+		menuFile.add(newProjectItem);
+		
 		final JMenu menuCreate = new JMenu("Создать");
 		menuBar.add(menuCreate);
 	/*	
