@@ -4,6 +4,8 @@
  */
 package org.teleline.gui;
 
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -19,7 +21,7 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormBox extends Form {
+public class FormBox extends FormDialog {
 	
 	private JComboBox comboBox1;
 	private JComboBox comboBox3;
@@ -28,13 +30,12 @@ public class FormBox extends Form {
 	private JTextField formatedText;
 	public JButton saveButton;
 	
-	public FormBox(final Sys iSys, final Box box, final Cabinet cabinet) {
-		super(iSys);
+	public FormBox(Window owner, final Sys iSys, final Box box, final Cabinet cabinet) {
+		super(owner, iSys);
 		// TODO Auto-generated constructor stub
 		
 		createDialog("Создать бокс", 410, 385);
 		if (box != null) iFrame.setTitle("Редактировать бокс");
-
 		addLabel("Тип бокса:", 20, 10, 360, 25);
 		comboBox1 = addComboBox(20, 35, 360, 25);
 		comboBox1.addItem("Магистральный");
@@ -163,6 +164,7 @@ public class FormBox extends Form {
     			iFrame.dispose();
     		}
     	});
+        iFrame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);
     	iFrame.setVisible(true);
 	}	
 }

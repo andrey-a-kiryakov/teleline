@@ -216,7 +216,7 @@ public class teleline {
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(sys,null,null);}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();

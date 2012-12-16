@@ -25,33 +25,38 @@ import org.teleline.system.Sys;
 
 
 public class FormViewCabinet extends Form {
-
+	
+	private Cabinet cabinet;
+	private JPanel boxesPanel;
+	
+	private int inLine = 3, marginX = 20, marginY = 20, W = 100, H = 120;
+	
+	JPopupMenu popupMenu = new JPopupMenu();
+	
 	public FormViewCabinet(final Sys iSys, final Cabinet cabinet) {
 		super(iSys);
-		// TODO Auto-generated constructor stub
-		int W = 100, H = 120, marginX = 20, marginY = 20, inLine = 3;
+		this.cabinet = cabinet;
 		int lines = (int) Math.ceil ((double)cabinet.getPlacesCount().intValue() / (double)inLine);
 		int panelWidth = W * inLine + marginX * (inLine + 1);
 		int panelHeight = H * lines + marginY * (lines + 1);
 		
 		createDialog("Просмотр шкафа", panelWidth + 40 + 10, panelHeight + 140);
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setToolTipText(cabinet.toString());
-		panel.setBackground(new Color(0, 128, 128));
-		panel.setBounds(20, 90, panelWidth, panelHeight);
-		iFrame.getContentPane().add(panel);
+		boxesPanel = new JPanel();
+		boxesPanel.setLayout(null);
+		boxesPanel.setToolTipText(cabinet.toString());
+		boxesPanel.setBackground(new Color(0, 128, 128));
+		boxesPanel.setBounds(20, 90, panelWidth, panelHeight);
+		iFrame.getContentPane().add(boxesPanel);
 		
 		JLabel head = addLabel(cabinet.toString(), 20, 45, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
 		head.setHorizontalAlignment(SwingConstants.CENTER);
-		int x = 0, y = 0;
+		
 		
 		JButton refreshButton = addButton("Обновить", 20,10,90,26);
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				iFrame.dispose();
-				new FormViewCabinet(iSys, cabinet);			
+				updateBoxesButtons();
 			}
 		});
 		
@@ -99,37 +104,18 @@ public class FormViewCabinet extends Form {
 				
 				final FormCables fb = new FormCables(iSys, cables);
 				fb.iFrame.setTitle("Кабели шкафа "+ cabinet.toString());
-				
-				//fb.refreshButton.setEnabled(false);
 			}
 		});
-			
-		
-		ActionListener boxClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				new FormViewConnectedPointElement(iSys, (Box)((ElementView)e.getSource()).getElement(), null, null );			
-			}
-		};
-		
-		ActionListener placeClick = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-						
-			}
-		};
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-
+	
 		JMenuItem menuItem = new JMenuItem("Добавить");
 		popupMenu.add(menuItem);
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new FormBox(iSys, null, cabinet); 
+				new FormBox(iFrame,iSys, null, cabinet);
+				updateBoxesButtons();
 			}	
 		});
 		
-	
 		JMenuItem menuItem_1 = new JMenuItem("Редактировать");
 		popupMenu.add(menuItem_1);
 		menuItem_1.addActionListener(new ActionListener() {
@@ -138,7 +124,7 @@ public class FormViewCabinet extends Form {
 				ElementView ep = (ElementView)pm.getInvoker();
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
 				
-				new FormBox(iSys, (Box)p, cabinet); 
+				new FormBox(iFrame, iSys, (Box)p, cabinet); 
 			}
 		});
 		
@@ -152,11 +138,34 @@ public class FormViewCabinet extends Form {
 				
 				if (util_newDialog("Удалить бокс " + ((Box)p).toString()+" и все пары в нем?") == JOptionPane.YES_OPTION) {
 					iSys.removeBox((Box)p);
-					iFrame.dispose();
-					new FormViewCabinet(iSys, cabinet);
+					updateBoxesButtons();				
 				}
 			}
 		});
+		
+		createBoxesButtons();
+	
+		iFrame.setVisible(true);
+	}
+	/**
+	 * Создает кнопки-представления боксов в шкафу
+	 */
+	private void createBoxesButtons() {
+		
+		ActionListener boxClick = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	
+				new FormViewConnectedPointElement(iSys, (Box)((ElementView)e.getSource()).getElement(), null, null );			
+			}
+		};
+		
+		ActionListener placeClick = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+						
+			}
+		};
+		
+		int x = 0, y = 0;
 		
 		for (int place = 0; place < cabinet.getPlacesCount(); place++) {
 			
@@ -164,7 +173,7 @@ public class FormViewCabinet extends Form {
 				
 				ElementView button = new ElementView();
 				button.setBounds(marginX + x*(W + marginX), marginY + y*(H + marginY), W, H);
-				panel.add(button);
+				boxesPanel.add(button);
 				button.setElement(null);
 				
 				addPopupToConnectedPointElement(button, popupMenu);
@@ -191,8 +200,15 @@ public class FormViewCabinet extends Form {
 				}
 			x++;
 		}
-	
-		iFrame.setVisible(true);
+	}
+	/**
+	 * Обновляет (удаляет и создает заново) кнопки-представления боксов в шкафу
+	 */
+	public void updateBoxesButtons() {
+		
+		boxesPanel.removeAll();
+		createBoxesButtons();
+		boxesPanel.repaint();
 	}
 	
 }

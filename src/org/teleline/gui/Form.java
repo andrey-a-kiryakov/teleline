@@ -52,7 +52,7 @@ import org.teleline.model.Tube;
 import org.teleline.system.Sys;
 
 
-public abstract class Form {
+public abstract class Form{
 	
 	protected static final Logger log = LoggerFactory.getLogger("sys");
 	public JFrame  iFrame;
@@ -78,7 +78,7 @@ public abstract class Form {
 		return iFrame;
 	}
 	/**
-	 * Закрывает форму через менеджер форм.
+	 * Закрывает форму через менеджер форм
 	 */
 	public void close() {
 		iSys.mng.close(iFrame);
