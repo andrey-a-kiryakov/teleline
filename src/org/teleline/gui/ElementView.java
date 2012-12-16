@@ -10,6 +10,12 @@ public class ElementView extends JButton {
 	
 	
 	private AbstractElement element;
+	private Integer placeNumber;
+	
+	public ElementView() {
+		element = null;
+		placeNumber = -1;
+	}
 	
 	public ElementView setElement (AbstractElement element) {
 		this.element = element;
@@ -19,5 +25,14 @@ public class ElementView extends JButton {
 	public AbstractElement getElement () {
 		return this.element;
 	}
+	
+	public void setPlaceNumber(Integer number) {
+		this.placeNumber = number;
+	}
+	
+	public Integer getPlaceNumber() {
+		return this.placeNumber;
+	}
+	
 	
 }

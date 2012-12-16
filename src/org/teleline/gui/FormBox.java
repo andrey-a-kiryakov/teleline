@@ -4,7 +4,6 @@
  */
 package org.teleline.gui;
 
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,27 +22,29 @@ import org.teleline.system.Sys;
 
 public class FormBox extends FormDialog {
 	
-	private JComboBox comboBox1;
-	private JComboBox comboBox3;
-	private JComboBox placeComboBox;
+	private JComboBox typeComboBox;
+	private JComboBox capacityComboBox;
+	public JComboBox placeComboBox;
 	private JComboBox cabinetsComboBox;
-	private JTextField formatedText;
+	private JTextField numberTextField;
 	public JButton saveButton;
 	
-	public FormBox(Window owner, final Sys iSys, final Box box, final Cabinet cabinet) {
+	public FormBox(Window owner, final Sys iSys, final Box box, final StructuredElement cabinet) {
 		super(owner, iSys);
-		// TODO Auto-generated constructor stub
 		
 		createDialog("Создать бокс", 410, 385);
 		if (box != null) iFrame.setTitle("Редактировать бокс");
 		addLabel("Тип бокса:", 20, 10, 360, 25);
-		comboBox1 = addComboBox(20, 35, 360, 25);
-		comboBox1.addItem("Магистральный");
-		comboBox1.addItem("Передаточный");
-		comboBox1.addItem("Распределительный");
-		comboBox1.addItem("Универсальный");
-		comboBox1.setSelectedIndex(0);
-		if (box != null) {comboBox1.setSelectedIndex(box.getType());}
+		typeComboBox = addComboBox(20, 35, 360, 25);
+		typeComboBox.addItem("Магистральный");
+		typeComboBox.addItem("Передаточный");
+		typeComboBox.addItem("Распределительный");
+		typeComboBox.addItem("Универсальный");
+		typeComboBox.setSelectedIndex(0);
+		if (box != null) {
+			typeComboBox.setSelectedIndex(box.getType());
+			typeComboBox.setEnabled(false);
+		}
 		
 		addLabel("Добавить в шкаф:", 20, 65, 360, 25);
 		cabinetsComboBox = addComboBox(20, 90, 360, 25);
@@ -55,18 +56,18 @@ public class FormBox extends FormDialog {
 		}
 		
 		addLabel("Номер бокса (0-999):", 20, 120, 360, 25);
-		formatedText = addTextField(20, 145, 360, 25);
-		if (box != null) formatedText.setText(box.getNumber().toString());
+		numberTextField = addTextField(20, 145, 360, 25);
+		if (box != null) numberTextField.setText(box.getNumber().toString());
 		
 		addLabel("Емкость бокса:", 20, 175, 360, 25);
-		comboBox3 = addComboBox(20, 200, 360, 25);
-		comboBox3.addItem((Integer)50);
-		comboBox3.addItem((Integer)100);
-		comboBox3.setSelectedIndex(1);
+		capacityComboBox = addComboBox(20, 200, 360, 25);
+		capacityComboBox.addItem((Integer)50);
+		capacityComboBox.addItem((Integer)100);
+		capacityComboBox.setSelectedIndex(1);
 		
 		if (box != null) {
-			comboBox3.setSelectedItem(box.getCapacity());
-			comboBox3.setEnabled(false);
+			capacityComboBox.setSelectedItem(box.getCapacity());
+			capacityComboBox.setEnabled(false);
 		}
 		
 		addLabel("Место в шкафу:", 20, 230, 360, 25);
@@ -116,25 +117,25 @@ public class FormBox extends FormDialog {
     			
     			if (cabinetsComboBox.getSelectedIndex() == -1) { util_newError("Не выбран шкаф!"); return; }
     			if (placeComboBox.getSelectedIndex() == -1) { util_newError("Не выбрано место!"); return; }
-    			if (!iSys.v.validateBoxNumber(formatedText.getText())) { util_newError("Не верный номер бокса!"); return; }
+    			if (!iSys.v.validateBoxNumber(numberTextField.getText())) { util_newError("Не верный номер бокса!"); return; }
     			
     			Cabinet selectedCabinet = (Cabinet)cabinetsComboBox.getSelectedItem();
-    			Integer boxNumber = iSys.rw.valueOf(formatedText.getText());
+    			Integer boxNumber = iSys.rw.valueOf(numberTextField.getText());
 
     			if (box != null) {
-    				Box b = iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex());
+    				Box b = iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), typeComboBox.getSelectedIndex());
     				Box bx = (Box)iSys.bc.getInPlace((Integer)placeComboBox.getSelectedItem(), selectedCabinet.getId());
     				
     				if (b != null && !box.getId().equals(b.getId())) {util_newError("Бокс с таким типом и номером уже сущесвует в этом шкафу!"); return;}
     				if (bx != null && !box.getId().equals(bx.getId())) {util_newError("Данное место в шкафу занято!"); return;}
     				
     				String old = box.toString();
-    				box.setType((Integer)comboBox1.getSelectedIndex());
+    				box.setType((Integer)typeComboBox.getSelectedIndex());
     				box
     					.attachTo(selectedCabinet)
     					.setNumber(boxNumber)
     					.setPlaceNumber((Integer)placeComboBox.getSelectedItem())
-    					.setCapacity((Integer)comboBox3.getSelectedItem());
+    					.setCapacity((Integer)capacityComboBox.getSelectedItem());
     				
     				box.setNumber(boxNumber);
     				log.info("Бокс изменен: {} => {}",old,box);
@@ -144,19 +145,19 @@ public class FormBox extends FormDialog {
     			}
     			else {
     				if (iSys.bc.getInPlace((Integer)placeComboBox.getSelectedItem(), selectedCabinet.getId()) != null) { util_newError("Данное место в шкафу занято!"); return; }
-    				if (iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), comboBox1.getSelectedIndex()) != null ) {
+    				if (iSys.bc.inOwner(boxNumber, selectedCabinet.getId(), typeComboBox.getSelectedIndex()) != null ) {
     					util_newError("Бокс с таким типом и номером уже сущесвует в этом шкафу!"); return;
     				}
     				Box newBox = new Box();
-    				newBox.setType((Integer)comboBox1.getSelectedIndex());
+    				newBox.setType((Integer)typeComboBox.getSelectedIndex());
     				newBox
     					.attachTo(selectedCabinet)
     					.setNumber(boxNumber)
     					.setPlaceNumber((Integer)placeComboBox.getSelectedItem())
-    					.setCapacity((Integer)comboBox3.getSelectedItem());
+    					.setCapacity((Integer)capacityComboBox.getSelectedItem());
     				
     				iSys.bc.addElement(newBox);
-    				String mes = "Создан "+(String)comboBox1.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
+    				String mes = "Создан "+(String)typeComboBox.getSelectedItem()+" бокс: "+newBox.toString()+ ", добавлен в шкаф: "+ selectedCabinet.toString();
     				log.info(mes);
     				iSys.changes = true;
     				util_newInfo(mes);
@@ -164,7 +165,6 @@ public class FormBox extends FormDialog {
     			iFrame.dispose();
     		}
     	});
-        iFrame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);
-    	iFrame.setVisible(true);
+    //	iFrame.setVisible(true);
 	}	
 }

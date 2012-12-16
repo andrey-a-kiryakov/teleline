@@ -1,6 +1,5 @@
 package org.teleline.gui;
 
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dialog.ModalityType;
 import java.awt.Window;
 import java.util.Collection;
@@ -20,28 +19,23 @@ import org.teleline.system.Sys;
 
 public abstract class FormDialog {
 	
-	JDialog iFrame;
+	public JDialog iFrame;
 	Sys iSys;
 	protected static final Logger log = LoggerFactory.getLogger("sys");
 	Window owner;
 	
 	public FormDialog(Window owner, Sys iSys) {
-		
-			
-			this.iSys = iSys;
-			owner = owner;
-			
-		
+		this.iSys = iSys;
+		this.owner = owner;
 	}
 	
 	protected JDialog createDialog (String title, int width, int height) {
 		
-		iFrame = new JDialog(owner, ModalityType.TOOLKIT_MODAL  );
-		//iFrame.setModalExclusionType();
+		iFrame = new JDialog(owner, ModalityType.TOOLKIT_MODAL);
 		iFrame.setSize(width, height);
 		iFrame.setLocationRelativeTo(iFrame);
-		//iFrame.setTitle(title);
-		//iFrame.setResizable(false);
+		iFrame.setTitle(title);
+		iFrame.setResizable(false);
 		iFrame.getContentPane().setLayout(null);
 		return iFrame;
 	}

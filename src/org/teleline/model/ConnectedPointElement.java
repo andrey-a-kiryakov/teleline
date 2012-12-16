@@ -78,54 +78,13 @@ public abstract class ConnectedPointElement extends AbstractElement{
 	public Integer getPlaceNumber() {
 		return this.placeNumber;
 	}
-	
-	/*public ConnectedPointElement setUsedCapacityTop (Integer usedCapacity) {
-		this.usedCapacityTop = usedCapacity;
-		return this;
-	}*/
-	/*public Integer getUsedCapacityTop () {
-		return this.usedCapacityTop;
+	/**
+	 * Возвращает тип элемента. Перегружается в боксе
+	 * @return
+	 */
+	public Integer getType() {
+		return 0;
 	}
-	*/
-	
-	/*public ConnectedPointElement setUsedCapacityBottom (Integer usedCapacity) {
-		this.usedCapacityBottom = usedCapacity;
-		return this;
-	}*/
-	/*public Integer getUsedCapacityBottom () {
-		return this.usedCapacityBottom;
-	}*/
-	/*public Integer getUsedCapacity () {
-		return this.usedCapacityBottom + this.usedCapacityTop;
-	}*/
-	
-	/**
-	 * Проверяет, можно ли присоединить к элементу данное количество "Пар",
-	 * @param количество присоединяемых "Пар"
-	 */
-/*	public boolean isConnect(Integer pairCount) {
-		if ((this.capacity - this.usedCapacityTop - this.usedCapacityBottom) >= pairCount) return true;
-		return false;
-	}*/
-	/**
-	 * Присоединяеть к элементу (заполнение сверху) данное количество "Пар"
-	 * @param количество присоединяемых "Пар"
-	 * @return номер первой присоединеной пары
-	 */
-	/*public Integer connectTop(Integer pairCount) { 
-			this.usedCapacityTop += pairCount; 
-			return this.usedCapacityTop - pairCount + 1;
-	}*/
-	
-	/**
-	 * Присоединяет к элементу (заполнение снизу) данное количество "Пар",
-	 * @param количество присоединяемых "Пар"
-	 * @return номер первой присоединеной пары
-	 */
-	/*public Integer connectBottom(Integer pairCount) { 
-			this.usedCapacityBottom += pairCount; 
-			return this.capacity - this.usedCapacityBottom + 1;	
-	}*/
 	/**
 	 * Возвращает 0 - если элемент громполоса, 1 - бокс
 	 * Перегружается в громполосе и боксе

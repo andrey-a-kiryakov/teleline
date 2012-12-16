@@ -19,8 +19,8 @@ public class Box extends ConnectedPointElement {
 	/**
 	 * Устанавливает тип бокса
 	 */
-	public void setType(Integer NewType){
-		this.type = NewType;
+	public void setType(Integer newType){
+		this.type = newType;
 	}
 	/**
 	 * Возвращает тип бокса
