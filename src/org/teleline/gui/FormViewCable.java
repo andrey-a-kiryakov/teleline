@@ -56,26 +56,26 @@ public class FormViewCable extends Form {
 				
 				switch (cable.getType().intValue()) {
 				case 0: 
-					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
-					new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+					new FormViewStructuredElement(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
+					new FormViewStructuredElement(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
 					return;
 				case 1: 
-					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
-					new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
+					new FormViewStructuredElement(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+					new FormViewStructuredElement(iSys, (Cabinet) iSys.cbc.getElement(cable.getTo()));
 					return;
 				case 2: 
 					Vector<DBox> v = cable.getToDBoxes();
 					if (v != null) {
 						if(v.size() > 2) {
 							if (util_newDialog("Будет открыто " + ((Integer)(v.size() + 1)).toString() +" окон, продолжить") == JOptionPane.YES_OPTION) {
-								new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+								new FormViewStructuredElement(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
 								Iterator<DBox> i = v.iterator();
 								while(i.hasNext()) new FormViewDBox(iSys, i.next());
 							}
 						}
 					}
 					else {
-						new FormViewCabinet(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
+						new FormViewStructuredElement(iSys, (Cabinet) iSys.cbc.getElement(cable.getFrom()));
 					}
 					return;
 				case 3: 
@@ -83,14 +83,14 @@ public class FormViewCable extends Form {
 					if (b != null) {
 						if(b.size() > 2) {
 							if (util_newDialog("Будет открыто " + ((Integer)(b.size() + 1)).toString() +" окон, продолжить") == JOptionPane.YES_OPTION) {
-								new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+								new FormViewStructuredElement(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
 								Iterator<DBox> i = b.iterator();
 								while(i.hasNext()) new FormViewDBox(iSys, i.next());
 							}
 						}
 					}
 					else {
-						new FormViewDFrame(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
+						new FormViewStructuredElement(iSys, (DFramе) iSys.dfc.getElement(cable.getFrom()));
 					}
 					return;
 				}

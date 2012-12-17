@@ -2,6 +2,8 @@ package org.teleline.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -57,6 +59,29 @@ public class FormOptimizer extends Form {
 		boxButton = addButton("Бокс",450,100,110,26);
 		cableButton = addButton("Кабель",450,130,110,26);
 		pairButton = addButton("Пара",450,160,110,26);
+		
+		NetworkInterface net;
+		try {
+			net = NetworkInterface.getByName("eth0");
+			byte[] b1 = net.getHardwareAddress();
+	        
+			System.out.println(b1.length);
+			System.out.println(b1[0]);
+			System.out.println(b1[1]);
+			System.out.println(b1[2]);
+			System.out.println(b1[3]);
+			System.out.println(b1[4]);
+			System.out.println(b1[5]);
+			
+			
+			for (int i = 0; i < b1.length; i++) {
+	            System.out.print(b1[i]);
+	        }
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
 		
 		idField = addTextField(10,430,110,26);
 		idLabel = addLabel("0", 130, 430, 40,26);

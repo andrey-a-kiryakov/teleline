@@ -73,7 +73,7 @@ public class FormBox extends FormDialog {
 		addLabel("Место в шкафу:", 20, 230, 360, 25);
 		placeComboBox = addComboBox(20, 255, 360, 25);
 		
-		ActionListener actionListener1 = new ActionListener() {
+		cabinetsComboBox.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	
             	placeComboBox.removeAllItems();
@@ -89,8 +89,7 @@ public class FormBox extends FormDialog {
             		}
             	}
             }
-        };
-        cabinetsComboBox.addActionListener(actionListener1); 
+        });
         
         placeComboBox.removeAllItems();
     	

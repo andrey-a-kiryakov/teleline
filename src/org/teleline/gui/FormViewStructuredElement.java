@@ -21,34 +21,40 @@ import org.teleline.model.Cabinet;
 import org.teleline.model.Cable;
 import org.teleline.model.ConnectedPointElement;
 import org.teleline.model.DFramе;
+import org.teleline.model.Frame;
 import org.teleline.model.Pair;
 import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormViewCabinet extends Form {
+public class FormViewStructuredElement extends Form {
 	
 	private StructuredElement element;
-	private JPanel boxesPanel;
+	private JPanel elementsPanel;
 	
-	public int inLine = 10, marginX = 20, marginY = 20, W = 100, H = 120;
+	public int inLine = 3, marginX = 20, marginY = 20, W = 100, H = 120;
 	
 	JPopupMenu popupMenu = new JPopupMenu();
 	
-	public FormViewCabinet(final Sys iSys, final StructuredElement element) {
+	public FormViewStructuredElement(final Sys iSys, final StructuredElement element) {
 		super(iSys);
 		this.element = element;
+		
+		
+		if (element instanceof Cabinet) this.inLine = 3;
+		if (element instanceof DFramе)this.inLine = 10;
+			
 		int lines = (int) Math.ceil ((double)element.getPlacesCount().intValue() / (double)inLine);
 		int panelWidth = W * inLine + marginX * (inLine + 1);
 		int panelHeight = H * lines + marginY * (lines + 1);
 		
 		createDialog("Просмотр " + element.toString(), panelWidth + 40 + 10, panelHeight + 140);
-		boxesPanel = new JPanel();
-		boxesPanel.setLayout(null);
-		boxesPanel.setToolTipText(element.toString());
-		boxesPanel.setBackground(new Color(0, 128, 128));
-		boxesPanel.setBounds(20, 90, panelWidth, panelHeight);
-		iFrame.getContentPane().add(boxesPanel);
+		elementsPanel = new JPanel();
+		elementsPanel.setLayout(null);
+		elementsPanel.setToolTipText(element.toString());
+		elementsPanel.setBackground(new Color(0, 128, 128));
+		elementsPanel.setBounds(20, 90, panelWidth, panelHeight);
+		iFrame.getContentPane().add(elementsPanel);
 		
 		JLabel head = addLabel(element.toString(), 20, 45, panelWidth, 30);
 		head.setFont(new Font("Dialog", Font.BOLD, 16));
@@ -91,7 +97,7 @@ public class FormViewCabinet extends Form {
 				}
 				
 				FormDBoxes fb = new FormDBoxes(iSys, dboxes);
-				fb.iFrame.setTitle("Коробки шкафа "+ element.toString());
+				fb.iFrame.setTitle("Коробки элемента: "+ element.toString());
 			//	fb.refreshButton.setEnabled(false);
 			}
 		});
@@ -105,7 +111,7 @@ public class FormViewCabinet extends Form {
 				while(i.hasNext()) cables.add(i.next());
 				
 				final FormCables fb = new FormCables(iSys, cables);
-				fb.iFrame.setTitle("Кабели шкафа "+ element.toString());
+				fb.iFrame.setTitle("Кабели элемента: "+ element.toString());
 			}
 		});
 	
@@ -115,10 +121,20 @@ public class FormViewCabinet extends Form {
 			public void actionPerformed(ActionEvent e) {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
-				FormBox form = new FormBox(iFrame, iSys, null, element);
-				form.placeComboBox.setSelectedItem(ep.getPlaceNumber());
-				form.iFrame.setVisible(true);
-				updateElementsButtons();
+				
+				if (element instanceof Cabinet){
+					FormBox form = new FormBox(iFrame, iSys, null, element);
+					form.placeComboBox.setSelectedItem(ep.getPlaceNumber());
+					form.iFrame.setVisible(true);
+					updateElementsButtons();
+				}
+				if (element instanceof DFramе){
+					FormFrame form = new FormFrame(iFrame, iSys, null, element);
+					form.placeComboBox.setSelectedItem(ep.getPlaceNumber());
+					form.iFrame.setVisible(true);
+					updateElementsButtons();
+				}
+				
 			}	
 		});
 		
@@ -129,9 +145,16 @@ public class FormViewCabinet extends Form {
 				JPopupMenu pm = (JPopupMenu) ((JMenuItem)e.getSource()).getParent();
 				ElementView ep = (ElementView)pm.getInvoker();
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
-				new FormBox(iFrame, iSys, (Box)p, element).iFrame.setVisible(true);
-				//форма модальная, обновление только после закрытия
-				updateElementsButtons();
+				
+				if (element instanceof Cabinet){
+					new FormBox(iFrame, iSys, (Box)p, element).iFrame.setVisible(true);
+					updateElementsButtons();
+				}
+				
+				if (element instanceof DFramе){
+					new FormFrame(iFrame, iSys, (Frame)p, element).iFrame.setVisible(true);
+					updateElementsButtons();
+				}
 			}
 		});
 		
@@ -181,7 +204,7 @@ public class FormViewCabinet extends Form {
 				ElementView button = new ElementView();
 				button.setBounds(marginX + x*(W + marginX), marginY + y*(H + marginY), W, H);
 				button.setPlaceNumber(place);
-				boxesPanel.add(button);
+				elementsPanel.add(button);
 			
 				addPopupToConnectedPointElement(button, popupMenu);
 	
@@ -192,7 +215,7 @@ public class FormViewCabinet extends Form {
 				
 				if (connectedPointElement != null) {
 					button.setText(connectedPointElement.toString());
-					button.setToolTipText("Бокс: "+ connectedPointElement.toString() + " ("+connectedPointElement.getCapacity()+"х2)");
+					button.setToolTipText(connectedPointElement.toString() + " ("+connectedPointElement.getCapacity()+"х2)");
 					button.setElement(connectedPointElement);
 					if (connectedPointElement.getType() == 0) button.setBackground(new Color(200, 0, 200));
 					if (connectedPointElement.getType() == 1) button.setBackground(new Color(0, 200, 200));
@@ -217,9 +240,9 @@ public class FormViewCabinet extends Form {
 	 */
 	public void updateElementsButtons() {
 		
-		boxesPanel.removeAll();
+		elementsPanel.removeAll();
 		createElementsButtons();
-		boxesPanel.repaint();
+		elementsPanel.repaint();
 	}
 	
 }

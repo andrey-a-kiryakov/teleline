@@ -212,11 +212,11 @@ public class teleline {
 		menuCreate.add(separator_1);
 		
 		JMenuItem menuItem_4 = new JMenuItem("Громполосу");
-		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(sys, null,null);}});
+		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(frmTeleline,sys, null,null).iFrame.setVisible(true);}});
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null).iFrame.setVisible(true);;}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null).iFrame.setVisible(true);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();

@@ -55,7 +55,7 @@ public class FormDFrames extends FormAbstractElements {
 	
 	public void view() {
 		//new FormViewDFrame(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
-		new FormViewCabinet(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
+		new FormViewStructuredElement(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
 	}
 	
 	private void addDFrameToTable(DFramе dframe) {

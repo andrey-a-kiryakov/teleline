@@ -49,7 +49,7 @@ public class FormCabinets extends FormAbstractElements {
 	}
 	
 	public void view() {
-		new FormViewCabinet(iSys,(Cabinet)tableModel.getValueAt(selectedIndex, 0));
+		new FormViewStructuredElement(iSys,(Cabinet)tableModel.getValueAt(selectedIndex, 0));
 	}
 		
 	public void create() {
