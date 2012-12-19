@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import org.file.verification.FileVerification;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -39,6 +40,8 @@ public class Writer extends RW implements Runnable{
 	
 	private static final Logger log = LoggerFactory.getLogger("Writer");
 	
+	private boolean fileVerification = false;
+	
 	public Writer(Sys sys) {
 		super(sys);
 		t = new Thread(this);			
@@ -47,9 +50,24 @@ public class Writer extends RW implements Runnable{
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
+		
 		FormProgressBar form = new FormProgressBar(sys);
 		form.iFrame.setTitle(form.iFrame.getTitle() + " - сохранение файла");
-		try {	 
+		try {
+			
+			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
+			String fileName = fSave +((Net)sys.nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
+			File file = new File(fileName);
+			
+			if ( fileVerification) {
+				
+				FileVerification fv = new FileVerification();
+				fileVerification = fv.getVerification(file);
+				
+				if (!fileVerification ) fv.setVerification(fileVerification);
+			}
+			else {
+			
 			Element system = new Element("system");
 			system.setAttribute(new Attribute ("idIndex", sys.ig.getId().toString()));
 			system.setAttribute(new Attribute ("size", sys.getSize().toString()));
@@ -440,9 +458,6 @@ public class Writer extends RW implements Runnable{
 	 		
 	 		xmlOutput.setFormat(Format.getCompactFormat());
 	 		
-			SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HHmmssS");
-			String fileName = fSave +((Net)sys.nc.getOnlyElement()).getName()+"_"+ DF.format(Calendar.getInstance().getTime()) + ".xml";
-			
 			log.debug("Количество элементов перед сохранением: " + sys.getSize()+"; "+ sys.nc.getSize()+"; dfc:"+sys.dfc.getSize()+"; cbc:"+sys.cbc.getSize()+"; dbc:"+sys.dbc.getSize()+"; mc:"+sys.mc.getSize()+"; duc:"+sys.duc.getSize()+"; buc:"+sys.buc.getSize()+"; tuc:"+sys.tuc.getSize()+"; fc:"+sys.fc.getSize()+"; bc:"+sys.bc.getSize()+"; cc:"+sys.cc.getSize()+"; pc:"+sys.pc.getSize()+"; phc:"+sys.phc.getSize()+"; sc:"+sys.sc.getSize()+"; dmc:"+sys.dmc.getSize());
 			
 			xmlOutput.output(document, new FileOutputStream(fileName));
@@ -450,10 +465,9 @@ public class Writer extends RW implements Runnable{
 			form.progressBar.setValue(saveSize * 100 / size);
 			t.sleep(10);
 			
-			File file = new File(fileName);
-			
 			log.info("Файл сохранен: {}({} байт)",fileName,file.length());
 			form.label.setText("Файл " + fileName + " сохранен");
+			}
 		  } 
 			catch(Exception e) {
 				log.error("Ошибка сохранения файла: ", e);

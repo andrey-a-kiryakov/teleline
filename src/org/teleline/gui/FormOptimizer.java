@@ -2,8 +2,16 @@ package org.teleline.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -30,6 +38,8 @@ import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Tube;
 import org.teleline.system.Sys;
+
+import sun.security.provider.SHA2;
 
 public class FormOptimizer extends Form {
 	
@@ -65,19 +75,49 @@ public class FormOptimizer extends Form {
 			net = NetworkInterface.getByName("eth0");
 			byte[] b1 = net.getHardwareAddress();
 	        
-			System.out.println(b1.length);
-			System.out.println(b1[0]);
-			System.out.println(b1[1]);
-			System.out.println(b1[2]);
-			System.out.println(b1[3]);
-			System.out.println(b1[4]);
-			System.out.println(b1[5]);
 			
 			
-			for (int i = 0; i < b1.length; i++) {
-	            System.out.print(b1[i]);
+			FileOutputStream file = new FileOutputStream("mac");
+			
+			for (int i = 0; i < b1.length; i++)
+	            for(int m = b1.length -1 ; m >=0; m--){
+	            	//System.out.print(b1[i]b1[m]);
+	            	file.write(b1[i]);
+	            	file.write(b1[m]<<1);
+	            	file.write(b1[m]);
+	            	file.write(b1[i]>>1);
+	            	
+	            	
+	            	
 	        }
+			System.out.println("+");
+			
+			//file.write(b1);
+			file.close();
+			File f = new File("mac");
+			FileInputStream file1 = new FileInputStream(f);
+			byte[] b2 = new byte[(int) f.length()];
+			
+			file1.read(b2);
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(b2);
+			
+			for (int i = 0; i < md.digest().length; i++) {
+	            System.out.print(md.digest()[i]);
+	        }
+			
+			
+			
 		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

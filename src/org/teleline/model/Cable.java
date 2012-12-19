@@ -246,5 +246,6 @@ public class Cable extends LinkedElement {
 			case 3: s = "ПП"; s1  = this.dfc.getElement(this.getFrom()).toString(); break;
 		}
 		return s + "-" + this.getNumber() + " ("+s1+")";
+		
 	}
 }

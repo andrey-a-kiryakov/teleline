@@ -38,6 +38,7 @@ import org.teleline.io.Reader;
 import org.teleline.io.Writer;
 import org.teleline.model.*;
 
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -47,6 +48,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
+import org.fake.FakeClass;
 
 import java.io.File;
 
@@ -58,6 +60,7 @@ public class teleline {
 	
 	JFrame frmTeleline;
 	public Sys sys;
+	private static boolean guard = false;
 	
 	/**
 	 * Launch the application.
@@ -101,6 +104,11 @@ public class teleline {
 		frmTeleline.setBounds(0, 0, 700, 400);
 		frmTeleline.setLocationRelativeTo(null);
 		frmTeleline.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 
+		if (!guard) {
+	            FakeClass fc = new FakeClass();
+	            guard = fc.getGuard();
+	        }
 		
 		UIManager.put("FileChooser.fileNameLabelText", "Имя файла:");
 		UIManager.put("FileChooser.lookInLabelText", "Папка:");

@@ -17,8 +17,7 @@ public class FormDBoxes extends FormAbstractElements {
 	public FormDBoxes(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys, collection);
 		
-		iFrame.setTitle("Редактировать КРТ");
-	//	tableLabel.setText("Список коробок");
+		iFrame.setTitle("Коробки (КРТ)");
 		tableModel.setColumnIdentifiers(new String[]{"Коробка", "Кабель", "Адрес"});
 		table.getColumnModel().getColumn(0).setMaxWidth(100);
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
