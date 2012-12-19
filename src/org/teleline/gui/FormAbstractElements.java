@@ -72,7 +72,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		buttonPanel.add(passportButton, "cell 0 2,");
 		buttonPanel.add(createButton, "cell 0 3");
 		buttonPanel.add(deleteButton, "cell 0 4");
-        sorter.setSortsOnUpdates(true);
+		sorter.setSortsOnUpdates(true);
 		
 		/*
 		 * Событие кнопки обновления
@@ -158,9 +158,9 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	public void enableSort (){
 		
 		ArrayList<SortKey> keys = new ArrayList<SortKey>();
-        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
-        sorter.setSortKeys(keys);
-        table.setRowSorter(sorter);
+		keys.add(new SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(keys);
+		table.setRowSorter(sorter);
 	}
 	
 	public void setCollection(Collection<AbstractElement> collection) {

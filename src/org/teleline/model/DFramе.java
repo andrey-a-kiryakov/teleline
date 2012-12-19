@@ -15,8 +15,6 @@ public class DFramе extends StructuredElement {
 	}
 	
 	public String toString() {
-		return this.getName()/* + " (id="+this.getId().toString()+")"*/;
-	}
-	
-	
+		return this.getName();
+	}	
 }

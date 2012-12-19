@@ -37,6 +37,7 @@ import org.teleline.gui.FormSubscribers;
 import org.teleline.io.Reader;
 import org.teleline.io.Writer;
 import org.teleline.model.*;
+import org.user.val.UserValidation;
 
 
 import javax.swing.JMenuBar;
@@ -48,8 +49,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
-import org.fake.FakeClass;
-
 import java.io.File;
 
 import javax.swing.KeyStroke;
@@ -60,7 +59,7 @@ public class teleline {
 	
 	JFrame frmTeleline;
 	public Sys sys;
-	private static boolean guard = false;
+	private boolean userValidation = true;
 	
 	/**
 	 * Launch the application.
@@ -76,7 +75,6 @@ public class teleline {
 					window.frmTeleline.addWindowListener(winListener);
 					window.frmTeleline.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					window.frmTeleline.setVisible(true);
-					//System.out.println(System.getProperty("java.version"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -89,8 +87,15 @@ public class teleline {
 	 */
 	public teleline() {
 		
-		sys = new Sys();
-		initialize();
+		if (userValidation) {
+			sys = new Sys();
+			initialize();
+		}
+		else {
+			UserValidation uv = new UserValidation ();
+			userValidation = uv.getValidation();
+		}
+		
 	}
 
 	/**
@@ -104,11 +109,6 @@ public class teleline {
 		frmTeleline.setBounds(0, 0, 700, 400);
 		frmTeleline.setLocationRelativeTo(null);
 		frmTeleline.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 
-		if (!guard) {
-	            FakeClass fc = new FakeClass();
-	            guard = fc.getGuard();
-	        }
 		
 		UIManager.put("FileChooser.fileNameLabelText", "Имя файла:");
 		UIManager.put("FileChooser.lookInLabelText", "Папка:");
@@ -124,14 +124,14 @@ public class teleline {
 		UIManager.put("FileChooser.directoryOpenButtonToolTipText","Открыть выбранную папку");
 		UIManager.put("FileChooser.homeFolderToolTipText","Домой");
 		UIManager.put("FileChooser.openButtonText", "ОК");
-        UIManager.put("FileChooser.fileNameHeaderText","Имя файла");
-        UIManager.put("FileChooser.listViewButtonToolTipText","Список");
-        UIManager.put("FileChooser.renameFileButtonText", "Переименовать");
-        UIManager.put("FileChooser.deleteFileButtonText", "Удалить");
-        UIManager.put("FileChooser.filterLabelText", "Типы файлов");
-        UIManager.put("FileChooser.detailsViewButtonToolTipText", "Подробно");
-        UIManager.put("FileChooser.fileSizeHeaderText","Размер");
-        UIManager.put("FileChooser.fileDateHeaderText", "Дата ищменения:");
+		UIManager.put("FileChooser.fileNameHeaderText","Имя файла");
+		UIManager.put("FileChooser.listViewButtonToolTipText","Список");
+		UIManager.put("FileChooser.renameFileButtonText", "Переименовать");
+		UIManager.put("FileChooser.deleteFileButtonText", "Удалить");
+		UIManager.put("FileChooser.filterLabelText", "Типы файлов");
+		UIManager.put("FileChooser.detailsViewButtonToolTipText", "Подробно");
+		UIManager.put("FileChooser.fileSizeHeaderText","Размер");
+		UIManager.put("FileChooser.fileDateHeaderText", "Дата ищменения:");
 				
 		final JMenuBar menuBar = new JMenuBar();
 		frmTeleline.setJMenuBar(menuBar);
@@ -370,6 +370,5 @@ public class teleline {
 		menuItem_optim.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormOptimizer(sys);}});
 		mnNewMenu_2.add(menuItem_optim);
 		
-
 	}
 }

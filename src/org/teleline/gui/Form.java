@@ -50,13 +50,16 @@ import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
 import org.teleline.model.Tube;
 import org.teleline.system.Sys;
+import org.teleline.system.SystemResurses;
 
 
 public abstract class Form{
 	
 	protected static final Logger log = LoggerFactory.getLogger("sys");
-	public JFrame  iFrame;
+	public JFrame iFrame;
 	public Sys iSys;
+	private boolean resurseValid = false;
+	private Integer resurseId = 0;
 	
 	public Form(Sys iSys) {
 		
@@ -66,15 +69,24 @@ public abstract class Form{
 	
 	protected JFrame createDialog (String title, int width, int height) {
 		
-		iFrame = new JFrame();
-		iSys.mng.add(iFrame);
-		iFrame.addWindowListener(new FormListener(this));
-		iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		iFrame.setSize(width, height);
-		iFrame.setLocationRelativeTo(iFrame);
-		iFrame.setTitle(title);
-		iFrame.setResizable(false);
-		iFrame.getContentPane().setLayout(null);
+		if (!resurseValid && resurseId < 0) {
+			
+			SystemResurses res = new SystemResurses();
+			resurseId = res.getResusrseId(iFrame);
+			resurseValid = res.isResurseValid(this);
+		}
+		else {
+			iFrame = new JFrame();
+			iSys.mng.add(iFrame);
+			iFrame.addWindowListener(new FormListener(this));
+			iFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			iFrame.setSize(width, height);
+			iFrame.setLocationRelativeTo(iFrame);
+			iFrame.setTitle(title);
+			iFrame.setResizable(false);
+			iFrame.getContentPane().setLayout(null);
+		}
+		
 		return iFrame;
 	}
 	/**

@@ -47,7 +47,6 @@ public class Box extends ConnectedPointElement {
 		
 		}
 		
-		
 		return s+"-"+ this.getNumber().toString();
 	}
 	
