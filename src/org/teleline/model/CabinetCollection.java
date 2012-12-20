@@ -12,12 +12,11 @@ import java.util.Iterator;
 
 public class CabinetCollection extends StructuredElementCollection {
 
-	 /**
-     * Конструктор
-     */
+	/**
+	 *  Конструктор
+	 */
 	public CabinetCollection(IdGenerator gen) {
 		super(gen);
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Проверяет есть ли шкаф с данным строковым номеров в данной сети
@@ -38,28 +37,20 @@ public class CabinetCollection extends StructuredElementCollection {
 		
 	}
 	/**
-	 * Возвращает коллекцию элементов шкаф принадлежащих данной сети и данного класса
-	 * @param NetId - id сети
-	 * @param cabinetClass - класс шкафа, если 0, то возвращаются все шкафы в сети
+	 * Возвращает коллекцию шкафов данного класса
+	 * @param cabinetClass - класс шкафа
 	 */
-	public HashSet<Cabinet> getInNetByClass(Integer NetId, Integer cabinetClass){
+	public HashSet<Cabinet> getByClass(Integer cabinetClass){
 		
 		HashSet<Cabinet> elementSet = new HashSet<Cabinet>();
 		
 		Iterator<?> i = this.elements().iterator();
 		
-		if (cabinetClass > 0)
 		while (i.hasNext()) {
 			Cabinet element = (Cabinet)i.next();
-			if (element.getNet().equals(NetId) && element.getCabinetClass().equals(cabinetClass) ) {elementSet.add(element);}
+			if (element.getCabinetClass().equals(cabinetClass) ) {elementSet.add(element);}
 		}
 		
-		if (cabinetClass.equals(0))
-			while (i.hasNext()) {
-				Cabinet element = (Cabinet)i.next();
-				if (element.getNet().equals(NetId)) {elementSet.add(element);}
-			}
-			
 		return elementSet;	
 	}
 	

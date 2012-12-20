@@ -61,7 +61,7 @@ public class FormCable extends FormJFrame {
 			
             		if ( type.equals(0)) {
             			util_setComboBoxItems(fromComboBox, iSys.dfc.sortByIdUp(iSys.dfc.getInNet(netId)));
-            			util_setComboBoxItems(toComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(netId, 1)));
+            			util_setComboBoxItems(toComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getByClass(1)));
             		}
     	
             		if ( type.equals(1)) {
@@ -91,7 +91,7 @@ public class FormCable extends FormJFrame {
 	
     		if ( type.equals(0)) {
     			util_setComboBoxItems(fromComboBox, iSys.dfc.sortByIdUp(iSys.dfc.getInNet(netId)));
-    			util_setComboBoxItems(toComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(netId, 1)));
+    			util_setComboBoxItems(toComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getByClass(1)));
     		}
 
     		if ( type.equals(1)) {

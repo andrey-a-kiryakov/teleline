@@ -23,8 +23,6 @@ public class FormPairMagAndInt extends FormJFrame {
 		super(iSys);
 		createFrame("Создать магистральные пары", 410,  510);
 		if (type == 1) iFrame.setTitle("Создать межшкафные пары"); 
-			
-		final Integer netId = iSys.nc.getOnlyElement().getId();
 		
 		JLabel l1 = addLabel("От кросса/громполосы:",  20, 15, 360, 25);
 		if (type == 1) l1.setText("От шкафа/бокса (№1):");
@@ -38,12 +36,12 @@ public class FormPairMagAndInt extends FormJFrame {
 		
 		final JComboBox cableComboBox = addComboBox(20, 380, 360, 25); 
 		
-		if (type == 0) {	
+		if (type == 0) {
 			
 			util_setComboBoxItems(fromStructuredElementComboBox, iSys.dfc.sortByIdUp(iSys.dfc.getElements()));
 			dframeComboBoxLinked(fromStructuredElementComboBox, fromConnectedPointElementComboBox);
 			
-			util_setComboBoxItems(toStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(netId, 1)));
+			util_setComboBoxItems(toStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getByClass(1)));
 			cabinetComboBoxLinked(toStructuredElementComboBox, toConnectedPointElementComboBox, 0);
 			
 			setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 0);
@@ -65,10 +63,10 @@ public class FormPairMagAndInt extends FormJFrame {
 		
 		if (type == 1) {
 			
-			util_setComboBoxItems(fromStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(netId, 1)));
+			util_setComboBoxItems(fromStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getByClass(1)));
 			cabinetComboBoxLinked(fromStructuredElementComboBox, fromConnectedPointElementComboBox, 1);
 			
-			util_setComboBoxItems(toStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getInNetByClass(netId, 1)));
+			util_setComboBoxItems(toStructuredElementComboBox, iSys.cbc.sortByNumberUp(iSys.cbc.getByClass(1)));
 			cabinetComboBoxLinked(toStructuredElementComboBox, toConnectedPointElementComboBox, 1);
 			
 			setCableComboBoxItems((StructuredElement)fromStructuredElementComboBox.getSelectedItem(),(StructuredElement)toStructuredElementComboBox.getSelectedItem(), cableComboBox, 1);
@@ -88,9 +86,9 @@ public class FormPairMagAndInt extends FormJFrame {
 			});
 			
 		}
-			
 		
-	        addLabel("Количество создаваемых пар:", 20, 205, 360, 25);
+		
+			addLabel("Количество создаваемых пар:", 20, 205, 360, 25);
 			final JComboBox comboBox5 = addComboBox(20, 230, 360, 25);
 			comboBox5.addItem((Integer)10);
 			comboBox5.addItem((Integer)20);
@@ -124,8 +122,9 @@ public class FormPairMagAndInt extends FormJFrame {
 				}
 			});
 			
-		    addLabel("Бокс заполнять с:", 20, 295, 260, 25);
-		    final JTextField boxFrom = addTextField(140, 295, 140, 25);
+			JLabel l4 = addLabel("Бокс заполнять с:", 20, 295, 260, 25);
+			if (type == 1) l4.setText("Бокс2 заполнять с:");
+			final JTextField boxFrom = addTextField(140, 295, 140, 25);
 			boxFrom.setText("0");
 			boxFrom.setEditable(false);
 			JButton selectBox = addButton("Выбрать", 290, 295, 90, 25);
@@ -139,7 +138,7 @@ public class FormPairMagAndInt extends FormJFrame {
 			});
 			
 			addLabel("Кабель заполнять с:", 20, 325, 260, 25);
-		    final JTextField cableFrom = addTextField(140, 325, 140, 25);
+			final JTextField cableFrom = addTextField(140, 325, 140, 25);
 			cableFrom.setText("0");
 			cableFrom.setEditable(false);
 			JButton selectCable = addButton("Выбрать", 290, 325, 90, 25);
@@ -150,9 +149,9 @@ public class FormPairMagAndInt extends FormJFrame {
 					new FormViewCable(iSys,(Cable)cableComboBox.getSelectedItem(), cableFrom);
 				}
 			});
-		   
-		    
-		    addLabel("Добавить кабель:", 20, 355, 360, 25);
+			
+			
+			addLabel("Добавить кабель:", 20, 355, 360, 25);
 			
 			JButton saveButton = addButton("Сoхранить", 20, 430, 110, 25);
 			saveButton.addActionListener(new ActionListener() {
@@ -187,8 +186,6 @@ public class FormPairMagAndInt extends FormJFrame {
 					String s31 = "Пары не умещаются в громполосе в заданном диапазоне!";
 					String s41 = "Пары не умещаются в боксе в заданном диапазоне!";
 					
-					
-									
 					if (type == 1) {
 						s3 = "В боксе №1 в заданном диапазоне уже существуют кабельные пары!";
 						s4 = "В боксе №2 в заданном диапазоне уже существуют кабельные пары!";
@@ -207,8 +204,7 @@ public class FormPairMagAndInt extends FormJFrame {
 						if (iSys.pc.getInPlace(selectedCable, i) != null)  { util_newError("В кабеле в заданном диапазоне уже существуют кабельные пары!"); return; }	
 						if (i > selectedCable.getCapacity()) { util_newError("Пары не умещаются в кабеле в заданном диапазоне!"); return; }
 					}
-					//Integer inCableFirst = selectedCable.connect(pairCount);
-											
+					
 					for (int i = 0; i < pairCount; i++) {
 						
 						Pair newPair = new Pair(iSys.fc,iSys.bc,iSys.dbc,iSys.cc);
@@ -220,7 +216,6 @@ public class FormPairMagAndInt extends FormJFrame {
 							.setNumberInCable(fromCable + i)
 							.setFromNumber(fromElement + i)
 							.setToNumber(fromBox + i);
-							//.setType(0);
 						
 						iSys.pc.addElement(newPair);
 						String mes = "Создана магистральная кабельная пара: "+ newPair.toString()+ ", присоединена к кроссу: "+selectedFromStructuredElement.toString()+", громполосе: "+ selectedFromConnectedPointElement.toString() + ", присоединена к шкафу: "+selectedCabinet.toString()+", боксу: " + selectedBox.toString();
@@ -237,10 +232,8 @@ public class FormPairMagAndInt extends FormJFrame {
 					}
 					util_newInfo(mes);
 					iFrame.dispose();
-				
 				}
 			});
 			iFrame.setVisible(true);
 	}
-	
 }
