@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.system.Sys;
 
-public class FormStatisticCommon extends Form {
+public class FormStatisticCommon extends FormJFrame {
 	
 	private JTable table;
 	private DefaultTableModel tableModel;
@@ -15,7 +15,7 @@ public class FormStatisticCommon extends Form {
 	public FormStatisticCommon(Sys iSys) {
 		super(iSys);
 		
-		createDialog("Общая статистика", 500, 600);
+		createFrame("Общая статистика", 500, 600);
 		table = addTable(10,10,480,560);
 		tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Параметр","Значение"});

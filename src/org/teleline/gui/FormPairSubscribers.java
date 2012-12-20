@@ -18,7 +18,7 @@ import org.teleline.model.SubscriberCollection;
 import org.teleline.system.Sys;
 
 
-public class FormPairSubscribers extends Form {
+public class FormPairSubscribers extends FormJFrame {
 	
 	public JList subscriberList;
 	public JButton okButton;
@@ -26,7 +26,7 @@ public class FormPairSubscribers extends Form {
 	public FormPairSubscribers(final Sys iSys, Pair pair) {
 		super(iSys);
 		// TODO Auto-generated constructor stub
-		this.createDialog("Пара: " + pair.toString(), 485, 270);
+		this.createFrame("Пара: " + pair.toString(), 485, 270);
 		addLabel("Абоненты используюшие пару:", 10, 10, 320, 14);
 		subscriberList = addList(10, 30, 320, 200);
 		okButton = addButton("Выбрать", 340, 30, 125, 26);

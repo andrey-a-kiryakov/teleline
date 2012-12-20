@@ -33,13 +33,11 @@ public class SubscriberCollection extends StructuredElementCollection {
 		return null;
 		
 	}
-	
 	/**
 	 * Ищет абонентов, телефонные номера которых начинаются с заданной последовательности символов
 	 * @param phone - последовательность символов для поиска
-	 * @param NetId - id сети
 	 */
-	public HashSet<Subscriber> searchByPhone (String phone, Integer NetId){
+	public HashSet<Subscriber> searchByPhone (String phone){
 		
 		HashSet<Subscriber> h = new HashSet<Subscriber>();
 		
@@ -47,20 +45,17 @@ public class SubscriberCollection extends StructuredElementCollection {
 		
 		while (i.hasNext()) {
 			Subscriber element = (Subscriber)i.next();
-			if (element.getNet().equals(NetId) && element.getPhoneNumber().indexOf(phone) == 0) h.add(element);
+			if (element.getPhoneNumber().indexOf(phone) == 0) h.add(element);
 		}
-		
 		return h;
 		
 	}
-	
 	/**
 	 * Ищет абонентов, мена которых начинаются с заданной последовательности символов.
 	 * Регистр символов не учитывается.
 	 * @param name - последовательность символов для поиска
-	 * @param NetId - id сети
 	 */
-	public HashSet<Subscriber> searchByName (String name, Integer NetId){
+	public HashSet<Subscriber> searchByName (String name){
 		
 		HashSet<Subscriber> h = new HashSet<Subscriber>();
 		
@@ -68,9 +63,8 @@ public class SubscriberCollection extends StructuredElementCollection {
 		
 		while (i.hasNext()) {
 			Subscriber element = (Subscriber)i.next();
-			if (element.getNet().equals(NetId) && element.getName().toLowerCase().indexOf(name.toLowerCase()) == 0) h.add(element);
+			if (element.getName().toLowerCase().indexOf(name.toLowerCase()) == 0) h.add(element);
 		}
-		
 		return h;
 		
 	}

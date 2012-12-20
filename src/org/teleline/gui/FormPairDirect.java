@@ -18,12 +18,12 @@ import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormPairDirect extends Form {
+public class FormPairDirect extends FormJFrame {
 
 	public FormPairDirect(final Sys iSys) {
 		super(iSys);
 		
-		createDialog("Создать пары прямого питания", 410, 450);
+		createFrame("Создать пары прямого питания", 410, 450);
 			
 			addLabel("От кросса/громполосы:", 20, 15, 360, 25);
 			final JComboBox dframeComboBox = addComboBox(20, 40, 360, 25);

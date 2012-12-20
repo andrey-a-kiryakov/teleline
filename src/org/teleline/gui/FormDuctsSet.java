@@ -21,7 +21,7 @@ import org.teleline.model.Duct;
 import org.teleline.system.Sys;
 
 
-public class FormDuctsSet extends Form {
+public class FormDuctsSet extends FormJFrame {
 	
 	public JButton okButton;
 	public DefaultListModel setListModel;
@@ -29,7 +29,7 @@ public class FormDuctsSet extends Form {
 	public FormDuctsSet(Sys iSys) {
 		super(iSys);
 
-		createDialog("Создание списка элементов канализации для паспорта",800,600);
+		createFrame("Создание списка элементов канализации для паспорта",800,600);
 		addLabel("Участки канализации включенные в паспорт:", 10, 10, 320, 14);
 		final JList setList = addList(10, 30, 320, 520);
 		

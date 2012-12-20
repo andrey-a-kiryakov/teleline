@@ -12,7 +12,7 @@ import javax.swing.WindowConstants;
 import org.teleline.system.Sys;
 
 
-public class FormProgressBar extends Form {
+public class FormProgressBar extends FormJFrame {
 	
 	public JProgressBar progressBar;
 	public JButton okButton;
@@ -20,7 +20,7 @@ public class FormProgressBar extends Form {
 	
 	public FormProgressBar(Sys iSys) {
 		super(iSys);
-		createDialog("Ход выполнения операции", 600, 120);
+		createFrame("Ход выполнения операции", 600, 120);
 		okButton = addButton("OK", 475, 50, 110, 25);
 		label = addLabel("", 15, 50, 400, 25);
 		label.setFont(new Font("Dialog", Font.PLAIN, 10));

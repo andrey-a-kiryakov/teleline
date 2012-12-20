@@ -41,7 +41,7 @@ import org.teleline.system.Sys;
 
 import sun.security.provider.SHA2;
 
-public class FormOptimizer extends Form {
+public class FormOptimizer extends FormJFrame {
 	
 	private JTable table;
 	private DefaultTableModel tableModel;
@@ -61,7 +61,7 @@ public class FormOptimizer extends Form {
 	public FormOptimizer(final Sys iSys) {
 		super(iSys);
 		
-		createDialog("Общая статистика", 600, 600);
+		createFrame("Общая статистика", 600, 600);
 		
 		dframeButton = addButton("Кросс",450,10,110,26);
 		cabinetButton = addButton("Шкаф",450,40,110,26);

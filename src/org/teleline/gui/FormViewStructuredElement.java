@@ -27,7 +27,7 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormViewStructuredElement extends Form {
+public class FormViewStructuredElement extends FormJFrame {
 	
 	private StructuredElement element;
 	private JPanel elementsPanel;
@@ -48,7 +48,7 @@ public class FormViewStructuredElement extends Form {
 		int panelWidth = W * inLine + marginX * (inLine + 1);
 		int panelHeight = H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр " + element.toString(), panelWidth + 40 + 10, panelHeight + 140);
+		createFrame("Просмотр " + element.toString(), panelWidth + 40 + 10, panelHeight + 140);
 		elementsPanel = new JPanel();
 		elementsPanel.setLayout(null);
 		elementsPanel.setToolTipText(element.toString());
@@ -125,13 +125,13 @@ public class FormViewStructuredElement extends Form {
 				if (element instanceof Cabinet){
 					FormBox form = new FormBox(iFrame, iSys, null, element);
 					form.placeComboBox.setSelectedItem(ep.getPlaceNumber());
-					form.iFrame.setVisible(true);
+					form.iDialog.setVisible(true);
 					updateElementsButtons();
 				}
 				if (element instanceof DFramе){
 					FormFrame form = new FormFrame(iFrame, iSys, null, element);
 					form.placeComboBox.setSelectedItem(ep.getPlaceNumber());
-					form.iFrame.setVisible(true);
+					form.iDialog.setVisible(true);
 					updateElementsButtons();
 				}
 				
@@ -147,12 +147,12 @@ public class FormViewStructuredElement extends Form {
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();
 				
 				if (element instanceof Cabinet){
-					new FormBox(iFrame, iSys, (Box)p, element).iFrame.setVisible(true);
+					new FormBox(iFrame, iSys, (Box)p, element).iDialog.setVisible(true);
 					updateElementsButtons();
 				}
 				
 				if (element instanceof DFramе){
-					new FormFrame(iFrame, iSys, (Frame)p, element).iFrame.setVisible(true);
+					new FormFrame(iFrame, iSys, (Frame)p, element).iDialog.setVisible(true);
 					updateElementsButtons();
 				}
 			}

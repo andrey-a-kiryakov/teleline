@@ -13,7 +13,7 @@ import org.teleline.system.Sys;
  * @param phc - коллекция включений
  */
 
-public class FormSubscriberPaths extends Form {
+public class FormSubscriberPaths extends FormJFrame {
 	
 	public JList pathList;
 	public JButton okButton;
@@ -22,7 +22,7 @@ public class FormSubscriberPaths extends Form {
 		super(iSys);
 		// TODO Auto-generated constructor stub
 		
-		createDialog("Абонент: " + sub.toString(), 485, 270);
+		createFrame("Абонент: " + sub.toString(), 485, 270);
 		addLabel("Включения:", 10, 10, 320, 14);
 		pathList = addList(10, 30, 320, 200);
 		util_setListItems(pathList, iSys.phc.sortByIdUp(iSys.phc.getSubscriberPaths(sub)));

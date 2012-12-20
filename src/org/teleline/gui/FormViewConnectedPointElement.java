@@ -27,7 +27,7 @@ import org.teleline.model.Pair;
 import org.teleline.system.Sys;
 
 
-public class FormViewConnectedPointElement extends Form {
+public class FormViewConnectedPointElement extends FormJFrame {
 
 	public FormViewConnectedPointElement(Sys iSys,final ConnectedPointElement element, final JTextField textFieldForSelectResult, final JList listForSelectedPair) {
 		super(iSys);
@@ -37,7 +37,7 @@ public class FormViewConnectedPointElement extends Form {
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр бокса", panelWidth + 40, panelHeight + infoListHeght + 100);
+		createFrame("Просмотр бокса", panelWidth + 40, panelHeight + infoListHeght + 100);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(element.toString());

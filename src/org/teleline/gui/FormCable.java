@@ -18,13 +18,13 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormCable extends Form {
+public class FormCable extends FormJFrame {
 
 	public FormCable(final Sys iSys, final Cable cable) {
 		super(iSys);
 		
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 480, iFrameMaxHeight = 480;
-		createDialog("Создать кабель", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать кабель", iFrameMinWidth, iFrameMinHeight);
 			
 		addLabel("Тип кабеля:", 20, 15, 360, 25);
 		final JComboBox typeComboBox = addComboBox(20, 40, 360, 25);

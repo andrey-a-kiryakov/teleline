@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
 import org.teleline.gui.ExtFileFilter;
-import org.teleline.gui.Form;
+import org.teleline.gui.FormJFrame;
 import org.teleline.gui.FormAbout;
 import org.teleline.gui.FormBox;
 import org.teleline.gui.FormBuilding;
@@ -145,7 +145,7 @@ public class teleline {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (sys.changes == true) {
-					if (Form.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
+					if (FormJFrame.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();
 					}					
@@ -181,7 +181,7 @@ public class teleline {
 		newProjectItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (sys.changes == true) {
-					if (Form.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
+					if (FormJFrame.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();
 					}
@@ -220,11 +220,11 @@ public class teleline {
 		menuCreate.add(separator_1);
 		
 		JMenuItem menuItem_4 = new JMenuItem("Громполосу");
-		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(frmTeleline,sys, null,null).iFrame.setVisible(true);}});
+		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(frmTeleline,sys, null,null).iDialog.setVisible(true);}});
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null).iFrame.setVisible(true);}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null).iDialog.setVisible(true);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();

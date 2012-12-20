@@ -16,12 +16,12 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormBuilding extends Form {
+public class FormBuilding extends FormJFrame {
 
 	public FormBuilding(final Sys iSys, final Building building) {
 		super(iSys);
 		// TODO Auto-generated constructor stub
-		createDialog("Создать здание", 410, 270);
+		createFrame("Создать здание", 410, 270);
 			
 		addLabel("Улица (до 150 символов):", 20, 10, 360, 14);
 		final JTextField street = addTextField(20, 35, 360, 25);

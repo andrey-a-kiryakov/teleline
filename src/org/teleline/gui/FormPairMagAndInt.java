@@ -17,11 +17,11 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormPairMagAndInt extends Form {
+public class FormPairMagAndInt extends FormJFrame {
 
 	public FormPairMagAndInt(final Sys iSys, final int type) {
 		super(iSys);
-		createDialog("Создать магистральные пары", 410,  510);
+		createFrame("Создать магистральные пары", 410,  510);
 		if (type == 1) iFrame.setTitle("Создать межшкафные пары"); 
 			
 		final Integer netId = iSys.nc.getOnlyElement().getId();

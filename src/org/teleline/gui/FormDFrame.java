@@ -16,12 +16,12 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormDFrame extends Form {
+public class FormDFrame extends FormJFrame {
 
 	public FormDFrame(final Sys iSys, final DFramе dframe) {
 		super(iSys);
 
-		createDialog("Создать кросс", 410, 235);
+		createFrame("Создать кросс", 410, 235);
 		if (dframe != null) iFrame.setTitle("Редактировать кросс");
 		
 		addLabel("Название кросса (1-50 символов):", 20, 10, 360, 25);

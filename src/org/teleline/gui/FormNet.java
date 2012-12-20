@@ -14,11 +14,11 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormNet extends Form {
+public class FormNet extends FormJFrame {
 
 	public FormNet(final Sys iSys, final Net net) {
 		super(iSys);
-		createDialog("Создать сеть", 410, 165);
+		createFrame("Создать сеть", 410, 165);
 		addLabel("Название сети (1-50 символов):", 20, 15, 360, 14);
 		
 		final JTextField name = addTextField(20, 40, 360, 25);

@@ -17,12 +17,12 @@ import org.teleline.model.Damage;
 import org.teleline.system.Sys;
 
 
-public class FormDamage extends Form {
+public class FormDamage extends FormJFrame {
 
 	public FormDamage(final Sys iSys, final Damage damage, final AbstractElement owner) {
 		super(iSys);
 		
-		createDialog("Создать повреждение", 410, 445);
+		createFrame("Создать повреждение", 410, 445);
 		
 		addLabel("Дата обнаружения (ДД.ММ.ГГГГ):",  20, 15, 360, 25);
 		final JTextField openDate = addTextField(20, 40, 360, 25);

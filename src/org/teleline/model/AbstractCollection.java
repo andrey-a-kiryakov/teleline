@@ -7,7 +7,6 @@ import java.util.Vector;
 
 /**
  * Абстрактный суперкласс классов коллекции
- * 
  *@author Кирьяков Андрей
  */
 public abstract class AbstractCollection {
@@ -49,7 +48,7 @@ public abstract class AbstractCollection {
 			if (element.getId().equals(id)) return element;
 		}
 		
-		return null;			
+		return null;
 	}
 	/**
 	 * Возвращает единственный элемент коллекции из 1 элемента
@@ -62,7 +61,7 @@ public abstract class AbstractCollection {
 		
 		while (i.hasNext()){element = i.next(); return element;}
 		
-		return null;			
+		return null;
 		
 	}
 	/**
@@ -150,7 +149,7 @@ public abstract class AbstractCollection {
 				if (element.getId() < min) {
 					min = element.getId();
 					minElement = element;
-				}	
+				}
 			}
 			
 			v.add(minElement);

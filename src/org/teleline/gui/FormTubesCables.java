@@ -12,7 +12,7 @@ import org.teleline.system.Sys;
 
 
 
-public class FormTubesCables extends Form {
+public class FormTubesCables extends FormJFrame {
 		
 	public JButton okButton;
 	public JList cableList;
@@ -20,7 +20,7 @@ public class FormTubesCables extends Form {
 	public FormTubesCables(Sys iSys, Tube tube) {
 		super(iSys);
 		
-		createDialog("Канал: " + tube.toString(), 485, 270);
+		createFrame("Канал: " + tube.toString(), 485, 270);
 		
 		addLabel("Кабели в канале:", 10, 10, 320, 14);
 		cableList = addList(10, 30, 320, 200);

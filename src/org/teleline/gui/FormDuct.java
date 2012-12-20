@@ -19,13 +19,13 @@ import org.teleline.model.Tube;
 import org.teleline.system.Sys;
 
 
-public class FormDuct extends Form {
+public class FormDuct extends FormJFrame {
 
 	public FormDuct(final Sys iSys, final Duct duct) {
 		super(iSys);
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight =  390, iFrameMaxHeight =  430;
 
-		createDialog("Создать канализацию", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать канализацию", iFrameMinWidth, iFrameMinHeight);
 		
 		Integer netId = iSys.nc.getOnlyElement().getId();
 		

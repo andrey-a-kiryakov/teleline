@@ -21,7 +21,7 @@ import org.teleline.model.Manhole;
 import org.teleline.system.Sys;
 
 
-public class FormManholes extends Form {
+public class FormManholes extends FormJFrame {
 	
 	final public JTable table;
 	public JButton refreshButton;
@@ -29,7 +29,7 @@ public class FormManholes extends Form {
 	public FormManholes(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
 		
-		createDialog("Шкафы", 785, 600);
+		createFrame("Шкафы", 785, 600);
 		
 		addLabel("Список колодцев:", 10, 10, 520, 14);
 		table = addTable(10, 30, 620, 525);

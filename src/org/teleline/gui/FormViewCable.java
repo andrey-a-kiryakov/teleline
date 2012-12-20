@@ -25,7 +25,7 @@ import org.teleline.model.Pair;
 import org.teleline.system.Sys;
 
 
-public class FormViewCable extends Form {
+public class FormViewCable extends FormJFrame {
 
 	public FormViewCable(final Sys iSys, final Cable cable, final JTextField textFieldForSelectResult) {
 		super(iSys);
@@ -35,7 +35,7 @@ public class FormViewCable extends Form {
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 140);
+		createFrame("Просмотр кабеля", panelWidth + 40, panelHeight + infoListHeght + 140);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(cable.toString());

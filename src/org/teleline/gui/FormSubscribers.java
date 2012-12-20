@@ -34,10 +34,11 @@ import org.teleline.model.Pair;
 import org.teleline.model.Path;
 import org.teleline.model.StructuredElement;
 import org.teleline.model.Subscriber;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormSubscribers extends Form {
+public class FormSubscribers extends FormJFrame {
 	
 	public JTable subscriberList;
 	public JTable pairList;
@@ -60,7 +61,7 @@ public class FormSubscribers extends Form {
 	
 	public FormSubscribers(final Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
-		createDialog("Редактировать абонента", 685, 700);
+		createFrame("Редактировать абонента", 685, 700);
 		iFrame.setResizable(true);
 		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -118,9 +119,9 @@ public class FormSubscribers extends Form {
 		subscriberList.setRowSorter(sorter);
 
 		ArrayList<SortKey> keys=new ArrayList<SortKey>();
-        keys.add(new SortKey(0, SortOrder.ASCENDING));                                             
-        sorter.setSortKeys(keys);
-        sorter.setSortsOnUpdates(true);
+		keys.add(new SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(keys);
+		sorter.setSortsOnUpdates(true);
 		JPanel panel = new JPanel();
 		iFrame.getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 0));
@@ -145,34 +146,25 @@ public class FormSubscribers extends Form {
 		panel.add(lblNewLabel, BorderLayout.NORTH);
 				
 		Iterator<StructuredElement> i = iSys.sc.getInNet(iSys.nc.getOnlyElement().getId()).iterator();
-	    	while (i.hasNext()) {
-	    		addSubscriberToTable((Subscriber)i.next());	
-	    }
+		while (i.hasNext()) {
+			addSubscriberToTable((Subscriber)i.next());	
+		}
 					
 			findButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					final FormSubscriberSearch form = new FormSubscriberSearch(iSys);
-					form.okButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							if (form.subscriberList.getSelectedIndex() == -1) {form.util_newError("Абонент не выбран!"); return;}
-							Subscriber sub = (Subscriber)form.subscriberList.getSelectedValue();
-							
-							for (int i = 0; i < tableModel.getRowCount(); i++) {
-								
-								if (((Subscriber)tableModel.getValueAt(i, 0)).equals(sub)){
-									//Integer rowIndex = subscriberList.convertRowIndexToModel(i);
-									Integer rowIndex = sorter.convertRowIndexToView(i);
-									subscriberList.addRowSelectionInterval(rowIndex, rowIndex);
-									util_scrollTable(subscriberList,rowIndex);
-
-									System.out.println(i);
-									break;
-								}
+					Wrapper wrapper = new Wrapper();
+					new FormSubscriberSearch(iFrame,iSys,wrapper);
+					if (wrapper.getElement() != null) {
+						for (int i = 0; i < tableModel.getRowCount(); i++) {
+							if (((Subscriber)tableModel.getValueAt(i, 0)).equals(wrapper.getElement())){
+								System.out.println(wrapper.getElement());
+								Integer rowIndex = sorter.convertRowIndexToView(i);
+								subscriberList.addRowSelectionInterval(rowIndex, rowIndex);
+								util_scrollTable(subscriberList,rowIndex);
+								break;
 							}
-							form.close();
 						}
-					});
-				
+					}
 				}
 			});
 			

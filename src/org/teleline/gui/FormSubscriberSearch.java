@@ -1,68 +1,124 @@
 package org.teleline.gui;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SortOrder;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
+import org.teleline.model.Subscriber;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 /**
 *Класс элементов Форма для формы поиска абонента по номеру и телефону
 *
 */
-public class FormSubscriberSearch extends Form{
+public class FormSubscriberSearch extends FormJDialog{
 	
-	public JTextField textField;
-	public JTextField textField_1;
-	public JList subscriberList;
+	public JTextField phoneTextField;
+	public JTextField nameTextField;
+	public JTable subscriberList;
 
 	public JButton findByPhoneButton;
 	public JButton findByNameButton;
 	public JButton okButton;
 	
-	public FormSubscriberSearch(final Sys iSys) {
-		super(iSys);
+	
+	public FormSubscriberSearch(Window owner, final Sys iSys, final Wrapper wrapper) {
+		super(owner, iSys);
 		// TODO Auto-generated constructor stub
-		
 		createDialog("Найти абонента", 485, 580);
+		
 		addLabel("Телефонный номер:", 10, 10, 320, 14);
-		final JTextField textField = addTextField(10, 30, 320, 25);
+		phoneTextField = addTextField(10, 30, 320, 25);
+		
 		addLabel("Имя:", 10, 65, 320, 14);
-		final JTextField textField_1 = addTextField(10, 85, 320, 25);
+		nameTextField = addTextField(10, 85, 320, 25);
+		
 		addLabel("Результаты поиска:", 10, 120, 320, 14);
-		subscriberList = addList(10, 140, 320, 400);
+		subscriberList = addTable(10, 140, 320, 400);
+		final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
+		tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон"});
+		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(subscriberList.getModel());
+		subscriberList.setRowSorter(sorter);
+		
+		ArrayList<SortKey> keys=new ArrayList<SortKey>();
+		keys.add(new SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(keys);
+		sorter.setSortsOnUpdates(true);
 
 		findByPhoneButton = addButton("Найти", 340, 30, 125, 26);
 		findByNameButton = addButton("Найти", 340, 85, 125, 26);
 		okButton = addButton("Выбрать", 340, 140, 125, 26);
 		
-		final Integer netId = iSys.nc.getOnlyElement().getId();
 		/*
 		 * Событие кнопки поиска абонента по телефону
 		 */
 		findByPhoneButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
-				util_setListItems(subscriberList, iSys.sc.searchByPhone(textField.getText(), netId));
+				util_clearTable(subscriberList);
+				Iterator<Subscriber> i = iSys.sc.searchByPhone(phoneTextField.getText()).iterator();
+				while (i.hasNext()) addSubscriberToTable(i.next());
 			}
 		});
 		/*
 		 * ---------------------------------------------------------
 		 */
 		/*
-		 * Событие кнопки поиска абонента о телефону
+		 * Событие кнопки поиска абонента по телефону
 		 */
 		findByNameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				util_setListItems(subscriberList, iSys.sc.searchByName(textField_1.getText(), netId));				
+				util_clearTable(subscriberList);
+				Iterator<Subscriber> i = iSys.sc.searchByName(phoneTextField.getText()).iterator();
+				while (i.hasNext()) addSubscriberToTable(i.next());				
 			}
 		});
 		
 		/*
 		 * ---------------------------------------------------------
 		 */
-		iFrame.setVisible(true);
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (subscriberList.getSelectionModel().isSelectionEmpty()){util_newError("Абонент не выбран!"); return; }
+				//Integer selectedIndex = subscriberList.getRowSorter().convertRowIndexToModel(subscriberList.getSelectionModel().getMinSelectionIndex());
+				Integer selectedIndex = subscriberList.getSelectionModel().getMinSelectionIndex();
+				Subscriber sub = (Subscriber) subscriberList.getValueAt(selectedIndex, 0);
+				wrapper.setElement(sub);
+				/*
+				System.out.println(subscriberList.getSelectionModel().getMinSelectionIndex());
+				System.out.println(selectedIndex);
+				
+				System.out.println((Subscriber) subscriberList.getValueAt(subscriberList.getSelectionModel().getMinSelectionIndex(), 0));
+				System.out.println((Subscriber) subscriberList.getValueAt(selectedIndex, 0));
+				*/
+				
+				iDialog.dispose();
+			}
+		});
+		iDialog.setVisible(true);
+	}
+	/**
+	 * Добавляет абонента в таблицу
+	 * @param table - таблица
+	 * @param subscriber - абонент
+	 */
+	private void addSubscriberToTable(Subscriber subscriber){
+		
+		Vector<Object> v = new Vector<Object>();
+		v.add(subscriber);
+		v.add(subscriber.getPhoneNumber());
+		((DefaultTableModel) subscriberList.getModel()).addRow(v);
 	}
 }

@@ -18,11 +18,11 @@ import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormPairDistrib extends Form {
+public class FormPairDistrib extends FormJFrame {
 
 	public FormPairDistrib(final Sys iSys) {
 		super(iSys);
-		createDialog("Создать распределительные пары", 410, 450);
+		createFrame("Создать распределительные пары", 410, 450);
 			
 			addLabel("От шкафа/бокса:", 20, 15, 360, 25);
 			final JComboBox cabinetComboBox = addComboBox(20, 40, 360, 25);

@@ -16,14 +16,14 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormCabinet extends Form {
+public class FormCabinet extends FormJFrame {
 
 	public FormCabinet(final Sys iSys, final Cabinet cabinet) {
 		super(iSys);
 		// TODO Auto-generated constructor stub
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 300, iFrameMaxHeight = 430;
 		
-		createDialog("Создать шкаф", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать шкаф", iFrameMinWidth, iFrameMinHeight);
 		 
 		addLabel("Номер шкафа (1-4 символа: А-Я,а-я,0-9):", 20, 15, 360, 25);
 		final JTextField formatedText = addTextField(20, 40, 360, 25);

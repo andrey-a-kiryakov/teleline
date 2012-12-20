@@ -16,7 +16,7 @@ import org.teleline.model.Tube;
 import org.teleline.system.Sys;
 
 
-public class FormViewDuct extends Form {
+public class FormViewDuct extends FormJFrame {
 
 	public FormViewDuct(Sys iSys, final Duct duct) {
 		super(iSys);
@@ -28,7 +28,7 @@ public class FormViewDuct extends Form {
 		int panelWidth = labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр канализации", panelWidth + 40, panelHeight + infoListHeght + 100);
+		createFrame("Просмотр канализации", panelWidth + 40, panelHeight + infoListHeght + 100);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(duct.toString());

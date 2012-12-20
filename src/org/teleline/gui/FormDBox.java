@@ -17,7 +17,7 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormDBox extends Form {
+public class FormDBox extends FormJFrame {
 
 	public FormDBox(final Sys iSys, final DBox dbox) {
 		super(iSys);
@@ -25,7 +25,7 @@ public class FormDBox extends Form {
 	
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 250, iFrameMaxHeight = 250;
 		
-		createDialog("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
 		
 		addLabel("Здание:", 20, 10, 360, 25);
 		final JComboBox buildingsComboBox = addComboBox(20, 35, 360, 25);

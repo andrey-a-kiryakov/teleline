@@ -16,13 +16,13 @@ import org.teleline.model.Net;
 import org.teleline.system.Sys;
 
 
-public class FormManhole extends Form {
+public class FormManhole extends FormJFrame {
 
 	public FormManhole(final Sys iSys, final Manhole man) {
 		super(iSys);
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 310, iFrameMaxHeight = 310;
 		
-		createDialog("Создать колодец", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать колодец", iFrameMinWidth, iFrameMinHeight);
 		
 		addLabel("Номер колодца (1-4 символа: А-Я,а-я,0-9):", 20, 15, 360, 25);
 		final JTextField manholeNumberText = addTextField(20, 40, 360, 25);

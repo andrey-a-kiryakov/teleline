@@ -17,13 +17,13 @@ import org.teleline.model.Subscriber;
 import org.teleline.system.Sys;
 
 
-public class FormSubscriber extends Form {
+public class FormSubscriber extends FormJFrame {
 
 	public FormSubscriber(final Sys iSys, final Subscriber sub) {
 		super(iSys);
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 220, iFrameMaxHeight = 280;
 		
-		createDialog("Создать абонента", iFrameMinWidth, iFrameMinHeight);
+		createFrame("Создать абонента", iFrameMinWidth, iFrameMinHeight);
 		
 		addLabel("Имя абонента (1-50 символов):", 20, 15, 360, 25);
 		final JTextField name = addTextField(20, 40, 360, 25);

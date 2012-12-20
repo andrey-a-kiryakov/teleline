@@ -12,7 +12,7 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormSearchCable extends Form {
+public class FormSearchCable extends FormJFrame {
 	
 	public JTable cableTable;
 	public JButton okButton;
@@ -20,7 +20,7 @@ public class FormSearchCable extends Form {
 	public FormSearchCable(Sys iSys, Integer netId) {
 		super(iSys);
 		
-		createDialog("Выбрать кабель", 685, 600);
+		createFrame("Выбрать кабель", 685, 600);
 		
 		cableTable = addTable(10, 10, 520, 540);
 		final DefaultTableModel tableModel = (DefaultTableModel) cableTable.getModel();

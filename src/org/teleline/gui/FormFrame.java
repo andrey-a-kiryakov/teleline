@@ -20,7 +20,7 @@ import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormFrame extends FormDialog {
+public class FormFrame extends FormJDialog {
 	
 	public JComboBox placeComboBox;
 	private JComboBox dframeComboBox;
@@ -51,7 +51,7 @@ public class FormFrame extends FormDialog {
 		comboBox3.setSelectedIndex(2);
 		
 		if (frame != null) {
-			iFrame.setTitle("Редактировать громполосу");
+			iDialog.setTitle("Редактировать громполосу");
 			frameNumberText.setText(frame.getNumber().toString());
 			comboBox3.setSelectedItem(frame.getCapacity());
 			comboBox3.setEnabled(false);
@@ -142,7 +142,7 @@ public class FormFrame extends FormDialog {
 					iSys.changes = true;
 					
 				}
-				iFrame.dispose();
+				iDialog.dispose();
 			}
 		});		
 		//iFrame.setVisible(true);

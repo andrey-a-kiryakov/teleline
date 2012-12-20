@@ -21,13 +21,13 @@ import org.teleline.model.Damage;
 import org.teleline.system.Sys;
 
 
-public class FormDamages extends Form {
+public class FormDamages extends FormJFrame {
 	
 	public JTable damageTable;
 	
 	public FormDamages(final Sys iSys, Collection<Damage> damageCollection, final AbstractElement owner) {
 		super(iSys);
-		createDialog("Список повреждений " + owner.toString(), 685, 600);
+		createFrame("Список повреждений " + owner.toString(), 685, 600);
 		iFrame.setResizable(true);
 		
 		damageTable = addTable(10, 10, 520, 560);

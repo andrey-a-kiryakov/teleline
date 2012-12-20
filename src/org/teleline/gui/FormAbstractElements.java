@@ -21,7 +21,7 @@ import org.teleline.model.AbstractElement;
 import org.teleline.system.Sys;
 
 
-public class FormAbstractElements extends Form implements InterfaceFormAbstractElements{
+public class FormAbstractElements extends FormJFrame implements InterfaceFormAbstractElements{
 	
 	protected Collection<AbstractElement> collection;
 	
@@ -45,7 +45,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 	public FormAbstractElements(Sys iSys, Collection<AbstractElement> collection) {
 		super(iSys);
 		this.collection = collection;
-		createDialog("", 785, 600);
+		createFrame("", 785, 600);
 		iFrame.setResizable(true);
 		iFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		JPanel panel_1 = new JPanel();
@@ -109,7 +109,7 @@ public class FormAbstractElements extends Form implements InterfaceFormAbstractE
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectionModel().isSelectionEmpty()){ util_newError(errMsg); return; }
-				selectedIndex = table.getRowSorter().convertRowIndexToModel(table.getSelectionModel().getMinSelectionIndex());
+				selectedIndex = sorter.convertRowIndexToModel(table.getSelectionModel().getMinSelectionIndex());
 				edit();
 			}
 		});

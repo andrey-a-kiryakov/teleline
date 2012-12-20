@@ -14,7 +14,7 @@ import org.teleline.model.DFramе;
 import org.teleline.system.Sys;
 
 
-public class FormAddPair extends Form {
+public class FormAddPair extends FormJFrame {
 	
 	public JButton okButton;
 	public JList selectedPairList;
@@ -23,7 +23,7 @@ public class FormAddPair extends Form {
 		super(iSys);
 		final Integer netId = iSys.nc.getOnlyElement().getId();
 		
-		createDialog("Добавить пару", 410,  330);
+		createFrame("Добавить пару", 410,  330);
 		
 		addLabel("Тип пары:", 20, 15, 360, 25);
 		final JComboBox pairTypeComboBox = addComboBox(20, 40, 360, 25);

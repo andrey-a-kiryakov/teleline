@@ -5,9 +5,9 @@ import java.awt.event.WindowListener;
 
 public class FormListener implements WindowListener {
 	
-	private Form form;
+	private FormJFrame form;
 	
-	public FormListener (Form form){
+	public FormListener (FormJFrame form){
 		
 		this.form = form;
 		

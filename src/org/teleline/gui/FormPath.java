@@ -16,12 +16,12 @@ import org.teleline.model.Subscriber;
 import org.teleline.system.Sys;
 
 
-public class FormPath extends Form {
+public class FormPath extends FormJFrame {
 
 	public FormPath(final Sys iSys, final Subscriber sub, final Path path) {
 		super(iSys);
 		
-		createDialog("Создать включение", 410, 225);
+		createFrame("Создать включение", 410, 225);
 		addLabel("Название включения (1-50 символов):", 20, 15, 360, 14);
 		final JTextField textField = addTextField(20, 40, 360, 25);
 		

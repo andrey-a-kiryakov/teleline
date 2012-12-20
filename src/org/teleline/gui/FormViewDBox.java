@@ -16,7 +16,7 @@ import org.teleline.model.Pair;
 import org.teleline.system.Sys;
 
 
-public class FormViewDBox extends Form {
+public class FormViewDBox extends FormJFrame {
 	
 	public FormViewDBox(Sys iSys, final DBox element) {
 		super(iSys);
@@ -26,7 +26,7 @@ public class FormViewDBox extends Form {
 		int panelWidth = groupDevision + labelPlaceLeft + W * inLine + marginX * (inLine + 1);
 		int panelHeight = labelPlaceTop + H * lines + marginY * (lines + 1);
 		
-		createDialog("Просмотр КРТ", panelWidth + 40, panelHeight + infoListHeght + 100);
+		createFrame("Просмотр КРТ", panelWidth + 40, panelHeight + infoListHeght + 100);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setToolTipText(element.toString());

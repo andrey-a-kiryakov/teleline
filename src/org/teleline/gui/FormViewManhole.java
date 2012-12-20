@@ -16,7 +16,7 @@ import org.teleline.model.Manhole;
 import org.teleline.system.Sys;
 
 
-public class FormViewManhole extends Form {
+public class FormViewManhole extends FormJFrame {
 
 	public FormViewManhole(final Sys iSys, final Manhole manhole) {
 		super(iSys);
@@ -33,7 +33,7 @@ public class FormViewManhole extends Form {
 		int panelW = paddingLeft * 2 + margin * 2 + manholeButtonW + gorizontalDuctW * 2; 
 		int panelH = paddingTop * 2 + margin * 2 + manholeButtonH + verticalDuctH * 2; 
 		
-		createDialog("Просмотр колодца", panelW + 40, panelH + infoListH + 100);
+		createFrame("Просмотр колодца", panelW + 40, panelH + infoListH + 100);
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(new Color(200, 200, 200));
