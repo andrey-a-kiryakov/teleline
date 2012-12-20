@@ -13,7 +13,7 @@ public class SubscriberCollection extends StructuredElementCollection {
 
 	public SubscriberCollection(IdGenerator gen) {
 		super(gen);
-		// TODO Auto-generated constructor stub
+	
 	}
 	
 	/**
@@ -33,29 +33,13 @@ public class SubscriberCollection extends StructuredElementCollection {
 		return null;
 		
 	}
+	
 	/**
-	 * Ищет абонентов, телефонные номера которых начинаются с заданной последовательности символов
-	 * @param phone - последовательность символов для поиска
-	 */
-	public HashSet<Subscriber> searchByPhone (String phone){
-		
-		HashSet<Subscriber> h = new HashSet<Subscriber>();
-		
-		Iterator<?> i = this.elements().iterator();
-		
-		while (i.hasNext()) {
-			Subscriber element = (Subscriber)i.next();
-			if (element.getPhoneNumber().indexOf(phone) == 0) h.add(element);
-		}
-		return h;
-		
-	}
-	/**
-	 * Ищет абонентов, мена которых начинаются с заданной последовательности символов.
+	 * Ищет абонентов, телефон или имя которых начинаются с заданной последовательности символов.
 	 * Регистр символов не учитывается.
 	 * @param name - последовательность символов для поиска
 	 */
-	public HashSet<Subscriber> searchByName (String name){
+	public HashSet<Subscriber> search (String str){
 		
 		HashSet<Subscriber> h = new HashSet<Subscriber>();
 		
@@ -63,10 +47,9 @@ public class SubscriberCollection extends StructuredElementCollection {
 		
 		while (i.hasNext()) {
 			Subscriber element = (Subscriber)i.next();
-			if (element.getName().toLowerCase().indexOf(name.toLowerCase()) == 0) h.add(element);
+			if ((element.getPhoneNumber().indexOf(str) == 0) || (element.getName().toLowerCase().indexOf(str.toLowerCase()) == 0)) h.add(element);
 		}
 		return h;
 		
 	}
-	
 }

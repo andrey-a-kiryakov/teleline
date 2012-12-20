@@ -31,23 +31,18 @@ public class FormSubscriberSearch extends FormJDialog{
 	public JTable subscriberList;
 
 	public JButton findByPhoneButton;
-	public JButton findByNameButton;
 	public JButton okButton;
 	
 	
 	public FormSubscriberSearch(Window owner, final Sys iSys, final Wrapper wrapper) {
 		super(owner, iSys);
-		// TODO Auto-generated constructor stub
-		createDialog("Найти абонента", 485, 580);
+		createDialog("Найти абонента", 585, 600);
 		
-		addLabel("Телефонный номер:", 10, 10, 320, 14);
-		phoneTextField = addTextField(10, 30, 320, 25);
+		addLabel("Телефонный номер или имя:", 10, 10, 320, 14);
+		phoneTextField = addTextField(10, 30, 420, 25);
 		
-		addLabel("Имя:", 10, 65, 320, 14);
-		nameTextField = addTextField(10, 85, 320, 25);
-		
-		addLabel("Результаты поиска:", 10, 120, 320, 14);
-		subscriberList = addTable(10, 140, 320, 400);
+		addLabel("Результаты поиска:", 10, 65, 320, 14);
+		subscriberList = addTable(10, 85, 420, 480);
 		final DefaultTableModel tableModel = (DefaultTableModel) subscriberList.getModel();
 		tableModel.setColumnIdentifiers(new String[]{"Имя", "Телефон"});
 		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(subscriberList.getModel());
@@ -58,9 +53,8 @@ public class FormSubscriberSearch extends FormJDialog{
 		sorter.setSortKeys(keys);
 		sorter.setSortsOnUpdates(true);
 
-		findByPhoneButton = addButton("Найти", 340, 30, 125, 26);
-		findByNameButton = addButton("Найти", 340, 85, 125, 26);
-		okButton = addButton("Выбрать", 340, 140, 125, 26);
+		findByPhoneButton = addButton("Найти", 440, 30, 125, 26);
+		okButton = addButton("Выбрать", 440, 85, 125, 26);
 		
 		/*
 		 * Событие кнопки поиска абонента по телефону
@@ -68,27 +62,11 @@ public class FormSubscriberSearch extends FormJDialog{
 		findByPhoneButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				util_clearTable(subscriberList);
-				Iterator<Subscriber> i = iSys.sc.searchByPhone(phoneTextField.getText()).iterator();
+				Iterator<Subscriber> i = iSys.sc.search(phoneTextField.getText()).iterator();
 				while (i.hasNext()) addSubscriberToTable(i.next());
 			}
 		});
-		/*
-		 * ---------------------------------------------------------
-		 */
-		/*
-		 * Событие кнопки поиска абонента по телефону
-		 */
-		findByNameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				util_clearTable(subscriberList);
-				Iterator<Subscriber> i = iSys.sc.searchByName(phoneTextField.getText()).iterator();
-				while (i.hasNext()) addSubscriberToTable(i.next());				
-			}
-		});
 		
-		/*
-		 * ---------------------------------------------------------
-		 */
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (subscriberList.getSelectionModel().isSelectionEmpty()){util_newError("Абонент не выбран!"); return; }
