@@ -30,28 +30,19 @@ public class FormDBoxes extends FormAbstractElements {
 		while(i.hasNext()) {addDBoxToTable((DBox)i.next());}
 		table.setRowSorter(sorter);
 		iFrame.setVisible(true);
-	}		
-			
+	}
+	
 	public void passport() {
 		
 		Vector<DBox> db = new Vector<DBox>();
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
-				db.add((DBox) tableModel.getValueAt(sorter.convertRowIndexToModel(i), 0));	
-			}				
+				db.add((DBox) tableModel.getValueAt(sorter.convertRowIndexToModel(i), 0));
+			}
 		util_viewPassport(iSys.rw.createDBoxPassport(db));
-	}
-		
-		
-	public void edit() {
-		new FormDBox(iSys,(DBox) tableModel.getValueAt(selectedIndex, 0));
-	}
-		
-	public void view() {
-		new FormViewDBox(iSys, (DBox)tableModel.getValueAt( selectedIndex, 0));
 	}
 
 	public void create() {
-		new FormDBox(iSys, null);
+		new FormDBox(iFrame, iSys, null, null).iDialog.setVisible(true);
 	}
 		
 	public void delete() {
@@ -59,9 +50,9 @@ public class FormDBoxes extends FormAbstractElements {
 		String dboxName = dbox.toString();
 		if (util_newDialog("Удалить коробку: " + dboxName+" и все содержащиеся в ней пары?") == JOptionPane.YES_OPTION) {
 			iSys.removeDBox(dbox);
-				util_newInfo("Коробка " + dboxName+" и все содержащиеся в ней пары удалены");
-				((DefaultTableModel) table.getModel()).removeRow(selectedIndex);	
-			}	
+			util_newInfo("Коробка " + dboxName+" и все содержащиеся в ней пары удалены");
+			((DefaultTableModel) table.getModel()).removeRow(selectedIndex);
+		}
 	}
 	
 	private void addDBoxToTable(DBox dbox) {
@@ -77,5 +68,18 @@ public class FormDBoxes extends FormAbstractElements {
 		
 		v.add(iSys.buc.getElement(dbox.getBuilding()));
 		tableModel.addRow(v);
+	}
+	
+	public void updateRow(AbstractElement element, Integer row) {
+		
+		tableModel.setValueAt(element, row, 0);
+		Pair p = iSys.pc.getInPlace(element, 0);
+		if (p != null) {
+			tableModel.setValueAt(iSys.cc.getElement(p.getCable()), row, 1);
+			
+		}
+		else {tableModel.setValueAt("", row, 1);}
+		
+		tableModel.setValueAt(iSys.buc.getElement(((DBox)element).getBuilding()), row, 2);
 	}
 }

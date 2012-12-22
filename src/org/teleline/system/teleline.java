@@ -213,7 +213,7 @@ public class teleline {
 		menuCreate.add(menuItem_2);
 		
 		JMenuItem menuItem_3 = new JMenuItem("Распределительную коробку (КРТ)");
-		menuItem_3.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormDBox(sys, null);}});
+		menuItem_3.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormDBox(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		menuCreate.add(menuItem_3);
 		
 		JSeparator separator_1 = new JSeparator();

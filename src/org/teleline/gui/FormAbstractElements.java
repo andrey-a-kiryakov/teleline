@@ -19,6 +19,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Cabinet;
+import org.teleline.model.DBox;
 import org.teleline.model.DFramе;
 import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
@@ -195,6 +196,9 @@ public class FormAbstractElements extends FormJFrame /*implements InterfaceFormA
 		if (element instanceof DFramе)
 			new FormDFrame(iFrame, iSys, (DFramе)element, null).iDialog.setVisible(true);
 		
+		if (element instanceof DBox)
+			new FormDBox(iFrame, iSys,(DBox)element, null).iDialog.setVisible(true);
+		
 		updateRow(element, selectedIndex);
 		
 	}
@@ -208,6 +212,8 @@ public class FormAbstractElements extends FormJFrame /*implements InterfaceFormA
 		if (element instanceof DFramе)
 			new FormViewStructuredElement(iSys, (StructuredElement)element);
 		
+		if (element instanceof DBox)
+			new FormViewDBox(iSys, (DBox)element);
 	}
 	public void create() {
 		

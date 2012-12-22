@@ -199,7 +199,7 @@ public class FormViewStructuredElement extends FormJFrame {
 		
 		ActionListener placeClick = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-						
+			
 			}
 		};
 		
@@ -213,9 +213,9 @@ public class FormViewStructuredElement extends FormJFrame {
 				button.setBounds(marginX + x*(W + marginX), marginY + y*(H + marginY), W, H);
 				button.setPlaceNumber(place);
 				elementsPanel.add(button);
-			
+				
 				addPopupToConnectedPointElement(button, popupMenu);
-	
+				
 				ConnectedPointElement connectedPointElement = null;
 				
 				if (element instanceof Cabinet) connectedPointElement =  (ConnectedPointElement)iSys.bc.getInPlace((Integer)place, element.getId());

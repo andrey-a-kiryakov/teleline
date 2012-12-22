@@ -4,6 +4,7 @@
  */
 package org.teleline.gui;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,22 +15,23 @@ import javax.swing.JTextField;
 import org.teleline.model.Building;
 import org.teleline.model.DBox;
 import org.teleline.model.Net;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormDBox extends FormJFrame {
+public class FormDBox extends FormJDialog {
 
-	public FormDBox(final Sys iSys, final DBox dbox) {
-		super(iSys);
+	public FormDBox(Window window, final Sys iSys, final DBox dbox, final Wrapper wrapper) {
+		super(window, iSys);
 		// TODO Auto-generated constructor stub
 	
 		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 250, iFrameMaxHeight = 250;
 		
-		createFrame("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
+		createDialog("Создать КРТ", iFrameMinWidth, iFrameMinHeight);
 		
 		addLabel("Здание:", 20, 10, 360, 25);
 		final JComboBox buildingsComboBox = addComboBox(20, 35, 360, 25);
-		this.util_setComboBoxItems(buildingsComboBox, iSys.buc.sortByIdUp(iSys.buc.getInNet(iSys.nc.getOnlyElement().getId())));
+		util_setComboBoxItems(buildingsComboBox, iSys.buc.sortByIdUp(iSys.buc.getInNet(iSys.nc.getOnlyElement().getId())));
 		
 		addLabel("Емкость коробки:", 20, 75, 360, 25);
 		final JComboBox comboBox1 = addComboBox(20, 100, 360, 25);
@@ -44,7 +46,7 @@ public class FormDBox extends FormJFrame {
 		 * ----------------
 		 */
 		if (dbox != null) {
-			iFrame.setTitle ("Редактировать КРТ");
+			iDialog.setTitle ("Редактировать КРТ");
 			buildingsComboBox.setSelectedItem(iSys.buc.getElement(dbox.getBuilding()));
 			plase.setText(dbox.getPlase());
 		}
@@ -71,16 +73,17 @@ public class FormDBox extends FormJFrame {
 						.attachToNet((Net)iSys.nc.getOnlyElement());
 					newDBox.setCapacity((Integer)comboBox1.getSelectedItem());				
 					iSys.dbc.addElement(newDBox);
+					if (wrapper != null) wrapper.setElement(newDBox);
 					String mes = "Создана коробка: "+ newDBox.toString()+ ", присоединена к сети: "+ iSys.nc.getOnlyElement().toString();
 					log.info(mes);
 					iSys.changes = true;
 					util_newInfo(mes);
 				}
-				iFrame.dispose();
+				iDialog.dispose();
 			}
 		});
 		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 160, 60, 25);
 		
-		iFrame.setVisible(true);
+		//iFrame.setVisible(true);
 	}	
 }
