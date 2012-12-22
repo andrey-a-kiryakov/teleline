@@ -4,6 +4,7 @@
  */
 package org.teleline.gui;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,16 +14,16 @@ import javax.swing.JTextField;
 
 import org.teleline.model.DFramе;
 import org.teleline.model.Net;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormDFrame extends FormJFrame {
+public class FormDFrame extends FormJDialog {
 
-	public FormDFrame(final Sys iSys, final DFramе dframe) {
-		super(iSys);
-
-		createFrame("Создать кросс", 410, 235);
-		if (dframe != null) iFrame.setTitle("Редактировать кросс");
+	public FormDFrame(Window owner, final Sys iSys, final DFramе dframe, final Wrapper wrapper) {
+		super(owner, iSys);
+		
+		createDialog("Создать кросс", 410, 235);
 		
 		addLabel("Название кросса (1-50 символов):", 20, 10, 360, 25);
 		final JTextField textField = addTextField(20, 35, 360, 25);
@@ -32,8 +33,9 @@ public class FormDFrame extends FormJFrame {
 		placesBox.addItem((Integer)10);
 		placesBox.addItem((Integer)20);
 		placesBox.addItem((Integer)30);
-
+		
 		if (dframe != null) {
+			iDialog.setTitle("Редактировать кросс");
 			textField.setText(dframe.getName());
 			placesBox.setSelectedItem(dframe.getPlacesCount());
 			placesBox.setEnabled(false);
@@ -58,15 +60,15 @@ public class FormDFrame extends FormJFrame {
 					newDFrame.attachToNet((Net)iSys.nc.getOnlyElement());
 					newDFrame.setPlacesCount((Integer)placesBox.getSelectedItem());
 					iSys.dfc.addElement(newDFrame);
+					if (wrapper != null) wrapper.setElement(newDFrame);
 					String mes = "Создан кросс: "+ newDFrame.toString()+ ", присоединён к сети: "+((Net)iSys.nc.getOnlyElement()).toString();
 					log.info(mes);
 					iSys.changes = true;
 					util_newInfo(mes);
 				}
-				iFrame.dispose();
+				iDialog.dispose();
 			}
 		});
-		iFrame.setVisible(true);
+		//iFrame.setVisible(true);
 	}
-	
 }

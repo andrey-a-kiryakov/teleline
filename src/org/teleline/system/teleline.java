@@ -203,13 +203,13 @@ public class teleline {
 		menuCreate.add(menuItem);
 	*/	
 		JMenuItem menuItem_1 = new JMenuItem("Кросс");
-		menuItem_1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormDFrame(sys, null);}});
+		menuItem_1.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormDFrame(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		JSeparator separator = new JSeparator();
 		menuCreate.add(separator);
 		menuCreate.add(menuItem_1);
 		
 		JMenuItem menuItem_2 = new JMenuItem("Шкаф");
-		menuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormCabinet(sys, null);}});
+		menuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormCabinet(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		menuCreate.add(menuItem_2);
 		
 		JMenuItem menuItem_3 = new JMenuItem("Распределительную коробку (КРТ)");
@@ -220,11 +220,11 @@ public class teleline {
 		menuCreate.add(separator_1);
 		
 		JMenuItem menuItem_4 = new JMenuItem("Громполосу");
-		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(frmTeleline,sys, null,null).iDialog.setVisible(true);}});
+		menuItem_4.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {new FormFrame(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline,sys,null,null).iDialog.setVisible(true);}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -242,7 +242,7 @@ public class teleline {
 		 * Создание межшкафных пар
 		 */
 		JMenuItem menuItem_7 = new JMenuItem("Межшкафные");
-		menuItem_7.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { new FormPairMagAndInt(sys,1); }});
+		menuItem_7.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { new FormPairMagAndInt(sys, 1); }});
 		menu_2.add(menuItem_7);
 		/**
 		 * Создание распределительных пар

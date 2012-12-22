@@ -157,7 +157,7 @@ public class FormSubscribers extends FormJFrame {
 					if (wrapper.getElement() != null) {
 						for (int i = 0; i < tableModel.getRowCount(); i++) {
 							if (((Subscriber)tableModel.getValueAt(i, 0)).equals(wrapper.getElement())){
-								System.out.println(wrapper.getElement());
+								//System.out.println(wrapper.getElement());
 								Integer rowIndex = sorter.convertRowIndexToView(i);
 								subscriberList.addRowSelectionInterval(rowIndex, rowIndex);
 								util_scrollTable(subscriberList,rowIndex);

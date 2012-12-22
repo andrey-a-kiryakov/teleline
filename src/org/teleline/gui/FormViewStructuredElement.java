@@ -166,9 +166,17 @@ public class FormViewStructuredElement extends FormJFrame {
 				ElementView ep = (ElementView)pm.getInvoker();
 				ConnectedPointElement p = (ConnectedPointElement) ep.getElement();	
 				
-				if (util_newDialog("Удалить " + ((ConnectedPointElement)p).toString()+" и все пары в нем?") == JOptionPane.YES_OPTION) {
-					iSys.removeBox((Box)p);
-					updateElementsButtons();				
+				if (util_newDialog("Удалить " + ((ConnectedPointElement)p).toString()+" и все пары в этом элементе?") == JOptionPane.YES_OPTION) {
+					
+					if (element instanceof Cabinet){
+						iSys.removeBox((Box)p);
+						updateElementsButtons();
+					}
+					
+					if (element instanceof DFramе){
+						iSys.removeFrame((Frame)p);
+						updateElementsButtons();
+					}
 				}
 			}
 		});

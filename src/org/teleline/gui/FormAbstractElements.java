@@ -18,10 +18,13 @@ import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
 
 import org.teleline.model.AbstractElement;
+import org.teleline.model.Cabinet;
+import org.teleline.model.DFramе;
+import org.teleline.model.StructuredElement;
 import org.teleline.system.Sys;
 
 
-public class FormAbstractElements extends FormJFrame implements InterfaceFormAbstractElements{
+public class FormAbstractElements extends FormJFrame /*implements InterfaceFormAbstractElements*/{
 	
 	protected Collection<AbstractElement> collection;
 	
@@ -167,33 +170,52 @@ public class FormAbstractElements extends FormJFrame implements InterfaceFormAbs
 		this.collection = collection;
 	}	
 	
-	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
 	}
-	@Override
 	public void passport() {
-		// TODO Auto-generated method stub
+		AbstractElement element = (AbstractElement) tableModel.getValueAt(selectedIndex, 0);
 		
+		if (element instanceof Cabinet) {
+			util_viewPassport(iSys.rw.createCabinetPassport((Cabinet)element));
+			return;
+		}
+		if (element instanceof DFramе) {
+			util_viewPassport(iSys.rw.createDFramePassport((DFramе)element));
+			return;
+		}
 	}
-	@Override
+	
 	public void edit() {
-		// TODO Auto-generated method stub
+		AbstractElement element = (AbstractElement) tableModel.getValueAt(selectedIndex, 0);
+		
+		if (element instanceof Cabinet)
+			new FormCabinet(iFrame, iSys, (Cabinet)element, null).iDialog.setVisible(true);
+			
+		if (element instanceof DFramе)
+			new FormDFrame(iFrame, iSys, (DFramе)element, null).iDialog.setVisible(true);
+		
+		updateRow(element, selectedIndex);
 		
 	}
-	@Override
+	
 	public void view() {
-		// TODO Auto-generated method stub
+		AbstractElement element = (AbstractElement) tableModel.getValueAt(selectedIndex, 0);
+		
+		if (element instanceof Cabinet)
+			new FormViewStructuredElement(iSys, (StructuredElement)element);
+		
+		if (element instanceof DFramе)
+			new FormViewStructuredElement(iSys, (StructuredElement)element);
 		
 	}
-	@Override
 	public void create() {
-		// TODO Auto-generated method stub
 		
 	}
-	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		
+	}
+	public void updateRow(AbstractElement element, Integer row) {
 		
 	}
 }

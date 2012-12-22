@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.DFramе;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
@@ -32,13 +33,19 @@ public class FormDFrames extends FormAbstractElements {
 		Iterator<AbstractElement> i = iSys.dfc.getIterator();
 		while (i.hasNext()) {addDFrameToTable((DFramе)i.next());}	
 	}
-	public void passport() {
-		
-		util_viewPassport(iSys.rw.createDFramePassport((DFramе)tableModel.getValueAt(selectedIndex, 0)));	
-	}
+	
 	public void create() {
-		new FormDFrame(iSys, null);
+		
+		
+		Wrapper wrapper = new Wrapper();
+		new FormDFrame(iFrame, iSys, null, wrapper).iDialog.setVisible(true);
+		
+		if (wrapper.getElement() != null) {
+			addDFrameToTable((DFramе)wrapper.getElement());
+			util_scrollTable(table,wrapper.getElement());
+		}
 	}
+	
 	public void delete() {
 		DFramе dframe = (DFramе)tableModel.getValueAt(selectedIndex, 0);
 		String dframeName = dframe.toString();
@@ -49,14 +56,6 @@ public class FormDFrames extends FormAbstractElements {
 			((DefaultTableModel) table.getModel()).removeRow(selectedIndex);	
 		}	
 	}
-	public void edit() {
-		new FormDFrame(iSys, (DFramе)tableModel.getValueAt(selectedIndex, 0));
-	}
-	
-	public void view() {
-		//new FormViewDFrame(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
-		new FormViewStructuredElement(iSys,(DFramе)tableModel.getValueAt(selectedIndex, 0));
-	}
 	
 	private void addDFrameToTable(DFramе dframe) {
 		
@@ -65,5 +64,11 @@ public class FormDFrames extends FormAbstractElements {
 		v.add(iSys.fc.getInOwner(dframe.getId()).size());
 		tableModel.addRow(v);
 		
+	}
+	
+	public void updateRow(AbstractElement element, Integer row) {	
+		
+		tableModel.setValueAt(element, row, 0);
+		tableModel.setValueAt(iSys.fc.getInOwner(element.getId()).size(), row, 1);
 	}
 }

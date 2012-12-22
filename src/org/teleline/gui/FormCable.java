@@ -35,7 +35,7 @@ public class FormCable extends FormJFrame {
 		
 		addLabel("Идущий от:", 20, 75, 360, 25);
 		final JComboBox fromComboBox = addComboBox(20, 100, 360, 25);
-	
+		
 		
 		addLabel("Приходящий в:", 20, 135, 360, 25);
 		final JComboBox toComboBox = addComboBox(20, 160, 360, 25);

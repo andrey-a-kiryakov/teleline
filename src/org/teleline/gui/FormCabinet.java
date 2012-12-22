@@ -4,6 +4,7 @@
  */
 package org.teleline.gui;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,17 +14,18 @@ import javax.swing.JTextField;
 
 import org.teleline.model.Cabinet;
 import org.teleline.model.Net;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
-public class FormCabinet extends FormJFrame {
+public class FormCabinet extends FormJDialog {
 
-	public FormCabinet(final Sys iSys, final Cabinet cabinet) {
-		super(iSys);
-		// TODO Auto-generated constructor stub
-		final int iFrameMinWidth = 410, iFrameMaxWidth = 830, iFrameMinHeight = 300, iFrameMaxHeight = 430;
+	public FormCabinet(Window owner, final Sys iSys, final Cabinet cabinet, final Wrapper wrapper) {
+		super(owner, iSys);
 		
-		createFrame("Создать шкаф", iFrameMinWidth, iFrameMinHeight);
+		final int minWidth = 410, maxWidth = 830, minHeight = 300, maxHeight = 430;
+		
+		createDialog("Создать шкаф", minWidth, minHeight);
 		 
 		addLabel("Номер шкафа (1-4 символа: А-Я,а-я,0-9):", 20, 15, 360, 25);
 		final JTextField formatedText = addTextField(20, 40, 360, 25);
@@ -42,8 +44,8 @@ public class FormCabinet extends FormJFrame {
 		
 		if (cabinet != null) {
 			
-			iFrame.setTitle("Редактировать шкаф");
-
+			iDialog.setTitle("Редактировать шкаф");
+			
 			formatedText.setText(cabinet.getSNumber());
 			
 			comboBox1.setSelectedItem(cabinet.getPlacesCount());
@@ -69,28 +71,24 @@ public class FormCabinet extends FormJFrame {
 		final JTextField cabinetDate = addTextField(420, 220, 360, 25);
 		
 		addLabel("Cпособ установки:", 420, 255, 360, 25);
-		final JComboBox cabinetSetup = new JComboBox();
+		final JComboBox cabinetSetup = addComboBox(420, 280, 360, 25);
 		cabinetSetup.addItem("Без шкафной коробки");
 		cabinetSetup.addItem("Со шкафной коробки");
 		cabinetSetup.setSelectedIndex(0);
-		cabinetSetup.setBounds(420, 280, 360, 25);
-		iFrame.getContentPane().add(cabinetSetup);		
 		
 		addLabel("Уличный или в помещении:", 420, 315, 360, 25);
-		final JComboBox cabinetArea = new JComboBox();
+		final JComboBox cabinetArea = addComboBox(420, 340, 360, 25);
 		cabinetArea.addItem("Уличный");
 		cabinetArea.addItem("В помещении");
 		cabinetArea.setSelectedIndex(0);
-		cabinetArea.setBounds(420, 340, 360, 25);
-		iFrame.getContentPane().add(cabinetArea);		
-			
+		
 		if (cabinet != null) {
 			cabinetAdress.setText(cabinet.getAdress());
 			cabinetPlase.setText(cabinet.getPlace());
 			cabinetMaterual.setText(cabinet.getMaterial());
 			cabinetDate.setText(cabinet.getDate());
 			cabinetSetup.setSelectedIndex(cabinet.getSetup());
-			cabinetArea.setSelectedIndex(cabinet.getArea());	
+			cabinetArea.setSelectedIndex(cabinet.getArea());
 		}
 		/*
 		 * ------------------------------
@@ -100,7 +98,6 @@ public class FormCabinet extends FormJFrame {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-			//	if (comboBox.getSelectedIndex() == -1) { newError(iFrame, "Не выбрана сеть!"); return; }
 				if (!iSys.v.validateCabinetNumber(formatedText.getText())) { util_newError("Неверный номер шкафа!"); return; }
 				if (!iSys.v.validateCabinetClass(cabinetClass.getText())) { util_newError("Неверный класс шкафа!"); return; }
 				if (!iSys.v.validateOtherParametr(cabinetAdress.getText())) { util_newError("Неверный формат адреса шкафа (до 150 символов)!"); return; }
@@ -108,9 +105,8 @@ public class FormCabinet extends FormJFrame {
 				if (!iSys.v.validateOtherParametr(cabinetMaterual.getText())) { util_newError("Неверный формат материала шкафа (до 150 символов)!"); return; }
 				if (!iSys.v.validateOtherParametr(cabinetDate.getText())) { util_newError("Неверный формат даты установки шкафа (до 150 символов)!"); return; }
 				
-			//	Net selectedNet = (Net)comboBox.getSelectedItem();
 				String cabinetNumber = formatedText.getText();
-
+				
 				if (cabinet != null) {
 					
 					Cabinet b = iSys.cbc.elementInNet(cabinetNumber, iSys.nc.getOnlyElement().getId());
@@ -144,24 +140,23 @@ public class FormCabinet extends FormJFrame {
 						.setDate(cabinetDate.getText())
 						.setSetup(cabinetSetup.getSelectedIndex())
 						.setArea(cabinetArea.getSelectedIndex())
-					//	.attachToNet(selectedNet)
 						.attachToNet((Net)iSys.nc.getOnlyElement())
 						.setPlacesCount((Integer)comboBox1.getSelectedItem())
 						.setSNumber(cabinetNumber);
 						newCabinet.setCabinetClass(iSys.rw.valueOf(cabinetClass.getText()));
 						iSys.cbc.addElement(newCabinet);
+						if (wrapper != null) wrapper.setElement(newCabinet);
 					String mes = "Создан шкаф: "+ newCabinet.toString()+ ", присоединён к сети: "+ ((Net)iSys.nc.getOnlyElement()).toString();
 					log.info(mes);
 					iSys.changes = true;
 					util_newInfo(mes);
 				}
-				iFrame.dispose();
+				iDialog.dispose();
 			}
 		});
 		
-		addMoreButton(iFrameMinWidth,iFrameMaxWidth,iFrameMinHeight, iFrameMaxHeight, 320, 220, 60, 25);
+		addMoreButton(minWidth, maxWidth, minHeight, maxHeight, 320, 220, 60, 25);
 	
-		iFrame.setVisible(true);
+		//iFrame.setVisible(true);
 	}
-	
 }

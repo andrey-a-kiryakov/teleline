@@ -1,6 +1,9 @@
 package org.teleline.gui;
 
 import java.awt.Container;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -28,8 +31,8 @@ public class Form {
 	
 	protected static final Logger log = LoggerFactory.getLogger("sys");
 	
-	public JFrame iFrame;
-	public JDialog iDialog;
+	public JFrame iFrame = null;
+	public JDialog iDialog = null;
 	protected Container contentPane;
 	
 	public Sys iSys;
@@ -137,6 +140,38 @@ public class Form {
 		panel.add(scrollPane,position);
 		return table;
 	}
+	
+	public JButton addMoreButton(final int iFrameMinWidth, final int iFrameMaxWidth, final int iFrameMinHeight, final int iFrameMaxHeight, int x, int y, int w, int h) {
+		
+		final JButton moreButton = addButton(" > ", x, y, w, h);
+		moreButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (iFrame != null) {
+					if (iFrame.getSize().width == iFrameMinWidth) {
+						iFrame.setSize(iFrameMaxWidth, iFrameMaxHeight);
+						moreButton.setText(" < ");
+					}
+					else {
+						iFrame.setSize(iFrameMinWidth, iFrameMinHeight);
+						moreButton.setText(" > ");
+					}
+				}
+				if (iDialog != null) {
+					if (iDialog.getSize().width == iFrameMinWidth) {
+						iDialog.setSize(iFrameMaxWidth, iFrameMaxHeight);
+						moreButton.setText(" < ");
+					}
+					else {
+						iDialog.setSize(iFrameMinWidth, iFrameMinHeight);
+						moreButton.setText(" > ");
+					}
+				}
+			}
+		});
+		
+		return moreButton;
+	}
 	/**
 	 * Устанавливает (добавляет) элементы выпадающего списка
 	 * @param ComboBox - выпадающий список
@@ -149,11 +184,42 @@ public class Form {
 		
 	}
 	public void util_clearTable (JTable table) {
-		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0;  i--) {
+		for (int i = ((DefaultTableModel) table.getModel()).getRowCount() - 1; i >=0; i--) {
 			((DefaultTableModel) table.getModel()).removeRow(i);
 		}
 		
 	}
 	
+	/**
+	 * Скроллит таблицу до строки с указанным номером
+	 * @param jTable - таблица
+	 * @param rowIndex - номер строки
+	 * */
+	public void util_scrollTable(JTable jTable, int rowIndex) {
+		
+		Container container = jTable.getParent();
+		
+		if (container != null) { container = container.getParent();}
+		if (!(container instanceof JScrollPane)) { return; }
+		
+		Rectangle rect = jTable.getCellRect(rowIndex, 0, true);
+		((JScrollPane)container).getVerticalScrollBar().setValue(rect.y);
+	}
+	/**
+	 * Скроллит таблицу до строки с указанным объектом
+	 * @param table - таблица
+	 * @param element - элемент в строке таблицы
+	 */
+	public void util_scrollTable (JTable table, AbstractElement element) {
+		TableModel model= table.getModel();
+		for (int i = 0; i < model.getRowCount(); i++) {
+			if (((AbstractElement)model.getValueAt(i, 0)).equals(element)){
+				Integer rowIndex = table.getRowSorter().convertRowIndexToView(i);
+				table.addRowSelectionInterval(rowIndex, rowIndex);
+				util_scrollTable(table,rowIndex);
+				break;
+			}
+		}
+	}
 	
 }

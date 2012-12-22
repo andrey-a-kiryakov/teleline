@@ -2,8 +2,6 @@ package org.teleline.gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,7 +13,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -24,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
@@ -121,7 +117,7 @@ public abstract class FormJFrame extends Form{
 	
 	
 	
-	public JButton addMoreButton(final int iFrameMinWidth, final int iFrameMaxWidth, final int iFrameMinHeight, final int iFrameMaxHeight, int x, int y, int w, int h) {
+	/*public JButton addMoreButton(final int iFrameMinWidth, final int iFrameMaxWidth, final int iFrameMinHeight, final int iFrameMaxHeight, int x, int y, int w, int h) {
 		
 		final JButton moreButton = addButton(" > ", x, y, w, h);
 		moreButton.addActionListener(new ActionListener() {
@@ -138,7 +134,7 @@ public abstract class FormJFrame extends Form{
 		});
 		
 		return moreButton;
-	}
+	}*/
 	
 	public JComboBox frameComboBox(JComboBox OwnersComboBox, int x, int y, int w, int h){
 		
@@ -708,20 +704,7 @@ public abstract class FormJFrame extends Form{
 			log.error(ex.toString());
 		}
 	}
-	public boolean util_scrollTable(JTable jTable, int rowIndex) {
-		
-		    if (jTable == null) { throw new NullPointerException(); }
-		
-		    Container container = jTable.getParent();
-		
-		    if (container != null) { container = container.getParent();}
-		    if ( !(container instanceof JScrollPane) ) { return false; }
-		
-		    Rectangle rect = jTable.getCellRect(rowIndex, 0, true);
-		    ((JScrollPane)container).getVerticalScrollBar().setValue(rect.y);
-		
-		    return true;
-		}
+	
 
 	
 	public static void addPopupToPair(Component component, final JPopupMenu popup) {

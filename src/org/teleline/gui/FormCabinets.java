@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.teleline.model.AbstractElement;
 import org.teleline.model.Cabinet;
+import org.teleline.model.Wrapper;
 import org.teleline.system.Sys;
 
 
@@ -34,26 +35,21 @@ public class FormCabinets extends FormAbstractElements {
 		table.setRowSorter(sorter);
 		iFrame.setVisible(true);
 	}
-		
-	public void passport() {
-		util_viewPassport(iSys.rw.createCabinetPassport((Cabinet) tableModel.getValueAt(selectedIndex, 0)));
-	}
-		
+	
 	public void refresh() {
 		Iterator<AbstractElement> i = iSys.cbc.getIterator();
 		while(i.hasNext()) {addCabinetToTable((Cabinet)i.next());}
 	}
-		
-	public void edit() {
-		new FormCabinet(iSys,(Cabinet) tableModel.getValueAt(selectedIndex, 0));
-	}
 	
-	public void view() {
-		new FormViewStructuredElement(iSys,(Cabinet)tableModel.getValueAt(selectedIndex, 0));
-	}
-		
+	
 	public void create() {
-		new FormCabinet(iSys, null);
+		Wrapper wrapper = new Wrapper();
+		new FormCabinet(iFrame, iSys, null, wrapper).iDialog.setVisible(true);
+		
+		if (wrapper.getElement() != null) {
+			addCabinetToTable((Cabinet)wrapper.getElement());
+			util_scrollTable(table,wrapper.getElement());
+		}
 	}
 		
 	public void delete() {
@@ -75,4 +71,13 @@ public class FormCabinets extends FormAbstractElements {
 		v.add(cab.getAdress());
 		tableModel.addRow(v);
 	}
+	
+	public void updateRow(AbstractElement element, Integer row) {	
+		
+		tableModel.setValueAt(element, row, 0);
+		tableModel.setValueAt(((Cabinet)element).getCabinetClass(), row, 1);
+		tableModel.setValueAt(((Cabinet)element).getPlacesCount(), row, 2);
+		tableModel.setValueAt(((Cabinet)element).getAdress(), row, 3);
+	}
+	
 }
