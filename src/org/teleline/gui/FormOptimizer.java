@@ -8,11 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.UUID;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -72,13 +75,63 @@ public class FormOptimizer extends FormJFrame {
 		
 		NetworkInterface net;
 		try {
-			net = NetworkInterface.getByName("eth0");
-			byte[] b1 = net.getHardwareAddress();
+			//net = NetworkInterface.getByName("eth0");
+			byte[] b1 = null;// = net.getHardwareAddress();
+			
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+
+	        while (e.hasMoreElements()) {
+	        	NetworkInterface neti = e.nextElement();
+	        	//System.out.println(neti);
+	            byte[] b = neti.getHardwareAddress();
+	            
+	            
+	            if (b!= null) {
+	            	//System.out.println(b.length);
+	            	b1 = b;
+	            	if (b.length == 6) {
+	    	        	System.out.println(neti);
+
+	            		for (int i = 0; i < b.length; i++)
+	    	            
+	    	            System.out.print(b[i]);
+	    	            
+	            	System.out.println("");
+	            	}
+	            }
+	       /*     Enumeration<InetAddress> addresses = neti.getInetAddresses( );
+
+	            while (addresses.hasMoreElements( )) {
+
+	              System.out.println(addresses.nextElement( ));    
+
+	            }*/
+	            
+	        }
+			String name = "12345678";
+	        UUID uuid = UUID.randomUUID();
+	        UUID uuid1 = new UUID (22,33);
+	        UUID uuid2 = UUID.nameUUIDFromBytes(b1);
+	        UUID uuid3 = UUID.fromString("30-40-50-10-10");
 	        
-			
-			
+	        System.out.println(uuid);
+	        System.out.println(uuid.version());
+	        
+	        System.out.println(uuid1);
+	        System.out.println(uuid1.version());
+	        
+	        System.out.println(uuid2);
+	        System.out.println(uuid2.version());
+	        
+	        System.out.println(uuid3);
+	        System.out.println(uuid3.version());
+	        
+	        
+	       // System.out.println(uuid.timestamp());
+	        
+	        
 			FileOutputStream file = new FileOutputStream("mac");
-			
+			/*
 			for (int i = 0; i < b1.length; i++)
 	            for(int m = b1.length -1 ; m >=0; m--){
 	            	//System.out.print(b1[i]b1[m]);
@@ -87,9 +140,7 @@ public class FormOptimizer extends FormJFrame {
 	            	file.write(b1[m]);
 	            	file.write(b1[i]>>1);
 	            	
-	            	
-	            	
-	        }
+	        }*/
 			System.out.println("+");
 			
 			//file.write(b1);
@@ -366,6 +417,8 @@ public class FormOptimizer extends FormJFrame {
 		}
 		return counter;
 	}
+	
+	native public boolean getLicense(int i);
 	
 	
 	

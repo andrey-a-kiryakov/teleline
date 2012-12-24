@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
+import org.nativepack.exampleClass;
 import org.teleline.gui.ExtFileFilter;
 import org.teleline.gui.FormJFrame;
 import org.teleline.gui.FormAbout;
@@ -96,6 +97,11 @@ public class teleline {
 			userValidation = uv.getValidation();
 		}
 		
+		//System.loadLibrary("my.dll");
+		System.load(new File("my.dll").getAbsolutePath());
+		System.out.println(new exampleClass().getValue());
+		 
+		
 	}
 
 	/**
@@ -132,7 +138,7 @@ public class teleline {
 		UIManager.put("FileChooser.detailsViewButtonToolTipText", "Подробно");
 		UIManager.put("FileChooser.fileSizeHeaderText","Размер");
 		UIManager.put("FileChooser.fileDateHeaderText", "Дата ищменения:");
-				
+		
 		final JMenuBar menuBar = new JMenuBar();
 		frmTeleline.setJMenuBar(menuBar);
 		
@@ -148,9 +154,9 @@ public class teleline {
 					if (FormJFrame.util_newDialog("Сохранить изменения в файле?") == JOptionPane.YES_OPTION) {
 						Writer writer = new Writer(sys);
 						writer.start();
-					}					
+					}
 				}
-				 
+				
 				final JFileChooser chooser = new JFileChooser();
 				
 				chooser.setCurrentDirectory(new File("./saves"));
@@ -185,12 +191,13 @@ public class teleline {
 						Writer writer = new Writer(sys);
 						writer.start();
 					}
-					sys.clear();
-					
-					Net net = new Net();
-					net.setName("Новая сеть");
-					sys.nc.addElement(net);
 				}
+				
+				sys.clear();
+				
+				Net net = new Net();
+				net.setName("Новая сеть");
+				sys.nc.addElement(net);
 			}
 		});
 		menuFile.add(newProjectItem);
@@ -224,7 +231,7 @@ public class teleline {
 		menuCreate.add(menuItem_4);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Бокс");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormBox(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormBox(frmTeleline, sys, null, null).iDialog.setVisible(true);}});
 		menuCreate.add(mntmNewMenuItem_2);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -236,13 +243,13 @@ public class teleline {
 		 * Создание магистральных пар
 		 */
 		JMenuItem menuItem_6 = new JMenuItem("Магистральные");
-		menuItem_6.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormPairMagAndInt(sys, 0); }});
+		menuItem_6.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormPairMagAndInt(sys, 0); }});
 		menu_2.add(menuItem_6);
 		/**
 		 * Создание межшкафных пар
 		 */
 		JMenuItem menuItem_7 = new JMenuItem("Межшкафные");
-		menuItem_7.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { new FormPairMagAndInt(sys, 1); }});
+		menuItem_7.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) {new FormPairMagAndInt(sys, 1); }});
 		menu_2.add(menuItem_7);
 		/**
 		 * Создание распределительных пар
@@ -254,7 +261,7 @@ public class teleline {
 		 * Создание пар прямого питания
 		 */
 		JMenuItem menuItem_5 = new JMenuItem("Прямого питания");
-		menuItem_5.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) { new FormPairDirect(sys); }});
+		menuItem_5.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent arg0) {new FormPairDirect(sys); }});
 		menu_2.add(menuItem_5);
 		
 		JMenuItem menuItem_9 = new JMenuItem("Кабель");
@@ -280,7 +287,7 @@ public class teleline {
 		menuCreate.add(separator_4);
 		
 		JMenuItem menuItem_15 = new JMenuItem("Абонента");
-		menuItem_15.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { new FormSubscriber(sys, null); }});
+		menuItem_15.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) {new FormSubscriber(sys, null); }});
 		menuCreate.add(menuItem_15);
 		
 		JMenu menuChange = new JMenu("Смотреть");
